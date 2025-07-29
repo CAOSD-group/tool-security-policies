@@ -1081,20 +1081,20 @@ features
 															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName {doc 'ControlName specifies the name of the Pod Security Standard control See: https:_kubernetesio/docs/concepts/security/pod-security-standards/'}
 																alternative
 																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_HostProcess {doc 'Specific value: HostProcess'}
-																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Host_Namespaces {doc 'Specific value: Host Namespaces'}
-																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Privileged_Containers {doc 'Specific value: Privileged Containers'}
+																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Host_Namespaces {doc 'Specific value: Host_Namespaces'}
+																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Privileged_Containers {doc 'Specific value: Privileged_Containers'}
 																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Capabilities {doc 'Specific value: Capabilities'}
-																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_HostPath_Volumes {doc 'Specific value: HostPath Volumes'}
-																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Host_Ports {doc 'Specific value: Host Ports'}
+																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_HostPath_Volumes {doc 'Specific value: HostPath_Volumes'}
+																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Host_Ports {doc 'Specific value: Host_Ports'}
 																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_AppArmor {doc 'Specific value: AppArmor'}
 																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_SELinux {doc 'Specific value: SELinux'}
-																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_proc_Mount_Type {doc 'Specific value: /proc Mount Type'}
+																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_proc_Mount_Type {doc 'Specific value: proc_Mount_Type'}
 																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Seccomp {doc 'Specific value: Seccomp'}
 																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Sysctls {doc 'Specific value: Sysctls'}
-																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Volume_Types {doc 'Specific value: Volume Types'}
-																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Privilege_Escalation {doc 'Specific value: Privilege Escalation'}
-																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Running_as_Non_root {doc 'Specific value: Running as Non-root'}
-																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Running_as_Non_root_user {doc 'Specific value: Running as Non-root user'}
+																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Volume_Types {doc 'Specific value: Volume_Types'}
+																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Privilege_Escalation {doc 'Specific value: Privilege_Escalation'}
+																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Running_as_Non_root {doc 'Specific value: Running_as_Non_root'}
+																	kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Running_as_Non_root_user {doc 'Specific value: Running_as_Non_root_user'}
 														optional
 															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_images cardinality [1..*] {doc 'Images selects matching containers and applies the container level PSS Each image is the image name consisting of the registry address, repository, image, and tag Empty list matches no containers, PSS checks are applied at the pod level only Wildcards (_*_ and _?_) are allowed See: https:_kubernetesio/docs/concepts/containers/images'}
 																mandatory
@@ -1110,17 +1110,17 @@ features
 															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_level_restricted {doc 'Specific value: restricted'}
 													kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version {doc 'Version defines the Pod Security Standard versions that Kubernetes supports Allowed values are v119, v120, v121, v122, v123, v124, v125, v126, v127, v128, v129, latest Defaults to latest'}
 														alternative
-															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_19 {doc 'Specific value: v1.19'}
-															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_20 {doc 'Specific value: v1.20'}
-															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_21 {doc 'Specific value: v1.21'}
-															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_22 {doc 'Specific value: v1.22'}
-															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_23 {doc 'Specific value: v1.23'}
-															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_24 {doc 'Specific value: v1.24'}
-															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_25 {doc 'Specific value: v1.25'}
-															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_26 {doc 'Specific value: v1.26'}
-															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_27 {doc 'Specific value: v1.27'}
-															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_28 {doc 'Specific value: v1.28'}
-															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_29 {doc 'Specific value: v1.29'}
+															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_19 {doc 'Specific value: v1_19'}
+															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_20 {doc 'Specific value: v1_20'}
+															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_21 {doc 'Specific value: v1_21'}
+															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_22 {doc 'Specific value: v1_22'}
+															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_23 {doc 'Specific value: v1_23'}
+															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_24 {doc 'Specific value: v1_24'}
+															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_25 {doc 'Specific value: v1_25'}
+															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_26 {doc 'Specific value: v1_26'}
+															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_27 {doc 'Specific value: v1_27'}
+															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_28 {doc 'Specific value: v1_28'}
+															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_29 {doc 'Specific value: v1_29'}
 															kyverno_io_v1_ClusterPolicy_spec_rules_validate_podSecurity_version_latest {doc 'Specific value: latest'}
 									kyverno_io_v1_ClusterPolicy_spec_rules_verifyImages cardinality [1..*] {doc 'VerifyImages is used to verify image signatures and mutate them to add a digest'}
 										optional
@@ -2455,20 +2455,20 @@ features
 																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName {doc 'ControlName specifies the name of the Pod Security Standard control See: https:_kubernetesio/docs/concepts/security/pod-security-standards/'}
 																		alternative
 																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_HostProcess {doc 'Specific value: HostProcess'}
-																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Host_Namespaces {doc 'Specific value: Host Namespaces'}
-																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Privileged_Containers {doc 'Specific value: Privileged Containers'}
+																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Host_Namespaces {doc 'Specific value: Host_Namespaces'}
+																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Privileged_Containers {doc 'Specific value: Privileged_Containers'}
 																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Capabilities {doc 'Specific value: Capabilities'}
-																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_HostPath_Volumes {doc 'Specific value: HostPath Volumes'}
-																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Host_Ports {doc 'Specific value: Host Ports'}
+																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_HostPath_Volumes {doc 'Specific value: HostPath_Volumes'}
+																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Host_Ports {doc 'Specific value: Host_Ports'}
 																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_AppArmor {doc 'Specific value: AppArmor'}
 																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_SELinux {doc 'Specific value: SELinux'}
-																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_proc_Mount_Type {doc 'Specific value: /proc Mount Type'}
+																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_proc_Mount_Type {doc 'Specific value: proc_Mount_Type'}
 																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Seccomp {doc 'Specific value: Seccomp'}
 																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Sysctls {doc 'Specific value: Sysctls'}
-																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Volume_Types {doc 'Specific value: Volume Types'}
-																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Privilege_Escalation {doc 'Specific value: Privilege Escalation'}
-																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Running_as_Non_root {doc 'Specific value: Running as Non-root'}
-																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Running_as_Non_root_user {doc 'Specific value: Running as Non-root user'}
+																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Volume_Types {doc 'Specific value: Volume_Types'}
+																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Privilege_Escalation {doc 'Specific value: Privilege_Escalation'}
+																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Running_as_Non_root {doc 'Specific value: Running_as_Non_root'}
+																			kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Running_as_Non_root_user {doc 'Specific value: Running_as_Non_root_user'}
 																optional
 																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_images cardinality [1..*] {doc 'Images selects matching containers and applies the container level PSS Each image is the image name consisting of the registry address, repository, image, and tag Empty list matches no containers, PSS checks are applied at the pod level only Wildcards (_*_ and _?_) are allowed See: https:_kubernetesio/docs/concepts/containers/images'}
 																		mandatory
@@ -2484,17 +2484,17 @@ features
 																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_level_restricted {doc 'Specific value: restricted'}
 															kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version {doc 'Version defines the Pod Security Standard versions that Kubernetes supports Allowed values are v119, v120, v121, v122, v123, v124, v125, v126, v127, v128, v129, latest Defaults to latest'}
 																alternative
-																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_19 {doc 'Specific value: v1.19'}
-																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_20 {doc 'Specific value: v1.20'}
-																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_21 {doc 'Specific value: v1.21'}
-																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_22 {doc 'Specific value: v1.22'}
-																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_23 {doc 'Specific value: v1.23'}
-																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_24 {doc 'Specific value: v1.24'}
-																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_25 {doc 'Specific value: v1.25'}
-																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_26 {doc 'Specific value: v1.26'}
-																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_27 {doc 'Specific value: v1.27'}
-																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_28 {doc 'Specific value: v1.28'}
-																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_29 {doc 'Specific value: v1.29'}
+																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_19 {doc 'Specific value: v1_19'}
+																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_20 {doc 'Specific value: v1_20'}
+																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_21 {doc 'Specific value: v1_21'}
+																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_22 {doc 'Specific value: v1_22'}
+																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_23 {doc 'Specific value: v1_23'}
+																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_24 {doc 'Specific value: v1_24'}
+																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_25 {doc 'Specific value: v1_25'}
+																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_26 {doc 'Specific value: v1_26'}
+																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_27 {doc 'Specific value: v1_27'}
+																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_28 {doc 'Specific value: v1_28'}
+																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_29 {doc 'Specific value: v1_29'}
 																	kyverno_io_v1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_latest {doc 'Specific value: latest'}
 											kyverno_io_v1_ClusterPolicy_status_autogen_rules_verifyImages cardinality [1..*] {doc 'VerifyImages is used to verify image signatures and mutate them to add a digest'}
 												optional
@@ -3797,20 +3797,20 @@ features
 															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName {doc 'ControlName specifies the name of the Pod Security Standard control See: https:_kubernetesio/docs/concepts/security/pod-security-standards/'}
 																alternative
 																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_HostProcess {doc 'Specific value: HostProcess'}
-																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Host_Namespaces {doc 'Specific value: Host Namespaces'}
-																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Privileged_Containers {doc 'Specific value: Privileged Containers'}
+																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Host_Namespaces {doc 'Specific value: Host_Namespaces'}
+																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Privileged_Containers {doc 'Specific value: Privileged_Containers'}
 																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Capabilities {doc 'Specific value: Capabilities'}
-																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_HostPath_Volumes {doc 'Specific value: HostPath Volumes'}
-																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Host_Ports {doc 'Specific value: Host Ports'}
+																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_HostPath_Volumes {doc 'Specific value: HostPath_Volumes'}
+																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Host_Ports {doc 'Specific value: Host_Ports'}
 																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_AppArmor {doc 'Specific value: AppArmor'}
 																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_SELinux {doc 'Specific value: SELinux'}
-																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_proc_Mount_Type {doc 'Specific value: /proc Mount Type'}
+																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_proc_Mount_Type {doc 'Specific value: proc_Mount_Type'}
 																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Seccomp {doc 'Specific value: Seccomp'}
 																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Sysctls {doc 'Specific value: Sysctls'}
-																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Volume_Types {doc 'Specific value: Volume Types'}
-																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Privilege_Escalation {doc 'Specific value: Privilege Escalation'}
-																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Running_as_Non_root {doc 'Specific value: Running as Non-root'}
-																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Running_as_Non_root_user {doc 'Specific value: Running as Non-root user'}
+																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Volume_Types {doc 'Specific value: Volume_Types'}
+																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Privilege_Escalation {doc 'Specific value: Privilege_Escalation'}
+																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Running_as_Non_root {doc 'Specific value: Running_as_Non_root'}
+																	kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_controlName_Running_as_Non_root_user {doc 'Specific value: Running_as_Non_root_user'}
 														optional
 															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_exclude_images cardinality [1..*] {doc 'Images selects matching containers and applies the container level PSS Each image is the image name consisting of the registry address, repository, image, and tag Empty list matches no containers, PSS checks are applied at the pod level only Wildcards (_*_ and _?_) are allowed See: https:_kubernetesio/docs/concepts/containers/images'}
 																mandatory
@@ -3826,17 +3826,17 @@ features
 															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_level_restricted {doc 'Specific value: restricted'}
 													kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version {doc 'Version defines the Pod Security Standard versions that Kubernetes supports Allowed values are v119, v120, v121, v122, v123, v124, v125, v126, v127, v128, v129, latest Defaults to latest'}
 														alternative
-															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_19 {doc 'Specific value: v1.19'}
-															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_20 {doc 'Specific value: v1.20'}
-															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_21 {doc 'Specific value: v1.21'}
-															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_22 {doc 'Specific value: v1.22'}
-															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_23 {doc 'Specific value: v1.23'}
-															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_24 {doc 'Specific value: v1.24'}
-															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_25 {doc 'Specific value: v1.25'}
-															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_26 {doc 'Specific value: v1.26'}
-															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_27 {doc 'Specific value: v1.27'}
-															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_28 {doc 'Specific value: v1.28'}
-															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_29 {doc 'Specific value: v1.29'}
+															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_19 {doc 'Specific value: v1_19'}
+															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_20 {doc 'Specific value: v1_20'}
+															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_21 {doc 'Specific value: v1_21'}
+															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_22 {doc 'Specific value: v1_22'}
+															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_23 {doc 'Specific value: v1_23'}
+															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_24 {doc 'Specific value: v1_24'}
+															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_25 {doc 'Specific value: v1_25'}
+															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_26 {doc 'Specific value: v1_26'}
+															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_27 {doc 'Specific value: v1_27'}
+															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_28 {doc 'Specific value: v1_28'}
+															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_v1_29 {doc 'Specific value: v1_29'}
 															kyverno_io_v2beta1_ClusterPolicy_spec_rules_validate_podSecurity_version_latest {doc 'Specific value: latest'}
 									kyverno_io_v2beta1_ClusterPolicy_spec_rules_verifyImages cardinality [1..*] {doc 'VerifyImages is used to verify image signatures and mutate them to add a digest'}
 										optional
@@ -5163,20 +5163,20 @@ features
 																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName {doc 'ControlName specifies the name of the Pod Security Standard control See: https:_kubernetesio/docs/concepts/security/pod-security-standards/'}
 																		alternative
 																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_HostProcess {doc 'Specific value: HostProcess'}
-																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Host_Namespaces {doc 'Specific value: Host Namespaces'}
-																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Privileged_Containers {doc 'Specific value: Privileged Containers'}
+																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Host_Namespaces {doc 'Specific value: Host_Namespaces'}
+																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Privileged_Containers {doc 'Specific value: Privileged_Containers'}
 																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Capabilities {doc 'Specific value: Capabilities'}
-																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_HostPath_Volumes {doc 'Specific value: HostPath Volumes'}
-																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Host_Ports {doc 'Specific value: Host Ports'}
+																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_HostPath_Volumes {doc 'Specific value: HostPath_Volumes'}
+																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Host_Ports {doc 'Specific value: Host_Ports'}
 																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_AppArmor {doc 'Specific value: AppArmor'}
 																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_SELinux {doc 'Specific value: SELinux'}
-																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_proc_Mount_Type {doc 'Specific value: /proc Mount Type'}
+																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_proc_Mount_Type {doc 'Specific value: proc_Mount_Type'}
 																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Seccomp {doc 'Specific value: Seccomp'}
 																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Sysctls {doc 'Specific value: Sysctls'}
-																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Volume_Types {doc 'Specific value: Volume Types'}
-																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Privilege_Escalation {doc 'Specific value: Privilege Escalation'}
-																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Running_as_Non_root {doc 'Specific value: Running as Non-root'}
-																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Running_as_Non_root_user {doc 'Specific value: Running as Non-root user'}
+																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Volume_Types {doc 'Specific value: Volume_Types'}
+																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Privilege_Escalation {doc 'Specific value: Privilege_Escalation'}
+																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Running_as_Non_root {doc 'Specific value: Running_as_Non_root'}
+																			kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_controlName_Running_as_Non_root_user {doc 'Specific value: Running_as_Non_root_user'}
 																optional
 																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_exclude_images cardinality [1..*] {doc 'Images selects matching containers and applies the container level PSS Each image is the image name consisting of the registry address, repository, image, and tag Empty list matches no containers, PSS checks are applied at the pod level only Wildcards (_*_ and _?_) are allowed See: https:_kubernetesio/docs/concepts/containers/images'}
 																		mandatory
@@ -5192,17 +5192,17 @@ features
 																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_level_restricted {doc 'Specific value: restricted'}
 															kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version {doc 'Version defines the Pod Security Standard versions that Kubernetes supports Allowed values are v119, v120, v121, v122, v123, v124, v125, v126, v127, v128, v129, latest Defaults to latest'}
 																alternative
-																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_19 {doc 'Specific value: v1.19'}
-																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_20 {doc 'Specific value: v1.20'}
-																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_21 {doc 'Specific value: v1.21'}
-																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_22 {doc 'Specific value: v1.22'}
-																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_23 {doc 'Specific value: v1.23'}
-																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_24 {doc 'Specific value: v1.24'}
-																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_25 {doc 'Specific value: v1.25'}
-																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_26 {doc 'Specific value: v1.26'}
-																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_27 {doc 'Specific value: v1.27'}
-																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_28 {doc 'Specific value: v1.28'}
-																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_29 {doc 'Specific value: v1.29'}
+																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_19 {doc 'Specific value: v1_19'}
+																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_20 {doc 'Specific value: v1_20'}
+																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_21 {doc 'Specific value: v1_21'}
+																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_22 {doc 'Specific value: v1_22'}
+																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_23 {doc 'Specific value: v1_23'}
+																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_24 {doc 'Specific value: v1_24'}
+																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_25 {doc 'Specific value: v1_25'}
+																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_26 {doc 'Specific value: v1_26'}
+																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_27 {doc 'Specific value: v1_27'}
+																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_28 {doc 'Specific value: v1_28'}
+																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_v1_29 {doc 'Specific value: v1_29'}
 																	kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_validate_podSecurity_version_latest {doc 'Specific value: latest'}
 											kyverno_io_v2beta1_ClusterPolicy_status_autogen_rules_verifyImages cardinality [1..*] {doc 'VerifyImages is used to verify image signatures and mutate them to add a digest'}
 												optional

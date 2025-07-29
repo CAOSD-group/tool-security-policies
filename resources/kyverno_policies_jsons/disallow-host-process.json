@@ -4,18 +4,7 @@
     "config": {
         "kyverno_io_v1_ClusterPolicy_apiVersion": "kyverno.io/v1",
         "kyverno_io_v1_ClusterPolicy_kind": "ClusterPolicy",
-        "kyverno_io_v1_ClusterPolicy_metadata": {
-            "name": "disallow-host-process",
-            "annotations": {
-                "policies.kyverno.io/title": "Disallow hostProcess",
-                "policies.kyverno.io/category": "Pod Security Standards (Baseline)",
-                "policies.kyverno.io/severity": "medium",
-                "policies.kyverno.io/subject": "Pod",
-                "kyverno.io/kyverno-version": "1.6.0",
-                "kyverno.io/kubernetes-version": "1.22-1.23",
-                "policies.kyverno.io/description": "Windows pods offer the ability to run HostProcess containers which enables privileged access to the Windows node. Privileged access to the host is disallowed in the baseline policy. HostProcess pods are an alpha feature as of Kubernetes v1.22. This policy ensures the `hostProcess` field, if present, is set to `false`."
-            }
-        },
+        "kyverno_io_v1_ClusterPolicy_metadata": true,
         "kyverno_io_v1_ClusterPolicy_spec": {
             "kyverno_io_v1_ClusterPolicy_spec_validationFailureAction": {
                 "kyverno_io_v1_ClusterPolicy_spec_validationFailureAction_Audit": true
@@ -39,37 +28,7 @@
                     },
                     "kyverno_io_v1_ClusterPolicy_spec_rules_validate": {
                         "kyverno_io_v1_ClusterPolicy_spec_rules_validate_message": "HostProcess containers are disallowed. The fields spec.securityContext.windowsOptions.hostProcess, spec.containers[*].securityContext.windowsOptions.hostProcess, spec.initContainers[*].securityContext.windowsOptions.hostProcess, and spec.ephemeralContainers[*].securityContext.windowsOptions.hostProcess must either be undefined or set to `false`.",
-                        "kyverno_io_v1_ClusterPolicy_spec_rules_validate_pattern": {
-                            "spec": {
-                                "=(ephemeralContainers)": [
-                                    {
-                                        "=(securityContext)": {
-                                            "=(windowsOptions)": {
-                                                "=(hostProcess)": "false"
-                                            }
-                                        }
-                                    }
-                                ],
-                                "=(initContainers)": [
-                                    {
-                                        "=(securityContext)": {
-                                            "=(windowsOptions)": {
-                                                "=(hostProcess)": "false"
-                                            }
-                                        }
-                                    }
-                                ],
-                                "containers": [
-                                    {
-                                        "=(securityContext)": {
-                                            "=(windowsOptions)": {
-                                                "=(hostProcess)": "false"
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        }
+                        "kyverno_io_v1_ClusterPolicy_spec_rules_validate_pattern": true
                     }
                 }
             ]

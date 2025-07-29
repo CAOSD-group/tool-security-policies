@@ -57,7 +57,7 @@ def render_feature(entry, indent=2):
         lines.append(i + "\talternative")
         for val in enum:
             enum_val = sanitize(f"{name}_{val}")
-            lines.append(f"{i}\t\t{enum_val} {{doc 'Specific value: {val}'}}")
+            lines.append(f"{i}\t\t{enum_val} {{doc 'Specific value: {sanitize(val)}'}}")
 
     if children:
         mand = [c for c in children if c.get("required")]

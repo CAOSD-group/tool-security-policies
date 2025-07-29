@@ -183,17 +183,21 @@ x-kubernetes-preserve-unknown-fields -- 238
 preserveUnknownFields: custom attribute for delayed the special fiel in properties with x-kubernetes-preserve-unknown-fields: true
 -- Hecho
 Para los:
-x-kubernetes-preserve-unknown-fields: true
+ 
+
+Duda sobre los import del metadata. Se 'pierde' coincidencias para las comparaciones de las props entre yaml-features.
 type: object
 Se realiza una validacion parcial de las propiedades definidas pero tambien se permite agregar más: se permite una extensibilidad arbitraria para escenarios avanzados
 
 
+-- Validacion de configuraciones de las politicas, validas.
+(envFmSec) PS C:\projects\investigacion\fm-security-policies\scripts> py .\valid_config.py
+WARNING:root:Namespaces are not meningful for Flama.This model has the following namespaces: kyverno_io 
+Valid?: True
+CONF VALID? True 
 
-
-
-
-
-
+Configuration 1: {'kyverno_io_v1_ClusterPolicy_apiVersion': 'kyverno.io/v1', 'kyverno_io_v1_ClusterPolicy_kind': 'ClusterPolicy', 'kyverno_io_v1_ClusterPolicy_metadata': True, 'kyverno_io_v1_ClusterPolicy_spec': True, 'kyverno_io_v1_ClusterPolicy_spec_validationFailureAction': True, 'kyverno_io_v1_ClusterPolicy_spec_validationFailureAction_Audit': True, 'kyverno_io_v1_ClusterPolicy_spec_background': True, 'kyverno_io_v1_ClusterPolicy_spec_rules': True, 'kyverno_io_v1_ClusterPolicy_spec_rules_match_any_resources_kinds_StringValue': 'Pod', 'kyverno_io_v1_ClusterPolicy_spec_rules_match_any_resources_kinds': True, 'kyverno_io_v1_ClusterPolicy_spec_rules_name': 'host-ports-none', 'kyverno_io_v1_ClusterPolicy_spec_rules_match_any': True, 'kyverno_io_v1_ClusterPolicy_spec_rules_validate_message': 'Use of host ports is disallowed. The fields spec.containers[*].ports[*].hostPort , spec.initContainers[*].ports[*].hostPort, and spec.ephemeralContainers[*].ports[*].hostPort must either be unset or set to `0`.', 'kyverno_io_v1_ClusterPolicy_spec_rules_validate_pattern': True}  True
+(envFmSec) PS C:\projects\investigacion\fm-security-policies\scripts> 
 
 
 

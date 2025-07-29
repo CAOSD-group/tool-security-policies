@@ -371,13 +371,19 @@ def search_features_in_csv(hierarchical_props, key_value_pairs, csv_dict):
                 elif middle.strip() and turned == "isEmpty" and feature not in feature_map and aux_hierchical_maps.endswith(hierarchical_prop):
                     aux_hierchical_is_empty = f"{hierarchical_prop}_isEmpty" ## The _isEmpty is created manually because it is a custom feature of the model. It is used to refer to the features with empty value in the properties. It is added to be able to reference such non-value...
                     feature_map[aux_hierchical_is_empty] = feature
-
                 elif middle.strip() and turned == "isEmpty02" and feature not in feature_map and aux_hierchical_maps.endswith(hierarchical_prop):
                     aux_hierchical_is_empty = f"{hierarchical_prop}_isEmpty02" ## The _isEmpty is created manually because it is a custom feature of the model. It is used to refer to the features with empty value in the properties. It is added to be able to reference such non-value...
                     feature_map[aux_hierchical_is_empty] = feature
                 # Representation of the selected values, it is checked if any yaml value matches the last part...
-                elif value == "preserveUnknownFields" and feature not in feature_map: # preserveUnknownFieldsX
-                    pass
+                elif middle.strip() and hierarchical_prop in hierarchical_props and hierarchical_prop.endswith(middle) and value == "preserveUnknownFields" and feature not in feature_map: # preserveUnknownFieldsX
+                    print(f"Coincidencia features   {feature}   {hierarchical_prop} {aux_hierchical_maps}")
+                    feature_map[hierarchical_prop] =  {"feature_type": "specialType", "feature": feature}
+
+                """elif middle.strip() and hierarchical_prop in hierarchical_props and hierarchical_prop.endswith(middle) and aux_hierchical_maps.endswith(hierarchical_prop) and value == "preserveUnknownFieldsX" and feature not in feature_map: # preserveUnknownFieldsX
+                    print(f"Coincidencia features  X {feature}   {hierarchical_prop} {aux_hierchical_maps}")
+                    feature_map[hierarchical_prop] =  {"feature_type": "specialTypeX", "feature": feature}"""
+
+                    ##feature_map[aux_hierchical_maps_key] = feature
                     ## Definir funcionamiento para marcar el preserveUnknownFields como
                     # Evitamos mapear el contenido: solo dejamos la clave principal como bool True
                     #new_data[value_features] = True
@@ -458,7 +464,7 @@ def apply_feature_mapping(yaml_data, feature_map, auxFeaturesAddedList, aux_hier
                 value = value.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
             if isinstance(key, str) and key == 'clusterName': ## It checks if any keys match 'clusterName' to omit the field directly. Prop does not validate in schema or doc
                 continue
-            print(f"FEAUTRE MAP {feature_map}")
+            # print(f"FEAUTRE MAP {feature_map}")
             for key_features, value_features in feature_map.items():
                 
                 # Normal logic for string type values, the value of the key is changed directly
@@ -686,12 +692,17 @@ def apply_feature_mapping(yaml_data, feature_map, auxFeaturesAddedList, aux_hier
                         auxFeaturesAddedList.add(value_features)
                         aux_hierchical_prop.append(key_features)
                 # Representation of the selected values, it is checked if any yaml value matches the last part...
-                elif isinstance(value_features, str) and value_features.split("_")[-1] in ["preserveUnknownFields", "preserveUnknownFieldsX"] and value_features not in auxFeaturesAddedList:
-                    # Evitamos mapear el contenido: solo dejamos la clave principal como bool True
-                    new_data[value_features] = True
-                    auxFeaturesAddedList.add(value_features)
-                    aux_hierchical_prop.append(key_features)
-                    continue  # saltar hijos
+                # 
+                elif key_features.endswith(key) and isinstance(value_features, dict) and value_features.get("feature_type") == "specialType" and not value_features.get("feature_type") == "array": # and value_features in auxFeaturesAddedList
+                    auxFeaturesAddedList.add(value_features["feature"])
+                    key = value_features["feature"]
+                    aux_hierchical_prop.append(key_features)                    
+                    #continue  # saltar hijos
+                    ## elif value_features.get("feature_type") == "preserveUnknownFieldsX" and value_features not in auxFeaturesAddedList:
+                """elif key_features.endswith(key) and isinstance(value_features, dict) and value_features.get("feature_type") == "specialTypeX" and not value_features.get("feature_type") == "array": # and value_features in auxFeaturesAddedList
+                    auxFeaturesAddedList.add(value_features["feature"])
+                    key = value_features["feature"]
+                    aux_hierchical_prop.append(key_features)"""
 
             mapped_key = feature_map.get(key, key)
             aux_arr_key = None
@@ -731,6 +742,10 @@ def apply_feature_mapping(yaml_data, feature_map, auxFeaturesAddedList, aux_hier
                     yaml_with_error_type = True ## To mark yamls with error for revision. Not implemented already
                     with open("./error_log_mapping01Types.log", "w", encoding="utf-8") as error_log:
                         error_log.write(f"[ERROR DE TIPO] 2º else, en key: {mapped_key}, Valor inválido: {value} - {te}\n")
+            ## Condition to omit the props without feature mapping
+            if isinstance(key, str) and key not in feature_map and '_io_' not in key: ## all(not k.startswith(key + "_") for k in feature_map)
+                #print(f"PROPS QUE NO SE MAPEAN: {key}    {value}")
+                return True
         return new_data
 
     elif isinstance(yaml_data, list):
