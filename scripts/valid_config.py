@@ -85,6 +85,8 @@ if __name__ == '__main__':
     # You need the model in SAT
     fm_model = UVLReader(FM_PATH).transform()
     #sat_model = FmToPysat(fm_model).transform()
+    ## Pre evaluation of sectioned model. Depends of section Policies
+
 
     # You need the configuration as a list of features
     # Transform the feature model to propositional logic (SAT model)
