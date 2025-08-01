@@ -2,6 +2,16 @@ import os
 import yaml
 import re
 
+
+### Special lists for features modified in Kubernetes FM
+special_features_config = ['procMount'] ## Pod_spec_..._procMount was String but in FM k8s is Bool with a mandatory subfeature String Pod_spec_..._procMount_nameStr
+
+"""special_feature_mapping = { ## Case 2
+    "procMount": "_nameStr",
+    "runAsUser": "_valueInt",
+    "runAsGroup": "_valueInt"
+}"""
+
 def sanitize(name):
     return name.replace("-", "_").replace(".", "_").replace("/", "_").replace(" ", "_").replace("{{", "").replace("}}", "").replace("(", "").replace(")", "")
 
@@ -193,10 +203,22 @@ def expand_path_brackets(path):
 def extract_conditions_from_spec(obj, prefix="spec"):
     conditions = []
     if isinstance(obj, dict):
+        special_values_types = False
         for k, v in obj.items():
-            ##print(f"Key value   {k}   {v}")
+            #print(f"Key value   {k}   {v}")
             key = k.strip("=() ").replace("X(", "").replace(")", "")
             new_prefix = f"{prefix}_{key}"
+
+            if key in special_features_config: ## Change the special features if procedure
+                new_prefix = f"{new_prefix}_nameStr"
+                #print(f"New Prefix: {new_prefix}")
+            elif new_prefix.endswith('seccompProfile_type'): ## Tipos con los valores definidos
+                print(f"New Prefix Coincidencia: {new_prefix}")
+                special_values_types = True
+            """suffix = special_feature_mapping.get(key) # Case 2
+            if suffix:
+                new_prefix = f"{new_prefix}{suffix}"""
+            
             if isinstance(v, dict):
                 conditions.extend(extract_conditions_from_spec(v, new_prefix))
             elif isinstance(v, list) and len(v) > 0 and isinstance(v[0], dict):
@@ -211,7 +233,20 @@ def extract_conditions_from_spec(obj, prefix="spec"):
                         v = "null"
                     elif v.isdigit():
                         v = v  # número como string, no cambiar
+                    elif special_values_types: ## constraint: Restrict_Seccomp => (!io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type | (io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type => io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type_RuntimeDefault | io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type_Localhost))
+                        print(f"Prueba captar values {new_prefix}   {v}")
+                        aux_values = v.split("|")
+                        aux_new_prefix = new_prefix
+                        for value in aux_values:
+                            print(f"Values: {value}")
+                            new_prefix = f"{aux_new_prefix}_{value.strip()}"
+                            v = "true"
+                            conditions.append((new_prefix, v))
+                        #v = "true"
+                        print(new_prefix)
                     else:
+                        if 'seccompProfile_type' in new_prefix:
+                            continue
                         v = f"'{v}'"
                 elif isinstance(v, (int, float)):
                     # print(f"SE DETECTA AQUI:Caso Int")

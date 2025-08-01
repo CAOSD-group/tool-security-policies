@@ -45,7 +45,7 @@ def render_feature(entry, indent=2):
         
     attr_str = f" {{{', '.join(attributes)}}}" if attributes else ""
     
-    if entry.get("cardinality"):
+    if entry.get("cardinality"): ## print("Prueba teclado01")
         lines.append(f"{i}{name} cardinality {entry['cardinality']}{attr_str}")
     else:
         if typename and typename != 'Boolean' and not enum:
