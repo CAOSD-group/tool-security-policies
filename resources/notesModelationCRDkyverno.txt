@@ -200,12 +200,40 @@ Configuration 1: {'kyverno_io_v1_ClusterPolicy_apiVersion': 'kyverno.io/v1', 'ky
 (envFmSec) PS C:\projects\investigacion\fm-security-policies\scripts> 
 
 
-
-
-
-
 Por el momento la 1ºV parece que es válida
 (flamapyenv02) PS C:\Users\CAOSD\projects\fm-json-kubernetes\scripts\ci> py .\valid_model.py v1.30.2.kyverno
 🧪 Validating model for v1.30.2.kyverno...
 ✅ Model is valid.
 (flamapyenv02) PS C:\Users\CAOSD\projects\fm-json-kubernetes\scripts\ci> 
+
+
+Continuando con la modelacion de las reglas y el mapeo se va hacer uso de un enfoque que modela las configuraciones politicas como features con descripción en sus atributos y la relacion con los features del esquema de kubernetes haciendo uso del Import.ç
+Para este segundo enfoque se va a hacer usop del script generate_uvl_policies01.py y el uvl de salida policy_structure01.uvl;
+
+Las politicas mapeadas por el momento son las localizadas en pod-security/baseline o https://github.com/kyverno/policies/tree/main/pod-security/baseline
+
+Restricciones a ajustar:
+
+Disallow_procMount => (Kubernetes.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_procMount == 'Default' & Kubernetes.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_procMount == 'Default' & Kubernetes.io_k8s_api_core_v1_Pod_spec_containers_securityContext_procMount == 'Default')
+
+Para el feature que se menciona concretamente se realizo una personalizacion de estructura y se modifico el feature final a:
+
+io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_procMount {abstract, doc 'procMount denotes the type of proc mount to use for the containers The default is DefaultProcMount which uses the container runtime defaults for readonly paths and masked paths This requires the ProcMountType feature flag to be enabled Note that this field cannot be set when specosname is windows'}
+  mandatory
+    String io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_procMount_nameStr
+
+Por lo que, no coincide exactamente. Se modificara manualmente el featu para que los localizados en esta lista se puedan referenciar correctamente con el uvl de kubernetes.
+**Ajuste: buscar la lista de features personalizados en el script de mapeo de kubernetes y agregarla en este script para tener en cuanta los modificados
+
+Para la siguiente no se definen como Strings, ya se modifico en el fm para que se base en una seleccion de valores:
+
+Restrict_Seccomp => (Kubernetes.io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type == 'RuntimeDefault | Localhost' & Kubernetes.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_seccompProfile_type == 'RuntimeDefault | Localhost' & Kubernetes.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_seccompProfile_type == 'RuntimeDefault | Localhost' & Kubernetes.io_k8s_api_core_v1_Pod_spec_containers_securityContext_seccompProfile_type == 'RuntimeDefault | Localhost')
+
+io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile {doc 'The seccomp options to use by the containers in this pod Note that this field cannot be set when specosname is windows'}
+  mandatory
+    io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type {doc 'type indicates which kind of seccomp profile will be applied Valid options are:Localhost - a profile defined in a file on the node should be used RuntimeDefault - the container runtime default profile should be used Unconfined - no profile should be applied'}
+      alternative
+        io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type_Unconfined {doc 'Specific value: Unconfined'}
+        io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type_RuntimeDefault {doc 'Specific value: RuntimeDefault'}
+        io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type_Localhost {doc 'Specific value: Localhost'}
+  optional
