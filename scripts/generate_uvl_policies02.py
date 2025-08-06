@@ -72,6 +72,12 @@ def extract_uvl_attributes_from_policy(policy: dict) -> str:
     return ""
 
 
+def build_optional_clause(parent, allowed_features):
+    """Construye una cláusula UVL tipo: !parent | (parent => A | B)"""
+    allowed_str = " | ".join(allowed_features)
+    return f"!{parent} | ({parent} => {allowed_str})"
+
+
 def extract_constraints_from_policy(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
         policy = yaml.safe_load(f)
@@ -82,7 +88,7 @@ def extract_constraints_from_policy(filepath):
     name = sanitize(title)
 
     grouped_conditions = {}  # policy_name → list of conditions
-
+    opt_clauses = []
     rules = policy.get("spec", {}).get("rules", [])
     for rule in rules:
         kinds = rule.get("match", {}).get("any", [{}])[0].get("resources", {}).get("kinds", [])
@@ -90,7 +96,8 @@ def extract_constraints_from_policy(filepath):
         pattern = rule.get("validate", {}).get("pattern", {})
 
         if "spec" in pattern:
-            conditions = extract_conditions_from_spec(pattern["spec"], prefix="spec")
+            conditions, optional_clauses_from_spec = extract_conditions_from_spec(pattern["spec"], prefix="spec", kind_prefixes=kind_prefixes)
+
             for path, expected in conditions:
                 for kind_prefix in kind_prefixes:
                     full_feature = f"Kubernetes.{sanitize(kind_prefix + path)}" ## Deff of features from fm Kubernetes
@@ -103,10 +110,16 @@ def extract_constraints_from_policy(filepath):
                         if re.match(r"^\d+(\.\d+)?$", str(expected).strip()):
                             expr = f"{full_feature} = {expected}"
                         else:
+                            if optional_clauses_from_spec:
+                                continue
                             expr = f"{full_feature} == {expected}"
                     grouped_conditions.setdefault(name, []).append(expr)
+            # Add the constraints
+            #for clause in opt_clauses:
+            #    grouped_conditions.setdefault(name, []).append(clause)
+            opt_clauses.extend(optional_clauses_from_spec)
 
-    return grouped_conditions
+    return grouped_conditions, {name: opt_clauses}
 
 def extract_constraints_from_deny_conditions(policy):
     constraints_by_policy = {}
@@ -200,8 +213,10 @@ def expand_path_brackets(path):
 
     return expand(path)
 
-def extract_conditions_from_spec(obj, prefix="spec"):
+def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes=None):
     conditions = []
+    optional_clauses = []
+
     if isinstance(obj, dict):
         special_values_types = False
         for k, v in obj.items():
@@ -212,17 +227,44 @@ def extract_conditions_from_spec(obj, prefix="spec"):
             if key in special_features_config: ## Change the special features if procedure
                 new_prefix = f"{new_prefix}_nameStr"
                 #print(f"New Prefix: {new_prefix}")
-            elif new_prefix.endswith('seccompProfile_type'): ## Tipos con los valores definidos
-                print(f"New Prefix Coincidencia: {new_prefix}")
+
+            elif new_prefix.endswith('seccompProfile_type'):
+                # Este bloque detecta claves como:
+                # =(seccompProfile.type): "RuntimeDefault | Localhost"
                 special_values_types = True
+                if kind_prefixes is None or not kind_prefixes:
+                    raise ValueError("❌ No kind_prefixes provided for seccompProfile_type.")                
+                if k.startswith("=(") and v and "|" in v:
+                
+                    base_feature = new_prefix  # sin los valores
+                    # Parsear valores permitidos
+                    allowed_values = []
+                    values = [val.strip() for val in v.split("|")]
+                    for value in values:
+                        clean_val = value.strip()
+                        allowed_values.append(clean_val)  # Solo el valor, sin prefijo
+
+                    # Generar una cláusula para cada tipo de recurso (Pod, etc.)
+                    for kp in kind_prefixes:
+                        full_feature = f"{sanitize(kp + base_feature)}"
+                        full_allowed = [sanitize(f"{full_feature}_{val}") for val in allowed_values]
+                        clause = build_optional_clause(f"Kubernetes.{full_feature}", full_allowed)
+                        optional_clauses.append(clause)               
+
             """suffix = special_feature_mapping.get(key) # Case 2
             if suffix:
                 new_prefix = f"{new_prefix}{suffix}"""
             
             if isinstance(v, dict):
-                conditions.extend(extract_conditions_from_spec(v, new_prefix))
+                #conditions.extend(extract_conditions_from_spec(v, new_prefix))
+                child_conditions, child_optional_clauses = extract_conditions_from_spec(v, new_prefix)
+                conditions.extend(child_conditions)
+                optional_clauses.extend(child_optional_clauses)                
             elif isinstance(v, list) and len(v) > 0 and isinstance(v[0], dict):
-                conditions.extend(extract_conditions_from_spec(v[0], new_prefix))
+                #conditions.extend(extract_conditions_from_spec(v[0], new_prefix))
+                child_conditions, child_optional_clauses = extract_conditions_from_spec(v[0], new_prefix)
+                conditions.extend(child_conditions)
+                optional_clauses.extend(child_optional_clauses)                
             else:
                 if isinstance(v, str):
                     if v.lower() == "false":
@@ -233,21 +275,21 @@ def extract_conditions_from_spec(obj, prefix="spec"):
                         v = "null"
                     elif v.isdigit():
                         v = v  # número como string, no cambiar
-                    elif special_values_types: ## constraint: Restrict_Seccomp => (!io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type | (io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type => io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type_RuntimeDefault | io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type_Localhost))
-                        print(f"Prueba captar values {new_prefix}   {v}")
-                        aux_values = v.split("|")
-                        aux_new_prefix = new_prefix
-                        for value in aux_values:
-                            print(f"Values: {value}")
-                            new_prefix = f"{aux_new_prefix}_{value.strip()}"
-                            v = "true"
-                            conditions.append((new_prefix, v))
-                        #v = "true"
-                        print(new_prefix)
-                    else:
-                        if 'seccompProfile_type' in new_prefix:
-                            continue
-                        v = f"'{v}'"
+                        """elif special_values_types: ## constraint: Restrict_Seccomp => (!io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type | (io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type => io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type_RuntimeDefault | io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type_Localhost))
+                            print(f"Prueba captar values {new_prefix}   {v}")
+                            aux_values = v.split("|")
+                            aux_new_prefix = new_prefix
+                            for value in aux_values:
+                                print(f"Values: {value}")
+                                new_prefix = f"{aux_new_prefix}_{value.strip()}"
+                                v = "true" 
+                                #conditions.append((new_prefix, v))
+                            #v = "true"
+                            print(new_prefix)
+                        else:
+                            if 'seccompProfile_type' in new_prefix:
+                                continue
+                            v = f"'{v}'"""
                 elif isinstance(v, (int, float)):
                     # print(f"SE DETECTA AQUI:Caso Int")
                     v = str(v)
@@ -255,7 +297,7 @@ def extract_conditions_from_spec(obj, prefix="spec"):
                     # fallback
                     v = f"'{str(v)}'"
                 conditions.append((new_prefix, v))
-    return conditions
+    return conditions, optional_clauses
 
 def generate_uvl_from_policies(directory, output_path):
     category_map = {}
@@ -305,11 +347,15 @@ def generate_uvl_from_policies(directory, output_path):
             continue
 
         filepath = os.path.join(directory, filename)
-        grouped = extract_constraints_from_policy(filepath)
+        grouped, optional_clauses = extract_constraints_from_policy(filepath)
         grouped_deny = extract_constraints_from_deny_conditions(yaml.safe_load(open(filepath)))
 
         merged = {}
-        for g in [grouped, grouped_deny]:
+
+        optional_grouped = {}
+        optional_grouped = optional_clauses  # ya es un dict con el nombre correcto
+    
+        for g in [grouped, grouped_deny, optional_grouped]:
             for policy_name, exprs in g.items():
                 merged.setdefault(policy_name, []).extend(exprs)
 
