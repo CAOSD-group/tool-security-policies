@@ -244,8 +244,16 @@ Restrict_Seccomp => (!io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile
 
 Ver como modificar y adaptar para casos futuros.
 
-
-
 restrict-apparmor-profiles.yaml
-
+Define una politica que no hace referencia a Pod_spec sino a Pod_metadata. Ajustar para admitir nuevos parametros como feat principal
+        
+        pattern:
+          =(metadata):
+            =(annotations):
+              =(container.apparmor.security.beta.kubernetes.io/*): "runtime/default | localhost/*"
+El feat io_k8s_api_core_v1_Pod_metadata_annotations es un mapa asi que habria que asignar los valores a cada parte...
+Restrict_AppArmor => io_k8s_api_core_v1_Pod_metadata_annotations_KeyMap == 'container.apparmor.security.beta.kubernetes.io/*' & io_k8s_api_core_v1_Pod_metadata_annotations_ValueMap == 'runtime/default | localhost/*' 
+-- Hecho
 Define una constraint que hace referencia a un feature map, relacionar key y value a cada feat.
+
+	Restrict_Seccomp => (Kubernetes.io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type_RuntimeDefault = true & Kubernetes.io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type_Localhost = true & Kubernetes.io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type == RuntimeDefault | Localhost & Kubernetes.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_seccompProfile_type_RuntimeDefault = true & Kubernetes.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_seccompProfile_type_Localhost = true & Kubernetes.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_seccompProfile_type == RuntimeDefault | Localhost & Kubernetes.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_seccompProfile_type_RuntimeDefault = true & Kubernetes.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_seccompProfile_type_Localhost = true & Kubernetes.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_seccompProfile_type == RuntimeDefault | Localhost & Kubernetes.io_k8s_api_core_v1_Pod_spec_containers_securityContext_seccompProfile_type_RuntimeDefault = true & Kubernetes.io_k8s_api_core_v1_Pod_spec_containers_securityContext_seccompProfile_type_Localhost = true & Kubernetes.io_k8s_api_core_v1_Pod_spec_containers_securityContext_seccompProfile_type == RuntimeDefault | Localhost)

@@ -71,11 +71,68 @@ def extract_uvl_attributes_from_policy(policy: dict) -> str:
         return f" {{{', '.join(attributes)}}}"
     return ""
 
+def get_kind_prefixes_from_rule(rule: dict) -> list:
+    """
+    Extrae los prefijos de los kinds especificados en una regla Kyverno.
+    Devuelve una lista de strings como: io_k8s_api_core_v1_Pod_
+    """
+    kinds = rule.get("match", {}).get("any", [{}])[0].get("resources", {}).get("kinds", [])
+    return [f"io_k8s_api_core_v1_{sanitize(kind)}_" for kind in kinds]
 
-def build_optional_clause(parent, allowed_features):
-    """Construye una cláusula UVL tipo: !parent | (parent => A | B)"""
-    allowed_str = " | ".join(allowed_features)
-    return f"!{parent} | ({parent} => {allowed_str})"
+def build_optional_clause(parent, allowed_values, kind_prefixes):
+    """Build the constraint ref '!parent | (parent => val1 | val2 | …)'"""
+    if not isinstance(kind_prefixes, list):
+        kind_prefixes = [kind_prefixes]
+    clauses = []
+    #print(f"ALLOWED VALUES  {allowed_values}    {kind_prefixes}")
+
+    for kind_prefix in kind_prefixes:
+        allowed_full = [f"Kubernetes.{kind_prefix}{val}" for val in allowed_values]
+        allowed_str = " | ".join(allowed_full)
+        clause = f"(!Kubernetes.{kind_prefix}{parent} | (Kubernetes.{kind_prefix}{parent} => {allowed_str}))"
+        clauses.append(clause)
+
+    return clauses if len(clauses) > 1 else clauses[0]
+
+
+
+def handle_annotation_with_wildcard(key: str, value: str, prefix: str):
+    """
+    Genera condiciones UVL para anotaciones con wildcard.
+    Espera que el prefijo ya incluya 'metadata_annotations'
+    """
+    clean_key = key.strip("=() ")
+    key_feature = f"{prefix}_KeyMap"
+    value_feature = f"{prefix}_ValueMap"
+    return [
+        (key_feature, f"'{clean_key}'"),
+        (value_feature, f"'{value}'")
+    ]
+
+def extract_conditions_from_metadata(obj, prefix="metadata", kind_prefixes=None):
+    conditions = []
+    optional_clauses = []
+
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            # Subnivel: metadata.annotations
+            if k.strip("=() ") == "annotations" and isinstance(v, dict):
+                for subkey, subval in v.items():
+                    if "*" in subkey:
+                        # Caso de anotación con wildcard
+                        conditions.extend(
+                            handle_annotation_with_wildcard(subkey, subval, prefix)
+                        )
+                    else:
+                        # Anotación fija (sin wildcard)
+                        key_feature = f"{prefix}_annotations_{sanitize(subkey)}"
+                        conditions.append((key_feature, f"'{subval}'"))
+            else:
+                # Otro tipo de clave bajo metadata (p. ej., name, labels)
+                key = k.strip("=() ")
+                full_key = f"{prefix}_{sanitize(key)}"
+                conditions.append((full_key, f"'{v}'"))
+    return conditions, optional_clauses
 
 
 def extract_constraints_from_policy(filepath):
@@ -90,13 +147,28 @@ def extract_constraints_from_policy(filepath):
     grouped_conditions = {}  # policy_name → list of conditions
     opt_clauses = []
     rules = policy.get("spec", {}).get("rules", [])
+
     for rule in rules:
-        kinds = rule.get("match", {}).get("any", [{}])[0].get("resources", {}).get("kinds", [])
-        kind_prefixes = [f"io_k8s_api_core_v1_{sanitize(kind)}_" for kind in kinds]
+        kind_prefixes = get_kind_prefixes_from_rule(rule)
         pattern = rule.get("validate", {}).get("pattern", {})
 
-        if "spec" in pattern:
-            conditions, optional_clauses_from_spec = extract_conditions_from_spec(pattern["spec"], prefix="spec", kind_prefixes=kind_prefixes)
+        #if "spec" in pattern:
+        #    conditions, optional_clauses_from_spec = extract_conditions_from_spec(pattern["spec"], prefix="spec", kind_prefixes= kind_prefixes)
+        for section_key in pattern:
+            clean_key = section_key.strip("=() ")
+            if clean_key == "spec":
+                extractor = extract_conditions_from_spec
+            elif clean_key == "metadata":
+                extractor = extract_conditions_from_metadata
+            else:
+                print(f"⚠️ Sección no soportada aún: {section_key}")
+                continue
+
+            conditions, optional_clauses_from_spec = extractor(
+                pattern[section_key],
+                prefix=clean_key,
+                kind_prefixes=kind_prefixes
+            )
 
             for path, expected in conditions:
                 for kind_prefix in kind_prefixes:
@@ -117,6 +189,7 @@ def extract_constraints_from_policy(filepath):
             # Add the constraints
             #for clause in opt_clauses:
             #    grouped_conditions.setdefault(name, []).append(clause)
+            #print(f"Optional clauses {optional_clauses_from_spec}")
             opt_clauses.extend(optional_clauses_from_spec)
 
     return grouped_conditions, {name: opt_clauses}
@@ -138,10 +211,8 @@ def extract_constraints_from_deny_conditions(policy):
         else:
             conditions = conditions_block
 
-        kinds = rule.get("match", {}).get("any", [{}])[0].get("resources", {}).get("kinds", [])
-        kind_prefixes = [f"io_k8s_api_core_v1_{sanitize(kind)}_" for kind in kinds]
+        kind_prefixes = get_kind_prefixes_from_rule(rule)
 
-        # ⬇️ Mueve aquí la acumulación por feature
         exprs_by_feature = {}
 
         for cond in conditions:
@@ -213,12 +284,11 @@ def expand_path_brackets(path):
 
     return expand(path)
 
-def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes=None):
+def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
     conditions = []
     optional_clauses = []
 
     if isinstance(obj, dict):
-        special_values_types = False
         for k, v in obj.items():
             #print(f"Key value   {k}   {v}")
             key = k.strip("=() ").replace("X(", "").replace(")", "")
@@ -231,38 +301,33 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes=None):
             elif new_prefix.endswith('seccompProfile_type'):
                 # Este bloque detecta claves como:
                 # =(seccompProfile.type): "RuntimeDefault | Localhost"
-                special_values_types = True
-                if kind_prefixes is None or not kind_prefixes:
-                    raise ValueError("❌ No kind_prefixes provided for seccompProfile_type.")                
                 if k.startswith("=(") and v and "|" in v:
-                
                     base_feature = new_prefix  # sin los valores
-                    # Parsear valores permitidos
                     allowed_values = []
                     values = [val.strip() for val in v.split("|")]
                     for value in values:
                         clean_val = value.strip()
-                        allowed_values.append(clean_val)  # Solo el valor, sin prefijo
+                        sub_feature = f"{base_feature}_{clean_val}"
+                        allowed_values.append(sub_feature)
+                        #print(f"ALLOWED VALUES  {allowed_values}")
+                        #conditions.append((sub_feature, "true"))  # subfeatures activos
 
-                    # Generar una cláusula para cada tipo de recurso (Pod, etc.)
-                    for kp in kind_prefixes:
-                        full_feature = f"{sanitize(kp + base_feature)}"
-                        full_allowed = [sanitize(f"{full_feature}_{val}") for val in allowed_values]
-                        clause = build_optional_clause(f"Kubernetes.{full_feature}", full_allowed)
-                        optional_clauses.append(clause)               
-
-            """suffix = special_feature_mapping.get(key) # Case 2
-            if suffix:
-                new_prefix = f"{new_prefix}{suffix}"""
+                    # registrar que el campo principal es opcional
+                    #optional_clauses.append((base_feature, allowed_values))                  
+                    clauses = build_optional_clause(base_feature, allowed_values, kind_prefixes)
+                    if isinstance(clauses, list):
+                        optional_clauses.extend(clauses)
+                    else:
+                        optional_clauses.append(clauses)                                     
             
             if isinstance(v, dict):
                 #conditions.extend(extract_conditions_from_spec(v, new_prefix))
-                child_conditions, child_optional_clauses = extract_conditions_from_spec(v, new_prefix)
+                child_conditions, child_optional_clauses = extract_conditions_from_spec(v, new_prefix, kind_prefixes)
                 conditions.extend(child_conditions)
                 optional_clauses.extend(child_optional_clauses)                
             elif isinstance(v, list) and len(v) > 0 and isinstance(v[0], dict):
                 #conditions.extend(extract_conditions_from_spec(v[0], new_prefix))
-                child_conditions, child_optional_clauses = extract_conditions_from_spec(v[0], new_prefix)
+                child_conditions, child_optional_clauses = extract_conditions_from_spec(v[0], new_prefix, "io_k8s_api_core_v1_Pod_") ## Prevent
                 conditions.extend(child_conditions)
                 optional_clauses.extend(child_optional_clauses)                
             else:
@@ -275,21 +340,6 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes=None):
                         v = "null"
                     elif v.isdigit():
                         v = v  # número como string, no cambiar
-                        """elif special_values_types: ## constraint: Restrict_Seccomp => (!io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type | (io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type => io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type_RuntimeDefault | io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type_Localhost))
-                            print(f"Prueba captar values {new_prefix}   {v}")
-                            aux_values = v.split("|")
-                            aux_new_prefix = new_prefix
-                            for value in aux_values:
-                                print(f"Values: {value}")
-                                new_prefix = f"{aux_new_prefix}_{value.strip()}"
-                                v = "true" 
-                                #conditions.append((new_prefix, v))
-                            #v = "true"
-                            print(new_prefix)
-                        else:
-                            if 'seccompProfile_type' in new_prefix:
-                                continue
-                            v = f"'{v}'"""
                 elif isinstance(v, (int, float)):
                     # print(f"SE DETECTA AQUI:Caso Int")
                     v = str(v)
