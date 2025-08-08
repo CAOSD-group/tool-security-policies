@@ -104,32 +104,35 @@ def handle_annotation_with_wildcard(key: str, value: str, prefix: str):
     clean_key = key.strip("=() ")
     key_feature = f"{prefix}_KeyMap"
     value_feature = f"{prefix}_ValueMap"
-    return [
-        (key_feature, f"'{clean_key}'"),
-        (value_feature, f"'{value}'")
+    return [ ## Filtering KeyValue and map Value
+        (key_feature, f"'{clean_key.replace('|', '').replace('/*', '').replace('.','_')}'"),
+        (value_feature, f"'{value.replace('|', '').replace('/*', '').replace('.','_')}'")                      
     ]
 
 def extract_conditions_from_metadata(obj, prefix="metadata", kind_prefixes=None):
     conditions = []
     optional_clauses = []
-
+    print(f"Kind Prefixes: {kind_prefixes}")
     if isinstance(obj, dict):
         for k, v in obj.items():
+            print(f"k y v:  {k} {v}")
             # Subnivel: metadata.annotations
-            if k.strip("=() ") == "annotations" and isinstance(v, dict):
+            key = k.strip("=() ")
+            new_prefix = f"{prefix}_{key}"
+            if key == "annotations" and isinstance(v, dict):
                 for subkey, subval in v.items():
                     if "*" in subkey:
                         # Caso de anotación con wildcard
                         conditions.extend(
-                            handle_annotation_with_wildcard(subkey, subval, prefix)
+                            handle_annotation_with_wildcard(subkey, subval, new_prefix)
                         )
-                    else:
+                    else: 
                         # Anotación fija (sin wildcard)
-                        key_feature = f"{prefix}_annotations_{sanitize(subkey)}"
+                        key_feature = f"{new_prefix}{sanitize(subkey)}"
                         conditions.append((key_feature, f"'{subval}'"))
             else:
                 # Otro tipo de clave bajo metadata (p. ej., name, labels)
-                key = k.strip("=() ")
+                #key = k.strip("=() ")
                 full_key = f"{prefix}_{sanitize(key)}"
                 conditions.append((full_key, f"'{v}'"))
     return conditions, optional_clauses
