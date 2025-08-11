@@ -17,47 +17,71 @@ class ConfigurationJSON(TextToModel):
 
     def __init__(self, path: str) -> None:
         self._path = path
-
+    
+    @staticmethod
+    def qualify(fid: str, namespace: str = "") -> str:
+        """Add the namespace if not present"""
+        if not namespace:
+            return fid
+        return fid if fid.startswith(namespace) else f"{namespace}{fid}"
+    
     def transform(self):
         """
         Transform the JSON configuration file into a list of Configuration objects.
 
-        Returns:
-            list: List of Configuration instances created from the JSON input.
+        Soporta JSON combinado:
+        {
+          "policies": { "Disallow_hostPath": true, ... },
+          "config": { "io_k8s_api_core_v1_Pod_spec_hostPID": true, ... }
+        }
         """
-
         json_data = self.get_configuration_from_json(self._path)
+
         base_config = {}
         blocks = []
 
-        self.extract_features(json_data['config'], base_config, blocks)
+        # 1) Políticas activas (si existen en el JSON)
+        policies = json_data.get('policies', {})
+        for pname, enabled in policies.items():
+            if enabled:
+                # OJO: el nombre aquí debe coincidir con la feature del FM de Policies.
+                base_config[pname] = True
 
+        # 2) Config de K8s (aplicar namespace 'Kubernetes.' a TODAS las claves)
+        config_node = json_data.get('config', {})
+        # Si no hay 'config' (compatibilidad antigua), intenta usar raíz
+        if not config_node and 'config' in json_data:
+            config_node = json_data['config']
+
+        # Extrae features calificadas con namespace
+        self.extract_features(config_node, base_config, blocks, namespace='Kubernetes.')
+
+        # 3) Generar combinaciones como antes
         configurations = self.generate_combinations(base_config, blocks)
         return configurations
 
-    def extract_features(self, data, base_config, blocks):
+    def extract_features(self, data, base_config, blocks, namespace: str = ""):
         """
         Recursively extract base feature values and blocks of alternative feature sets.
-
-        Args:
-            data (dict or list): Raw JSON configuration input.
-            base_config (dict): Dictionary to store static feature-value pairs.
-            blocks (list): List to store grouped combinations of features.
+        Aplica 'namespace' a todas las claves que inserta (p.ej., 'Kubernetes.').
         """
+        qualify = self.qualify  # alias local
 
         if isinstance(data, dict):
             for key, value in data.items():
+                qkey = qualify(key, namespace)
+
                 if isinstance(value, (str, int, float, bool)):
-                    base_config[key] = value
+                    base_config[qkey] = value
 
                 elif isinstance(value, dict):
-                    base_config[key] = True
-                    self.extract_features(value, base_config, blocks)
+                    base_config[qkey] = True
+                    self.extract_features(value, base_config, blocks, namespace)
 
                 elif isinstance(value, list):
                     if not value:
                         if key:
-                            base_config[key] = True
+                            base_config[qkey] = True
                         continue
 
                     if all(isinstance(x, dict) for x in value):
@@ -67,45 +91,46 @@ class ConfigurationJSON(TextToModel):
                                 static = {}
                                 lists = {}
                                 aux_lists = {}
-                                
+                                aux_combined_block = []
+
                                 for k, v in item.items():
-                                    #base_config[k] = True
+                                    qk = qualify(k, namespace)
+
                                     if isinstance(v, list):
-                                        # Attempt to extract primitive values from dicts
-                                        static[k] = True
+                                        static[qk] = True
                                         extracted_values = []
-                                        aux_combined_block = []
-                                        for item in v:
-                                            if isinstance(item, dict):
-                                                # If it is a dictionary with a single primitive value
-                                                if len(item) == 1:
-                                                    inner_value = list(item.values())[0] ## Cases where there is only 1 item in the list: StringValue, Maps etc.
-                                                    inner_key = list(item.keys())[0]
-                                                    aux_block = {}
+                                        inner_aux_combined_block = []
+                                        for it in v:
+                                            if isinstance(it, dict):
+                                                if len(it) == 1:
+                                                    inner_value = list(it.values())[0]
+                                                    inner_key = list(it.keys())[0]
+                                                    q_inner_key = qualify(inner_key, namespace)
                                                     if isinstance(inner_value, (str, int, float, bool)):
                                                         extracted_values.append(inner_value)
-                                                        aux_lists[inner_key] = extracted_values
+                                                        aux_lists[q_inner_key] = extracted_values
                                                     elif isinstance(inner_value, dict):
-                                                        inner_value [inner_key]= True
-                                                        aux_combined_block.append(inner_value)
+                                                        inner_value[q_inner_key] = True
+                                                        inner_aux_combined_block.append(inner_value)
                                                     else:
                                                         pass
                                                 else:
-                                                    flat_kv = self.flatten_primitive_kv(item)
-                                                    aux_combined_block.append(flat_kv)
+                                                    flat_kv = self.flatten_primitive_kv(it, namespace)
+                                                    inner_aux_combined_block.append(flat_kv)
 
-                                            elif isinstance(item, (str, int, float, bool)):
-                                                extracted_values.append(item)
+                                            elif isinstance(it, (str, int, float, bool)):
+                                                extracted_values.append(it)
+
                                         if extracted_values:
                                             lists = aux_lists
-                                        if aux_combined_block :
-                                            blocks.append(aux_combined_block)
+                                        if inner_aux_combined_block:
+                                            blocks.append(inner_aux_combined_block)
 
                                     elif isinstance(v, (str, int, float, bool)):
-                                        static[k] = v
-    
+                                        static[qk] = v
+
                                     elif isinstance(v, dict):
-                                        self.extract_features(v, static, blocks)
+                                        self.extract_features(v, static, blocks, namespace)
 
                                 if lists:
                                     keys = list(lists.keys())
@@ -118,31 +143,25 @@ class ConfigurationJSON(TextToModel):
                                 else:
                                     combined_block.append(static.copy())
                         else:
-
                             if isinstance(value, (str, int, float, bool)):
-                                base_config[key] = value
+                                base_config[qkey] = value
 
-                        # We add a single combined block
                         blocks.append(combined_block)
-                        base_config[key] = True        
+                        base_config[qkey] = True
+
         elif isinstance(data, list):
-            print(f"Data is list")
+            # No suele darse en tu estructura de raíz, pero lo dejamos por si acaso
+            for item in data:
+                if isinstance(item, dict):
+                    self.extract_features(item, base_config, blocks, namespace)
 
     def generate_combinations(self, base_config, blocks, max_combinations = 10000):
         """
         Generate all possible combinations between blocks while including base configuration.
-
-        Args:
-            base_config (dict): Base configuration with fixed feature values.
-            blocks (list): List of feature blocks with alternative values.
-            max_combinations (int): Maximum number of configurations to generate.
-
-        Returns:
-            list: List of Configuration objects.
         """
         def backtrack(index, current, result):
-            if len(result) >= max_combinations: ## Limiting the generation of configurations to 10k. Case argo-cd.v2.10.6_44.json generates millions and crashes the program..
-                return  # Stop generation
+            if len(result) >= max_combinations:
+                return
             if index == len(blocks):
                 merged = deepcopy(base_config)
                 for partial in current:
@@ -154,54 +173,41 @@ class ConfigurationJSON(TextToModel):
                 current.append(option)
                 backtrack(index + 1, current, result)
                 current.pop()
+
         result = []
         backtrack(0, [], result)
         return result
 
-    def flatten_primitive_kv(self ,d):
+    def flatten_primitive_kv(self ,d, namespace: str = ""):
         """
         Flatten a dictionary to extract all primitive key-value pairs.
-
-        Args:
-            d (dict): Nested dictionary to flatten.
-
-        Returns:
-            dict: Flattened dictionary with primitive values.
+        Aplica 'namespace' a las claves insertadas.
         """
+        qualify = self.qualify
         flat = {}
         for k, v in d.items():
+            qk = qualify(k, namespace)
             if isinstance(v, (str, int, float, bool)):
-                flat[k] = v
+                flat[qk] = v
             elif isinstance(v, dict):
-                flat[k] = True
-                inner = self.flatten_primitive_kv(v)
+                flat[qk] = True
+                inner = self.flatten_primitive_kv(v, namespace)
                 flat.update(inner)
         return flat
 
     def get_configuration_from_json(self, path: str) -> dict:
-        """
-        Load a configuration from a JSON file and parse its contents.
-
-        Args:
-            path (str): Path to the JSON configuration file.
-
-        Returns:
-            dict: Parsed JSON content.
-
-        Raises:
-            ConfigurationNotFound: If the file does not exist.
-        """
         if not file_exists(path):
             raise ConfigurationNotFound
 
         with open(path, 'r', encoding='utf-8') as jsonfile:
             data = json.load(jsonfile)
-
         return data
+
         
 if __name__ == '__main__':
 
-    path_json = '../resources/kyverno_policies_jsons/disallow-host-namespaces.json'
+    #path_json = '../resources/kyverno_policies_jsons/disallow-host-namespaces.json'
+    path_json = '../resources/valid_yamls/1-metallb5_2_Test01.json'
 
     # Imprimir todas las configuraciones generadas    
     configuration_reader = ConfigurationJSON(path_json)

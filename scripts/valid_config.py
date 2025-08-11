@@ -2,13 +2,16 @@
 
 from flamapy.metamodels.configuration_metamodel.models import Configuration
 from flamapy.metamodels.fm_metamodel.models import FeatureModel, Feature
-from flamapy.metamodels.fm_metamodel.transformations import UVLReader
+from flamapy.metamodels.fm_metamodel.transformations import UVLReader, FlatFM
 from flamapy.metamodels.pysat_metamodel.models import PySATModel
 from flamapy.metamodels.pysat_metamodel.transformations import FmToPysat
 from flamapy.metamodels.pysat_metamodel.operations import (PySATSatisfiable, PySATSatisfiableConfiguration)
 
+#from flamapy.metamodels.fm_metamodel.transformations import UVLReader, FlatFM
+
 from configurationJSON01 import ConfigurationJSON ## clase Reader JSON
-FM_PATH = "../variability_model/kyverno_clusterpolicy_test2.uvl"
+#FM_PATH = "../variability_model/kyverno_clusterpolicy_test2.uvl"
+FM_PATH = "../variability_model/policies_template/policy_structure01.uvl"
 
 def get_all_parents(feature: Feature) -> list[str]:
     parent = feature.get_parent()
@@ -86,17 +89,23 @@ if __name__ == '__main__':
     fm_model = UVLReader(FM_PATH).transform()
     #sat_model = FmToPysat(fm_model).transform()
     ## Pre evaluation of sectioned model. Depends of section Policies
-
-
+    flat_fm_op = FlatFM(fm_model)
+    flat_fm_op.set_maintain_namespaces(False)  # Si lo pones a True u omites
+    #esta línea te saldrá Metadata.NombreDeLaFeature.....
+    flat_fm = flat_fm_op.transform()
     # You need the configuration as a list of features
     # Transform the feature model to propositional logic (SAT model)
-    sat_model = FmToPysat(fm_model).transform()
+
+    sat_model = FmToPysat(flat_fm).transform()
+    #sat_model = FmToPysat(fm_model).transform()
 
     # Check if the model is valid
     valid = PySATSatisfiable().execute(sat_model).get_result()
     print(f'Valid?: {valid}')
 
-    path_json = '../resources/kyverno_policies_jsons/disallow-host-ports.json'
+    #path_json = '../resources/kyverno_policies_jsons/disallow-host-ports.json'
+    path_json = '../resources/valid_yamls/1-metallb5_2_Test01.json'
+
     configuration_reader = ConfigurationJSON(path_json)
     configurations = configuration_reader.transform()
 
