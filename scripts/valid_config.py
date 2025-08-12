@@ -7,11 +7,23 @@ from flamapy.metamodels.pysat_metamodel.models import PySATModel
 from flamapy.metamodels.pysat_metamodel.transformations import FmToPysat
 from flamapy.metamodels.pysat_metamodel.operations import (PySATSatisfiable, PySATSatisfiableConfiguration)
 
-#from flamapy.metamodels.fm_metamodel.transformations import UVLReader, FlatFM
-
+from pathlib import Path
+import os
 from configurationJSON01 import ConfigurationJSON ## clase Reader JSON
 #FM_PATH = "../variability_model/kyverno_clusterpolicy_test2.uvl"
-FM_PATH = "../variability_model/policies_template/policy_structure01.uvl"
+#FM_PATH = "../variability_model/policies_template/policy_structure01.uvl"
+
+MODEL_DIR = Path("../variability_model/policies_template").resolve()
+FM_PATH = MODEL_DIR / "policy_structure01.uvl"
+
+old_cwd = os.getcwd()
+os.chdir(MODEL_DIR)
+
+try:
+    fm_model = UVLReader(str(FM_PATH.name)).transform()
+finally:
+    os.chdir(old_cwd)
+
 
 def get_all_parents(feature: Feature) -> list[str]:
     parent = feature.get_parent()
@@ -90,7 +102,7 @@ if __name__ == '__main__':
     #sat_model = FmToPysat(fm_model).transform()
     ## Pre evaluation of sectioned model. Depends of section Policies
     flat_fm_op = FlatFM(fm_model)
-    flat_fm_op.set_maintain_namespaces(False)  # Si lo pones a True u omites
+    flat_fm_op.set_maintain_namespaces(True)  # Si lo pones a True u omites
     #esta línea te saldrá Metadata.NombreDeLaFeature.....
     flat_fm = flat_fm_op.transform()
     # You need the configuration as a list of features
