@@ -1,6 +1,6 @@
 namespace Policies
 imports
-    k8s.PodSpecs as Pod
+    k8s.Pods as Pod
 features
 	PoliciesKyverno {abstract}
 		optional
@@ -15,7 +15,7 @@ features
 					Disallow_procMount {doc 'The default /proc masks are set up to reduce attack surface and should be required This policy ensures nothing but the default procMount can be specified Note that in order for users to deviate from the Default procMount requires setting a feature gate at the API server', severity 'medium', action 'audit', k8sRange '1_22‑1_23'}
 					Restrict_AppArmor {doc 'On supported hosts, the __runtime/default__ AppArmor profile is applied by default The default policy should prevent overriding or disabling the policy, or restrict overrides to an allowed set of profiles This policy ensures Pods do not specify any other AppArmor profiles than runtime/default or localhost/*', severity 'medium', action 'audit', k8sRange '1_22‑1_23'}
 					Restrict_Seccomp {doc 'The seccomp profile must not be explicitly set to Unconfined This policy,  requiring Kubernetes v119 or later, ensures that seccomp is unset or  set to RuntimeDefault or Localhost', severity 'medium', action 'audit', k8sRange '1_22‑1_23'}
-			Pod.PodSpecFeatures
+			Pod.PodFeatures
 constraints
 	Disallow_Host_Namespaces => (!Pod.io_k8s_api_core_v1_Pod_spec_hostPID & !Pod.io_k8s_api_core_v1_Pod_spec_hostIPC & !Pod.io_k8s_api_core_v1_Pod_spec_hostNetwork)
 	Disallow_hostPath => !Pod.io_k8s_api_core_v1_Pod_spec_volumes_hostPath

@@ -9,20 +9,23 @@ from flamapy.metamodels.pysat_metamodel.operations import (PySATSatisfiable, PyS
 
 from pathlib import Path
 import os
-from configurationJSON01 import ConfigurationJSON ## clase Reader JSON
+
+import logging
+import contextlib, io
+from scripts.configurationJSON01 import ConfigurationJSON ## clase Reader JSON
+#from configurationJSON01 import ConfigurationJSON ## clase Reader JSON
+
 #FM_PATH = "../variability_model/kyverno_clusterpolicy_test2.uvl"
 #FM_PATH = "../variability_model/policies_template/policy_structure01.uvl"
 
-MODEL_DIR = Path("../variability_model/policies_template").resolve()
-FM_PATH = MODEL_DIR / "policy_structure01.uvl"
+HERE   = Path(__file__).resolve().parent
+ROOT   = HERE.parent
+MODELS = ROOT / "variability_model" / "policies_template"
+RES    = ROOT / "resources"
 
-old_cwd = os.getcwd()
-os.chdir(MODEL_DIR)
-
-try:
-    fm_model = UVLReader(str(FM_PATH.name)).transform()
-finally:
-    os.chdir(old_cwd)
+UVL_PATH = MODELS / "policy_structure01.uvl"
+# usar str(UVL_PATH) si la librería lo exige
+path_json = RES / "valid_yamls" / "1-metallb5_2_Test01.json"
 
 
 def get_all_parents(feature: Feature) -> list[str]:
@@ -98,32 +101,52 @@ def main(configuration, fm_model, sat_model, cardinality):
 
 if __name__ == '__main__':
     # You need the model in SAT
-    fm_model = UVLReader(FM_PATH).transform()
+    fm_model = UVLReader(str(UVL_PATH)).transform()
     #sat_model = FmToPysat(fm_model).transform()
     ## Pre evaluation of sectioned model. Depends of section Policies
     flat_fm_op = FlatFM(fm_model)
-    flat_fm_op.set_maintain_namespaces(True)  # Si lo pones a True u omites
+    flat_fm_op.set_maintain_namespaces(False)  # Si lo pones a True u omites
     #esta línea te saldrá Metadata.NombreDeLaFeature.....
     flat_fm = flat_fm_op.transform()
     # You need the configuration as a list of features
     # Transform the feature model to propositional logic (SAT model)
+    # Baja el nivel global
+    logging.basicConfig(level=logging.ERROR)
 
-    sat_model = FmToPysat(flat_fm).transform()
-    #sat_model = FmToPysat(fm_model).transform()
+    for name in (
+        'flamapy',
+        'flamapy.metamodels',
+        'flamapy.metamodels.fm_metamodel',
+        'flamapy.metamodels.pysat_metamodel',
+    ):
+        logging.getLogger(name).setLevel(logging.ERROR)
 
+    print("SE LLEGA HASTA AQUI")
+    
+    silent = io.StringIO()
+    with contextlib.redirect_stdout(silent):
+        sat_model = FmToPysat(flat_fm).transform()
+        
+    #sat_model = FmToPysat(flat_fm).transform()
+    print("SE QUEDA PILLADO AQUI 2")
     # Check if the model is valid
     valid = PySATSatisfiable().execute(sat_model).get_result()
+    print("SE QUEDA PILLADO AQUI 3")
     print(f'Valid?: {valid}')
 
     #path_json = '../resources/kyverno_policies_jsons/disallow-host-ports.json'
-    path_json = '../resources/valid_yamls/1-metallb5_2_Test01.json'
+    #path_json = '../resources/valid_yamls/1-metallb5_2_Test01.json'
 
-    configuration_reader = ConfigurationJSON(path_json)
+    configuration_reader = ConfigurationJSON(str(path_json))
     configurations = configuration_reader.transform()
-
+    print(f"Configuraciones que hay:    {len(configurations)}")
     ##elements = listJson
     for i, config in enumerate(configurations):
-        valid, complete_config = valid_config_version_json(config, fm_model, sat_model)
-        print(f"CONF VALID? {valid} \n")
+        configuration = configuration_reader.transform()
+        print(f'Configuration {i+1}: {config.elements}')
+
+    for i, config in enumerate(configurations):
+        valid, complete_config = valid_config_version_json(config, flat_fm, sat_model)
+        print(f"CONF VALID? {valid}")
 
         print(f'Configuration {i+1}: {config.elements}  {valid}')

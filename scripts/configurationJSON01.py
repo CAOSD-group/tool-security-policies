@@ -9,6 +9,7 @@ from flamapy.metamodels.configuration_metamodel.models.configuration import Conf
 from flamapy.core.utils import file_exists
 from flamapy.core.exceptions import ConfigurationNotFound
 
+from pathlib import Path
 
 class ConfigurationJSON(TextToModel):
     @staticmethod
@@ -16,8 +17,11 @@ class ConfigurationJSON(TextToModel):
         return 'json'
 
     def __init__(self, path: str) -> None:
-        self._path = path
-    
+        p = Path(path)
+        if not p.is_absolute():
+            base = Path(__file__).resolve().parent   # ...\scripts
+            p = (base / p).resolve()
+        self._path = str(p)    
     @staticmethod
     def qualify(fid: str, namespace: str = "") -> str:
         """Add the namespace if not present"""
@@ -54,7 +58,7 @@ class ConfigurationJSON(TextToModel):
             config_node = json_data['config']
 
         # Extrae features calificadas con namespace
-        self.extract_features(config_node, base_config, blocks, namespace='Kubernetes.')
+        self.extract_features(config_node, base_config, blocks, namespace='')#Pod.
 
         # 3) Generar combinaciones como antes
         configurations = self.generate_combinations(base_config, blocks)
@@ -196,12 +200,15 @@ class ConfigurationJSON(TextToModel):
         return flat
 
     def get_configuration_from_json(self, path: str) -> dict:
-        if not file_exists(path):
+
+        p = Path(path)
+        if not p.exists():
+            # opcional: log útil para depurar
+            # import logging; logging.error(f"No existe: {p}")
             raise ConfigurationNotFound
 
-        with open(path, 'r', encoding='utf-8') as jsonfile:
-            data = json.load(jsonfile)
-        return data
+        with p.open('r', encoding='utf-8') as jsonfile:
+            return json.load(jsonfile)
 
         
 if __name__ == '__main__':

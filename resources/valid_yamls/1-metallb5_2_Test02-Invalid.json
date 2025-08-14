@@ -1,0 +1,43 @@
+{
+    "filename": "1-metallb5.yaml",
+    "apiVersion": "v1",
+    "policies": {
+    "Disallow_Host_Namespaces": true,
+    "Disallow_hostPath": true,
+    "Disallow_Privileged_Containers": true
+    },
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "app",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "metallb"
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_metadata_name": "vulnerable-pod",
+            "io_k8s_api_core_v1_Pod_metadata_namespace": "kube-system"
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_securityContext":{
+                    "io_k8s_api_core_v1_Pod_spec_securityContext_runAsUser": {
+                        "io_k8s_api_core_v1_Pod_spec_securityContext_runAsUser_valueInt": 0
+                    }
+            },
+            "io_k8s_api_core_v1_Pod_spec_containers": {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "app",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "nginx:latest",
+
+                    "io_k8s_api_core_v1_Pod_spec_containers_securityContext": {
+                        "io_k8s_api_core_v1_Pod_spec_containers_securityContext_privileged": true,
+                        "io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser": {
+                            "io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser_valueInt": 0
+                        }
+                    }
+            },
+            "io_k8s_api_core_v1_Pod_metadata_name": "vulnerable-pod",
+            "io_k8s_api_core_v1_Pod_metadata_namespace": "kube-system"
+        }
+    }
+}

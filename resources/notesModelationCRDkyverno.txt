@@ -257,3 +257,10 @@ Restrict_AppArmor => io_k8s_api_core_v1_Pod_metadata_annotations_KeyMap == 'cont
 Define una constraint que hace referencia a un feature map, relacionar key y value a cada feat.
 
 	Restrict_Seccomp => (Kubernetes.io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type_RuntimeDefault = true & Kubernetes.io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type_Localhost = true & Kubernetes.io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type == RuntimeDefault | Localhost & Kubernetes.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_seccompProfile_type_RuntimeDefault = true & Kubernetes.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_seccompProfile_type_Localhost = true & Kubernetes.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_seccompProfile_type == RuntimeDefault | Localhost & Kubernetes.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_seccompProfile_type_RuntimeDefault = true & Kubernetes.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_seccompProfile_type_Localhost = true & Kubernetes.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_seccompProfile_type == RuntimeDefault | Localhost & Kubernetes.io_k8s_api_core_v1_Pod_spec_containers_securityContext_seccompProfile_type_RuntimeDefault = true & Kubernetes.io_k8s_api_core_v1_Pod_spec_containers_securityContext_seccompProfile_type_Localhost = true & Kubernetes.io_k8s_api_core_v1_Pod_spec_containers_securityContext_seccompProfile_type == RuntimeDefault | Localhost)
+
+
+
+Primeras pruebas de las configs en total:
+
+CONF VALID? False
+Configuration 1: {'Disallow_Host_Namespaces': True, 'Disallow_hostPath': True, 'Disallow_Privileged_Containers': True, 'io_k8s_api_core_v1_Pod_apiVersion': 'v1', 'io_k8s_api_core_v1_Pod_kind': 'Pod', 'io_k8s_api_core_v1_Pod_metadata': True, 'io_k8s_api_core_v1_Pod_metadata_labels': True, 'io_k8s_api_core_v1_Pod_metadata_name': 'controller', 'io_k8s_api_core_v1_Pod_metadata_namespace': 'metallb-system', 'io_k8s_api_core_v1_Pod_metadata_labels_KeyMap': 'app', 'io_k8s_api_core_v1_Pod_metadata_labels_ValueMap': 'metallb'}  False
