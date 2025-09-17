@@ -264,3 +264,48 @@ Primeras pruebas de las configs en total:
 
 CONF VALID? False
 Configuration 1: {'Disallow_Host_Namespaces': True, 'Disallow_hostPath': True, 'Disallow_Privileged_Containers': True, 'io_k8s_api_core_v1_Pod_apiVersion': 'v1', 'io_k8s_api_core_v1_Pod_kind': 'Pod', 'io_k8s_api_core_v1_Pod_metadata': True, 'io_k8s_api_core_v1_Pod_metadata_labels': True, 'io_k8s_api_core_v1_Pod_metadata_name': 'controller', 'io_k8s_api_core_v1_Pod_metadata_namespace': 'metallb-system', 'io_k8s_api_core_v1_Pod_metadata_labels_KeyMap': 'app', 'io_k8s_api_core_v1_Pod_metadata_labels_ValueMap': 'metallb'}  False
+
+Errores con el uso de los feautures cardinality:
+
+(envFmSec) PS C:\projects\investigacion\fm-security-policies> py -m scripts.valid_config
+WARNING:root:Namespaces are not meningful for Flama.This model has the following namespaces: Policies 
+WARNING:root:Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesPod 
+SE LLEGA HASTA AQUI
+Configuraciones que hay:    1
+Configuration 1: {'Disallow_Host_Namespaces': True, 'io_k8s_api_core_v1_Pod_apiVersion': 'v1', 'io_k8s_api_core_v1_Pod_kind': 'Pod', 'io_k8s_api_core_v1_Pod_metadata': True, 'io_k8s_api_core_v1_Pod_metadata_name': 'controller', 'io_k8s_api_core_v1_Pod_metadata_namespace': 'metallb-system'}
+#########     VALIDACION
+PRINT CONFIG Disallow_Host_Namespaces, io_k8s_api_core_v1_Pod_apiVersion, io_k8s_api_core_v1_Pod_kind, io_k8s_api_core_v1_Pod_metadata, io_k8s_api_core_v1_Pod_metadata_name, io_k8s_api_core_v1_Pod_metadata_namespace, Pod_Security_Standards_Baseline, PoliciesKyverno, io_k8s_api_core_v1_Pod, PodFeatures
+CONF VALID? True
+Config complet ['Disallow_Host_Namespaces', 'io_k8s_api_core_v1_Pod_apiVersion', 'io_k8s_api_core_v1_Pod_kind', 'io_k8s_api_core_v1_Pod_metadata', 'io_k8s_api_core_v1_Pod_metadata_name', 'io_k8s_api_core_v1_Pod_metadata_namespace', 'Pod_Security_Standards_Baseline', 'PoliciesKyverno', 'io_k8s_api_core_v1_Pod', 'PodFeatures']
+Configuration 1: {'Disallow_Host_Namespaces': True, 'io_k8s_api_core_v1_Pod_apiVersion': 'v1', 'io_k8s_api_core_v1_Pod_kind': 'Pod', 'io_k8s_api_core_v1_Pod_metadata': True, 'io_k8s_api_core_v1_Pod_metadata_name': 'controller', 'io_k8s_api_core_v1_Pod_metadata_namespace': 'metallb-system'}  True
+(envFmSec) PS C:\projects\investigacion\fm-security-policies> 
+
+
+
+Omitiendo feat con arrays...
+
+
+Error arr:
+
+(envFmSec) PS C:\projects\investigacion\fm-security-policies> py -m scripts.valid_config
+WARNING:root:Namespaces are not meningful for Flama.This model has the following namespaces: Policies 
+WARNING:root:Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesPod 
+SE LLEGA HASTA AQUI
+Configuraciones que hay:    1
+Configuration 1: {'Disallow_Host_Namespaces': True, 'io_k8s_api_core_v1_Pod_apiVersion': 'v1', 'io_k8s_api_core_v1_Pod_kind': 'Pod', 'io_k8s_api_core_v1_Pod_metadata': True, 'io_k8s_api_core_v1_Pod_metadata_labels': True, 'io_k8s_api_core_v1_Pod_metadata_name': 'controller', 'io_k8s_api_core_v1_Pod_metadata_namespace': 'metallb-system', 'io_k8s_api_core_v1_Pod_metadata_labels_KeyMap': 'app', 'io_k8s_api_core_v1_Pod_metadata_labels_ValueMap': 'metallb'}
+#########     VALIDACION
+PRINT CONFIG Disallow_Host_Namespaces, io_k8s_api_core_v1_Pod_apiVersion, io_k8s_api_core_v1_Pod_kind, io_k8s_api_core_v1_Pod_metadata, io_k8s_api_core_v1_Pod_metadata_labels, io_k8s_api_core_v1_Pod_metadata_name, io_k8s_api_core_v1_Pod_metadata_namespace, io_k8s_api_core_v1_Pod_metadata_labels_KeyMap, io_k8s_api_core_v1_Pod_metadata_labels_ValueMap, Pod_Security_Standards_Baseline, PoliciesKyverno, io_k8s_api_core_v1_Pod, PodFeatures
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\projects\investigacion\fm-security-policies\scripts\valid_config.py", line 156, in <module>
+    valid, complete_config = valid_config_version_json(config, flat_fm, sat_model)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\projects\investigacion\fm-security-policies\scripts\valid_config.py", line 83, in valid_config_version_json
+    return satisfiable_op.execute(sat_model).get_result(), config.get_selected_elements()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\projects\investigacion\fm-security-policies\envFmSec\Lib\site-packages\flamapy\metamodels\pysat_metamodel\operations\pysat_satisfiable_configuration.py", line 37, in execute
+    assumptions.append(sat_model.variables[feature])
+                       ~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+KeyError: 'io_k8s_api_core_v1_Pod_metadata_labels_KeyMap'
+(envFmSec) PS C:\projects\investigacion\fm-security-policies> 

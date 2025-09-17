@@ -25,7 +25,7 @@ RES    = ROOT / "resources"
 
 UVL_PATH = MODELS / "policy_structure01.uvl"
 # usar str(UVL_PATH) si la librería lo exige
-path_json = RES / "valid_yamls" / "1-metallb5_2_Test01.json"
+path_json = RES / "valid_yamls" / "1-metallb5_2_Test01.json" ## 1-metallb5_2_Test02-Invalid
 
 
 def get_all_parents(feature: Feature) -> list[str]:
@@ -75,7 +75,9 @@ def valid_config_version_json(configuration_json: Configuration, fm_model: Featu
     """
     
     config = complete_configuration(configuration_json, fm_model)
-    config.set_full(True)
+    #config.set_full(True)
+    config.set_full(False)
+    print(f"PRINT CONFIG {config}")
     satisfiable_op = PySATSatisfiableConfiguration() 
     satisfiable_op.set_configuration(config)
     return satisfiable_op.execute(sat_model).get_result(), config.get_selected_elements()
@@ -104,12 +106,11 @@ if __name__ == '__main__':
     fm_model = UVLReader(str(UVL_PATH)).transform()
     #sat_model = FmToPysat(fm_model).transform()
     ## Pre evaluation of sectioned model. Depends of section Policies
+    
     flat_fm_op = FlatFM(fm_model)
-    flat_fm_op.set_maintain_namespaces(False)  # Si lo pones a True u omites
-    #esta línea te saldrá Metadata.NombreDeLaFeature.....
+    flat_fm_op.set_maintain_namespaces(False)  # False para quitar el prefijo del import, con True se mantiene.
     flat_fm = flat_fm_op.transform()
-    # You need the configuration as a list of features
-    # Transform the feature model to propositional logic (SAT model)
+
     # Baja el nivel global
     logging.basicConfig(level=logging.ERROR)
 
@@ -128,11 +129,12 @@ if __name__ == '__main__':
         sat_model = FmToPysat(flat_fm).transform()
         
     #sat_model = FmToPysat(flat_fm).transform()
-    print("SE QUEDA PILLADO AQUI 2")
+
     # Check if the model is valid
-    valid = PySATSatisfiable().execute(sat_model).get_result()
-    print("SE QUEDA PILLADO AQUI 3")
-    print(f'Valid?: {valid}')
+    ##### Omited
+    ##valid = PySATSatisfiable().execute(sat_model).get_result()
+    ##print("SE QUEDA PILLADO AQUI 3")
+    ##print(f'Valid?: {valid}')
 
     #path_json = '../resources/kyverno_policies_jsons/disallow-host-ports.json'
     #path_json = '../resources/valid_yamls/1-metallb5_2_Test01.json'
@@ -144,9 +146,14 @@ if __name__ == '__main__':
     for i, config in enumerate(configurations):
         configuration = configuration_reader.transform()
         print(f'Configuration {i+1}: {config.elements}')
-
+    print(f"#########     VALIDACION")
+    
+    print("FEATURES en SAT model:")
+    for f in sat_model.variables.keys():
+        print("-", f)
+    
     for i, config in enumerate(configurations):
         valid, complete_config = valid_config_version_json(config, flat_fm, sat_model)
         print(f"CONF VALID? {valid}")
-
+        print(f"Config complet {complete_config}")
         print(f'Configuration {i+1}: {config.elements}  {valid}')
