@@ -309,3 +309,32 @@ Traceback (most recent call last):
                        ~~~~~~~~~~~~~~~~~~~^^^^^^^^^
 KeyError: 'io_k8s_api_core_v1_Pod_metadata_labels_KeyMap'
 (envFmSec) PS C:\projects\investigacion\fm-security-policies> 
+
+
+
+Test invalid - False with cardinities:
+Prueba con features que deberian de estar a false hecha:
+- Se ha modifica la funcion principal de validacion para modificar los features que no tuviesen coincidencia directa (hasta el momento los cardinality), se buscan y cambian por los que se agregan en el sat, haciendo uso del flatten.
+  Así se agrega la coincidencia para que se puedan usar los features cardinality y se siga usando el formato plato que permite agregar los import..etc
+KeyError: 'io_k8s_api_core_v1_Pod_spec_containers_name'
+(envFmSec) PS C:\projects\investigacion\fm-security-policies> py -m scripts.valid_config
+WARNING:root:Namespaces are not meningful for Flama.This model has the following namespaces: Policies 
+WARNING:root:Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesPod 
+SE LLEGA HASTA AQUI
+Configuraciones que hay:    1
+Configuration 1: {'Disallow_Host_Namespaces': True, 'Disallow_hostPath': True, 'Disallow_Privileged_Containers': True, 'io_k8s_api_core_v1_Pod_apiVersion': 'v1', 'io_k8s_api_core_v1_Pod_kind': 'Pod', 'io_k8s_api_core_v1_Pod_metadata': True, 'io_k8s_api_core_v1_Pod_metadata_name': 'vulnerable-pod', 'io_k8s_api_core_v1_Pod_metadata_namespace': 'kube-system', 'io_k8s_api_core_v1_Pod_spec': True, 'io_k8s_api_core_v1_Pod_spec_securityContext': True, 'io_k8s_api_core_v1_Pod_spec_securityContext_runAsUser': True, 'io_k8s_api_core_v1_Pod_spec_securityContext_runAsUser_valueInt': 0, 'io_k8s_api_core_v1_Pod_spec_containers': True, 'io_k8s_api_core_v1_Pod_spec_containers_name': 
+'app', 'io_k8s_api_core_v1_Pod_spec_containers_image': 'nginx:latest', 'io_k8s_api_core_v1_Pod_spec_containers_securityContext': True, 'io_k8s_api_core_v1_Pod_spec_containers_securityContext_privileged': True, 'io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser': True, 'io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser_valueInt': 0}
+#########     VALIDACION
+FEATURES en SAT model:
+[INFO] Se ha guardado la lista completa de features en: C:\projects\investigacion\fm-security-policies\scripts\sat_features_dump.txt
+[NORMALIZADO] io_k8s_api_core_v1_Pod_spec_containers_name  →  io_k8s_api_core_v1_Pod_spec_containers_n1_io_k8s_api_core_v1_Pod_spec_containers_1_io_k8s_api_core_v1_Pod_spec_containers_name
+[NORMALIZADO] io_k8s_api_core_v1_Pod_spec_containers_image  →  io_k8s_api_core_v1_Pod_spec_containers_n1_io_k8s_api_core_v1_Pod_spec_containers_1_io_k8s_api_core_v1_Pod_spec_containers_image
+[NORMALIZADO] io_k8s_api_core_v1_Pod_spec_containers_securityContext  →  io_k8s_api_core_v1_Pod_spec_containers_n1_io_k8s_api_core_v1_Pod_spec_containers_1_io_k8s_api_core_v1_Pod_spec_containers_securityContext
+[NORMALIZADO] io_k8s_api_core_v1_Pod_spec_containers_securityContext_privileged  →  io_k8s_api_core_v1_Pod_spec_containers_n1_io_k8s_api_core_v1_Pod_spec_containers_1_io_k8s_api_core_v1_Pod_spec_containers_securityContext_privileged
+[NORMALIZADO] io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser  →  io_k8s_api_core_v1_Pod_spec_containers_n1_io_k8s_api_core_v1_Pod_spec_containers_1_io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser
+[NORMALIZADO] io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser_valueInt  →  io_k8s_api_core_v1_Pod_spec_containers_n1_io_k8s_api_core_v1_Pod_spec_containers_1_io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser_valueInt
+CONF VALID? False
+Config complet ['Disallow_Host_Namespaces', 'Disallow_hostPath', 'Disallow_Privileged_Containers', 'io_k8s_api_core_v1_Pod_apiVersion', 'io_k8s_api_core_v1_Pod_kind', 'io_k8s_api_core_v1_Pod_metadata', 'io_k8s_api_core_v1_Pod_metadata_name', 'io_k8s_api_core_v1_Pod_metadata_namespace', 'io_k8s_api_core_v1_Pod_spec', 'io_k8s_api_core_v1_Pod_spec_securityContext', 'io_k8s_api_core_v1_Pod_spec_securityContext_runAsUser', 'io_k8s_api_core_v1_Pod_spec_securityContext_runAsUser_valueInt', 'io_k8s_api_core_v1_Pod_spec_containers', 'io_k8s_api_core_v1_Pod_spec_containers_n1_io_k8s_api_core_v1_Pod_spec_containers_1_io_k8s_api_core_v1_Pod_spec_containers_name', 'io_k8s_api_core_v1_Pod_spec_containers_n1_io_k8s_api_core_v1_Pod_spec_containers_1_io_k8s_api_core_v1_Pod_spec_containers_image', 'io_k8s_api_core_v1_Pod_spec_containers_n1_io_k8s_api_core_v1_Pod_spec_containers_1_io_k8s_api_core_v1_Pod_spec_containers_securityContext', 'io_k8s_api_core_v1_Pod_spec_containers_n1_io_k8s_api_core_v1_Pod_spec_containers_1_io_k8s_api_core_v1_Pod_spec_containers_securityContext_privileged', 'io_k8s_api_core_v1_Pod_spec_containers_n1_io_k8s_api_core_v1_Pod_spec_containers_1_io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser', 'io_k8s_api_core_v1_Pod_spec_containers_n1_io_k8s_api_core_v1_Pod_spec_containers_1_io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser_valueInt', 'Pod_Security_Standards_Baseline', 'PoliciesKyverno', 'io_k8s_api_core_v1_Pod', 'PodFeatures']
+Configuration 1: {'Disallow_Host_Namespaces': True, 'Disallow_hostPath': True, 'Disallow_Privileged_Containers': True, 'io_k8s_api_core_v1_Pod_apiVersion': 'v1', 'io_k8s_api_core_v1_Pod_kind': 'Pod', 'io_k8s_api_core_v1_Pod_metadata': True, 'io_k8s_api_core_v1_Pod_metadata_name': 'vulnerable-pod', 'io_k8s_api_core_v1_Pod_metadata_namespace': 'kube-system', 'io_k8s_api_core_v1_Pod_spec': True, 'io_k8s_api_core_v1_Pod_spec_securityContext': True, 'io_k8s_api_core_v1_Pod_spec_securityContext_runAsUser': True, 'io_k8s_api_core_v1_Pod_spec_securityContext_runAsUser_valueInt': 0, 'io_k8s_api_core_v1_Pod_spec_containers': True, 'io_k8s_api_core_v1_Pod_spec_containers_name': 
+'app', 'io_k8s_api_core_v1_Pod_spec_containers_image': 'nginx:latest', 'io_k8s_api_core_v1_Pod_spec_containers_securityContext': True, 'io_k8s_api_core_v1_Pod_spec_containers_securityContext_privileged': True, 'io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser': True, 'io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser_valueInt': 0}  False
+
