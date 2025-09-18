@@ -25,7 +25,7 @@ RES    = ROOT / "resources"
 
 UVL_PATH = MODELS / "policy_structure01.uvl"
 # usar str(UVL_PATH) si la librería lo exige
-path_json = RES / "valid_yamls" / "1-metallb5_2_Test01.json" ## 1-metallb5_2_Test02-Invalid
+path_json = RES / "valid_yamls" / "1-metallb5_2_Test02-Invalid.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid
 
 
 def get_all_parents(feature: Feature) -> list[str]:
@@ -77,8 +77,32 @@ def valid_config_version_json(configuration_json: Configuration, fm_model: Featu
     config = complete_configuration(configuration_json, fm_model)
     #config.set_full(True)
     config.set_full(False)
-    print(f"PRINT CONFIG {config}")
+    #print(f"PRINT CONFIG {config}")
+
+    """ ### Previous version
     satisfiable_op = PySATSatisfiableConfiguration() 
+    satisfiable_op.set_configuration(config)
+    return satisfiable_op.execute(sat_model).get_result(), config.get_selected_elements()"""
+
+    sat_features = set(sat_model.variables.keys())
+
+    adjusted = {}
+    for k, v in config.elements.items():
+        if k in sat_features:
+            adjusted[k] = True if v else False
+        else:
+            # 🔎 Intentar emparejar solo para casos de cardinality (buscar n1 en el nombre SAT)
+            matches = [f for f in sat_features if f.endswith("_" + k) or f.endswith("_n1_" + k)]
+            if matches:
+                adjusted[matches[0]] = True if v else False
+                print(f"[NORMALIZADO] {k}  →  {matches[0]}")
+            else:
+                adjusted[k] = True if v else False
+
+    # Crear nueva configuración normalizada
+    config = Configuration(adjusted)
+
+    satisfiable_op = PySATSatisfiableConfiguration()
     satisfiable_op.set_configuration(config)
     return satisfiable_op.execute(sat_model).get_result(), config.get_selected_elements()
 
@@ -149,8 +173,17 @@ if __name__ == '__main__':
     print(f"#########     VALIDACION")
     
     print("FEATURES en SAT model:")
-    for f in sat_model.variables.keys():
-        print("-", f)
+    
+    out_path = os.path.join(os.path.dirname(__file__), "sat_features_dump.txt")
+    with open(out_path, "w", encoding="utf-8") as f_out:
+        f_out.write("FEATURES en SAT model:\n")
+        for f in sat_model.variables.keys():
+            f_out.write(f"- {f}\n")
+            
+    print(f"[INFO] Se ha guardado la lista completa de features en: {out_path}")
+
+    """for f in sat_model.variables.keys():
+        print("-", f)"""
     
     for i, config in enumerate(configurations):
         valid, complete_config = valid_config_version_json(config, flat_fm, sat_model)
