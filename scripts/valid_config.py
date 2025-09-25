@@ -172,7 +172,7 @@ if __name__ == '__main__':
         print(f'Configuration {i+1}: {config.elements}')
     print(f"#########     VALIDACION")
     
-    print("FEATURES en SAT model:")
+    """print("FEATURES en SAT model:") ## Uncoment for print sat features in output file
     
     out_path = os.path.join(os.path.dirname(__file__), "sat_features_dump.txt")
     with open(out_path, "w", encoding="utf-8") as f_out:
@@ -180,7 +180,7 @@ if __name__ == '__main__':
         for f in sat_model.variables.keys():
             f_out.write(f"- {f}\n")
             
-    print(f"[INFO] Se ha guardado la lista completa de features en: {out_path}")
+    print(f"[INFO] Se ha guardado la lista completa de features en: {out_path}")"""
 
     """for f in sat_model.variables.keys():
         print("-", f)"""
