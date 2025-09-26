@@ -1,0 +1,82 @@
+{
+    "filename": "00-testing-pod1.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_namespace": "mysql-cluster",
+            "io_k8s_api_core_v1_Pod_metadata_name": "mysql-cluster-connectivity-testing",
+            "io_k8s_api_core_v1_Pod_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "app",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "2d530c06-7558-11ee-8d74-afc5d10856bf"
+                }
+            ]
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_restartPolicy": {
+                "io_k8s_api_core_v1_Pod_spec_restartPolicy_OnFailure": true
+            },
+            "io_k8s_api_core_v1_Pod_spec_dnsPolicy": {
+                "io_k8s_api_core_v1_Pod_spec_dnsPolicy_ClusterFirst": true
+            },
+            "io_k8s_api_core_v1_Pod_spec_nodeSelector": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_nodeSelector_StringValueAdditional": "kubernetes.io/hostname:mp8"
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "testing-pod",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "alpine:3.18",
+                    "io_k8s_api_core_v1_Pod_spec_containers_command": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "sh"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "-c"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "echo \"Install Packages\"; mkdir -p /etc/podinfo; apk add openssh-server netcat-openbsd curl; ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -q -N \"\"; sed -i \"s/#PermitRootLogin prohibit-password/PermitRootLogin yes/g\" /etc/ssh/sshd_config; echo \"root:123456\" | chpasswd; echo \"$POD_IP $(hostname)\"; /usr/sbin/sshd -D -e -ddd "
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 22,
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_name": "tcp22"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_env": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "POD_IP",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom": {
+                                "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_fieldRef": {
+                                    "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_fieldRef_fieldPath": "status.podIP"
+                                }
+                            }
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_resources": {
+                        "io_k8s_api_core_v1_Pod_spec_containers_resources_limits": [
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_containers_resources_limits_asString": "memory:256Mi"
+                            },
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_containers_resources_limits_asString": "cpu:500m"
+                            }
+                        ],
+                        "io_k8s_api_core_v1_Pod_spec_containers_resources_requests": [
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_containers_resources_requests_asString": "memory:128Mi"
+                            },
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_containers_resources_requests_asString": "cpu:250m"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+}

@@ -214,7 +214,7 @@ class ConfigurationJSON(TextToModel):
 if __name__ == '__main__':
 
     #path_json = '../resources/kyverno_policies_jsons/disallow-host-namespaces.json'
-    path_json = '../resources/valid_yamls/1-metallb5_2_Test01.json'
+    path_json = '../resources/valid_yamls/01-Pod-Annotation.json'
 
     # Imprimir todas las configuraciones generadas    
     configuration_reader = ConfigurationJSON(path_json)

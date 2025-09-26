@@ -8,7 +8,7 @@ features
 					String io_k8s_api_core_v1_Pod_kind {default 'Pod', doc 'Kind is a string value representing the REST resource this object represents Servers may infer this from the endpoint the client submits requests to Cannot be updated In CamelCase More info: https:_gitk8sio/community/contributors/devel/sig-architecture/api-conventionsmd#types-kinds'}
 					io_k8s_api_core_v1_Pod_metadata {doc 'Standard object_s metadata More info: https:_gitk8sio/community/contributors/devel/sig-architecture/api-conventionsmd#metadata'}
 						optional
-							io_k8s_api_core_v1_Pod_metadata_annotations cardinality [0..*] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
+							io_k8s_api_core_v1_Pod_metadata_annotations cardinality [0..1] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
 								optional
 									String io_k8s_api_core_v1_Pod_metadata_annotations_KeyMap {doc 'key: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
 									String io_k8s_api_core_v1_Pod_metadata_annotations_ValueMap {doc 'value: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
@@ -1790,7 +1790,7 @@ features
 												optional
 													io_k8s_api_core_v1_Pod_spec_volumes_ephemeral_volumeClaimTemplate_metadata {doc 'May contain labels and annotations that will be copied into the PVC when creating it No other fields are allowed and will be rejected during validation'}
 														optional
-															io_k8s_api_core_v1_Pod_spec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations cardinality [0..*] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
+															io_k8s_api_core_v1_Pod_spec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations cardinality [0..1] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
 																optional
 																	String io_k8s_api_core_v1_Pod_spec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations_KeyMap {doc 'key: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
 																	String io_k8s_api_core_v1_Pod_spec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations_ValueMap {doc 'value: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
@@ -2727,7 +2727,7 @@ features
 							String io_k8s_api_core_v1_PodList_items_kind {default 'Pod', doc 'Kind is a string value representing the REST resource this object represents Servers may infer this from the endpoint the client submits requests to Cannot be updated In CamelCase More info: https:_gitk8sio/community/contributors/devel/sig-architecture/api-conventionsmd#types-kinds'}
 							io_k8s_api_core_v1_PodList_items_metadata {doc 'Standard object_s metadata More info: https:_gitk8sio/community/contributors/devel/sig-architecture/api-conventionsmd#metadata'}
 								optional
-									io_k8s_api_core_v1_PodList_items_metadata_annotations cardinality [0..*] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
+									io_k8s_api_core_v1_PodList_items_metadata_annotations cardinality [0..1] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
 										optional
 											String io_k8s_api_core_v1_PodList_items_metadata_annotations_KeyMap {doc 'key: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
 											String io_k8s_api_core_v1_PodList_items_metadata_annotations_ValueMap {doc 'value: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
@@ -4509,7 +4509,7 @@ features
 														optional
 															io_k8s_api_core_v1_PodList_items_spec_volumes_ephemeral_volumeClaimTemplate_metadata {doc 'May contain labels and annotations that will be copied into the PVC when creating it No other fields are allowed and will be rejected during validation'}
 																optional
-																	io_k8s_api_core_v1_PodList_items_spec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations cardinality [0..*] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
+																	io_k8s_api_core_v1_PodList_items_spec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations cardinality [0..1] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
 																		optional
 																			String io_k8s_api_core_v1_PodList_items_spec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations_KeyMap {doc 'key: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
 																			String io_k8s_api_core_v1_PodList_items_spec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations_ValueMap {doc 'value: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
@@ -6960,7 +6960,7 @@ features
 										optional
 											io_k8s_api_core_v1_PodSpec_volumes_ephemeral_volumeClaimTemplate_metadata {doc 'May contain labels and annotations that will be copied into the PVC when creating it No other fields are allowed and will be rejected during validation'}
 												optional
-													io_k8s_api_core_v1_PodSpec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations cardinality [0..*] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
+													io_k8s_api_core_v1_PodSpec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations cardinality [0..1] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
 														optional
 															String io_k8s_api_core_v1_PodSpec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations_KeyMap {doc 'key: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
 															String io_k8s_api_core_v1_PodSpec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations_ValueMap {doc 'value: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
@@ -7592,7 +7592,7 @@ features
 					String io_k8s_api_core_v1_PodTemplate_kind {default 'PodTemplate', doc 'Kind is a string value representing the REST resource this object represents Servers may infer this from the endpoint the client submits requests to Cannot be updated In CamelCase More info: https:_gitk8sio/community/contributors/devel/sig-architecture/api-conventionsmd#types-kinds'}
 					io_k8s_api_core_v1_PodTemplate_metadata {doc 'Standard object_s metadata More info: https:_gitk8sio/community/contributors/devel/sig-architecture/api-conventionsmd#metadata'}
 						optional
-							io_k8s_api_core_v1_PodTemplate_metadata_annotations cardinality [0..*] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
+							io_k8s_api_core_v1_PodTemplate_metadata_annotations cardinality [0..1] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
 								optional
 									String io_k8s_api_core_v1_PodTemplate_metadata_annotations_KeyMap {doc 'key: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
 									String io_k8s_api_core_v1_PodTemplate_metadata_annotations_ValueMap {doc 'value: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
@@ -7648,7 +7648,7 @@ features
 						optional
 							io_k8s_api_core_v1_PodTemplate_template_metadata {doc 'Standard object_s metadata More info: https:_gitk8sio/community/contributors/devel/sig-architecture/api-conventionsmd#metadata'}
 								optional
-									io_k8s_api_core_v1_PodTemplate_template_metadata_annotations cardinality [0..*] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
+									io_k8s_api_core_v1_PodTemplate_template_metadata_annotations cardinality [0..1] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
 										optional
 											String io_k8s_api_core_v1_PodTemplate_template_metadata_annotations_KeyMap {doc 'key: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
 											String io_k8s_api_core_v1_PodTemplate_template_metadata_annotations_ValueMap {doc 'value: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
@@ -9430,7 +9430,7 @@ features
 														optional
 															io_k8s_api_core_v1_PodTemplate_template_spec_volumes_ephemeral_volumeClaimTemplate_metadata {doc 'May contain labels and annotations that will be copied into the PVC when creating it No other fields are allowed and will be rejected during validation'}
 																optional
-																	io_k8s_api_core_v1_PodTemplate_template_spec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations cardinality [0..*] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
+																	io_k8s_api_core_v1_PodTemplate_template_spec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations cardinality [0..1] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
 																		optional
 																			String io_k8s_api_core_v1_PodTemplate_template_spec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations_KeyMap {doc 'key: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
 																			String io_k8s_api_core_v1_PodTemplate_template_spec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations_ValueMap {doc 'value: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
@@ -9771,7 +9771,7 @@ features
 							String io_k8s_api_core_v1_PodTemplateList_items_kind {default 'PodTemplate', doc 'Kind is a string value representing the REST resource this object represents Servers may infer this from the endpoint the client submits requests to Cannot be updated In CamelCase More info: https:_gitk8sio/community/contributors/devel/sig-architecture/api-conventionsmd#types-kinds'}
 							io_k8s_api_core_v1_PodTemplateList_items_metadata {doc 'Standard object_s metadata More info: https:_gitk8sio/community/contributors/devel/sig-architecture/api-conventionsmd#metadata'}
 								optional
-									io_k8s_api_core_v1_PodTemplateList_items_metadata_annotations cardinality [0..*] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
+									io_k8s_api_core_v1_PodTemplateList_items_metadata_annotations cardinality [0..1] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
 										optional
 											String io_k8s_api_core_v1_PodTemplateList_items_metadata_annotations_KeyMap {doc 'key: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
 											String io_k8s_api_core_v1_PodTemplateList_items_metadata_annotations_ValueMap {doc 'value: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
@@ -9827,7 +9827,7 @@ features
 								optional
 									io_k8s_api_core_v1_PodTemplateList_items_template_metadata {doc 'Standard object_s metadata More info: https:_gitk8sio/community/contributors/devel/sig-architecture/api-conventionsmd#metadata'}
 										optional
-											io_k8s_api_core_v1_PodTemplateList_items_template_metadata_annotations cardinality [0..*] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
+											io_k8s_api_core_v1_PodTemplateList_items_template_metadata_annotations cardinality [0..1] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
 												optional
 													String io_k8s_api_core_v1_PodTemplateList_items_template_metadata_annotations_KeyMap {doc 'key: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
 													String io_k8s_api_core_v1_PodTemplateList_items_template_metadata_annotations_ValueMap {doc 'value: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
@@ -11609,7 +11609,7 @@ features
 																optional
 																	io_k8s_api_core_v1_PodTemplateList_items_template_spec_volumes_ephemeral_volumeClaimTemplate_metadata {doc 'May contain labels and annotations that will be copied into the PVC when creating it No other fields are allowed and will be rejected during validation'}
 																		optional
-																			io_k8s_api_core_v1_PodTemplateList_items_template_spec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations cardinality [0..*] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
+																			io_k8s_api_core_v1_PodTemplateList_items_template_spec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations cardinality [0..1] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
 																				optional
 																					String io_k8s_api_core_v1_PodTemplateList_items_template_spec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations_KeyMap {doc 'key: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
 																					String io_k8s_api_core_v1_PodTemplateList_items_template_spec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations_ValueMap {doc 'value: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
@@ -11955,7 +11955,7 @@ features
 				optional
 					io_k8s_api_core_v1_PodTemplateSpec_metadata {doc 'Standard object_s metadata More info: https:_gitk8sio/community/contributors/devel/sig-architecture/api-conventionsmd#metadata'}
 						optional
-							io_k8s_api_core_v1_PodTemplateSpec_metadata_annotations cardinality [0..*] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
+							io_k8s_api_core_v1_PodTemplateSpec_metadata_annotations cardinality [0..1] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
 								optional
 									String io_k8s_api_core_v1_PodTemplateSpec_metadata_annotations_KeyMap {doc 'key: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
 									String io_k8s_api_core_v1_PodTemplateSpec_metadata_annotations_ValueMap {doc 'value: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
@@ -13737,7 +13737,7 @@ features
 												optional
 													io_k8s_api_core_v1_PodTemplateSpec_spec_volumes_ephemeral_volumeClaimTemplate_metadata {doc 'May contain labels and annotations that will be copied into the PVC when creating it No other fields are allowed and will be rejected during validation'}
 														optional
-															io_k8s_api_core_v1_PodTemplateSpec_spec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations cardinality [0..*] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
+															io_k8s_api_core_v1_PodTemplateSpec_spec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations cardinality [0..1] {doc 'Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata They are not queryable and should be preserved when modifying objects More info: https:_kubernetesio/docs/concepts/overview/working-with-objects/annotations'}
 																optional
 																	String io_k8s_api_core_v1_PodTemplateSpec_spec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations_KeyMap {doc 'key: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
 																	String io_k8s_api_core_v1_PodTemplateSpec_spec_volumes_ephemeral_volumeClaimTemplate_metadata_annotations_ValueMap {doc 'value: Added Map for complete structure Object in the model The modified is not in json but provide represents, Array of pairs key, value: ValueMap, KeyMap'}
