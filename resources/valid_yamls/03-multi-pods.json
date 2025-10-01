@@ -1,0 +1,43 @@
+{
+    "filename": "03-multi-pods.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "multipod"
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "web1",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "nginx",
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_name": "web1",
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 80
+                        }
+                    ]
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "web2",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "almalinux",
+                    "io_k8s_api_core_v1_Pod_spec_containers_command": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "sleep"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "200"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_name": "web2",
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 80
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

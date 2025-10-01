@@ -1,0 +1,19 @@
+{
+    "filename": "02-rq-pod_1.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_ResourceQuota_apiVersion": "v1",
+        "io_k8s_api_core_v1_ResourceQuota_kind": "ResourceQuota",
+        "io_k8s_api_core_v1_ResourceQuota_metadata": {
+            "io_k8s_api_core_v1_ResourceQuota_metadata_name": "resource-quota",
+            "io_k8s_api_core_v1_ResourceQuota_metadata_namespace": "ns-dev"
+        },
+        "io_k8s_api_core_v1_ResourceQuota_spec": {
+            "io_k8s_api_core_v1_ResourceQuota_spec_hard": [
+                {
+                    "io_k8s_api_core_v1_ResourceQuota_spec_hard_asString": "pods:5"
+                }
+            ]
+        }
+    }
+}
