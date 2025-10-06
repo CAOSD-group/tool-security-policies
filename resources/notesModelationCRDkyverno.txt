@@ -465,12 +465,19 @@ CONF VALID? False
 Config complet ['Disallow_Host_Namespaces', 'Restrict_AppArmor', 'io_k8s_api_core_v1_Pod_apiVersion', 'io_k8s_api_core_v1_Pod_kind', 'io_k8s_api_core_v1_Pod_metadata', 'io_k8s_api_core_v1_Pod_metadata_name', 'io_k8s_api_core_v1_Pod_metadata_annotations', 'io_k8s_api_core_v1_Pod_spec', 'io_k8s_api_core_v1_Pod_spec_imagePullSecrets', 'io_k8s_api_core_v1_Pod_spec_containers', 'io_k8s_api_core_v1_Pod_metadata_annotations_n1_io_k8s_api_core_v1_Pod_metadata_annotations_1_io_k8s_api_core_v1_Pod_metadata_annotations_KeyMap', 'io_k8s_api_core_v1_Pod_metadata_annotations_n2_io_k8s_api_core_v1_Pod_metadata_annotations_1_io_k8s_api_core_v1_Pod_metadata_annotations_ValueMap', 'io_k8s_api_core_v1_Pod_spec_imagePullSecrets_n1_io_k8s_api_core_v1_Pod_spec_imagePullSecrets_1_io_k8s_api_core_v1_Pod_spec_imagePullSecrets_name', 'io_k8s_api_core_v1_Pod_spec_containers_n1_io_k8s_api_core_v1_Pod_spec_containers_1_io_k8s_api_core_v1_Pod_spec_containers_name', 'io_k8s_api_core_v1_Pod_spec_containers_n1_io_k8s_api_core_v1_Pod_spec_containers_1_io_k8s_api_core_v1_Pod_spec_containers_image', 'Pod_Security_Standards_Baseline', 'PoliciesKyverno', 'io_k8s_api_core_v1_Pod', 'PodFeatures']
 Configuration 3: {'Disallow_Host_Namespaces': True, 'Restrict_AppArmor': True, 'io_k8s_api_core_v1_Pod_apiVersion': 'v1', 'io_k8s_api_core_v1_Pod_kind': 'Pod', 'io_k8s_api_core_v1_Pod_metadata': True, 'io_k8s_api_core_v1_Pod_metadata_name': 'annotated-pod', 'io_k8s_api_core_v1_Pod_metadata_annotations': True, 'io_k8s_api_core_v1_Pod_spec': True, 'io_k8s_api_core_v1_Pod_spec_imagePullSecrets': True, 'io_k8s_api_core_v1_Pod_spec_containers': True, 'io_k8s_api_core_v1_Pod_metadata_annotations_KeyMap': 'container_apparmor_security_beta_kubernetes_io', 'io_k8s_api_core_v1_Pod_metadata_annotations_ValueMap': 'local', 'io_k8s_api_core_v1_Pod_spec_imagePullSecrets_name': 'regcred', 'io_k8s_api_core_v1_Pod_spec_containers_name': 'nginx', 'io_k8s_api_core_v1_Pod_spec_containers_image': 'nginx:latest'}  False
 
+*********
+Politica Disallow_Host_Namespaces:
 
 Files with io_k8s_api_core_v1_Pod_spec_hostNetwork true y True.
+pod_111, Pod_116, pod_dns_1
 08-Pod_DNS_1, 08-Pod_DNS1_1, 08-Pod_DNS2_1.json
 'pod' files search - 255/20.128 en el raw content de git
 1º Test:
 
+
+
+
+********
 (envFmSec) PS C:\Users\CAOSD\projects\fm-security-rules> py -m scripts.valid_config
 WARNING:root:Namespaces are not meningful for Flama.This model has the following namespaces: Policies 
 WARNING:root:Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesPod 
