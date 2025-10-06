@@ -98,16 +98,25 @@ def build_optional_clause(parent, allowed_values, kind_prefixes):
 
 def handle_annotation_with_wildcard(key: str, value: str, prefix: str):
     """
-    Genera condiciones UVL para anotaciones con wildcard.
-    Espera que el prefijo ya incluya 'metadata_annotations'
+    Genera pares (feature_path, value) para anotaciones con wildcard (como AppArmor).
+    Compatible con el flujo original de extract_constraints_from_policy().
     """
-    clean_key = key.strip("=() ")
+    clean_key = key.strip("=() ").replace("/*", "").replace(".", "_")
     key_feature = f"{prefix}_KeyMap"
     value_feature = f"{prefix}_ValueMap"
-    return [ ## Filtering KeyValue and map Value
-        (key_feature, f"'{clean_key.replace('|', '').replace('/*', '').replace('.','_')}'"),
-        (value_feature, f"'{value.replace('|', '').replace('/*', '').replace('.','_')}'")                      
-    ]
+
+    # Dividir valores del patrón tipo "runtime/default | localhost/*"
+    values = [v.strip().replace("/*", "").replace(".", "_") for v in value.split("|")]
+
+    pairs = []
+    for v in values:
+        # Cada valor posible genera dos pares: uno para la clave, otro para el valor
+        pairs.append((key_feature, f"'{clean_key}'"))
+        pairs.append((value_feature, f"'{v}'"))
+
+    print(f"[Wildcard] Generados {len(pairs)} pares para {clean_key}: {pairs}")
+    return pairs
+
 
 def extract_conditions_from_metadata(obj, prefix="metadata", kind_prefixes=None):
     conditions = []
@@ -122,10 +131,13 @@ def extract_conditions_from_metadata(obj, prefix="metadata", kind_prefixes=None)
             if key == "annotations" and isinstance(v, dict):
                 for subkey, subval in v.items():
                     if "*" in subkey:
+                        print(f"If first cas3e:  {subkey}    {subval}")
                         # Caso de anotación con wildcard
+                        print(f"Conditions antes  {conditions}")
                         conditions.extend(
                             handle_annotation_with_wildcard(subkey, subval, new_prefix)
                         )
+                        print(f"Conditions despues  {conditions}")
                     else: 
                         # Anotación fija (sin wildcard)
                         key_feature = f"{new_prefix}{sanitize(subkey)}"
@@ -134,6 +146,7 @@ def extract_conditions_from_metadata(obj, prefix="metadata", kind_prefixes=None)
                 # Otro tipo de clave bajo metadata (p. ej., name, labels)
                 #key = k.strip("=() ")
                 full_key = f"{prefix}_{sanitize(key)}"
+                print(f"Full key else:  {full_key}")
                 conditions.append((full_key, f"'{v}'"))
     return conditions, optional_clauses
 
@@ -227,6 +240,7 @@ def extract_constraints_from_deny_conditions(policy):
             values = cond.get("value", [])
 
             if isinstance(values, str):
+                print(f"Valores del value:  {values}")
                 values = [values]
 
             if "spec." in key:
@@ -438,5 +452,5 @@ def generate_uvl_from_policies(directory, output_path):
 if __name__ == "__main__":
     generate_uvl_from_policies(
         directory="../resources/kyverno_policies_yamls",
-        output_path="../variability_model/policies_template/policy_structure01.uvl"
+        output_path="../variability_model/policies_template/policy_structure02.uvl"
     )
