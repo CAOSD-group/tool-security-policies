@@ -19,13 +19,13 @@ spec:
   validationFailureAction: Audit
   background: true
   rules:
-  - name: validate-sa-automountServiceAccountToken
-    match:
-      any:
-      - resources:
-          kinds:
-          - ServiceAccount
-    validate:
-      message: "ServiceAccounts must set automountServiceAccountToken to false."
-      pattern:
-        automountServiceAccountToken: false
+    - name: validate-sa-automountServiceAccountToken
+      match:
+        any:
+        - resources:
+            kinds:
+            - ServiceAccount
+      validate:
+        message: "ServiceAccounts must set automountServiceAccountToken to false."
+        pattern:
+          automountServiceAccountToken: false
