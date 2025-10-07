@@ -124,20 +124,17 @@ def extract_conditions_from_metadata(obj, prefix="metadata", kind_prefixes=None)
     print(f"Kind Prefixes: {kind_prefixes}")
     if isinstance(obj, dict):
         for k, v in obj.items():
-            print(f"k y v:  {k} {v}")
+            #print(f"k y v:  {k} {v}")
             # Subnivel: metadata.annotations
             key = k.strip("=() ")
             new_prefix = f"{prefix}_{key}"
             if key == "annotations" and isinstance(v, dict):
                 for subkey, subval in v.items():
                     if "*" in subkey:
-                        print(f"If first cas3e:  {subkey}    {subval}")
                         # Caso de anotación con wildcard
-                        print(f"Conditions antes  {conditions}")
                         conditions.extend(
                             handle_annotation_with_wildcard(subkey, subval, new_prefix)
                         )
-                        print(f"Conditions despues  {conditions}")
                     else: 
                         # Anotación fija (sin wildcard)
                         key_feature = f"{new_prefix}{sanitize(subkey)}"
@@ -159,24 +156,32 @@ def extract_constraints_from_policy(filepath):
     annotations = metadata.get("annotations", {})
     title = annotations.get("policies.kyverno.io/title", metadata.get("name", ""))
     name = sanitize(title)
+    print(f"NAMES OF TITLES:  {name}")
 
     grouped_conditions = {}  # policy_name → list of conditions
     opt_clauses = []
     rules = policy.get("spec", {}).get("rules", [])
-
+    #print(f"RULES:  {rules}")
     for rule in rules:
         kind_prefixes = get_kind_prefixes_from_rule(rule)
         pattern = rule.get("validate", {}).get("pattern", {})
 
+        if isinstance(pattern, dict) and not any(k in pattern for k in ("spec", "metadata")):
+            print(f"📘 Detectado patrón plano en {filepath}")
+
         #if "spec" in pattern:
         #    conditions, optional_clauses_from_spec = extract_conditions_from_spec(pattern["spec"], prefix="spec", kind_prefixes= kind_prefixes)
         for section_key in pattern:
+            print(f"CLAVES DE LAS SECCIONES:     {section_key}")
             clean_key = section_key.strip("=() ")
+            print(f"CLAVES LIMPIAS:     {clean_key}")
             if clean_key == "spec":
                 extractor = extract_conditions_from_spec
             elif clean_key == "metadata":
                 extractor = extract_conditions_from_metadata
             else:
+                if isinstance(pattern, dict) and not any(k in pattern for k in ("spec", "metadata")):
+                    print(f"📘 Detectado patrón plano en {filepath}")
                 print(f"⚠️ Sección no soportada aún: {section_key}")
                 continue
 
@@ -216,6 +221,7 @@ def extract_constraints_from_deny_conditions(policy):
     annotations = metadata.get("annotations", {})
     title = annotations.get("policies.kyverno.io/title", metadata.get("name", ""))
     policy_feature = sanitize(title)
+    print(f"TITLE POLICY FEATURE 2: {title}")
 
     rules = policy.get("spec", {}).get("rules", [])
     for rule in rules:
@@ -369,11 +375,17 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
 def generate_uvl_from_policies(directory, output_path):
     category_map = {}
 
-    for filename in os.listdir(directory):
+    # Recolectar todos los archivos YAML del directorio principal y subcarpetas
+    all_yaml_files = []
+    for root, _, files in os.walk(directory):
+        for filename in files:
+            if filename.endswith((".yaml", ".yml")):
+                all_yaml_files.append(os.path.join(root, filename))
+
+    for filepath in all_yaml_files:
+        filename = os.path.basename(filepath)
         if not filename.endswith(".yaml") and not filename.endswith(".yml"):
             continue
-
-        filepath = os.path.join(directory, filename)
         policy = extract_policy_info(filepath)
         #print(f"This is the policy info: {policy}")
 
@@ -438,8 +450,11 @@ def generate_uvl_from_policies(directory, output_path):
             # Concatenar en una sola línea, agrupando con & si es necesario
             if len(normalized_exprs) == 1:
                 constraint = normalized_exprs[0]
-            else:
-                constraint = f"({' & '.join(normalized_exprs)})"
+            else:  ## old_version constraint = f"({' & '.join(normalized_exprs)})"
+                if "KeyMap" in " ".join(normalized_exprs) and "ValueMap" in " ".join(normalized_exprs):
+                    constraint = f"({' | '.join(normalized_exprs)})"
+                else:
+                    constraint = f"({' & '.join(normalized_exprs)})"
 
             lines.append(f"\t{policy_name} => {constraint}")
 
@@ -452,5 +467,5 @@ def generate_uvl_from_policies(directory, output_path):
 if __name__ == "__main__":
     generate_uvl_from_policies(
         directory="../resources/kyverno_policies_yamls",
-        output_path="../variability_model/policies_template/policy_structure02.uvl"
+        output_path="../variability_model/policies_template/policy_structure03.uvl"
     )
