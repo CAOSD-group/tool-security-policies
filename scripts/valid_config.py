@@ -23,9 +23,9 @@ ROOT   = HERE.parent
 MODELS = ROOT / "variability_model" / "policies_template"
 RES    = ROOT / "resources"
 
-UVL_PATH = MODELS / "policy_structure01.uvl"
+UVL_PATH = MODELS / "policy_structure03.uvl"
 # usar str(UVL_PATH) si la librería lo exige
-path_json = RES / "valid_yamls" / "pods-bad8_1.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid
+path_json = RES / "valid_yamls" / "controller-serviceaccount14.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid
 
 
 def get_all_parents(feature: Feature) -> list[str]:

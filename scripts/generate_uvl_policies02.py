@@ -87,9 +87,9 @@ def build_optional_clause(parent, allowed_values, kind_prefixes):
     #print(f"ALLOWED VALUES  {allowed_values}    {kind_prefixes}")
 
     for kind_prefix in kind_prefixes:
-        allowed_full = [f"Kubernetes.{kind_prefix}{val}" for val in allowed_values]
+        allowed_full = [f"Pod.{kind_prefix}{val}" for val in allowed_values]
         allowed_str = " | ".join(allowed_full)
-        clause = f"(!Kubernetes.{kind_prefix}{parent} | (Kubernetes.{kind_prefix}{parent} => {allowed_str}))"
+        clause = f"(!Pod.{kind_prefix}{parent} | (Pod.{kind_prefix}{parent} => {allowed_str}))"
         clauses.append(clause)
 
     return clauses if len(clauses) > 1 else clauses[0]
@@ -121,7 +121,7 @@ def handle_annotation_with_wildcard(key: str, value: str, prefix: str):
 def extract_conditions_from_metadata(obj, prefix="metadata", kind_prefixes=None):
     conditions = []
     optional_clauses = []
-    print(f"Kind Prefixes: {kind_prefixes}")
+    #print(f"Kind Prefixes: {kind_prefixes}")
     if isinstance(obj, dict):
         for k, v in obj.items():
             #print(f"k y v:  {k} {v}")
@@ -148,6 +148,52 @@ def extract_conditions_from_metadata(obj, prefix="metadata", kind_prefixes=None)
     return conditions, optional_clauses
 
 
+def extract_constraints_service_account(obj, prefix="None", kind_prefixes=None):
+    conditions = []
+    optional_clauses = []
+
+    print(f"Object Case None:   {obj}")
+    if isinstance(obj, str):
+        print(f"Obj directo => String")
+    elif isinstance(obj, dict):
+        print(f"I'm a dict")
+    elif isinstance(obj, bool):
+        print(f"I'm a boooll")
+    """if isinstance(obj, dict):
+        for k, v in obj.items():
+            #print(f"k y v:  {k} {v}")
+            # Subnivel: metadata.annotations
+            key = k.strip("=() ")
+            new_prefix = f"{prefix}_{key}"
+            if key == "annotations" and isinstance(v, dict):
+                for subkey, subval in v.items():
+                    if "*" in subkey:
+                        # Caso de anotación con wildcard
+                        conditions.extend(
+                            handle_annotation_with_wildcard(subkey, subval, new_prefix)
+                        )
+                    else: 
+                        # Anotación fija (sin wildcard)
+                        key_feature = f"{new_prefix}{sanitize(subkey)}"
+                        conditions.append((key_feature, f"'{subval}'"))
+            else:
+                # Otro tipo de clave bajo metadata (p. ej., name, labels)
+                #key = k.strip("=() ")
+                full_key = f"{prefix}_{sanitize(key)}"
+                print(f"Full key else:  {full_key}")
+                conditions.append((full_key, f"'{v}'"))"""
+
+def is_flat_pattern(pattern):
+    """Devuelve True si el patrón no contiene subniveles (dicts/listas)."""
+    if not isinstance(pattern, dict):
+        return False
+    # Si contiene secciones conocidas, no es plano
+    if any(k in pattern for k in ("spec", "metadata")):
+        return False
+    # Solo consideramos plano si todos los valores son simples
+    return all(not isinstance(v, (dict, list)) for v in pattern.values())
+
+
 def extract_constraints_from_policy(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
         policy = yaml.safe_load(f)
@@ -156,7 +202,7 @@ def extract_constraints_from_policy(filepath):
     annotations = metadata.get("annotations", {})
     title = annotations.get("policies.kyverno.io/title", metadata.get("name", ""))
     name = sanitize(title)
-    print(f"NAMES OF TITLES:  {name}")
+    #print(f"NAMES OF TITLES:  {name}")
 
     grouped_conditions = {}  # policy_name → list of conditions
     opt_clauses = []
@@ -166,13 +212,27 @@ def extract_constraints_from_policy(filepath):
         kind_prefixes = get_kind_prefixes_from_rule(rule)
         pattern = rule.get("validate", {}).get("pattern", {})
 
-        if isinstance(pattern, dict) and not any(k in pattern for k in ("spec", "metadata")):
+        # 🔹 1. Detectar y procesar patrones planos (sin spec/metadata)
+        if is_flat_pattern(pattern):
             print(f"📘 Detectado patrón plano en {filepath}")
+            for k, v in pattern.items():
+                for kind_prefix in kind_prefixes:
+                    feature = f"ServAcc.{kind_prefix}{sanitize(k)}"
+                    if str(v).lower() == "false":
+                        expr = f"{feature} = false"
+                    elif str(v).lower() == "true":
+                        expr = f"{feature} = true"
+                    elif re.match(r"^\d+(\.\d+)?$", str(v).strip()):
+                        expr = f"{feature} = {v}"
+                    else:
+                        expr = f"{feature} == '{v}'"
+                    grouped_conditions.setdefault(name, []).append(expr)
+            continue
 
         #if "spec" in pattern:
         #    conditions, optional_clauses_from_spec = extract_conditions_from_spec(pattern["spec"], prefix="spec", kind_prefixes= kind_prefixes)
         for section_key in pattern:
-            print(f"CLAVES DE LAS SECCIONES:     {section_key}")
+            #print(f"CLAVES DE LAS SECCIONES:     {section_key}")
             clean_key = section_key.strip("=() ")
             print(f"CLAVES LIMPIAS:     {clean_key}")
             if clean_key == "spec":
@@ -180,8 +240,6 @@ def extract_constraints_from_policy(filepath):
             elif clean_key == "metadata":
                 extractor = extract_conditions_from_metadata
             else:
-                if isinstance(pattern, dict) and not any(k in pattern for k in ("spec", "metadata")):
-                    print(f"📘 Detectado patrón plano en {filepath}")
                 print(f"⚠️ Sección no soportada aún: {section_key}")
                 continue
 
@@ -193,7 +251,7 @@ def extract_constraints_from_policy(filepath):
 
             for path, expected in conditions:
                 for kind_prefix in kind_prefixes:
-                    full_feature = f"Kubernetes.{sanitize(kind_prefix + path)}" ## Deff of features from fm Kubernetes
+                    full_feature = f"Pod.{sanitize(kind_prefix + path)}" ## Deff of features from fm Kubernetes
                     if expected == "null":
                         expr = f"!{full_feature}"
                     elif expected in ("true", "false"):
@@ -221,7 +279,7 @@ def extract_constraints_from_deny_conditions(policy):
     annotations = metadata.get("annotations", {})
     title = annotations.get("policies.kyverno.io/title", metadata.get("name", ""))
     policy_feature = sanitize(title)
-    print(f"TITLE POLICY FEATURE 2: {title}")
+    #print(f"TITLE POLICY FEATURE 2: {title}")
 
     rules = policy.get("spec", {}).get("rules", [])
     for rule in rules:
@@ -257,7 +315,7 @@ def extract_constraints_from_deny_conditions(policy):
                 for kind_prefix in kind_prefixes:
                     for path in expanded_paths:
                         sanitized_path = sanitize(path)
-                        feature_base = f"Kubernetes.{kind_prefix + sanitized_path}"
+                        feature_base = f"Pod.{kind_prefix + sanitized_path}"
                         if feature_base.endswith("_"):
                             feature_base = feature_base[:-1]
 
@@ -362,12 +420,15 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
                     elif v.strip().lower() == "null":
                         v = "null"
                     elif v.isdigit():
+                        #print(f"Valores DIGIT   {v}")
                         v = v  # número como string, no cambiar
                 elif isinstance(v, (int, float)):
                     # print(f"SE DETECTA AQUI:Caso Int")
-                    v = str(v)
+                    print(f"Valores Caso INT   {v}")
+                    v == str(v)
                 else:
                     # fallback
+                    #print(f"Valores fallback   {v}")
                     v = f"'{str(v)}'"
                 conditions.append((new_prefix, v))
     return conditions, optional_clauses
@@ -391,6 +452,7 @@ def generate_uvl_from_policies(directory, output_path):
 
         cat = sanitize(policy["category"])
         title = sanitize(policy["title"])
+        #print(f"Titulos ARCHIVOS:   {title}     \n      Category:   {cat}")
         entry = {
             "name": title,
             "description": policy["description"],
@@ -400,7 +462,7 @@ def generate_uvl_from_policies(directory, output_path):
         category_map.setdefault(cat, []).append(entry)
 
     #lines = ["namespace PoliciesKyverno", "features", "\tPolicies {abstract}", "\t\toptional"]
-    lines = ["namespace Policies", "imports", "    k8s.Kubernetes as Kubernetes", "features", "\tPoliciesKyverno {abstract}", "\t\toptional"]
+    lines = ["namespace Policies", "imports", "    k8s.Pods as Pod\n    k8s.ServiceAccount as ServAcc", "features", "\tPoliciesKyverno {abstract}", "\t\toptional"]
 
     for cat, entries in category_map.items():
         lines.append(f"\t\t\t{cat}")
@@ -420,44 +482,57 @@ def generate_uvl_from_policies(directory, output_path):
             else:
                 lines.append(f"\t\t\t\t\t{name}")"""
             
+    lines.append("\t\t\tPod.PodFeatures")
+    lines.append("\t\t\tServAcc.ServiceAccountFeatures")
+
     lines.append("constraints")
-    for filename in os.listdir(directory):
-        if not filename.endswith(".yaml") and not filename.endswith(".yml"):
-            continue
+    # Recolectar todos los archivos YAML del directorio principal y subcarpetas (recursivo)
+    all_yaml_files = []
+    for root, _, files in os.walk(directory):
+        for filename in files:
+            if filename.endswith((".yaml", ".yml")):
+                all_yaml_files.append(os.path.join(root, filename))
 
-        filepath = os.path.join(directory, filename)
+    merged = {}
+
+    # Procesar cada archivo YAML
+    for filepath in all_yaml_files:
         grouped, optional_clauses = extract_constraints_from_policy(filepath)
-        grouped_deny = extract_constraints_from_deny_conditions(yaml.safe_load(open(filepath)))
+        with open(filepath, 'r', encoding='utf-8') as fh:
+            policy_obj = yaml.safe_load(fh)
+        grouped_deny = extract_constraints_from_deny_conditions(policy_obj)
 
-        merged = {}
-
-        optional_grouped = {}
         optional_grouped = optional_clauses  # ya es un dict con el nombre correcto
-    
+
+        # Combinar grouped, deny y optional en merged
         for g in [grouped, grouped_deny, optional_grouped]:
             for policy_name, exprs in g.items():
                 merged.setdefault(policy_name, []).extend(exprs)
 
-        for policy_name, exprs in merged.items():
-            # Reemplazar '= false' por negación
-            normalized_exprs = []
-            for expr in exprs:
-                if expr.endswith("= false"):
-                    normalized_exprs.append(f"!{expr.replace(' = false', '')}")
-                else:
-                    normalized_exprs.append(expr)
+    # Formatear y agregar constraints al archivo UVL
+    for policy_name, exprs in merged.items():
+        normalized_exprs = []
+        for expr in exprs:
+            if expr.endswith("= false"):
+                normalized_exprs.append(f"!{expr.replace(' = false', '')}")
+            elif '= 0' in expr: ## To change every constraint with = 0 for == 0 => Error line 27:262 token recognition error at: '= '
+                normalized_exprs.append(f"{expr.replace(' = 0', ' == 0 ')}")
+                print(f"Expresiones bucle   {expr}")
+            else:
+                normalized_exprs.append(expr)
 
-            # Concatenar en una sola línea, agrupando con & si es necesario
-            if len(normalized_exprs) == 1:
-                constraint = normalized_exprs[0]
-            else:  ## old_version constraint = f"({' & '.join(normalized_exprs)})"
-                if "KeyMap" in " ".join(normalized_exprs) and "ValueMap" in " ".join(normalized_exprs):
-                    constraint = f"({' | '.join(normalized_exprs)})"
-                else:
-                    constraint = f"({' & '.join(normalized_exprs)})"
+        # Lógica especial: AppArmor (KeyMap / ValueMap)
+        if len(normalized_exprs) == 1:
+            constraint = normalized_exprs[0]
+        else:
+            if "KeyMap" in " ".join(normalized_exprs) and "ValueMap" in " ".join(normalized_exprs):
+                # Caso especial: agrupar con OR entre pares (AppArmor, etc.)
+                constraint = f"({' | '.join(normalized_exprs)})"
+            else:
+                # Caso normal: todas las condiciones unidas con AND
+                constraint = f"({' & '.join(normalized_exprs)})"
 
-            lines.append(f"\t{policy_name} => {constraint}")
-
+        lines.append(f"\t{policy_name} => {constraint}")
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
 
