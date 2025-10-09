@@ -13,7 +13,7 @@ special_features_config = ['procMount'] ## Pod_spec_..._procMount was String but
 }"""
 
 def sanitize(name):
-    return name.replace("-", "_").replace(".", "_").replace("/", "_").replace(" ", "_").replace("{{", "").replace("}}", "").replace("(", "").replace(")", "")
+    return name.replace("-", "_").replace(".", "_").replace("/", "_").replace(" ", "_").replace("{{", "").replace("}}", "").replace("(", "").replace(")", "").replace(",", "")
 
 def clean_description(description: str) -> str:
     return description.replace('\n', ' ') \
@@ -77,7 +77,12 @@ def get_kind_prefixes_from_rule(rule: dict) -> list:
     Devuelve una lista de strings como: io_k8s_api_core_v1_Pod_
     """
     kinds = rule.get("match", {}).get("any", [{}])[0].get("resources", {}).get("kinds", [])
-    return [f"io_k8s_api_core_v1_{sanitize(kind)}_" for kind in kinds]
+    prefix = 'io_k8s_api_core_v1_'
+    ##print(f"Kinds en get kind prefix... {kinds}")
+    if 'RoleBinding' in kinds: ## and ClusterRoleBinding
+        prefix = 'io_k8s_api_rbac_v1_'
+        
+    return [f"{prefix}{sanitize(kind)}_" for kind in kinds]
 
 def build_optional_clause(parent, allowed_values, kind_prefixes):
     """Build the constraint ref '!parent | (parent => val1 | val2 | …)'"""
@@ -147,41 +152,17 @@ def extract_conditions_from_metadata(obj, prefix="metadata", kind_prefixes=None)
                 conditions.append((full_key, f"'{v}'"))
     return conditions, optional_clauses
 
-
-def extract_constraints_service_account(obj, prefix="None", kind_prefixes=None):
-    conditions = []
-    optional_clauses = []
-
-    print(f"Object Case None:   {obj}")
-    if isinstance(obj, str):
-        print(f"Obj directo => String")
-    elif isinstance(obj, dict):
-        print(f"I'm a dict")
-    elif isinstance(obj, bool):
-        print(f"I'm a boooll")
-    """if isinstance(obj, dict):
-        for k, v in obj.items():
-            #print(f"k y v:  {k} {v}")
-            # Subnivel: metadata.annotations
-            key = k.strip("=() ")
-            new_prefix = f"{prefix}_{key}"
-            if key == "annotations" and isinstance(v, dict):
-                for subkey, subval in v.items():
-                    if "*" in subkey:
-                        # Caso de anotación con wildcard
-                        conditions.extend(
-                            handle_annotation_with_wildcard(subkey, subval, new_prefix)
-                        )
-                    else: 
-                        # Anotación fija (sin wildcard)
-                        key_feature = f"{new_prefix}{sanitize(subkey)}"
-                        conditions.append((key_feature, f"'{subval}'"))
-            else:
-                # Otro tipo de clave bajo metadata (p. ej., name, labels)
-                #key = k.strip("=() ")
-                full_key = f"{prefix}_{sanitize(key)}"
-                print(f"Full key else:  {full_key}")
-                conditions.append((full_key, f"'{v}'"))"""
+def get_base_prefix(kind_prefix):
+    if "Pod" in kind_prefix:
+        return "Pod"
+    elif "ServiceAccount" in kind_prefix:
+        return "ServAcc"
+    elif "ClusterRoleBinding" in kind_prefix: ## ToDo: More specific str of types if add more kindsQ
+        return "ClusRole" 
+    elif "RoleBinding" in kind_prefix:
+        return "RoleBinding"
+    else:
+        return "Kubernetes"
 
 def is_flat_pattern(pattern):
     """Devuelve True si el patrón no contiene subniveles (dicts/listas)."""
@@ -193,6 +174,19 @@ def is_flat_pattern(pattern):
     # Solo consideramos plano si todos los valores son simples
     return all(not isinstance(v, (dict, list)) for v in pattern.values())
 
+def build_expression(feature, value):
+    """Construye la expresión UVL adecuada según el valor detectado."""
+    """if value is None or str(value).lower() == "null":
+        return f"!{feature}"
+    if str(value).lower() in ("true", "false"):
+        return f"{feature} = {str(value).lower()}"
+    if isinstance(value, (int, float)) or re.match(r"^\d+(\.\d+)?$", str(value).strip()):
+        return f"{feature} = {value}"""
+    if isinstance(value, str) and value.startswith("!"):
+        clean_val = value[1:]
+        print(f"Clean value build   {clean_val}")
+        return f"{feature} != '{clean_val}'"
+    return f"{feature} == '{value}'"
 
 def extract_constraints_from_policy(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
@@ -225,6 +219,7 @@ def extract_constraints_from_policy(filepath):
                     elif re.match(r"^\d+(\.\d+)?$", str(v).strip()):
                         expr = f"{feature} = {v}"
                     else:
+                        print(f"Expr flatten distarcet: {expr}")
                         expr = f"{feature} == '{v}'"
                     grouped_conditions.setdefault(name, []).append(expr)
             continue
@@ -234,12 +229,39 @@ def extract_constraints_from_policy(filepath):
         for section_key in pattern:
             #print(f"CLAVES DE LAS SECCIONES:     {section_key}")
             clean_key = section_key.strip("=() ")
-            print(f"CLAVES LIMPIAS:     {clean_key}")
+            #print(f"CLAVES LIMPIAS:     {clean_key}")
             if clean_key == "spec":
                 extractor = extract_conditions_from_spec
             elif clean_key == "metadata":
                 extractor = extract_conditions_from_metadata
             else:
+                # 🚀 Nuevo: manejo genérico para cualquier otra sección (roleRef, subjects, etc.)
+                subpattern = pattern[section_key]
+
+                if isinstance(subpattern, dict):
+                    print(f"📘 Procesando bloque genérico (dict): {clean_key} en {filepath}")
+                    for subkey, subval in subpattern.items():
+                        for kind_prefix in kind_prefixes:
+                            print(f"Kind prefix {kind_prefix}")
+                            base_prefix = get_base_prefix(kind_prefix)
+                            full_feature = f"{base_prefix}.{sanitize(kind_prefix + clean_key + '_' + subkey)}"
+                            print(f"Expr completa01 {full_feature}")
+                            expr = build_expression(full_feature, subval)
+                            grouped_conditions.setdefault(name, []).append(expr)
+                    continue
+
+                elif isinstance(subpattern, list):
+                    print(f"📘 Procesando bloque genérico (list): {clean_key} en {filepath}")
+                    for item in subpattern:
+                        if not isinstance(item, dict):
+                            continue
+                        for subkey, subval in item.items():
+                            for kind_prefix in kind_prefixes:
+                                base_prefix = get_base_prefix(kind_prefix)
+                                full_feature = f"{base_prefix}.{sanitize(kind_prefix + clean_key + '_' + subkey)}"
+                                expr = build_expression(full_feature, subval)
+                                grouped_conditions.setdefault(name, []).append(expr)
+                    continue
                 print(f"⚠️ Sección no soportada aún: {section_key}")
                 continue
 
@@ -251,12 +273,28 @@ def extract_constraints_from_policy(filepath):
 
             for path, expected in conditions:
                 for kind_prefix in kind_prefixes:
-                    full_feature = f"Pod.{sanitize(kind_prefix + path)}" ## Deff of features from fm Kubernetes
+                    # Determinar el submodelo al que pertenece
+                    if "Pod" in kind_prefix:
+                        base_prefix = "Pod"
+                    elif "ServiceAccount" in kind_prefix:
+                        base_prefix = "ServAcc"
+                    elif "RoleBinding" in kind_prefix:
+                        base_prefix = "RoleBinding"
+                    elif "ClusterRoleBinding" in kind_prefix:
+                        base_prefix = "ClusRole"
+                    else:
+                        base_prefix = "Kubernetes"  # Fallback genérico
+                    
+                    full_feature = f"{base_prefix}.{sanitize(kind_prefix + path)}"
+                    #full_feature = f"Pod.{sanitize(kind_prefix + path)}" ## Deff of features from fm Kubernetes
+                    
                     if expected == "null":
                         expr = f"!{full_feature}"
                     elif expected in ("true", "false"):
                         expr = f"{full_feature} = {expected}"
                     else:
+                        if isinstance(expected, str) and expected.startswith("'!"):
+                            print(f"CASO ESPECIAL STR NEGADO    {expected}")
                         # Si es un número (int o float), usar un único '='
                         if re.match(r"^\d+(\.\d+)?$", str(expected).strip()):
                             expr = f"{full_feature} = {expected}"
@@ -423,12 +461,11 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
                         #print(f"Valores DIGIT   {v}")
                         v = v  # número como string, no cambiar
                 elif isinstance(v, (int, float)):
-                    # print(f"SE DETECTA AQUI:Caso Int")
-                    print(f"Valores Caso INT   {v}")
+                    #print(f"Valores Caso INT   {v}")
                     v == str(v)
                 else:
                     # fallback
-                    #print(f"Valores fallback   {v}")
+                    print(f"Valores fallback   {v}")
                     v = f"'{str(v)}'"
                 conditions.append((new_prefix, v))
     return conditions, optional_clauses
@@ -462,7 +499,7 @@ def generate_uvl_from_policies(directory, output_path):
         category_map.setdefault(cat, []).append(entry)
 
     #lines = ["namespace PoliciesKyverno", "features", "\tPolicies {abstract}", "\t\toptional"]
-    lines = ["namespace Policies", "imports", "    k8s.Pods as Pod\n    k8s.ServiceAccount as ServAcc", "features", "\tPoliciesKyverno {abstract}", "\t\toptional"]
+    lines = ["namespace Policies", "imports", "    k8s.Pods as Pod\n    k8s.ServiceAccount as ServAcc\n    k8s.RoleBinding as RoleBinding\n    k8s.ClusterRoleBinding as ClusRole", "features", "\tPoliciesKyverno {abstract}", "\t\toptional"]
 
     for cat, entries in category_map.items():
         lines.append(f"\t\t\t{cat}")
@@ -484,6 +521,8 @@ def generate_uvl_from_policies(directory, output_path):
             
     lines.append("\t\t\tPod.PodFeatures")
     lines.append("\t\t\tServAcc.ServiceAccountFeatures")
+    lines.append("\t\t\tRoleBinding.RoleBindingFeatures")
+    lines.append("\t\t\tClusRole.ClusterRoleBindingFeatures")
 
     lines.append("constraints")
     # Recolectar todos los archivos YAML del directorio principal y subcarpetas (recursivo)
@@ -517,7 +556,6 @@ def generate_uvl_from_policies(directory, output_path):
                 normalized_exprs.append(f"!{expr.replace(' = false', '')}")
             elif '= 0' in expr: ## To change every constraint with = 0 for == 0 => Error line 27:262 token recognition error at: '= '
                 normalized_exprs.append(f"{expr.replace(' = 0', ' == 0 ')}")
-                print(f"Expresiones bucle   {expr}")
             else:
                 normalized_exprs.append(expr)
 
