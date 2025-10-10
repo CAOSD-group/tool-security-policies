@@ -25,7 +25,7 @@ RES    = ROOT / "resources"
 
 UVL_PATH = MODELS / "policy_structure03.uvl"
 # usar str(UVL_PATH) si la librería lo exige
-path_json = RES / "valid_yamls" / "2-clusterrolebinding.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid
+path_json = RES / "valid_yamls" / "4-clusterrolebinding.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid
 
 
 def get_all_parents(feature: Feature) -> list[str]:
