@@ -151,3 +151,22 @@ https://kyverno.io/policies/windows-security/require-run-as-containeruser/requir
 ?¿
 https://kyverno.io/policies/other/add-labels/add-labels/
 https://kyverno.io/policies/other/add-default-securitycontext/add-default-securitycontext/
+
+Pod Security: - Baseline Pod Security Standards
+https://kyverno.io/policies/pod-security/subrule/podsecurity-subrule-baseline/podsecurity-subrule-baseline/
+podsecurity-subrule-baseline: no tiene una propiedad YAML real del recurso Kubernetes sino un bloque propio de Kyverno llamado podSecurity. 
+podSecurity no existe en el recurso Pod; es un metacampo interno de Kyverno que agrupa decenas de reglas bajo un “perfil”
+Se omitiran las politicas de ese recurso
+
+
+PSP Migration:
+
+https://kyverno.io/policies/other/apply-pss-restricted-profile/apply-pss-restricted-profile/
+https://kyverno.io/policies/psp-migration/check-supplemental-groups/check-supplemental-groups/
+https://kyverno.io/policies/best-practices/require-ro-rootfs/require-ro-rootfs/   En el repo pertenece a Best-practices:
+
+Pod/exec - omitidas porque usan una comprobacion que se tendria que realizar en tiempo de ejecucion. No tiene representacion con ningun feature o propiedad en el modelo/esquemas
+https://github.com/kyverno/policies/blob/main/other/block-pod-exec-by-pod-label/block-pod-exec-by-pod-label.yaml
+
+last check in the folder other
+check-hpa-exists
