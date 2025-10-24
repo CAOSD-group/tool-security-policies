@@ -126,22 +126,24 @@ def handle_annotation_with_wildcard(key: str, value: str, prefix: str):
 def extract_conditions_from_metadata(obj, prefix="metadata", kind_prefixes=None):
     conditions = []
     optional_clauses = []
-    #print(f"Kind Prefixes: {kind_prefixes}")
+    print(f"Kind Prefixes: {kind_prefixes}")
     if isinstance(obj, dict):
         for k, v in obj.items():
-            #print(f"k y v:  {k} {v}")
+            print(f"k y v:  {k} {v}")
             # Subnivel: metadata.annotations
             key = k.strip("=() ")
             new_prefix = f"{prefix}_{key}"
             if key == "annotations" and isinstance(v, dict):
+                print(f"detect CASE ANNOTATIONS {v}")
                 for subkey, subval in v.items():
-                    if "*" in subkey:
+                    if '*' in subkey or '.' in subkey: ## Detect of the Key Value of the Pairs
                         # Caso de anotación con wildcard
                         conditions.extend(
                             handle_annotation_with_wildcard(subkey, subval, new_prefix)
                         )
-                    else: 
+                    else:
                         # Anotación fija (sin wildcard)
+                        print(f"no DETECCION DEL CASO {v}   {subkey}")
                         key_feature = f"{new_prefix}{sanitize(subkey)}"
                         conditions.append((key_feature, f"'{subval}'"))
             else:
@@ -282,6 +284,8 @@ def extract_constraints_from_policy(filepath):
                         base_prefix = "RoleBinding"
                     elif "ClusterRoleBinding" in kind_prefix:
                         base_prefix = "ClusRole"
+                    elif "Ingress" in kind_prefix: ## Nueva, falta definir Import
+                        base_prefix = "Ingress"
                     else:
                         base_prefix = "Kubernetes"  # Fallback genérico
                     
@@ -409,7 +413,7 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
 
     if isinstance(obj, dict):
         for k, v in obj.items():
-            #print(f"Key value   {k}   {v}")
+            print(f"Key value   {k}   {v}")
             key = k.strip("=() ").replace("X(", "").replace(")", "")
             new_prefix = f"{prefix}_{key}"
 
@@ -441,32 +445,53 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
             
             if isinstance(v, dict):
                 #conditions.extend(extract_conditions_from_spec(v, new_prefix))
+                #¡print(f"V IF V   {v}   {new_prefix}")
                 child_conditions, child_optional_clauses = extract_conditions_from_spec(v, new_prefix, kind_prefixes)
                 conditions.extend(child_conditions)
                 optional_clauses.extend(child_optional_clauses)                
             elif isinstance(v, list) and len(v) > 0 and isinstance(v[0], dict):
                 #conditions.extend(extract_conditions_from_spec(v[0], new_prefix))
+                print(f"V list elif   {v}   {new_prefix}")
                 child_conditions, child_optional_clauses = extract_conditions_from_spec(v[0], new_prefix, "io_k8s_api_core_v1_Pod_") ## Prevent
                 conditions.extend(child_conditions)
                 optional_clauses.extend(child_optional_clauses)                
             else:
+                print(f"ELSE   {v}   {new_prefix}") ## caso spec defaultBackend: se arregla con la deteccion automatica del prefijo y cambio
                 if isinstance(v, str):
+                    print(f"ESTOY AQUI 1  {v} {new_prefix}    ")
                     if v.lower() == "false":
+                        if 'spec_type' in new_prefix:
+                            print(f"ESTOY AQUI 2  {v} {new_prefix}    ")
                         v = "false"
                     elif v.lower() == "true":
+                        if 'spec_type' in new_prefix:
+                            print(f"ESTOY AQUI 2  {v} {new_prefix}    ")
                         v = "true"
                     elif v.strip().lower() == "null":
+                        if 'spec_type' in new_prefix:
+                            print(f"ESTOY AQUI 2  {v} {new_prefix}    ")
                         v = "null"
                     elif v.isdigit():
+                        if 'spec_type' in new_prefix:
+                            print(f"ESTOY AQUI 2  {v} {new_prefix}    ")
                         #print(f"Valores DIGIT   {v}")
                         v = v  # número como string, no cambiar
+                    #elif 'spec_type' in new_prefix:
+                    #        print(f"ESTOY AQUI 233  {v} {new_prefix}    ")
+                    else: ## fallback; Mod necesaria para capturar el mapeo entre el STR negado y la seleccion de este valor en el grupo alternative de _spec_type
+                        v = f"'{str(v)}'"
                 elif isinstance(v, (int, float)):
                     #print(f"Valores Caso INT   {v}")
+                    if 'spec_type' in new_prefix:
+                            print(f"ESTOY AQUI 2  {v} {new_prefix}    ")
                     v == str(v)
                 else:
                     # fallback
-                    print(f"Valores fallback   {v}")
+                    if 'spec_type' in new_prefix:
+                        print(f"ESTOY AQUI 2  {v} {new_prefix}    ")
+                    print(f"Valores fallback NO SE EJECUTA¿?   {v}")
                     v = f"'{str(v)}'"
+                
                 conditions.append((new_prefix, v))
     return conditions, optional_clauses
 
