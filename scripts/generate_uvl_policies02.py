@@ -126,15 +126,15 @@ def handle_annotation_with_wildcard(key: str, value: str, prefix: str):
 def extract_conditions_from_metadata(obj, prefix="metadata", kind_prefixes=None):
     conditions = []
     optional_clauses = []
-    print(f"Kind Prefixes: {kind_prefixes}")
+    #print(f"Kind Prefixes: {kind_prefixes}")
     if isinstance(obj, dict):
         for k, v in obj.items():
-            print(f"k y v:  {k} {v}")
+            #print(f"k y v:  {k} {v}")
             # Subnivel: metadata.annotations
             key = k.strip("=() ")
             new_prefix = f"{prefix}_{key}"
             if key == "annotations" and isinstance(v, dict):
-                print(f"detect CASE ANNOTATIONS {v}")
+                #print(f"detect CASE ANNOTATIONS {v}")
                 for subkey, subval in v.items():
                     if '*' in subkey or '.' in subkey: ## Detect of the Key Value of the Pairs
                         # Caso de anotación con wildcard
@@ -150,7 +150,7 @@ def extract_conditions_from_metadata(obj, prefix="metadata", kind_prefixes=None)
                 # Otro tipo de clave bajo metadata (p. ej., name, labels)
                 #key = k.strip("=() ")
                 full_key = f"{prefix}_{sanitize(key)}"
-                print(f"Full key else:  {full_key}")
+                #print(f"Full key else:  {full_key}")
                 conditions.append((full_key, f"'{v}'"))
     return conditions, optional_clauses
 
@@ -159,6 +159,8 @@ def get_base_prefix(kind_prefix):
         return "Pod"
     elif "ServiceAccount" in kind_prefix:
         return "ServAcc"
+    elif "Service" in kind_prefix:
+        return "Serv"
     elif "ClusterRoleBinding" in kind_prefix: ## ToDo: More specific str of types if add more kindsQ
         return "ClusRole" 
     elif "RoleBinding" in kind_prefix:
@@ -202,14 +204,19 @@ def extract_constraints_from_policy(filepath):
 
     grouped_conditions = {}  # policy_name → list of conditions
     opt_clauses = []
-    rules = policy.get("spec", {}).get("rules", [])
+    spec = policy.get("spec", {})
+    action = spec.get("validationFailureAction", "") ## type of approach
+    #rules = policy.get("spec", {}).get("rules", [])
+    rules = spec.get("rules", [])
+
     #print(f"RULES:  {rules}")
     for rule in rules:
         kind_prefixes = get_kind_prefixes_from_rule(rule)
         pattern = rule.get("validate", {}).get("pattern", {})
-
+        preconds = rule.get("preconditions", {}) ## New case of preconditions, validationFailureAction: Enforce
+        ## difference betwwn actions
         # 🔹 1. Detectar y procesar patrones planos (sin spec/metadata)
-        if is_flat_pattern(pattern):
+        if is_flat_pattern(pattern) and action == 'Audit': ## Adding action for differences bettween 
             print(f"📘 Detectado patrón plano en {filepath}")
             for k, v in pattern.items():
                 for kind_prefix in kind_prefixes:
@@ -226,6 +233,36 @@ def extract_constraints_from_policy(filepath):
                     grouped_conditions.setdefault(name, []).append(expr)
             continue
 
+
+        if preconds and action == 'Enforce':
+            any_conds = preconds.get("any", []) or preconds.get("all", [])
+            for cond in any_conds:
+                key = cond.get("key", "")
+                operator = cond.get("operator", "")
+                value = cond.get("value", "")
+                # limpiar key para extraer el campo real del request.object
+                key_clean = key.replace("{{ request.object.", "").replace(" }}", "")
+                key_clean = key_clean.replace("[0]", "").replace("|| ''", "").strip()
+                
+                for kind_prefix in kind_prefixes:
+                    if "Job" in kind_prefix:
+                        base_prefix = "Job"
+                    else:
+                        base_prefix = "Kubernetes"
+
+                    full_feature = f"{base_prefix}.{sanitize(kind_prefix + key_clean)}"
+
+                    if operator.lower() == "notequals":
+                        expr = f"{full_feature} == '{value}'"
+                    elif operator.lower() == "equals":
+                        expr = f"{full_feature} == '{value}'"
+                    elif operator.lower() == "anyin":
+                        expr = f"{full_feature} == '{value}'"  # simplificado
+                    else:
+                        expr = f"{full_feature} = '{value}'"
+
+                    grouped_conditions.setdefault(name, []).append(expr)
+            continue
         #if "spec" in pattern:
         #    conditions, optional_clauses_from_spec = extract_conditions_from_spec(pattern["spec"], prefix="spec", kind_prefixes= kind_prefixes)
         for section_key in pattern:
@@ -284,18 +321,22 @@ def extract_constraints_from_policy(filepath):
                         base_prefix = "RoleBinding"
                     elif "ClusterRoleBinding" in kind_prefix:
                         base_prefix = "ClusRole"
-                    elif "Ingress" in kind_prefix: ## Nueva, falta definir Import
+                    elif "Ingress" in kind_prefix:
                         base_prefix = "Ingress"
+                    elif "Serv" in kind_prefix:
+                        base_prefix = "Serv"
                     else:
                         base_prefix = "Kubernetes"  # Fallback genérico
                     
                     full_feature = f"{base_prefix}.{sanitize(kind_prefix + path)}"
                     #full_feature = f"Pod.{sanitize(kind_prefix + path)}" ## Deff of features from fm Kubernetes
-                    
+                    #print(f"EXPECTED:   {expected}  {base_prefix}")
                     if expected == "null":
                         expr = f"!{full_feature}"
-                    elif expected in ("true", "false"):
+                    elif expected == "false": ## expected in ("true", "false"):
                         expr = f"{full_feature} = {expected}"
+                    elif expected == True: ## Case of True; readOnlyRootFilesystem 
+                        expr = f"{full_feature}"
                     else:
                         if isinstance(expected, str) and expected.startswith("'!"):
                             print(f"CASO ESPECIAL STR NEGADO    {expected}")
@@ -413,7 +454,7 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
 
     if isinstance(obj, dict):
         for k, v in obj.items():
-            print(f"Key value   {k}   {v}")
+            #print(f"Key value   {k}   {v}")
             key = k.strip("=() ").replace("X(", "").replace(")", "")
             new_prefix = f"{prefix}_{key}"
 
@@ -451,45 +492,46 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
                 optional_clauses.extend(child_optional_clauses)                
             elif isinstance(v, list) and len(v) > 0 and isinstance(v[0], dict):
                 #conditions.extend(extract_conditions_from_spec(v[0], new_prefix))
-                print(f"V list elif   {v}   {new_prefix}")
+                #print(f"V list elif   {v}   {new_prefix}")
                 child_conditions, child_optional_clauses = extract_conditions_from_spec(v[0], new_prefix, "io_k8s_api_core_v1_Pod_") ## Prevent
                 conditions.extend(child_conditions)
                 optional_clauses.extend(child_optional_clauses)                
             else:
-                print(f"ELSE   {v}   {new_prefix}") ## caso spec defaultBackend: se arregla con la deteccion automatica del prefijo y cambio
+                #print(f"ELSE   {v}   {new_prefix}") ## caso spec defaultBackend: se arregla con la deteccion automatica del prefijo y cambio
                 if isinstance(v, str):
-                    print(f"ESTOY AQUI 1  {v} {new_prefix}    ")
+                    #print(f"ESTOY AQUI 1  {v} {new_prefix}    ")
                     if v.lower() == "false":
                         if 'spec_type' in new_prefix:
                             print(f"ESTOY AQUI 2  {v} {new_prefix}    ")
                         v = "false"
-                    elif v.lower() == "true":
-                        if 'spec_type' in new_prefix:
-                            print(f"ESTOY AQUI 2  {v} {new_prefix}    ")
+                    elif v.lower() == "true": ## Caso readOnlyRootFilesystem
                         v = "true"
                     elif v.strip().lower() == "null":
-                        if 'spec_type' in new_prefix:
-                            print(f"ESTOY AQUI 2  {v} {new_prefix}    ")
                         v = "null"
                     elif v.isdigit():
-                        if 'spec_type' in new_prefix:
-                            print(f"ESTOY AQUI 2  {v} {new_prefix}    ")
                         #print(f"Valores DIGIT   {v}")
                         v = v  # número como string, no cambiar
-                    #elif 'spec_type' in new_prefix:
-                    #        print(f"ESTOY AQUI 233  {v} {new_prefix}    ")
+                    elif 'spec_type' in new_prefix: ## Case which we can define as a Alternative match Strings
+                            print(f"ESTOY AQUI 233  {v} {new_prefix}    ")
+                            aux_value = v
+                            if '!' in aux_value:
+                                aux_value = v.replace("!","")
+                                print(f"AUX VALUE")
+                                v = "false"
+                                ## boolean negado
+                            ##caso normal
+                            else:
+                                v = "true"
+                            new_prefix = f"{new_prefix}_{aux_value}"
                     else: ## fallback; Mod necesaria para capturar el mapeo entre el STR negado y la seleccion de este valor en el grupo alternative de _spec_type
                         v = f"'{str(v)}'"
+
                 elif isinstance(v, (int, float)):
                     #print(f"Valores Caso INT   {v}")
-                    if 'spec_type' in new_prefix:
-                            print(f"ESTOY AQUI 2  {v} {new_prefix}    ")
                     v == str(v)
                 else:
                     # fallback
-                    if 'spec_type' in new_prefix:
-                        print(f"ESTOY AQUI 2  {v} {new_prefix}    ")
-                    print(f"Valores fallback NO SE EJECUTA¿?   {v}")
+                    #print(f"Valores fallback NO SE EJECUTA¿?   {v}")
                     v = f"'{str(v)}'"
                 
                 conditions.append((new_prefix, v))
@@ -524,7 +566,7 @@ def generate_uvl_from_policies(directory, output_path):
         category_map.setdefault(cat, []).append(entry)
 
     #lines = ["namespace PoliciesKyverno", "features", "\tPolicies {abstract}", "\t\toptional"]
-    lines = ["namespace Policies", "imports", "    k8s.Pods as Pod\n    k8s.ServiceAccount as ServAcc\n    k8s.RoleBinding as RoleBinding\n    k8s.ClusterRoleBinding as ClusRole", "features", "\tPoliciesKyverno {abstract}", "\t\toptional"]
+    lines = ["namespace Policies", "imports", "    k8s.Pods as Pod\n    k8s.ServiceAccount as ServAcc\n    k8s.RoleBinding as RoleBinding\n    k8s.ClusterRoleBinding as ClusRole\n    k8s.Service as Serv\n    k8s.Job as Job", "features", "\tPoliciesKyverno {abstract}", "\t\toptional"]
 
     for cat, entries in category_map.items():
         lines.append(f"\t\t\t{cat}")
@@ -548,7 +590,9 @@ def generate_uvl_from_policies(directory, output_path):
     lines.append("\t\t\tServAcc.ServiceAccountFeatures")
     lines.append("\t\t\tRoleBinding.RoleBindingFeatures")
     lines.append("\t\t\tClusRole.ClusterRoleBindingFeatures")
-
+    lines.append("\t\t\tServ.ServiceFeatures")
+    lines.append("\t\t\tJob.JobFeatures")
+    
     lines.append("constraints")
     # Recolectar todos los archivos YAML del directorio principal y subcarpetas (recursivo)
     all_yaml_files = []
@@ -577,7 +621,7 @@ def generate_uvl_from_policies(directory, output_path):
     for policy_name, exprs in merged.items():
         normalized_exprs = []
         for expr in exprs:
-            if expr.endswith("= false"):
+            if expr.endswith("= false"): ## Formating cases for changed a correct syntax
                 normalized_exprs.append(f"!{expr.replace(' = false', '')}")
             elif '= 0' in expr: ## To change every constraint with = 0 for == 0 => Error line 27:262 token recognition error at: '= '
                 normalized_exprs.append(f"{expr.replace(' = 0', ' == 0 ')}")

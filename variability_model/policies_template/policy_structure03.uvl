@@ -4,6 +4,8 @@ imports
     k8s.ServiceAccount as ServAcc
     k8s.RoleBinding as RoleBinding
     k8s.ClusterRoleBinding as ClusRole
+    k8s.Service as Serv
+    k8s.Job as Job
 features
 	PoliciesKyverno {abstract}
 		optional
@@ -46,6 +48,8 @@ features
 			ServAcc.ServiceAccountFeatures
 			RoleBinding.RoleBindingFeatures
 			ClusRole.ClusterRoleBindingFeatures
+			Serv.ServiceFeatures
+			Job.JobFeatures
 constraints
 	Disallow_Host_Namespaces => (!Pod.io_k8s_api_core_v1_Pod_spec_hostPID & !Pod.io_k8s_api_core_v1_Pod_spec_hostIPC & !Pod.io_k8s_api_core_v1_Pod_spec_hostNetwork)
 	Disallow_hostPath => !Pod.io_k8s_api_core_v1_Pod_spec_volumes_hostPath
@@ -56,13 +60,13 @@ constraints
 	Disallow_procMount => (Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_procMount_nameStr == 'Default' & Pod.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_procMount_nameStr == 'Default' & Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_procMount_nameStr == 'Default')
 	Restrict_AppArmor => (Pod.io_k8s_api_core_v1_Pod_metadata_annotations_KeyMap == 'container_apparmor_security_beta_kubernetes_io' | Pod.io_k8s_api_core_v1_Pod_metadata_annotations_ValueMap == 'runtime/default' | Pod.io_k8s_api_core_v1_Pod_metadata_annotations_KeyMap == 'container_apparmor_security_beta_kubernetes_io' | Pod.io_k8s_api_core_v1_Pod_metadata_annotations_ValueMap == 'localhost')
 	Restrict_Seccomp => ((!Pod.io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type | (Pod.io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type => Pod.io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type_RuntimeDefault | Pod.io_k8s_api_core_v1_Pod_spec_securityContext_seccompProfile_type_Localhost)) & (!Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_seccompProfile_type | (Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_seccompProfile_type => Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_seccompProfile_type_RuntimeDefault | Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_seccompProfile_type_Localhost)) & (!Pod.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_seccompProfile_type | (Pod.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_seccompProfile_type => Pod.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_seccompProfile_type_RuntimeDefault | Pod.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_seccompProfile_type_Localhost)) & (!Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_seccompProfile_type | (Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_seccompProfile_type => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_seccompProfile_type_RuntimeDefault | Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_seccompProfile_type_Localhost)))
-	Require_Read_Only_Root_Filesystem => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_readOnlyRootFilesystem == True
+	Require_Read_Only_Root_Filesystem => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_readOnlyRootFilesystem
 	Restrict_Binding_to_Cluster_Admin => (RoleBinding.io_k8s_api_rbac_v1_RoleBinding_roleRef_name != 'cluster-admin' & ClusRole.io_k8s_api_rbac_v1_ClusterRoleBinding_roleRef_name != 'cluster-admin')
 	Restrict_Binding_System_Groups => (RoleBinding.io_k8s_api_rbac_v1_RoleBinding_subjects_name != 'system:anonymous' & ClusRole.io_k8s_api_rbac_v1_ClusterRoleBinding_subjects_name != 'system:anonymous' & RoleBinding.io_k8s_api_rbac_v1_RoleBinding_subjects_name != 'system:unauthenticated' & ClusRole.io_k8s_api_rbac_v1_ClusterRoleBinding_subjects_name != 'system:unauthenticated' & RoleBinding.io_k8s_api_rbac_v1_RoleBinding_subjects_name != 'system:masters' & ClusRole.io_k8s_api_rbac_v1_ClusterRoleBinding_subjects_name != 'system:masters')
 	Restrict_Ingress_Classes => (Ingress.io_k8s_api_core_v1_Ingress_metadata_annotations_KeyMap == 'kubernetes_io/ingress_class' | Ingress.io_k8s_api_core_v1_Ingress_metadata_annotations_ValueMap == 'HAProxy' | Ingress.io_k8s_api_core_v1_Ingress_metadata_annotations_KeyMap == 'kubernetes_io/ingress_class' | Ingress.io_k8s_api_core_v1_Ingress_metadata_annotations_ValueMap == 'nginx')
 	Restrict_Ingress_defaultBackend => !Ingress.io_k8s_api_core_v1_Ingress_spec_defaultBackend
-	Restrict_Jobs => ()
-	Disallow_Service_Type_LoadBalancer => Kubernetes.io_k8s_api_core_v1_Service_spec_type == '!LoadBalancer'
+	Restrict_Jobs => Job.io_k8s_api_core_v1_Job_metadata_ownerReferences_kind == 'CronJob'
+	Disallow_Service_Type_LoadBalancer => !Serv.io_k8s_api_core_v1_Service_spec_type_LoadBalancer
 	Restrict_Node_Affinity => !Pod.io_k8s_api_core_v1_Pod_spec_affinity_nodeAffinity
 	Restrict_Auto_Mount_of_Service_Account_Tokens_in_Service_Account => !ServAcc.io_k8s_api_core_v1_ServiceAccount_automountServiceAccountToken
 	Require_Run_As_ContainerUser_Windows => (Pod.io_k8s_api_core_v1_Pod_spec_securityContext_windowsOptions_runAsUserName == 'ContainerUser' & Pod.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_windowsOptions_runAsUserName == 'ContainerUser' & Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_windowsOptions_runAsUserName == 'ContainerUser')

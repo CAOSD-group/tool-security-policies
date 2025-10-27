@@ -159,7 +159,7 @@ podSecurity no existe en el recurso Pod; es un metacampo interno de Kyverno que 
 Se omitiran las politicas de ese recurso
 
 
-PSP Migration:
+PSP Migration:  
 
 https://kyverno.io/policies/other/apply-pss-restricted-profile/apply-pss-restricted-profile/
 https://kyverno.io/policies/psp-migration/check-supplemental-groups/check-supplemental-groups/
@@ -178,3 +178,9 @@ Si se busca una comprobación estática de configuraciones, las políticas mutat
 https://github.com/kyverno/policies/blob/main/other/apply-pss-restricted-profile/apply-pss-restricted-profile.yaml
 
 Una condicion: Prefiltro en definiciones YAML; != 
+
+
+Adding a new type of validationFailureAction
+Se necesita la deteccion automatica del prefijo
+io_k8s_api_core_v1_Job_metadata_ownerReferences_kind
+io_k8s_api_batch_v1_Job_metadata_ownerReferences_kind
