@@ -63,9 +63,9 @@ constraints
 	Require_Read_Only_Root_Filesystem => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_readOnlyRootFilesystem
 	Restrict_Binding_to_Cluster_Admin => (RoleBinding.io_k8s_api_rbac_v1_RoleBinding_roleRef_name != 'cluster-admin' & ClusRole.io_k8s_api_rbac_v1_ClusterRoleBinding_roleRef_name != 'cluster-admin')
 	Restrict_Binding_System_Groups => (RoleBinding.io_k8s_api_rbac_v1_RoleBinding_subjects_name != 'system:anonymous' & ClusRole.io_k8s_api_rbac_v1_ClusterRoleBinding_subjects_name != 'system:anonymous' & RoleBinding.io_k8s_api_rbac_v1_RoleBinding_subjects_name != 'system:unauthenticated' & ClusRole.io_k8s_api_rbac_v1_ClusterRoleBinding_subjects_name != 'system:unauthenticated' & RoleBinding.io_k8s_api_rbac_v1_RoleBinding_subjects_name != 'system:masters' & ClusRole.io_k8s_api_rbac_v1_ClusterRoleBinding_subjects_name != 'system:masters')
-	Restrict_Ingress_Classes => (Ingress.io_k8s_api_core_v1_Ingress_metadata_annotations_KeyMap == 'kubernetes_io/ingress_class' | Ingress.io_k8s_api_core_v1_Ingress_metadata_annotations_ValueMap == 'HAProxy' | Ingress.io_k8s_api_core_v1_Ingress_metadata_annotations_KeyMap == 'kubernetes_io/ingress_class' | Ingress.io_k8s_api_core_v1_Ingress_metadata_annotations_ValueMap == 'nginx')
-	Restrict_Ingress_defaultBackend => !Ingress.io_k8s_api_core_v1_Ingress_spec_defaultBackend
-	Restrict_Jobs => Job.io_k8s_api_core_v1_Job_metadata_ownerReferences_kind == 'CronJob'
+	Restrict_Ingress_Classes => (Ingress.io_k8s_api_networking_v1_Ingress_metadata_annotations_KeyMap == 'kubernetes_io/ingress_class' | Ingress.io_k8s_api_networking_v1_Ingress_metadata_annotations_ValueMap == 'HAProxy' | Ingress.io_k8s_api_networking_v1_Ingress_metadata_annotations_KeyMap == 'kubernetes_io/ingress_class' | Ingress.io_k8s_api_networking_v1_Ingress_metadata_annotations_ValueMap == 'nginx')
+	Restrict_Ingress_defaultBackend => !Ingress.io_k8s_api_networking_v1_Ingress_spec_defaultBackend
+	Restrict_Jobs => Job.io_k8s_api_batch_v1_Job_metadata_ownerReferences_kind == 'CronJob'
 	Disallow_Service_Type_LoadBalancer => !Serv.io_k8s_api_core_v1_Service_spec_type_LoadBalancer
 	Restrict_Node_Affinity => !Pod.io_k8s_api_core_v1_Pod_spec_affinity_nodeAffinity
 	Restrict_Auto_Mount_of_Service_Account_Tokens_in_Service_Account => !ServAcc.io_k8s_api_core_v1_ServiceAccount_automountServiceAccountToken
