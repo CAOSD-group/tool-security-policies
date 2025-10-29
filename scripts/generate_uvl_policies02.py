@@ -200,6 +200,20 @@ def get_base_prefix(kind_prefix):
         return "ClusRole" 
     elif "RoleBinding" in kind_prefix:
         return "RoleBinding"
+    elif "Ingress" in kind_prefix:
+        return "Ingress"
+    elif "Job" in kind_prefix:
+        return "Job"
+    elif "DaemonSet" in kind_prefix:
+        return "DaemonSet"
+    elif "Deployment" in kind_prefix:
+        return "Deployment"
+    elif "StatefulSet" in kind_prefix:
+        return "StatefulSet"
+    elif "Secret" in kind_prefix:
+        return "Secret" # PersistentVolumeClaim
+    elif "PersistentVolumeClaim" in kind_prefix:
+        return "PersistVolumeClaim"
     else:
         return "Kubernetes"
 
@@ -255,7 +269,8 @@ def extract_constraints_from_policy(filepath):
             print(f"📘 Detectado patrón plano en {filepath}")
             for k, v in pattern.items():
                 for kind_prefix in kind_prefixes:
-                    feature = f"ServAcc.{kind_prefix}{sanitize(k)}"
+                    base_prefix = get_base_prefix(kind_prefix)
+                    feature = f"{base_prefix}.{kind_prefix}{sanitize(k)}"
                     if str(v).lower() == "false":
                         expr = f"{feature} = false"
                     elif str(v).lower() == "true":
@@ -263,8 +278,8 @@ def extract_constraints_from_policy(filepath):
                     elif re.match(r"^\d+(\.\d+)?$", str(v).strip()):
                         expr = f"{feature} = {v}"
                     else:
-                        print(f"Expr flatten distarcet: {expr}")
                         expr = f"{feature} == '{v}'"
+                        print(f"Expr flatten distarcet: {expr}")
                     grouped_conditions.setdefault(name, []).append(expr)
             continue
 
@@ -348,21 +363,7 @@ def extract_constraints_from_policy(filepath):
             for path, expected in conditions:
                 for kind_prefix in kind_prefixes:
                     # Determinar el submodelo al que pertenece
-                    if "Pod" in kind_prefix:
-                        base_prefix = "Pod"
-                    elif "ServiceAccount" in kind_prefix:
-                        base_prefix = "ServAcc"
-                    elif "RoleBinding" in kind_prefix:
-                        base_prefix = "RoleBinding"
-                    elif "ClusterRoleBinding" in kind_prefix:
-                        base_prefix = "ClusRole"
-                    elif "Ingress" in kind_prefix:
-                        base_prefix = "Ingress"
-                    elif "Serv" in kind_prefix:
-                        base_prefix = "Serv"
-                    else:
-                        base_prefix = "Kubernetes"  # Fallback genérico
-
+                    base_prefix = get_base_prefix(kind_prefix)
                     full_feature = f"{base_prefix}.{sanitize(kind_prefix + path)}" ## se usa el kind_prefix encontrado. Se agrega aqui tb el prefijo de metadata..
                     #full_feature = f"Pod.{sanitize(kind_prefix + path)}" ## Deff of features from fm Kubernetes
                     #print(f"EXPECTED:   {expected}  {base_prefix}")
@@ -528,14 +529,14 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
                 #print(f"V list elif   {v}   {new_prefix}")
                 child_conditions, child_optional_clauses = extract_conditions_from_spec(v[0], new_prefix, kind_prefixes) ## Prevent
                 conditions.extend(child_conditions)
-                optional_clauses.extend(child_optional_clauses)                
+                optional_clauses.extend(child_optional_clauses)             
             else:
                 #print(f"ELSE   {v}   {new_prefix}") ## caso spec defaultBackend: se arregla con la deteccion automatica del prefijo y cambio
                 if isinstance(v, str):
                     #print(f"ESTOY AQUI 1  {v} {new_prefix}    ")
                     if v.lower() == "false":
-                        if 'spec_type' in new_prefix:
-                            print(f"ESTOY AQUI 2  {v} {new_prefix}    ")
+                        #if 'spec_type' in new_prefix:
+                        #    print(f"ESTOY AQUI 2  {v} {new_prefix}    ")
                         v = "false"
                     elif v.lower() == "true": ## Caso readOnlyRootFilesystem
                         v = "true"
@@ -554,15 +555,31 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
                             else:
                                 v = "true"
                             new_prefix = f"{new_prefix}_{aux_value}"
+                    elif '<'  in v or '>' in v:
+                        print(f"Valor del V {v}")
+                        if '< ' in v and not '> ' in v:
+                            aux_value = v.split("<")
+                            v = f"< {aux_value[1]}"
+                        else:
+                            ## Defect case. Only works for solitary Maxs, Mins
+                            aux_value = v.split(">")
+                            v = f"> {aux_value[1]}"
+                            print(f"Valor del V 2:  {v}")
+
                     else: ## fallback; Mod necesaria para capturar el mapeo entre el STR negado y la seleccion de este valor en el grupo alternative de _spec_type
                         v = f"'{str(v)}'"
-
+                        print(f"ESTOY AQUIII  {v} {new_prefix}")
                 elif isinstance(v, (int, float)):
                     #print(f"Valores Caso INT   {v}")
                     v == str(v)
+                elif isinstance(v,list): ## Capture cases where the value is a arr not typed yet
+                    if new_prefix.endswith('spec_accessModes'): ## Specific case for the personality modification of the representation of the String Arrays
+                        for value_access in v:
+                            v = value_access
+                        new_prefix = f"{new_prefix}_StringValue"
                 else:
                     # fallback
-                    #print(f"Valores fallback NO SE EJECUTA¿?   {v}")
+                    print(f"Valores fallback NO SE EJECUTA¿?   {v}")
                     v = f"'{str(v)}'"
                 
                 conditions.append((new_prefix, v))
@@ -597,7 +614,8 @@ def generate_uvl_from_policies(directory, output_path):
         category_map.setdefault(cat, []).append(entry)
 
     #lines = ["namespace PoliciesKyverno", "features", "\tPolicies {abstract}", "\t\toptional"]
-    lines = ["namespace Policies", "imports", "    k8s.Pods as Pod\n    k8s.ServiceAccount as ServAcc\n    k8s.RoleBinding as RoleBinding\n    k8s.ClusterRoleBinding as ClusRole\n    k8s.Service as Serv\n    k8s.Job as Job", "features", "\tPoliciesKyverno {abstract}", "\t\toptional"]
+    lines = ["namespace Policies", "imports", "    k8s.Pods as Pod\n    k8s.ServiceAccount as ServAcc\n    k8s.RoleBinding as RoleBinding\n    k8s.ClusterRoleBinding as ClusRole\n    k8s.Service as Serv\n    k8s.Ingress as Ingress\n    k8s.Job as Job\n    k8s.DaemonSet as DaemonSet\n    k8s.Deployment as Deployment\n    k8s.StatefulSet as StatefulSet\n    k8s.Secret as Secret\n    k8s.PersistentVolumeClaim as PersistVolumeClaim",
+              "features", "\tPoliciesKyverno {abstract}", "\t\toptional"]
 
     for cat, entries in category_map.items():
         lines.append(f"\t\t\t{cat}")
@@ -622,8 +640,13 @@ def generate_uvl_from_policies(directory, output_path):
     lines.append("\t\t\tRoleBinding.RoleBindingFeatures")
     lines.append("\t\t\tClusRole.ClusterRoleBindingFeatures")
     lines.append("\t\t\tServ.ServiceFeatures")
+    lines.append("\t\t\tIngress.IngressFeatures")
     lines.append("\t\t\tJob.JobFeatures")
-    
+    lines.append("\t\t\tClusRole.ClusterRoleBindingFeatures")
+    lines.append("\t\t\tDeployment.DeploymentFeatures")
+    lines.append("\t\t\tStatefulSet.StatefulSetFeatures")
+    lines.append("\t\t\tSecret.SecretFeatures")
+    lines.append("\t\t\tPersistVolumeClaim.PersistentVolumeClaimFeatures")
     lines.append("constraints")
     # Recolectar todos los archivos YAML del directorio principal y subcarpetas (recursivo)
     all_yaml_files = []
@@ -656,6 +679,22 @@ def generate_uvl_from_policies(directory, output_path):
                 normalized_exprs.append(f"!{expr.replace(' = false', '')}")
             elif '= 0' in expr: ## To change every constraint with = 0 for == 0 => Error line 27:262 token recognition error at: '= '
                 normalized_exprs.append(f"{expr.replace(' = 0', ' == 0 ')}")
+            elif ' < ' in expr or ' > ' in expr: ## Case of mins of maxs
+                expr = re.sub(r"==\s*([<>])\s*(\d+)", r"\1 \2", expr) ## Obtain the signal of interval and the number and replaced in 1, 2
+                normalized_exprs.append(expr)
+            elif re.search(r"\b\d+\s*-\s*\d+\b", expr): ## Case of interval with a '-' between the numbers
+                match = re.search(r"(\d+)\s*-\s*(\d+)", expr)
+                if match:
+                    low_str, high_str = match.groups()
+                    low = int(low_str) - 1
+                    high = int(high_str) + 1
+
+                    feature = re.split(r"\s*=\s*|\s*[<>]\s*", expr)[0].strip()
+                    normalized_exprs.append(f"{feature} > {low}")
+                    normalized_exprs.append(f"{feature} < {high}")
+                else:
+                    print(f"Case not implemented")
+                    pass
             else:
                 normalized_exprs.append(expr)
 
