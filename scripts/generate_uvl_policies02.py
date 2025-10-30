@@ -149,12 +149,12 @@ def handle_annotation_with_wildcard(key: str, value: str, prefix: str):
     # Dividir valores del patrón tipo "runtime/default | localhost/*"
     values = [v.strip().replace("/*", "").replace(".", "_") for v in value.split("|")]
 
-    pairs = []
+    pairs = [] ## dict?
     for v in values:
         # Cada valor posible genera dos pares: uno para la clave, otro para el valor
         pairs.append((key_feature, f"'{clean_key}'"))
         pairs.append((value_feature, f"'{v}'"))
-
+        #pairs.append((f"{key_feature} '{clean_key}'" ,f"{value_feature} '{v}'"))
     print(f"[Wildcard] Generados {len(pairs)} pares para {clean_key}: {pairs}")
     return pairs
 
@@ -187,10 +187,11 @@ def extract_conditions_from_metadata(obj, prefix="metadata", kind_prefixes=None)
                 full_key = f"{prefix}_{sanitize(key)}"
                 #print(f"Full key else:  {full_key}")
                 conditions.append((full_key, f"'{v}'"))
+        print(f"Conditions: {conditions}     {optional_clauses}")
     return conditions, optional_clauses
 
 def get_base_prefix(kind_prefix):
-    if "Pod" in kind_prefix:
+    if kind_prefix.endswith("Pod_"): ## kind_prefix with underscores _{KIND}_
         return "Pod"
     elif "ServiceAccount" in kind_prefix:
         return "ServAcc"
@@ -213,7 +214,9 @@ def get_base_prefix(kind_prefix):
     elif "Secret" in kind_prefix:
         return "Secret" # PersistentVolumeClaim
     elif "PersistentVolumeClaim" in kind_prefix:
-        return "PersistVolumeClaim"
+        return "PersistVolumeClaim" ## PodDisruptionBudgetFeatures
+    elif "PodDisruptionBudget" in kind_prefix:
+        return "PodDisrupBud"    
     else:
         return "Kubernetes"
 
@@ -533,10 +536,7 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
             else:
                 #print(f"ELSE   {v}   {new_prefix}") ## caso spec defaultBackend: se arregla con la deteccion automatica del prefijo y cambio
                 if isinstance(v, str):
-                    #print(f"ESTOY AQUI 1  {v} {new_prefix}    ")
                     if v.lower() == "false":
-                        #if 'spec_type' in new_prefix:
-                        #    print(f"ESTOY AQUI 2  {v} {new_prefix}    ")
                         v = "false"
                     elif v.lower() == "true": ## Caso readOnlyRootFilesystem
                         v = "true"
@@ -555,20 +555,26 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
                             else:
                                 v = "true"
                             new_prefix = f"{new_prefix}_{aux_value}"
-                    elif '<'  in v or '>' in v:
-                        print(f"Valor del V {v}")
-                        if '< ' in v and not '> ' in v:
+                    elif '<'  in v or '>' in v: ## Not works actually for string max, min
+                        #print(f"Valor del V {v}")
+                        aux_value = []
+                        value_int = 1 ## Value for convert to int if the value captured is Integer
+                        if '< ' in v and not '> ' in v: ## spec_maxUnavailable
                             aux_value = v.split("<")
+                            value_int = int(aux_value[1]) if aux_value[1].isdigit() else print("Caso intervalo con String")
                             v = f"< {aux_value[1]}"
                         else:
                             ## Defect case. Only works for solitary Maxs, Mins
                             aux_value = v.split(">")
+                            value_int = int(aux_value[1]) if aux_value[1].isdigit() else print("Caso intervalo con String")
                             v = f"> {aux_value[1]}"
-                            print(f"Valor del V 2:  {v}")
-
-                    else: ## fallback; Mod necesaria para capturar el mapeo entre el STR negado y la seleccion de este valor en el grupo alternative de _spec_type
+                              
+                        if new_prefix.endswith('spec_maxUnavailable'): ## specific case for alternatyve types values; asString, asInteger
+                            new_prefix = f"{new_prefix}_asInteger" if isinstance(value_int, int) else f"{new_prefix}_asString"
+                    
+                    else: ## fallback
                         v = f"'{str(v)}'"
-                        print(f"ESTOY AQUIII  {v} {new_prefix}")
+                        #print(f"  {v} {new_prefix}")
                 elif isinstance(v, (int, float)):
                     #print(f"Valores Caso INT   {v}")
                     v == str(v)
@@ -577,9 +583,11 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
                         for value_access in v:
                             v = value_access
                         new_prefix = f"{new_prefix}_StringValue"
+                    else:
+                        print(f"Case not evaluated: {new_prefix}")
                 else:
                     # fallback
-                    print(f"Valores fallback NO SE EJECUTA¿?   {v}")
+                    print(f"Valores fallback   {v}")
                     v = f"'{str(v)}'"
                 
                 conditions.append((new_prefix, v))
@@ -614,7 +622,7 @@ def generate_uvl_from_policies(directory, output_path):
         category_map.setdefault(cat, []).append(entry)
 
     #lines = ["namespace PoliciesKyverno", "features", "\tPolicies {abstract}", "\t\toptional"]
-    lines = ["namespace Policies", "imports", "    k8s.Pods as Pod\n    k8s.ServiceAccount as ServAcc\n    k8s.RoleBinding as RoleBinding\n    k8s.ClusterRoleBinding as ClusRole\n    k8s.Service as Serv\n    k8s.Ingress as Ingress\n    k8s.Job as Job\n    k8s.DaemonSet as DaemonSet\n    k8s.Deployment as Deployment\n    k8s.StatefulSet as StatefulSet\n    k8s.Secret as Secret\n    k8s.PersistentVolumeClaim as PersistVolumeClaim",
+    lines = ["namespace Policies", "imports", "    k8s.Pods as Pod\n    k8s.ServiceAccount as ServAcc\n    k8s.RoleBinding as RoleBinding\n    k8s.ClusterRoleBinding as ClusRole\n    k8s.Service as Serv\n    k8s.Ingress as Ingress\n    k8s.Job as Job\n    k8s.DaemonSet as DaemonSet\n    k8s.Deployment as Deployment\n    k8s.StatefulSet as StatefulSet\n    k8s.Secret as Secret\n    k8s.PersistentVolumeClaim as PersistVolumeClaim\n    k8s.PodDisruptionBudgetFeatures as PodDisrupBud",
               "features", "\tPoliciesKyverno {abstract}", "\t\toptional"]
 
     for cat, entries in category_map.items():
@@ -647,6 +655,7 @@ def generate_uvl_from_policies(directory, output_path):
     lines.append("\t\t\tStatefulSet.StatefulSetFeatures")
     lines.append("\t\t\tSecret.SecretFeatures")
     lines.append("\t\t\tPersistVolumeClaim.PersistentVolumeClaimFeatures")
+    lines.append("\t\t\tPodDisrupBud.PodDisruptionBudgetFeatures")
     lines.append("constraints")
     # Recolectar todos los archivos YAML del directorio principal y subcarpetas (recursivo)
     all_yaml_files = []
@@ -702,11 +711,21 @@ def generate_uvl_from_policies(directory, output_path):
         if len(normalized_exprs) == 1:
             constraint = normalized_exprs[0]
         else:
-            if "KeyMap" in " ".join(normalized_exprs) and "ValueMap" in " ".join(normalized_exprs):
-                # Caso especial: agrupar con OR entre pares (AppArmor, etc.)
-                constraint = f"({' | '.join(normalized_exprs)})"
+            if any("KeyMap" in expr for expr in normalized_exprs) and any("ValueMap" in expr for expr in normalized_exprs): ## Detect features (K,V)
+                # Agroup KeyMap-ValueMap
+                grouped = []
+                current = []
+                for expr in normalized_exprs:
+                    current.append(expr)
+                    # Each 2 elements we have a Pair (KeyMap, ValueMap)
+                    if len(current) == 2:
+                        grouped.append(f"({current[0]} & {current[1]})")
+                        current = []
+                if current: # For safety
+                    grouped.append(f"({current[0]})")
+                constraint = " | ".join(grouped) ## | for different pairs
             else:
-                # Caso normal: todas las condiciones unidas con AND
+                # Normal case, AND every feature adition because are a differents groups and union intervals
                 constraint = f"({' & '.join(normalized_exprs)})"
 
         lines.append(f"\t{policy_name} => {constraint}")
