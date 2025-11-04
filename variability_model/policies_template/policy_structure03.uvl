@@ -65,6 +65,12 @@ features
 			Windows_Security
 				optional
 					Require_Run_As_ContainerUser_Windows {doc 'Containers must be required to run as ContainerUser This policy ensures that the fields  specsecurityContextwindowsOptionsrunAsUserName, speccontainers[*]securityContextwindowsOptionsrunAsUserName,  specinitContainers[*]securityContextwindowsOptionsrunAsUserName, and  is either unset or set to ContainerUser', severity 'medium', action 'audit', k8sRange '1_22‑1_28'}
+	OPAConstraints {abstract}
+		optional
+			Kubernetes_checks {abstract}
+				optional
+					no_sysadmin_capability {doc 'SYS_ADMIN gives the processes running inside the container privileges that are equivalent to root.', severity 'HIGH', tool 'OPA', recommended 'Remove the SYS_ADMIN capability from 'containers[].securityContext.capabilities.add'.'}
+					no_sysmodule_capability {doc 'The SYS_MODULE capability grants attackers the ability to install and remove kernel modules, posing serious security risks.', severity 'HIGH', tool 'OPA', recommended 'To mitigate potential security risks, it is strongly recommended to remove the SYS_MODULE capability from 'containers[].securityContext.capabilities.add'. It is advisable to follow the practice of dropping all capabilities and only adding the necessary ones.'}
 			Pod.PodFeatures
 			ServAcc.ServiceAccountFeatures
 			RoleBinding.RoleBindingFeatures
