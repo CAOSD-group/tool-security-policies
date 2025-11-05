@@ -742,6 +742,10 @@ def generate_uvl_from_policies(directory, output_path):
                 constraint = f"({' & '.join(normalized_exprs)})"
 
         lines.append(f"\t{policy_name} => {constraint}")
+
+    for opa in opa_results: ## Write Policies of OPA Rego
+        lines.append(f"\t{opa['constraint']}")
+
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
 

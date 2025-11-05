@@ -74,7 +74,7 @@ def find_uvl_path_for_rego(kind, rego_path, feature_dict, kind_map): ## feature_
     #rego_key = rego_path.replace(".", "_")  # container.securityContext.capabilities.add
     rego_key = normalize_rego_path(rego_path).replace(".", "_")
 
-    print(f"kind    rego    {real_kind}  {rego_key}")
+    #print(f"kind    rego    {real_kind}  {rego_key}")
     # Buscar las coincidencias en el diccionario
     candidates = []
 
@@ -180,6 +180,16 @@ def extract_conditions_from_rego(rego_text):
             "value": value
         })
 
+    # Detect hostPort usage: ports[_].hostPort
+    hostport_pat = re.compile(r'\bports\[_?\]\.hostPort\b|\bports\[\*\]\.hostPort\b')
+
+    if hostport_pat.search(rego_text):
+        conditions.append({
+            "field": "container.ports.hostPort",
+            "operator": "EXISTS",
+            "value": ""  # not needed
+        })
+
     return conditions
 
 
@@ -232,9 +242,9 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
 
         # Operador UVL traducido
         if operator == "==":
-            expr = f"{kind_cap}.{feature} != {value}"
+            expr = f"{kind_cap}.{feature} != '{value}'"
         elif operator == "!=":
-            expr = f"{kind_cap}.{feature} == {value}"
+            expr = f"{kind_cap}.{feature} == '{value}'"
         else:
             expr = f"UNSUPPORTED_OPERATOR({operator})"
 
