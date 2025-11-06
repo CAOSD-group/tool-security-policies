@@ -164,12 +164,13 @@ def extract_metadata_from_rego(rego_text):
     }
 
 
-def extract_conditions_from_rego(rego_text):
+def extract_conditions_from_rego(rego_text, recommended_action=""):
     # Example match: container.securityContext.capabilities.add[_] == "SYS_MODULE"
     pat = re.compile(r'(\S+?)\s*(==|!=)\s*"([^"]+)"')
     matches = pat.findall(rego_text)
-
+    print(f"MATCHES NONE {matches}")
     conditions = []
+
     for field, op, value in matches:
         # normalize container.securityContext.capabilities.add[_]
         field = field.replace("[_]", "")
@@ -179,6 +180,21 @@ def extract_conditions_from_rego(rego_text):
             "operator": op,
             "value": value
         })
+    
+    # Extraer propiedades desde texto si no hay condiciones detectadas
+    if not conditions and recommended_action:
+        text = recommended_action.replace('"', "'")
+        prop_pat = re.findall(r"'(spec[.\w\[\]]+)'", text)
+        for prop in prop_pat:
+            # Si el texto dice "to true" => interpretamos que queremos != true
+            val = "true" if "true" in text.lower() else "false"
+            conditions.append({"field": prop, "operator": "==", "value": val})
+
+    # Si aún no hay condiciones, buscar rutas de 'msg' en el código
+    if not conditions:
+        msg_pat = re.findall(r"'(spec[.\w\[\]]+)'", rego_text)
+        for prop in msg_pat:
+            conditions.append({"field": prop, "operator": "==", "value": "true"})
 
     # Detect hostPort usage: ports[_].hostPort
     hostport_pat = re.compile(r'\bports\[_?\]\.hostPort\b|\bports\[\*\]\.hostPort\b')
@@ -208,6 +224,7 @@ def parse_rego_policy(path):
 
 def rego_policy_to_uvl(policy, field_map, kind_map):
     meta = policy["metadata"]
+    print(f"Policie\n   {policy}")
     cond = policy["conditions"][0]  # Asumimos 1 condición base por ahora
 
     field = cond["field"]
@@ -240,11 +257,22 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
             continue
         kind_cap = kind.capitalize() ### Import of objects, adjust like the generate_uvl_policies -- If 
 
+        # Prueba para operadores boolean UVL traducido
+
+        """if operator == "==" and value.lower() == "true":
+            expr = f"{kind}.{feature} != true"
+        elif operator == "!=" and value.lower() == "true":
+            expr = f"{kind}.{feature} == true"""
+
         # Operador UVL traducido
-        if operator == "==":
+        if operator == "==" and not value.lower() == "true":
             expr = f"{kind_cap}.{feature} != '{value}'"
-        elif operator == "!=":
+        elif operator == "!=" and not value.lower() == "true":
             expr = f"{kind_cap}.{feature} == '{value}'"
+        elif operator == "==" and value.lower() == "true":
+            expr = f"{kind}.{feature} != true"
+        elif operator == "!=" and value.lower() == "true":
+            expr = f"{kind}.{feature} == true"
         else:
             expr = f"UNSUPPORTED_OPERATOR({operator})"
 
@@ -287,7 +315,7 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
 ## ../resources/kyverno_policies_yamls
 field_map = load_feature_dict("../resources/mapping_csv/kubernetes_mapping_properties_features.csv")
 #data = parse_rego_policy("../resources/kyverno_policies_yamls/OPA_Policies/SYS_ADMIN_capability.rego")
-data = parse_rego_policy("../resources/kyverno_policies_yamls/OPA_Policies/SYS_MODULE_capability.rego")
+data = parse_rego_policy("../resources/kyverno_policies_yamls/OPA_Policies/host_ipc.rego")
 
 kind_map = load_kinds_prefix_mapping("../resources/mapping_csv/kubernetes_kinds_versions_detected.csv")
 
