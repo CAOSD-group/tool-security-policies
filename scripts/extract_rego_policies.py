@@ -60,6 +60,44 @@ def normalize_kind_name(kind, kind_map):
             return k  # Return correctly capitalized e.g. CronJob
     return kind.capitalize()  # fallback
 
+def get_base_prefix(kind_prefix): ## Used by the generate_uvl_policies
+    if kind_prefix == "Pod":
+        return "Pod"
+    elif "Replicaset" == kind_prefix:
+        return "ReplicaSet"
+    elif "Replicationcontroller" == kind_prefix:
+        return "RepController"
+    elif "Deploymentconfig" == kind_prefix: ## ToDo: More specific str of types if add more kindsQ
+        return "DeployConfig" 
+    elif "Cronjob" == kind_prefix: ## Added for Rego subtypes
+        return "CronJob"
+    elif "Serviceaccount" in kind_prefix:
+        return "ServAcc"
+    elif "Service" in kind_prefix:
+        return "Serv"
+    elif "Clusterolebinding" in kind_prefix: ## ToDo: More specific str of types if add more kindsQ
+        return "ClusRole" 
+    elif "Rolebinding" in kind_prefix:
+        return "RoleBinding"
+    elif "Ingress" in kind_prefix:
+        return "Ingress"
+    elif "Job" in kind_prefix:
+        return "Job"
+    elif "Daemonset" in kind_prefix:
+        return "DaemonSet"
+    elif "Deployment" in kind_prefix:
+        return "Deployment"
+    elif "Statefulset" in kind_prefix:
+        return "StatefulSet"
+    elif "Secret" in kind_prefix:
+        return "Secret" # PersistentVolumeClaim
+    elif "Persistentvolumeclaim" in kind_prefix:
+        return "PersistVolumeClaim" ## PodDisruptionBudgetFeatures
+    elif "Poddisruptionbudget" in kind_prefix:
+        return "PodDisrupBud"    
+    else:
+        return "Kubernetes"
+    
 
 def normalize_rego_path(rego_path):
     # Eliminamos el prefijo 'container.' para que no interfiera con la búsqueda
@@ -166,15 +204,15 @@ def extract_metadata_from_rego(rego_text):
 
 def extract_conditions_from_rego(rego_text, recommended_action=""):
     # Example match: container.securityContext.capabilities.add[_] == "SYS_MODULE"
-    pat = re.compile(r'(\S+?)\s*(==|!=)\s*"([^"]+)"')
-    matches = pat.findall(rego_text)
-    print(f"MATCHES NONE {matches}")
+    pat_str = re.compile(r'(\S+?)\s*(==|!=)\s*"([^"]+)"')
+    matches_str = pat_str.findall(rego_text)
+    print(f"MATCHES NONE {matches_str}")
     conditions = []
-
-    for field, op, value in matches:
+    cond_text = recommended_action.replace('"', "'")
+    
+    for field, op, value in matches_str:
         # normalize container.securityContext.capabilities.add[_]
         field = field.replace("[_]", "")
-
         conditions.append({
             "field": field,
             "operator": op,
@@ -183,16 +221,40 @@ def extract_conditions_from_rego(rego_text, recommended_action=""):
     
     # Extraer propiedades desde texto si no hay condiciones detectadas
     if not conditions and recommended_action:
-        text = recommended_action.replace('"', "'")
-        prop_pat = re.findall(r"'(spec[.\w\[\]]+)'", text)
+        cond_text = recommended_action.replace('"', "'")
+        prop_pat = re.findall(r"'(spec[.\w\[\]]+)'", cond_text)
         for prop in prop_pat:
             # Si el texto dice "to true" => interpretamos que queremos != true
-            val = "true" if "true" in text.lower() else "false"
+            val = "true" if "true" in cond_text.lower() else "false"
             conditions.append({"field": prop, "operator": "==", "value": val})
+
+        prop_pat_container = re.findall(r"'(containers[.\w\[\]]+)'", cond_text)
+        print(f"Prop pat  DUPLICADO EN RECCOMENDED  {prop_pat_container}")
+        if prop_pat_container and not '>' or '<' in cond_text:
+            for prop01 in prop_pat_container:
+                # Si el texto dice "to true" => interpretamos que queremos != true
+                val = "true" if "true" in cond_text.lower() else "false"
+                field_name = prop01.replace("containers[].","").replace("containers[*].","")
+                conditions.append({"field": field_name, "operator": "==", "value": val})
+
+    # Regex 3: Para números enteros (ej: ... <= 10000)
+    # \d+ captura uno o más dígitos
+    
+    #pat_num = re.compile(r'(\S+?)\s*(==|!=|<=|>=|<|>)\s*(\d+)\b')
+    pat_num = re.compile(r"'(containers[.\w\[\]\*]+)'[^<>=]+(==|!=|<=|>=|<|>)\s*(\d+)")
+    matches_num = pat_num.findall(cond_text)
+    if matches_num:
+        print(f"MATCHES NUM SE EXEC {cond_text}  {matches_num}")
+        for field, op, value in matches_num:
+                val = ">" if ">" in cond_text.lower() else "<"
+                field_name = field.replace("containers[].","").replace("containers[*].","")
+                conditions.append({"field": field_name, "operator": val, "value": value, # El valor es un string '10000'
+                })
 
     # Si aún no hay condiciones, buscar rutas de 'msg' en el código
     if not conditions:
         msg_pat = re.findall(r"'(spec[.\w\[\]]+)'", rego_text)
+        print(f"Prop pat    {msg_pat}")
         for prop in msg_pat:
             conditions.append({"field": prop, "operator": "==", "value": "true"})
 
@@ -214,7 +276,7 @@ def parse_rego_policy(path):
         rego = f.read()
 
     metadata = extract_metadata_from_rego(rego)
-    conds = extract_conditions_from_rego(rego)
+    conds = extract_conditions_from_rego(rego, metadata["recommended_action"])
 
     return {
         "metadata": metadata,
@@ -255,8 +317,9 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
         if not feature:
             print(f"[WARNING] No UVL mapping for field '{field_key}' in kind '{kind}'")
             continue
-        kind_cap = kind.capitalize() ### Import of objects, adjust like the generate_uvl_policies -- If 
+        kind_cap = get_base_prefix(kind.capitalize()) ### Import of objects, adjust like the generate_uvl_policies -- If 
 
+        ## get_base_prefix
         # Prueba para operadores boolean UVL traducido
 
         """if operator == "==" and value.lower() == "true":
@@ -265,14 +328,18 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
             expr = f"{kind}.{feature} == true"""
 
         # Operador UVL traducido
-        if operator == "==" and not value.lower() == "true":
+        print(f"operator    {operator}  {value}")
+        if operator == "==" and not value.lower() == "true" and not value.lower() == "false":
             expr = f"{kind_cap}.{feature} != '{value}'"
         elif operator == "!=" and not value.lower() == "true":
             expr = f"{kind_cap}.{feature} == '{value}'"
-        elif operator == "==" and value.lower() == "true":
-            expr = f"{kind}.{feature} != true"
-        elif operator == "!=" and value.lower() == "true":
-            expr = f"{kind}.{feature} == true"
+        elif operator == "==" and value.lower() == "true": ## Do not set ... true:: maybe change the condition with a regex expression 
+            # We can use the value and the expressions in recommended_action to define the ! or true addition
+            expr = f"!{kind_cap}.{feature}"
+        elif operator == "==" and value.lower() == "false": ## Case privileged
+            expr = f"!{kind_cap}.{feature}"
+        elif operator == ">": ## Case runs_with_UID_le_10000
+            expr = f"{kind_cap}.{feature} > {value}"            
         else:
             expr = f"UNSUPPORTED_OPERATOR({operator})"
 
@@ -315,7 +382,7 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
 ## ../resources/kyverno_policies_yamls
 field_map = load_feature_dict("../resources/mapping_csv/kubernetes_mapping_properties_features.csv")
 #data = parse_rego_policy("../resources/kyverno_policies_yamls/OPA_Policies/SYS_ADMIN_capability.rego")
-data = parse_rego_policy("../resources/kyverno_policies_yamls/OPA_Policies/host_ipc.rego")
+data = parse_rego_policy("../resources/kyverno_policies_yamls/OPA_Policies/runs_with_UID_le_10000.rego")
 
 kind_map = load_kinds_prefix_mapping("../resources/mapping_csv/kubernetes_kinds_versions_detected.csv")
 
