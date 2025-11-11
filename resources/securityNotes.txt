@@ -190,3 +190,18 @@ io_k8s_api_batch_v1_Job_metadata_ownerReferences_kind
 Trying to map policies in Rego to UVL
 
 io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_containers_securityContext_capabilities_add
+
+
+Otras rego omitidas: Se usan props como cpu o memory que no se definen en el fm, solo resources_limits
+Ese es el matiz clave por el cual esta política KSV011 (limit-cpu) no puede mapearse 1:1 a un feature real de Kubernetes,
+ al menos no con el modelo UVL actual generado.
+limit-cpu
+limit-memory == CPU_not_limited.rego
+Entonces, aunque no haya cpu, la equivalencia semántica sería: -- Pero no es valido ya que requereria de definir el limite como Int o String
+limit_cpu => Pod.io_k8s_api_core_v1_Pod_spec_containers_resources_limits
+
+
+Reports of security to check:
+https://www.dynatrace.com/resources/ebooks/kubernetes-in-the-wild/
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate

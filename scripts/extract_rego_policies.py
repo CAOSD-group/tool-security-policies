@@ -221,6 +221,7 @@ def extract_conditions_from_rego(rego_text, recommended_action=""):
     
     # Extraer propiedades desde texto si no hay condiciones detectadas
     if not conditions and recommended_action:
+        print(f"reccomended {recommended_action}")
         cond_text = recommended_action.replace('"', "'")
         prop_pat = re.findall(r"'(spec[.\w\[\]]+)'", cond_text)
         for prop in prop_pat:
@@ -229,8 +230,10 @@ def extract_conditions_from_rego(rego_text, recommended_action=""):
             conditions.append({"field": prop, "operator": "==", "value": val})
 
         prop_pat_container = re.findall(r"'(containers[.\w\[\]]+)'", cond_text)
+        #prop_pat_container = re.findall(r"['\"](containers(?:\[\]\.|[\w\.\[\]]+)*)['\"]", cond_text)
+
         print(f"Prop pat  DUPLICADO EN RECCOMENDED  {prop_pat_container}")
-        if prop_pat_container and not '>' or '<' in cond_text:
+        if prop_pat_container and ('>' not in cond_text and '<' not in cond_text):
             for prop01 in prop_pat_container:
                 # Si el texto dice "to true" => interpretamos que queremos != true
                 val = "true" if "true" in cond_text.lower() else "false"
@@ -305,45 +308,76 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
     # Feature name sanitized
     #print(f"{feature}")
     feature_name = meta["short_code"].replace("-", "_") # meta["id"] + "_" + 
-    print(f"{feature_name}")
+    print(f"Sigue {feature_name}")## 
     ## To Do: clean the descriptions
     feature_block = f"""{feature_name} {{doc '{meta['description']}', severity '{meta['severity']}', tool 'OPA', recommended '{meta['recommended_action']}'}}"""
     
     constraint_parts = [] ## Added only candidate crossed
-    for kind in meta["kinds"]:
-        print(f"Kind    {kind}")
-        feature, is_list, value_field = find_uvl_path_for_rego(kind, field_key, field_map, kind_map)
- 
-        if not feature:
-            print(f"[WARNING] No UVL mapping for field '{field_key}' in kind '{kind}'")
-            continue
-        kind_cap = get_base_prefix(kind.capitalize()) ### Import of objects, adjust like the generate_uvl_policies -- If 
+    kinds = meta.get("kinds", [])
+    # --- Case 1: Normal Metadata (has kinds) ---
+    if kinds:
+        for kind in meta["kinds"]:
+            print(f"NO Sigue {feature_name}")##
+            print(f"Kind    {kind}")
+            feature, is_list, value_field = find_uvl_path_for_rego(kind, field_key, field_map, kind_map)
+    
+            if not feature:
+                print(f"[WARNING] No UVL mapping for field '{field_key}' in kind '{kind}'")
+                continue
+            kind_cap = get_base_prefix(kind.capitalize()) ### Import of objects, adjust like the generate_uvl_policies -- If 
 
-        ## get_base_prefix
-        # Prueba para operadores boolean UVL traducido
+            ## get_base_prefix
+            # Prueba para operadores boolean UVL traducido
 
-        """if operator == "==" and value.lower() == "true":
-            expr = f"{kind}.{feature} != true"
-        elif operator == "!=" and value.lower() == "true":
-            expr = f"{kind}.{feature} == true"""
+            """if operator == "==" and value.lower() == "true":
+                expr = f"{kind}.{feature} != true"
+            elif operator == "!=" and value.lower() == "true":
+                expr = f"{kind}.{feature} == true"""
 
-        # Operador UVL traducido
-        print(f"operator    {operator}  {value}")
-        if operator == "==" and not value.lower() == "true" and not value.lower() == "false":
-            expr = f"{kind_cap}.{feature} != '{value}'"
-        elif operator == "!=" and not value.lower() == "true":
-            expr = f"{kind_cap}.{feature} == '{value}'"
-        elif operator == "==" and value.lower() == "true": ## Do not set ... true:: maybe change the condition with a regex expression 
-            # We can use the value and the expressions in recommended_action to define the ! or true addition
-            expr = f"!{kind_cap}.{feature}"
-        elif operator == "==" and value.lower() == "false": ## Case privileged
-            expr = f"!{kind_cap}.{feature}"
-        elif operator == ">": ## Case runs_with_UID_le_10000
-            expr = f"{kind_cap}.{feature} > {value}"            
-        else:
-            expr = f"UNSUPPORTED_OPERATOR({operator})"
+            # Operador UVL traducido
+            print(f"operator    {operator}  {value}")
+            if operator == "==" and not value.lower() == "true" and not value.lower() == "false":
+                expr = f"{kind_cap}.{feature} != '{value}'"
+            elif operator == "!=" and not value.lower() == "true":
+                expr = f"{kind_cap}.{feature} == '{value}'"
+            elif operator == "==" and value.lower() == "true": ## Do not set ... true:: maybe change the condition with a regex expression 
+                # We can use the value and the expressions in recommended_action to define the ! or true addition
+                expr = f"{kind_cap}.{feature}"
+            elif operator == "==" and value.lower() == "false": ## Case privileged
+                expr = f"!{kind_cap}.{feature}"
+            elif operator == ">": ## Case runs_with_UID_le_10000
+                expr = f"{kind_cap}.{feature} > {value}"            
+            else:
+                expr = f"UNSUPPORTED_OPERATOR({operator})"
+            constraint_parts.append(expr)
+    # --- Case 2: No kinds → buscar por feature global ---
+    else:
+        print("[INFO] Policy without explicit kinds. Searching by property only...")
+        matches = []
+        for midle, row in field_map.items():
+            # Buscar coincidencias con el nombre de la propiedad
+            if field_key.replace(".", "_") in midle:
+                matches.append(row)
 
-        constraint_parts.append(expr)
+        if not matches:
+            print(f"[WARNING] No features matched for property '{field_key}'")
+            return None
+
+        for row in matches:
+            feature = row["Feature"]
+            if operator == "==" and value.lower() in ("true", "false"):
+                expr = f"!{feature}" if value.lower() == "true" else f"{feature}"
+            elif operator == "==" and value not in ("true", "false"):
+                expr = f"{feature} != '{value}'"
+            elif operator == "!=" and value.lower() == "true":
+                expr = f"{feature}"
+            elif operator == ">":
+                expr = f"{feature} > {value}"
+            else:
+                expr = f"UNSUPPORTED_OPERATOR({operator})"
+            constraint_parts.append(expr)
+
+           
     print(f"Const parts {constraint_parts}")    
     if not constraint_parts:
         print("[ERROR] No constraints generated, skipping policy")
@@ -351,27 +385,6 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
 
     # Join con AND ya que todos los kinds deben cumplir la policy
     constraint = f"{feature_name} => " + " & ".join(constraint_parts)
-    """if not feature:
-        print(feature)
-        print(f"[WARNING] No UVL mapping for field: {field_key}")
-        return None"""
-    
-    # Buscar traducción en el CSV
-    """if field_key not in field_map:
-        print(f"[WARNING] No UVL mapping for field: {field_key}")
-        return None
-    
-    #uvl_attr = field_map[field_key]
-    uvl_attr = feature
-    # Convert operator (only simple == banned)
-    if operator == "==": ## Pod :: Prefix
-        expr = f"Pod.{uvl_attr} != {value}"
-    elif operator == "!=":
-        expr = f"Pod.{uvl_attr} == {value}"
-    else:
-        expr = f"UNSUPPORTED_OPERATOR({operator})"""
-
-    #constraint = f"{feature_name} => {expr}"
     print(f"CONSTRAINT: {constraint}")
     return feature_block, constraint
 
@@ -382,7 +395,7 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
 ## ../resources/kyverno_policies_yamls
 field_map = load_feature_dict("../resources/mapping_csv/kubernetes_mapping_properties_features.csv")
 #data = parse_rego_policy("../resources/kyverno_policies_yamls/OPA_Policies/SYS_ADMIN_capability.rego")
-data = parse_rego_policy("../resources/kyverno_policies_yamls/OPA_Policies/runs_with_UID_le_10000.rego")
+data = parse_rego_policy("../resources/kyverno_policies_yamls/OPA_Policies/runs_as_root.rego")
 
 kind_map = load_kinds_prefix_mapping("../resources/mapping_csv/kubernetes_kinds_versions_detected.csv")
 
