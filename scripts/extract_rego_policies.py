@@ -94,7 +94,7 @@ def get_base_prefix(kind_prefix): ## Used by the generate_uvl_policies
     elif "Persistentvolumeclaim" in kind_prefix:
         return "PersistVolumeClaim" ## PodDisruptionBudgetFeatures
     elif "Poddisruptionbudget" in kind_prefix:
-        return "PodDisrupBud"    
+        return "PodDisrupBud"
     else:
         return "Kubernetes"
     
@@ -377,8 +377,7 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
                 expr = f"UNSUPPORTED_OPERATOR({operator})"
             constraint_parts.append(expr)
 
-           
-    print(f"Const parts {constraint_parts}")    
+    print(f"Const parts {constraint_parts}")
     if not constraint_parts:
         print("[ERROR] No constraints generated, skipping policy")
         return None
