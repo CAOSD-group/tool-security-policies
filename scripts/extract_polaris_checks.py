@@ -1,154 +1,456 @@
-# extract_polaris_policies.py
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-import os, yaml, re, json
-from collections import defaultdict
+import os
 import csv
-def parse_polaris_check(filepath):
+import yaml
+
+
+# =========================
+# Carga de FM y Kinds
+# =========================
+
+def load_feature_dict(csv_file):
     """
-    Parse un check Polaris (YAML o Go-embedded JSON Schema)
-    y extrae metadatos relevantes.
+    Carga Midle -> fila completa del CSV de mapping K8s.
     """
-    with open(filepath, 'r', encoding='utf-8') as f:
-        text = f.read()
+    feature_dict = {}
+    with open(csv_file, newline="", encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            feature_dict[row["Midle"]] = row
+    return feature_dict
 
-    # Detectar YAML frontmatter o JSON Schema incrustado
-    try:
-        data = yaml.safe_load(text)
-    except Exception:
-        data = None
 
-    # Si está embebido en Go, extraer con regex tipo `{ "schema": ... }`
-    if not isinstance(data, dict):
-        match = re.search(r'schema:\s*(\{.*\})', text, re.DOTALL)
-        if match:
-            schema_text = match.group(1)
-            data = yaml.safe_load(schema_text)
+def load_kinds_prefix_mapping(csv_file):
+    """
+    Carga {Kind -> Prefix}. Ahora mismo no lo usamos mucho porque
+    Feature ya viene con el prefijo completo, pero lo dejamos
+    por si quieres hacer fallbacks o debug.
+    """
+    kind_map = {}
+    with open(csv_file, newline="", encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            prefix = row.get("Prefix") or row.get("Version") or ""
+            kind_map[row["Kind"]] = prefix
+    return kind_map
 
-    if not data:
+
+# =========================
+# Helpers de Polaris
+# =========================
+
+def resolve_ref(root_schema: dict, ref: str):
+    """
+    Resuelve un $ref del estilo "#/$defs/goodSecurityContext" dentro del JSON Schema.
+    """
+    if not isinstance(root_schema, dict):
         return None
+    if not ref.startswith("#/"):
+        return None
+    parts = ref[2:].split("/")
+    node = root_schema
+    for p in parts:
+        if p in node:
+            node = node[p]
+        else:
+            return None
+    return node
 
-    # Polaris usa campos: target, category, schema, successMessage, failureMessage
-    check = {
-        "id": os.path.basename(filepath).replace(".yaml", ""),
-        "target": data.get("target", ""),
-        "category": data.get("category", ""),
-        "schema": data.get("schema", {}),
-        "successMessage": data.get("successMessage", ""),
-        "failureMessage": data.get("failureMessage", ""),
-    }
-    return check
 
-
-def extract_conditions_from_schema(schema):
+def resolve_target_kinds(check: dict):
     """
-    Analiza el JSON Schema del check y produce condiciones tipo UVL.
+    Devuelve lista de Kinds "reales" K8s sobre las que aplica el check.
+
+    Reglas:
+      - target: Controller + controllers.include -> los Kinds incluidos (Deployment, StatefulSet, ...)
+      - target: PodSpec -> ["Pod"]
+      - target: Container + schemaTarget: PodSpec -> ["Pod"]
+      - target: Container sin schemaTarget -> ["Container"] (kind lógico abstracto)
+      - target: apiGroup/Kind (rbac.authorization.k8s.io/ClusterRole) -> ["ClusterRole"]
+      - target simple (Pod, Deployment, ...) -> [target]
     """
+    target = check.get("target", "")
+    controllers = check.get("controllers", {}) or {}
+    schema_target = check.get("schemaTarget", "")
+
+    # Caso especial: Controller
+    if target == "Controller":
+        include = controllers.get("include") or []
+        if include:
+            return include
+
+    # PodSpec: se refiere al spec de un Pod
+    if target == "PodSpec":
+        return ["Pod"]
+
+    # Container + PodSpec: containers dentro de PodSpec (Pod.spec.containers)
+    if target == "Container" and schema_target == "PodSpec":
+        return ["Pod"]
+
+    # Container sin schemaTarget: lo tratamos como kind abstracto "Container"
+    if target == "Container":
+        return ["Container"]
+
+    # apiGroup/Kind
+    if "/" in target:
+        return [target.split("/")[-1]]
+
+    # target directo
+    return [target]
+
+
+def context_kind_for(real_kind: str, check: dict, prop_path: str) -> str:
+    """
+    Determina el contexto de FM (prefijo Midle) que usaremos para buscar en el CSV.
+
+    Ejemplos:
+      - runAsPrivileged (target=Container, schemaTarget=PodSpec) -> "Pod_spec_containers"
+      - hostIPCSet       (target=PodSpec)                        -> "Pod_spec"
+      - deploymentMissingReplicas (target=Controller + Deployment) -> "Deployment_spec"
+      - readinessProbeMissing (target=Container sin schemaTarget)  -> "Container"
+    """
+    target = check.get("target", "")
+    schema_target = check.get("schemaTarget", "")
+
+    # Container + PodSpec → Pod_spec_containers_*
+    if real_kind == "Pod" and target == "Container" and schema_target == "PodSpec":
+        return f"{real_kind}_spec_containers"
+
+    # PodSpec directo → Pod_spec_*
+    if target == "PodSpec" and real_kind == "Pod":
+        return f"{real_kind}_spec"
+
+    # Controller + Deployment/StatefulSet/... → <Kind>_spec_*
+    if target == "Controller" and real_kind in (
+        "Deployment", "StatefulSet", "DaemonSet", "Job", "CronJob", "ReplicaSet"
+    ):
+        return f"{real_kind}_spec"
+
+    # Recursos tipo Pod, Deployment,... si el path empieza por spec. → <Kind>_spec
+    if prop_path.startswith("spec.") and real_kind in (
+        "Pod", "Deployment", "StatefulSet", "DaemonSet", "Job", "CronJob", "ReplicaSet"
+    ):
+        return f"{real_kind}_spec"
+
+    # Container sin schemaTarget → Container_*
+    if real_kind == "Container":
+        return "Container"
+
+    # ClusterRole, ClusterRoleBinding, Role, RoleBinding, ServiceAccount, etc.
+    return real_kind
+
+
+# =========================
+# Extracción de condiciones desde JSON Schema Polaris
+# =========================
+
+def extract_conditions_from_schema(schema, prefix="", root_schema=None):
+    """
+    Extrae condiciones reales de un JSON Schema Polaris.
+
+    Devuelve lista de (prop_path, op, val), p.ej.:
+      - ("automountServiceAccountToken", "!=", True)
+      - ("spec.replicas", ">=", 2)
+      - ("securityContext.allowPrivilegeEscalation", "==", False)
+    """
+    if root_schema is None:
+        root_schema = schema
+
     conds = []
     if not isinstance(schema, dict):
         return conds
 
     props = schema.get("properties", {})
-    for field, rule in props.items():
-        if "not" in rule and "pattern" in rule["not"]:
-            conds.append({
-                "field": field,
-                "operator": "not match",
-                "value": rule["not"]["pattern"]
-            })
-        elif "enum" in rule:
-            conds.append({
-                "field": field,
-                "operator": "in",
-                "value": "|".join(map(str, rule["enum"]))
-            })
-        elif "pattern" in rule:
-            conds.append({
-                "field": field,
-                "operator": "match",
-                "value": rule["pattern"]
-            })
-        elif "type" in rule and "minimum" in rule:
-            conds.append({
-                "field": field,
-                "operator": ">=",
-                "value": rule["minimum"]
-            })
+
+    # 1) Propiedades directas
+    for name, rule in props.items():
+        prop_path = f"{prefix}.{name}" if prefix else name
+
+        # $ref → expandir
+        if "$ref" in rule:
+            resolved = resolve_ref(root_schema, rule["$ref"])
+            if resolved:
+                conds.extend(
+                    extract_conditions_from_schema(resolved, prefix=prop_path, root_schema=root_schema)
+                )
+            continue
+        if "allOf" in rule and isinstance(rule["allOf"], list):
+            for entry in rule["allOf"]:
+                if (
+                    isinstance(entry, dict)
+                    and "not" in entry
+                    and isinstance(entry["not"], dict)
+                    and "contains" in entry["not"]
+                ):
+                    contains = entry["not"]["contains"]
+                    if isinstance(contains, dict) and "pattern" in contains:
+                        pattern = contains["pattern"]
+
+                        # Convertir ^(?i)SYS_ADMIN$ → SYS_ADMIN
+                        literal = (
+                            pattern.replace("^(?i)", "")
+                                   .replace("(?i)", "")
+                                   .replace("^", "")
+                                   .replace("$", "")
+                        )
+
+                        conds.append((prop_path, "not_contains", literal))
+        # not.const → !=
+        if "not" in rule and isinstance(rule["not"], dict) and "const" in rule["not"]:
+            conds.append((prop_path, "!=", rule["not"]["const"]))
+
+        # const → ==
+        if "const" in rule:
+            conds.append((prop_path, "==", rule["const"]))
+
+        # pattern
+        if "pattern" in rule:
+            conds.append((prop_path, "matches", rule["pattern"]))
+
+        # not.pattern
+        if "not" in rule and isinstance(rule["not"], dict) and "pattern" in rule["not"]:
+            conds.append((prop_path, "not matches", rule["not"]["pattern"]))
+
+        # mínimo numérico (p.ej. replicas >= 2)
+        if "minimum" in rule:
+            conds.append((prop_path, ">=", rule["minimum"]))
+
+        # Recursión en sub-propiedades
+        if "properties" in rule:
+            conds.extend(
+                extract_conditions_from_schema(rule, prefix=prop_path, root_schema=root_schema)
+            )
+
+    # 2) required → != null
+    """if "required" in schema and isinstance(schema["required"], list):
+        for req in schema["required"] and not :
+            prop_path = f"{prefix}.{req}" if prefix else req
+            conds.append((prop_path, "!=", None))"""
+
+    # 3) anyOf / allOf
+    for key in ("anyOf", "allOf"):
+        if key in schema and isinstance(schema[key], list):
+            for block in schema[key]:
+                conds.extend(
+                    extract_conditions_from_schema(block, prefix=prefix, root_schema=root_schema)
+                )
+
     return conds
 
 
-def polaris_policy_to_uvl(check, kind_map):
-    """
-    Convierte un check Polaris en un bloque UVL compatible.
-    """
-    tool = "Polaris"
-    feature_name = check["id"].replace("-", "_")
-    feature_block = f"{feature_name} {{doc '{check['failureMessage']}', tool '{tool}', category '{check['category']}'}}"
+# =========================
+# Búsqueda de Feature en FM usando Midle
+# =========================
 
-    kind = check["target"]
-    kind_cap = kind.capitalize()
-    prefix = kind_map.get(kind_cap, "io_k8s_api_core_v1")
+def find_feature(context_kind: str, prop_path: str, feature_dict: dict):
+    """
+    Dado:
+      - context_kind: 'Pod_spec', 'Pod_spec_containers', 'Container', 'Deployment_spec', ...
+      - prop_path:    'hostIPC', 'automountServiceAccountToken',
+                      'spec.replicas', 'securityContext.allowPrivilegeEscalation'
 
-    conds = extract_conditions_from_schema(check["schema"])
-    constraint_parts = []
-    for cond in conds:
-        feature = f"{prefix}_{cond['field']}"
-        op, val = cond["operator"], cond["value"]
-        if op == "not match":
-            expr = f"!{kind_cap}.{feature} matches '{val}'"
-        elif op == "match":
-            expr = f"{kind_cap}.{feature} matches '{val}'"
-        elif op == "in":
-            expr = f"{kind_cap}.{feature} in ({val})"
-        elif op == ">=":
-            expr = f"{kind_cap}.{feature} >= {val}"
+    construye un Midle candidato y lo busca en el FM.
+
+    Estrategia:
+      1) match exacto:  <context>_<prop_key>
+      2) suffix igual
+      3) suffix que termina en "_" + prop_key
+      4) fallback: cualquier Midle de ese contexto que contenga prop_key
+    """
+    prop_key = prop_path.replace(".", "_")
+    exact_midle = f"{context_kind}_{prop_key}"
+
+    # 1) match exacto
+    if exact_midle in feature_dict:
+        return feature_dict[exact_midle]
+
+    candidates_equal = []
+    candidates_suffix = []
+    fallback = []
+
+    for midle, row in feature_dict.items():
+        if not midle.startswith(context_kind + "_"):
+            continue
+        suffix = midle[len(context_kind) + 1 :]  # quitar "<context>_"
+
+        if suffix == prop_key:
+            candidates_equal.append(row)
+        elif suffix.endswith("_" + prop_key):
+            candidates_suffix.append(row)
+        elif prop_key in suffix:
+            fallback.append(row)
+
+    if candidates_equal:
+        # el más corto suele ser el más directo
+        return min(candidates_equal, key=lambda r: len(r["Midle"]))
+
+    if candidates_suffix:
+        return min(candidates_suffix, key=lambda r: len(r["Midle"]))
+
+    if fallback:
+        return min(fallback, key=lambda r: len(r["Midle"]))
+
+    return None
+
+
+# =========================
+# Parser de checks Polaris
+# =========================
+
+def parse_polaris_check(path):
+    with open(path, "r", encoding="utf-8") as f:
+        data = yaml.safe_load(f)
+
+    if not isinstance(data, dict):
+        return None
+
+    schema = data.get("schema") or {}
+    if not schema and "schemaString" in data:
+        try:
+            schema = yaml.safe_load(data["schemaString"])
+        except Exception:
+            schema = {}
+
+    return {
+        "id": os.path.basename(path).replace(".yaml", ""),
+        "category": data.get("category", ""),
+        "target": data.get("target", ""),
+        "schemaTarget": data.get("schemaTarget", ""),
+        "controllers": data.get("controllers", {}),
+        "schema": schema,
+        "success": data.get("successMessage", ""),
+        "failure": data.get("failureMessage", ""),
+    }
+
+
+# =========================
+# Construcción de expresiones UVL
+# =========================
+
+def build_uvl_expr(kind_name: str, feature: str, op: str, val):
+    full_feature = f"{kind_name}.{feature}"
+
+    if op == "==":
+        print(f"full feature ===    {full_feature}  op  {op}    {kind_name}")
+        if isinstance(val, bool):
+            if str(val).lower() == 'false':
+                return f"!{full_feature}"
+            elif str(val).lower() == 'true':
+                return f"{full_feature}"
+            print(f"Hesho")
+            ##return f"{full_feature} = {str(val).lower()}"
+        if val is None:
+            return f"{full_feature} == null"
+        return f"{full_feature} == '{val}'"
+
+    if op == "!=":
+        print(f"full feature    {full_feature}  op  {op}    {kind_name}")
+        if isinstance(val, bool):
+            return f"!{full_feature}" ## {str(val).lower()}
+        elif isinstance(val, str) & val == 'null':
+            return f"{full_feature} != null"""
+        elif val == 'True':
+            pass
         else:
-            expr = f"{kind_cap}.{feature} == '{val}'"
-        constraint_parts.append(expr)
+            print(f"Nada")
+        """elif val is 'null':
+            return f"{full_feature} != null"""
+        #return f"{full_feature} != '{val}'"
 
-    constraint = f"{feature_name} => " + " & ".join(constraint_parts)
+    if op == ">=": ## differences between our modify model :: _valueInt **
+        return f"{full_feature} > {val}"
+
+    if op == "matches":
+        return f"{full_feature} matches '{val}'"
+    ##not_contains
+    if op == "not matches":
+            return f"!({full_feature} matches '{val}')"
+    if op == "not_contains":
+        if full_feature.endswith("capabilities_add"):
+            return f"({full_feature}_StringValue != '{val}')"
+        return f"({full_feature} != '{val}')"
+    # Fallback genérico
+    return f"{full_feature} {op} '{val}'"
+
+
+# =========================
+# Polaris → UVL usando FM
+# =========================
+
+def polaris_to_uvl(check, feature_dict, kind_map):
+    print(f"\nCheck: {check['id']}")
+    print(check)
+
+    # 1) Resolver Kinds reales sobre los que aplica
+    real_kinds = resolve_target_kinds(check)
+
+    # 2) Extraer condiciones del schema
+    conds = extract_conditions_from_schema(check["schema"])
+    if not conds:
+        print("  ⚠ Sin condiciones mapeables → skip")
+        return None
+
+    feature_name = check["id"].replace("-", "_")
+    feature_block = (
+        f"{feature_name} {{doc '{check['failure']}', tool 'Polaris', category '{check['category']}'}}"
+    )
+
+    all_parts = []
+
+    for real_kind in real_kinds:
+        for prop_path, op, val in conds:
+            print(f"  Prop path   {prop_path}  ({op} {val})   real_kind={real_kind}")
+
+            context_kind = context_kind_for(real_kind, check, prop_path)
+            fm_row = find_feature(context_kind, prop_path, feature_dict)
+
+            if not fm_row:
+                print(f"    ⚠ No FM match for Context={context_kind}, prop={prop_path}")
+                continue
+
+            feature = fm_row["Feature"]
+            expr = build_uvl_expr(real_kind, feature, op, val)
+            all_parts.append(expr)
+
+    if not all_parts:
+        print("  ❌ Ninguna condición mapeada a FM, se omite este check.")
+        return None
+
+    # Opcional: aquí podrías quitar duplicados si quieres
+    # all_parts = list(dict.fromkeys(all_parts))
+
+    constraint = f"{feature_name} => " + " & ".join(all_parts)
     return feature_block, constraint
 
 
-def extract_all_polaris_checks(path_root, kind_map):
+# =========================
+# MAIN de prueba
+# =========================
+
+if __name__ == "__main__":
+    FEATURES_CSV = "../resources/mapping_csv/kubernetes_mapping_properties_features.csv"
+    KINDS_CSV    = "../resources/mapping_csv/kubernetes_kinds_versions_detected.csv"
+    POLARIS_DIR  = "../resources/kyverno_policies_yamls/Polaris-checks"
+
+    feature_dict = load_feature_dict(FEATURES_CSV)
+    kind_map = load_kinds_prefix_mapping(KINDS_CSV)
+
     results = []
-    for root, _, files in os.walk(path_root):
+
+    for root, _, files in os.walk(POLARIS_DIR):
         for f in files:
-            if f.endswith(".yaml"):
-                check = parse_polaris_check(os.path.join(root, f))
-                if check:
-                    fb, c = polaris_policy_to_uvl(check, kind_map)
-                    results.append((fb, c))
-    return results
+            if not f.endswith(".yaml"):
+                continue
+            full_path = os.path.join(root, f)
+            check = parse_polaris_check(full_path)
+            if not check:
+                continue
+            uv = polaris_to_uvl(check, feature_dict, kind_map)
+            if uv:
+                results.append(uv)
 
-def load_kinds_prefix_mapping(file_path: str) -> dict:
-    """
-    Create a dict {Kind: Prefix} from the CSV generated by mappingUvlCsvK8sOld.py
-    Ex:
-        {"Pod": "io_k8s_api_core_v1", "RoleBinding": "io_k8s_api_rbac_v1", ...}
-    """
-    mapping = {}
-    with open(file_path, newline="", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            kind = row["Kind"].strip()
-            prefix = row["Prefix"].strip()
-            mapping[kind] = prefix
-    return mapping
-
-# DEMO USAGE
-
-## ../resources/kyverno_policies_yamls
-#field_map = load_feature_dict("../resources/mapping_csv/kubernetes_mapping_properties_features.csv")
-#data = parse_rego_policy("../resources/kyverno_policies_yamls/OPA_Policies/SYS_ADMIN_capability.rego")
-
-path_root = "../resources/kyverno_policies_yamls/Polaris-checks"
-kind_map = load_kinds_prefix_mapping("../resources/mapping_csv/kubernetes_kinds_versions_detected.csv")
-
-
-results = extract_all_polaris_checks(path_root, kind_map)
-if results:
-    print("\nFeature Block:\n", results)
-    #print("\nConstraint:\n", constraint)
-else:
-    print("No valid UVL mapping found.")
-print(f"######PRUEBAS")
+    print("\n\n### FINAL RESULTS ###\n")
+    for fb, cons in results:
+        print(fb)
+        print(cons)
+        print("-" * 80)
