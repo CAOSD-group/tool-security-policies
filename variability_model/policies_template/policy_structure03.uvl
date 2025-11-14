@@ -67,7 +67,7 @@ features
 					Require_Run_As_ContainerUser_Windows {doc 'Containers must be required to run as ContainerUser This policy ensures that the fields  specsecurityContextwindowsOptionsrunAsUserName, speccontainers[*]securityContextwindowsOptionsrunAsUserName,  specinitContainers[*]securityContextwindowsOptionsrunAsUserName, and  is either unset or set to ContainerUser', severity 'medium', action 'audit', k8sRange '1_22‑1_28'}
 	OPAConstraints {abstract}
 		optional
-			Kubernetes_checks {abstract}
+			K8s_checks {abstract}
 				optional
 					no_shared_ipc_namespace {doc 'Sharing the hostâ€™s IPC namespace allows container processes to communicate with processes on the host.', severity 'HIGH', tool 'OPA', recommended 'Do not set 'spec.template.spec.hostIPC' to true.'}
 					no_host_network {doc 'Sharing the hostâ€™s network namespace permits processes in the pod to communicate with processes bound to the hostâ€™s loopback adapter.', severity 'HIGH', tool 'OPA', recommended 'Do not set 'spec.template.spec.hostNetwork' to true.'}
@@ -80,6 +80,20 @@ features
 					use_high_uid {doc 'Force the container to run with user ID > 10000 to avoid conflicts with the hostâ€™s user table.', severity 'LOW', tool 'OPA', recommended 'Set 'containers[].securityContext.runAsUser' to an integer > 10000.'}
 					no_sysadmin_capability {doc 'SYS_ADMIN gives the processes running inside the container privileges that are equivalent to root.', severity 'HIGH', tool 'OPA', recommended 'Remove the SYS_ADMIN capability from 'containers[].securityContext.capabilities.add'.'}
 					no_sysmodule_capability {doc 'The SYS_MODULE capability grants attackers the ability to install and remove kernel modules, posing serious security risks.', severity 'HIGH', tool 'OPA', recommended 'To mitigate potential security risks, it is strongly recommended to remove the SYS_MODULE capability from 'containers[].securityContext.capabilities.add'. It is advisable to follow the practice of dropping all capabilities and only adding the necessary ones.'}
+	PolarisConstraints {abstract}
+		optional
+			Kubernetes_checks {abstract}
+				optional
+					automountServiceAccountToken {doc 'The ServiceAccount will be automounted', tool 'Polaris', severity 'warning', category 'Security'}
+					dangerousCapabilities {doc 'Container should not have dangerous capabilities', tool 'Polaris', severity 'danger', category 'Security'}
+					hostIPCSet {doc 'Host IPC should not be configured', tool 'Polaris', severity 'danger', category 'Security'}
+					hostNetworkSet {doc 'Host network should not be configured', tool 'Polaris', severity 'danger', category 'Security'}
+					hostPIDSet {doc 'Host PID should not be configured', tool 'Polaris', severity 'danger', category 'Security'}
+					hostPortSet {doc 'Host port should not be configured', tool 'Polaris', severity 'warning', category 'Security'}
+					notReadOnlyRootFilesystem {doc 'Filesystem should be read only', tool 'Polaris', severity 'warning', category 'Security'}
+					privilegeEscalationAllowed {doc 'Privilege escalation should not be allowed', tool 'Polaris', severity 'danger', category 'Security'}
+					runAsPrivileged {doc 'Should not be running as privileged', tool 'Polaris', severity 'danger', category 'Security'}
+					runAsRootAllowed {doc 'Should not be allowed to run as root', tool 'Polaris', severity 'danger', category 'Security'}
 			Pod.PodFeatures
 			ServAcc.ServiceAccountFeatures
 			RoleBinding.RoleBindingFeatures
@@ -134,3 +148,13 @@ constraints
 	use_high_uid => CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & Job.io_k8s_api_batch_v1_Job_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000
 	no_sysadmin_capability => CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_ADMIN' & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_ADMIN' & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_ADMIN' & Job.io_k8s_api_batch_v1_Job_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_ADMIN' & Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_ADMIN' & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_ADMIN' & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_ADMIN' & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_ADMIN'
 	no_sysmodule_capability => CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_MODULE' & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_MODULE' & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_MODULE' & Job.io_k8s_api_batch_v1_Job_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_MODULE' & Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_MODULE' & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_MODULE' & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_MODULE' & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_MODULE'
+	automountServiceAccountToken => !Pod.io_k8s_api_core_v1_Pod_spec_automountServiceAccountToken
+	dangerousCapabilities => (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_add_StringValue != 'ALL') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_add_StringValue != 'SYS_ADMIN') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_add_StringValue != 'NET_ADMIN')
+	hostIPCSet => !Pod.io_k8s_api_core_v1_Pod_spec_hostIPC
+	hostNetworkSet => !Pod.io_k8s_api_core_v1_Pod_spec_hostNetwork
+	hostPIDSet => !Pod.io_k8s_api_core_v1_Pod_spec_hostPID
+	hostPortSet => Container.io_k8s_api_core_v1_Container_ports_hostPort == 0
+	notReadOnlyRootFilesystem => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_readOnlyRootFilesystem
+	privilegeEscalationAllowed => !Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_allowPrivilegeEscalation
+	runAsPrivileged => !Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_privileged
+	runAsRootAllowed => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser > 1 & Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsNonRoot

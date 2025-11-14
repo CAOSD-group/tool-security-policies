@@ -3,7 +3,7 @@ import yaml
 import re
 import csv
 
-from extract_opa_batch import parse_opa_directory ## Import OPA Policies
+from extract_opa_batch import parse_opa_directory, parse_polaris_directory ## Import OPA Policies
 
 ### Special lists for features modified in Kubernetes FM
 special_features_config = ['procMount'] ## Pod_spec_..._procMount was String but in FM k8s is Bool with a mandatory subfeature String Pod_spec_..._procMount_nameStr
@@ -627,8 +627,9 @@ def generate_uvl_from_policies(directory, output_path):
     lines = ["namespace Policies", "imports", "    k8s.Pods as Pod\n    k8s.ServiceAccount as ServAcc\n    k8s.RoleBinding as RoleBinding\n    k8s.ClusterRoleBinding as ClusRole\n    k8s.Service as Serv\n    k8s.Ingress as Ingress\n    k8s.Job as Job\n    k8s.DaemonSet as DaemonSet\n    k8s.Deployment as Deployment\n    k8s.StatefulSet as StatefulSet\n    k8s.Secret as Secret\n    k8s.PersistentVolumeClaim as PersistVolumeClaim\n    k8s.PodDisruptionBudgetFeatures as PodDisrupBud",
               "features", "\tPoliciesKyverno {abstract}", "\t\toptional"]
     
-    opa_results = parse_opa_directory("../resources/kyverno_policies_yamls/OPA_Policies")
-    
+    #opa_results = parse_opa_directory("../resources/OPA_Policies")
+    #polaris_results = parse_opa_directory("../resources/Polaris-checks")
+
     for cat, entries in category_map.items():
         lines.append(f"\t\t\t{cat}")
         lines.append("\t\t\t\toptional")
@@ -648,13 +649,27 @@ def generate_uvl_from_policies(directory, output_path):
                 lines.append(f"\t\t\t\t\t{name}")"""
     lines.append("\tOPAConstraints {abstract}")
     lines.append("\t\toptional")
-    lines.append("\t\t\tKubernetes_checks {abstract}")
+    lines.append("\t\t\tK8s_checks {abstract}")
     lines.append("\t\t\t\toptional")
 
+    ##ll_resources = parse_all_sources("../resources/OPA_Policies", "../resources/Polaris-checks")
+    opa_results = parse_opa_directory("../resources/OPA_Policies")
     for opa in opa_results: ## Read OPA Policies
         feature_str = opa["feature"] ## .replace("\n", "\n\t\t\t")
         print(f"Feature str:    {feature_str}")
         lines.append(f"\t\t\t\t\t{feature_str}")
+
+    polaris_results = parse_polaris_directory("../resources/Polaris-checks")
+    lines.append("\tPolarisConstraints {abstract}")
+    lines.append("\t\toptional")
+    lines.append("\t\t\tKubernetes_checks {abstract}")
+    lines.append("\t\t\t\toptional")
+
+    for check in polaris_results: ## Read OPA Policies
+        feature_str = check["feature"] ## .replace("\n", "\n\t\t\t")
+        print(f"Feature str:    {feature_str}")
+        lines.append(f"\t\t\t\t\t{feature_str}")
+
 
     lines.append("\t\t\tPod.PodFeatures")
     lines.append("\t\t\tServAcc.ServiceAccountFeatures")
@@ -745,7 +760,9 @@ def generate_uvl_from_policies(directory, output_path):
 
     for opa in opa_results: ## Write Policies of OPA Rego
         lines.append(f"\t{opa['constraint']}")
-
+    for polaris in polaris_results: ## Write Policies of Polaris
+        print(f"Polaris {polaris}")
+        lines.append(f"\t{polaris['constraint']}")
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
 

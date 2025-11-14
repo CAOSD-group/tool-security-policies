@@ -161,11 +161,10 @@ def extract_conditions_from_schema(schema, prefix="", root_schema=None):
         return conds
 
     props = schema.get("properties", {})
-
+    #print(f"Props extraction    {props}")
     # 1) Propiedades directas
     for name, rule in props.items():
         prop_path = f"{prefix}.{name}" if prefix else name
-
         # $ref → expandir
         if "$ref" in rule:
             resolved = resolve_ref(root_schema, rule["$ref"])
@@ -202,7 +201,13 @@ def extract_conditions_from_schema(schema, prefix="", root_schema=None):
         # const → ==
         if "const" in rule:
             conds.append((prop_path, "==", rule["const"]))
-
+        # Recursión en arrays: items.properties.hostPort.const
+        if rule.get("type") == "array" and "items" in rule:
+            conds.extend(
+                extract_conditions_from_schema(
+                    rule["items"], prefix=prop_path, root_schema=root_schema
+                )
+            )
         # pattern
         if "pattern" in rule:
             conds.append((prop_path, "matches", rule["pattern"]))
@@ -217,6 +222,7 @@ def extract_conditions_from_schema(schema, prefix="", root_schema=None):
 
         # Recursión en sub-propiedades
         if "properties" in rule:
+            print(f"No captura?")
             conds.extend(
                 extract_conditions_from_schema(rule, prefix=prop_path, root_schema=root_schema)
             )
@@ -234,7 +240,7 @@ def extract_conditions_from_schema(schema, prefix="", root_schema=None):
                 conds.extend(
                     extract_conditions_from_schema(block, prefix=prefix, root_schema=root_schema)
                 )
-
+   
     return conds
 
 
@@ -333,29 +339,26 @@ def build_uvl_expr(kind_name: str, feature: str, op: str, val):
     if op == "==":
         print(f"full feature ===    {full_feature}  op  {op}    {kind_name}")
         if isinstance(val, bool):
-            if str(val).lower() == 'false':
-                return f"!{full_feature}"
-            elif str(val).lower() == 'true':
-                return f"{full_feature}"
-            print(f"Hesho")
-            ##return f"{full_feature} = {str(val).lower()}"
+            return full_feature if val else f"!{full_feature}"
+        
+        if isinstance(val, (int,float)):
+            return f"{full_feature} == {val}"
+        
         if val is None:
             return f"{full_feature} == null"
+        
         return f"{full_feature} == '{val}'"
 
     if op == "!=":
         print(f"full feature    {full_feature}  op  {op}    {kind_name}")
         if isinstance(val, bool):
             return f"!{full_feature}" ## {str(val).lower()}
-        elif isinstance(val, str) & val == 'null':
+        elif isinstance(val, str) and val == 'null':
             return f"{full_feature} != null"""
         elif val == 'True':
             pass
         else:
             print(f"Nada")
-        """elif val is 'null':
-            return f"{full_feature} != null"""
-        #return f"{full_feature} != '{val}'"
 
     if op == ">=": ## differences between our modify model :: _valueInt **
         return f"{full_feature} > {val}"
@@ -399,7 +402,7 @@ def polaris_to_uvl(check, feature_dict, kind_map):
 
     for real_kind in real_kinds:
         for prop_path, op, val in conds:
-            print(f"  Prop path   {prop_path}  ({op} {val})   real_kind={real_kind}")
+            #print(f"  Prop path   {prop_path}  ({op} {val})   real_kind={real_kind}")
 
             context_kind = context_kind_for(real_kind, check, prop_path)
             fm_row = find_feature(context_kind, prop_path, feature_dict)
@@ -430,7 +433,7 @@ def polaris_to_uvl(check, feature_dict, kind_map):
 if __name__ == "__main__":
     FEATURES_CSV = "../resources/mapping_csv/kubernetes_mapping_properties_features.csv"
     KINDS_CSV    = "../resources/mapping_csv/kubernetes_kinds_versions_detected.csv"
-    POLARIS_DIR  = "../resources/kyverno_policies_yamls/Polaris-checks"
+    POLARIS_DIR  = "../resources/Polaris-checks"
 
     feature_dict = load_feature_dict(FEATURES_CSV)
     kind_map = load_kinds_prefix_mapping(KINDS_CSV)

@@ -394,7 +394,7 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
 ## ../resources/kyverno_policies_yamls
 field_map = load_feature_dict("../resources/mapping_csv/kubernetes_mapping_properties_features.csv")
 #data = parse_rego_policy("../resources/kyverno_policies_yamls/OPA_Policies/SYS_ADMIN_capability.rego")
-data = parse_rego_policy("../resources/kyverno_policies_yamls/OPA_Policies/runs_as_root.rego")
+data = parse_rego_policy("../resources/OPA_Policies/runs_as_root.rego")
 
 kind_map = load_kinds_prefix_mapping("../resources/mapping_csv/kubernetes_kinds_versions_detected.csv")
 
