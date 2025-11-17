@@ -247,7 +247,6 @@ def extract_conditions_from_rego(rego_text, recommended_action=""):
     pat_num = re.compile(r"'(containers[.\w\[\]\*]+)'[^<>=]+(==|!=|<=|>=|<|>)\s*(\d+)")
     matches_num = pat_num.findall(cond_text)
     if matches_num:
-        print(f"MATCHES NUM SE EXEC {cond_text}  {matches_num}")
         for field, op, value in matches_num:
                 val = ">" if ">" in cond_text.lower() else "<"
                 field_name = field.replace("containers[].","").replace("containers[*].","")
