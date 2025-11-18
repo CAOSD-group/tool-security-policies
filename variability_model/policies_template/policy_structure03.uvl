@@ -69,17 +69,17 @@ features
 		optional
 			K8s_checks {abstract}
 				optional
-					no_shared_ipc_namespace {doc 'Sharing the hostâ€™s IPC namespace allows container processes to communicate with processes on the host.', severity 'HIGH', tool 'OPA', recommended 'Do not set 'spec.template.spec.hostIPC' to true.'}
-					no_host_network {doc 'Sharing the hostâ€™s network namespace permits processes in the pod to communicate with processes bound to the hostâ€™s loopback adapter.', severity 'HIGH', tool 'OPA', recommended 'Do not set 'spec.template.spec.hostNetwork' to true.'}
-					no_host_pid {doc 'Sharing the hostâ€™s PID namespace allows visibility on host processes, potentially leaking information such as environment variables and configuration.', severity 'HIGH', tool 'OPA', recommended 'Do not set 'spec.template.spec.hostPID' to true.'}
-					no_docker_sock_mount {doc 'Mounting docker.sock from the host can give the container full root access to the host.', severity 'HIGH', tool 'OPA', recommended 'Do not specify /var/run/docker.socket in 'spec.template.volumes.hostPath.path'.'}
-					no_privileged_containers {doc 'Privileged containers share namespaces with the host system and do not offer any security. They should be used exclusively for system containers that require high privileges.', severity 'HIGH', tool 'OPA', recommended 'Change 'containers[].securityContext.privileged' to 'false'.'}
-					no_auto_mount_service_token {doc 'ensure that Pod specifications disable the secret token being mounted by setting automountServiceAccountToken: false', severity 'MEDIUM', tool 'OPA', recommended 'Disable the mounting of service account secret token by setting automountServiceAccountToken to false'}
-					no_root {doc 'Force the running image to run as a non-root user to ensure least privileges.', severity 'MEDIUM', tool 'OPA', recommended 'Set 'containers[].securityContext.runAsNonRoot' to true.'}
-					use_high_gid {doc 'Force the container to run with group ID > 10000 to avoid conflicts with the hostâ€™s user table.', severity 'LOW', tool 'OPA', recommended 'Set 'containers[].securityContext.runAsGroup' to an integer > 10000.'}
-					use_high_uid {doc 'Force the container to run with user ID > 10000 to avoid conflicts with the hostâ€™s user table.', severity 'LOW', tool 'OPA', recommended 'Set 'containers[].securityContext.runAsUser' to an integer > 10000.'}
-					no_sysadmin_capability {doc 'SYS_ADMIN gives the processes running inside the container privileges that are equivalent to root.', severity 'HIGH', tool 'OPA', recommended 'Remove the SYS_ADMIN capability from 'containers[].securityContext.capabilities.add'.'}
-					no_sysmodule_capability {doc 'The SYS_MODULE capability grants attackers the ability to install and remove kernel modules, posing serious security risks.', severity 'HIGH', tool 'OPA', recommended 'To mitigate potential security risks, it is strongly recommended to remove the SYS_MODULE capability from 'containers[].securityContext.capabilities.add'. It is advisable to follow the practice of dropping all capabilities and only adding the necessary ones.'}
+					no_shared_ipc_namespace {doc 'Sharing the host_s IPC namespace allows container processes to communicate with processes on the host', severity 'high', tool 'OPA', recommended 'Do not set _spectemplatespechostIPC_ to true'}
+					no_host_network {doc 'Sharing the host_s network namespace permits processes in the pod to communicate with processes bound to the host_s loopback adapter', severity 'high', tool 'OPA', recommended 'Do not set _spectemplatespechostNetwork_ to true'}
+					no_host_pid {doc 'Sharing the host_s PID namespace allows visibility on host processes, potentially leaking information such as environment variables and configuration', severity 'high', tool 'OPA', recommended 'Do not set _spectemplatespechostPID_ to true'}
+					no_docker_sock_mount {doc 'Mounting dockersock from the host can give the container full root access to the host', severity 'high', tool 'OPA', recommended 'Do not specify /var/run/dockersocket in _spectemplatevolumeshostPathpath_'}
+					no_privileged_containers {doc 'Privileged containers share namespaces with the host system and do not offer any security They should be used exclusively for system containers that require high privileges', severity 'high', tool 'OPA', recommended 'Change _containers[]securityContextprivileged_ to _false_'}
+					no_auto_mount_service_token {doc 'ensure that Pod specifications disable the secret token being mounted by setting automountServiceAccountToken: false', severity 'medium', tool 'OPA', recommended 'Disable the mounting of service account secret token by setting automountServiceAccountToken to false'}
+					no_root {doc 'Force the running image to run as a non-root user to ensure least privileges', severity 'medium', tool 'OPA', recommended 'Set _containers[]securityContextrunAsNonRoot_ to true'}
+					use_high_gid {doc 'Force the container to run with group ID > 10000 to avoid conflicts with the host_s user table', severity 'low', tool 'OPA', recommended 'Set _containers[]securityContextrunAsGroup_ to an integer > 10000'}
+					use_high_uid {doc 'Force the container to run with user ID > 10000 to avoid conflicts with the host_s user table', severity 'low', tool 'OPA', recommended 'Set _containers[]securityContextrunAsUser_ to an integer > 10000'}
+					no_sysadmin_capability {doc 'SYS_ADMIN gives the processes running inside the container privileges that are equivalent to root', severity 'high', tool 'OPA', recommended 'Remove the SYS_ADMIN capability from _containers[]securityContextcapabilitiesadd_'}
+					no_sysmodule_capability {doc 'The SYS_MODULE capability grants attackers the ability to install and remove kernel modules, posing serious security risks', severity 'high', tool 'OPA', recommended 'To mitigate potential security risks, it is strongly recommended to remove the SYS_MODULE capability from _containers[]securityContextcapabilitiesadd_ It is advisable to follow the practice of dropping all capabilities and only adding the necessary ones'}
 	PolarisConstraints {abstract}
 		optional
 			Kubernetes_checks {abstract}
@@ -90,10 +90,14 @@ features
 					hostNetworkSet {doc 'Host network should not be configured', tool 'Polaris', severity 'danger', category 'Security'}
 					hostPIDSet {doc 'Host PID should not be configured', tool 'Polaris', severity 'danger', category 'Security'}
 					hostPortSet {doc 'Host port should not be configured', tool 'Polaris', severity 'warning', category 'Security'}
+					insecureCapabilities {doc 'Container should not have insecure capabilities', tool 'Polaris', severity 'warning', category 'Security'}
+					linuxHardening {doc 'Use one of AppArmor, Seccomp, SELinux, or dropping Linux Capabilities to restrict containers using unwanted privileges', tool 'Polaris', severity 'danger', category 'Security'}
 					notReadOnlyRootFilesystem {doc 'Filesystem should be read only', tool 'Polaris', severity 'warning', category 'Security'}
 					privilegeEscalationAllowed {doc 'Privilege escalation should not be allowed', tool 'Polaris', severity 'danger', category 'Security'}
+					procMount {doc 'Proc mount must not be changed from the default', tool 'Polaris', severity 'warning', category 'Security'}
 					runAsPrivileged {doc 'Should not be running as privileged', tool 'Polaris', severity 'danger', category 'Security'}
 					runAsRootAllowed {doc 'Should not be allowed to run as root', tool 'Polaris', severity 'danger', category 'Security'}
+					tlsSettingsMissing {doc 'Ingress does not have TLS configured', tool 'Polaris', severity 'warning', category 'Security'}
 			Pod.PodFeatures
 			ServAcc.ServiceAccountFeatures
 			RoleBinding.RoleBindingFeatures
@@ -154,7 +158,11 @@ constraints
 	hostNetworkSet => !Pod.io_k8s_api_core_v1_Pod_spec_hostNetwork
 	hostPIDSet => !Pod.io_k8s_api_core_v1_Pod_spec_hostPID
 	hostPortSet => Container.io_k8s_api_core_v1_Container_ports_hostPort == 0
+	insecureCapabilities => (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'ALL') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'NET_ADMIN') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'CHOWN') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'DAC_OVERRIDE') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'FSETID') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'FOWNER') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'MKNOD') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'NET_RAW') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'SETGID') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'SETUID') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'SETFCAP') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'SETPCAP') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'NET_BIND_SERVICE') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'SYS_CHROOT') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'KILL') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'AUDIT_WRITE')
+	linuxHardening => (Container.io_k8s_api_core_v1_Container_securityContext_seccompProfile_type_Unconfined)
 	notReadOnlyRootFilesystem => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_readOnlyRootFilesystem
 	privilegeEscalationAllowed => !Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_allowPrivilegeEscalation
+	procMount => (Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_procMount_StringValue == 'Default')
 	runAsPrivileged => !Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_privileged
 	runAsRootAllowed => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser > 1 & Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsNonRoot
+	tlsSettingsMissing => Ingress.io_k8s_api_networking_v1_Ingress_spec_tls

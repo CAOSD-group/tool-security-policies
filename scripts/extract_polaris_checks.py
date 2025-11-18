@@ -4,7 +4,7 @@
 import os
 import csv
 import yaml
-
+import re
 
 # =========================
 # Carga de FM y Kinds
@@ -34,10 +34,72 @@ def load_kinds_prefix_mapping(csv_file):
             kind_map[row["Kind"]] = prefix
     return kind_map
 
+def resolve_ast_ref(ast, ref: str):
+    """
+    Resuelve un $ref del estilo "#/$defs/x/y/z" dentro del mismo AST.
+    """
+    if not ref.startswith("#/"):
+        return None
 
+    path = ref[2:].split("/")  # remove "#/"
+    node = ast
+    for key in path:
+        if not isinstance(node, dict) or key not in node:
+            return None
+        node = node[key]
+    return node
 # =========================
 # Helpers de Polaris
 # =========================
+
+def normalize_schema_string(schema_string: str) -> str:
+    """
+    Limpia plantillas Go {{ ... }} de schemaString y deja YAML lo más
+    cercano posible a un JSON Schema válido.
+    """
+    # Elimina bloques de comentarios {{/* ... */}}
+    cleaned = re.sub(r"\{\{/\*.*?\*/\}\}", "", schema_string, flags=re.DOTALL)
+
+    # Elimina líneas/fragmentos con {{ ... }}
+    cleaned = re.sub(r"\{\{.*?\}\}", "", cleaned, flags=re.DOTALL)
+
+    # Limpia líneas vacías y espacios sobrantes
+    cleaned = "\n".join(
+        line.rstrip()
+        for line in cleaned.splitlines()
+        if line.strip()
+    )
+    return cleaned
+
+
+def schema_string_to_ast(schema_string: str):
+    """
+    Convierte un schemaString Polaris (tras limpiar Go templates) en
+    un AST (dict) de JSON Schema usando yaml.safe_load.
+    """
+    try:
+        cleaned = normalize_schema_string(schema_string)
+        if not cleaned.strip():
+            return None
+        ast = yaml.safe_load(cleaned)
+        if not isinstance(ast, dict):
+            return None
+        return ast
+    except Exception as e:
+        print(f"[ERROR] No se pudo parsear schemaString: {e}")
+        return None
+    
+
+def clean_cap_pattern(pattern: str) -> str:
+    """
+    Limpia patrones tipo '^(?i)NET_ADMIN$' -> 'NET_ADMIN'
+    """
+    return (
+        pattern.replace("^(?i)", "")
+               .replace("(?i)", "")
+               .lstrip("^")
+               .rstrip("$")
+    )
 
 def resolve_ref(root_schema: dict, ref: str):
     """
@@ -166,6 +228,21 @@ def extract_conditions_from_schema(schema, prefix="", root_schema=None):
     for name, rule in props.items():
         prop_path = f"{prefix}.{name}" if prefix else name
         # $ref → expandir
+        if "oneOf" in rule and isinstance(rule["oneOf"], list):
+            for option in rule["oneOf"]:
+                # Opción simple: contains.pattern
+                contains = option.get("contains")
+                if isinstance(contains, dict) and "pattern" in contains:
+                    literal = clean_cap_pattern(contains["pattern"])
+                    conds.append((prop_path, "contains", literal))
+
+                # Opción compuesta: allOf con varios contains
+                if "allOf" in option and isinstance(option["allOf"], list):
+                    for sub in option["allOf"]:
+                        sub_contains = sub.get("contains")
+                        if isinstance(sub_contains, dict) and "pattern" in sub_contains:
+                            literal = clean_cap_pattern(sub_contains["pattern"])
+                            conds.append((prop_path, "contains", literal))
         if "$ref" in rule:
             resolved = resolve_ref(root_schema, rule["$ref"])
             if resolved:
@@ -242,6 +319,77 @@ def extract_conditions_from_schema(schema, prefix="", root_schema=None):
                 )
    
     return conds
+
+def extract_semantic_conditions_from_ast(ast, prefix="", result=None, root_ast=None):
+    """
+    Extrae condiciones semánticas desde el AST de un schemaString.
+
+    Devuelve una lista que puede contener:
+      - Tuplas simples:   (prop_path, op, val)
+      - Marcadores OR:    ("__OR__", [ [conds_branch1], [conds_branch2], ... ])
+
+    Donde cada conds_branch es una lista de tuplas (prop_path, op, val).
+    """
+    if result is None:
+        result = []
+    if root_ast is None:
+        root_ast = ast
+
+    if not isinstance(ast, dict):
+        return result
+    if "$ref" in ast:
+        resolved = resolve_ast_ref(root_ast, ast["$ref"])
+        if resolved:
+            extract_semantic_conditions_from_ast(resolved, prefix, result, root_ast=root_ast)
+    # 1) PROPERTIES: recursión por subcampos
+    if "properties" in ast and isinstance(ast["properties"], dict):
+        for prop, rule in ast["properties"].items():
+            new_prefix = f"{prefix}.{prop}" if prefix else prop
+            extract_semantic_conditions_from_ast(rule, new_prefix, result, root_ast=root_ast)
+
+    # 2) Const / not / pattern / contains / minimum en el nodo actual
+    if "pattern" in ast:
+        result.append((prefix, "matches", ast["pattern"]))
+
+    if "const" in ast:
+        result.append((prefix, "==", ast["const"]))
+
+    if "minimum" in ast:
+        result.append((prefix, ">=", ast["minimum"]))
+
+    # contains (ej. array contains elementos que matchean un patrón)
+    if "contains" in ast and isinstance(ast["contains"], dict):
+        if "pattern" in ast["contains"]:
+            result.append((prefix, "contains", ast["contains"]["pattern"]))
+
+    # not con const / pattern / contains
+    if "not" in ast and isinstance(ast["not"], dict):
+        not_block = ast["not"]
+        if "const" in not_block:
+            result.append((prefix, "!=", not_block["const"]))
+        if "pattern" in not_block:
+            result.append((prefix, "not matches", not_block["pattern"]))
+        if "contains" in not_block and isinstance(not_block["contains"], dict):
+            if "pattern" in not_block["contains"]:
+                result.append((prefix, "not_contains", not_block["contains"]["pattern"]))
+
+    # 3) anyOf → lista de alternativas (OR)
+    if "anyOf" in ast and isinstance(ast["anyOf"], list):
+        branches = []
+        for option in ast["anyOf"]:
+            branch_conds = []
+            extract_semantic_conditions_from_ast(option, prefix, branch_conds, root_ast=root_ast)
+            if branch_conds:
+                branches.append(branch_conds)
+        if branches:
+            result.append(("__OR__", branches))
+
+    # 4) allOf → AND de bloques (simplemente recursión)
+    if "allOf" in ast and isinstance(ast["allOf"], list):
+        for block in ast["allOf"]:
+            extract_semantic_conditions_from_ast(block, prefix, result, root_ast=root_ast)
+
+    return result
 
 
 # =========================
@@ -324,6 +472,7 @@ def parse_polaris_check(path):
         "schemaTarget": data.get("schemaTarget", ""),
         "controllers": data.get("controllers", {}),
         "schema": schema,
+        "schemaString": data.get("schemaString", ""),
         "success": data.get("successMessage", ""),
         "failure": data.get("failureMessage", ""),
     }
@@ -337,7 +486,7 @@ def build_uvl_expr(kind_name: str, feature: str, op: str, val):
     full_feature = f"{kind_name}.{feature}"
 
     if op == "==":
-        print(f"full feature ===    {full_feature}  op  {op}    {kind_name}")
+        #print(f"full feature ===    {full_feature}  op  {op}    {kind_name}")
         if isinstance(val, bool):
             return full_feature if val else f"!{full_feature}"
         
@@ -346,20 +495,25 @@ def build_uvl_expr(kind_name: str, feature: str, op: str, val):
         
         if val is None:
             return f"{full_feature} == null"
+        if full_feature.endswith('securityContext_procMount'):
+            return f"({full_feature}_StringValue == '{val}')"
         
         return f"{full_feature} == '{val}'"
 
     if op == "!=":
-        print(f"full feature    {full_feature}  op  {op}    {kind_name}")
+        print(f"full feature    {full_feature}  op  {op}    {kind_name} {val}")
         if isinstance(val, bool):
             return f"!{full_feature}" ## {str(val).lower()}
         elif isinstance(val, str) and val == 'null':
             return f"{full_feature} != null"""
-        elif val == 'True':
-            pass
-        else:
-            print(f"Nada")
-
+        if val is None:
+            return f"{full_feature}"
+        if full_feature.endswith('securityContext_seccompProfile_type'):
+                if val == 'Unconfined':
+                    return f"{full_feature}_Unconfined"
+                #return f"({full_feature}_StringValue == '{val}')"
+        print(f"Nada")
+    
     if op == ">=": ## differences between our modify model :: _valueInt **
         return f"{full_feature} > {val}"
 
@@ -368,12 +522,102 @@ def build_uvl_expr(kind_name: str, feature: str, op: str, val):
     ##not_contains
     if op == "not matches":
             return f"!({full_feature} matches '{val}')"
+    
+    if op == "contains":
+        # Convención: para arrays tipo capabilities_drop
+        if full_feature.endswith("capabilities_drop"):
+            return f"({full_feature}_StringValue == '{val}')"
+        return f"({full_feature} == '{val}')"
+
     if op == "not_contains":
         if full_feature.endswith("capabilities_add"):
             return f"({full_feature}_StringValue != '{val}')"
         return f"({full_feature} != '{val}')"
     # Fallback genérico
     return f"{full_feature} {op} '{val}'"
+
+
+def map_semantic_conds_to_uvl(check, semantic_conds, feature_dict, kind_map):
+    """
+    Convierte la lista de condiciones semánticas (incluyendo OR-groups)
+    en una única expresión UVL para este check.
+
+    Usa:
+      - target del check para elegir contexto (Container, Pod, etc.)
+      - find_feature(kind_context, prop_path, feature_dict)
+      - build_uvl_expr(real_kind, fm_feature, op, val)
+    """
+    from collections import OrderedDict
+
+    # Resolver Kind real (ej. "Container", "Pod", "ClusterRoleBinding"...)
+    # Aquí usamos una aproximación simple y reutilizamos el target.
+    real_kind = check["target"]
+    if "/" in real_kind:
+        # rbac.authorization.k8s.io/ClusterRoleBinding → ClusterRoleBinding
+        real_kind = real_kind.split("/")[-1]
+
+    kind_name = real_kind  # usado en la parte "Kind." de UVL
+    context_kind = real_kind  # usado para buscar en el FM
+
+    all_simple_exprs = []   # AND global (fuera de OR groups)
+    all_or_groups = []      # cada OR group es algo tipo "(expr1 and expr2) or (expr3)"
+
+    for cond in semantic_conds:
+        # OR-group: ("__OR__", [ [ (path,op,val)... ], [ ... ] ])
+        if isinstance(cond, tuple) and len(cond) == 2 and cond[0] == "__OR__":
+            branches = cond[1]
+            branch_exprs = []
+            for branch in branches:
+                local_exprs = []
+                for path, op, val in branch:
+                    row = find_feature(context_kind, path, feature_dict)
+                    if not row:
+                        print(f"    ⚠ No FM match for Context={context_kind}, prop={path}")
+                        continue
+                    fm_feature = row["Feature"]
+                    uvlexpr = build_uvl_expr(kind_name, fm_feature, op, val)
+                    if uvlexpr:
+                        local_exprs.append(uvlexpr)
+                if local_exprs:
+                    # dentro de una rama OR, juntamos con AND
+                    branch_exprs.append("(" + " & ".join(OrderedDict.fromkeys(local_exprs)) + ")")
+            if branch_exprs:
+                # OR entre ramas
+                or_expr = " or ".join(branch_exprs)
+                all_or_groups.append(or_expr)
+            continue
+
+        # Condición simple: (path, op, val)
+        if isinstance(cond, tuple) and len(cond) == 3:
+            path, op, val = cond
+            row = find_feature(context_kind, path, feature_dict)
+            if not row:
+                print(f"    ⚠ No FM match for Context={context_kind}, prop={path}")
+                continue
+            fm_feature = row["Feature"]
+            uvlexpr = build_uvl_expr(kind_name, fm_feature, op, val)
+            if uvlexpr:
+                all_simple_exprs.append(uvlexpr)
+            continue
+
+    # Eliminar duplicados preservando orden
+    all_simple_exprs = list(OrderedDict.fromkeys(all_simple_exprs))
+    all_or_groups = list(OrderedDict.fromkeys(all_or_groups))
+
+    if not all_simple_exprs and not all_or_groups:
+        return None
+
+    # Construcción final de la constraint:
+    #   (simple1 & simple2) & ( (branch1) or (branch2) )
+    pieces = []
+    if all_simple_exprs:
+        pieces.append(" & ".join(all_simple_exprs))
+    if all_or_groups:
+        pieces.append(" & ".join(all_or_groups))
+
+    if len(pieces) == 1:
+        return pieces[0]
+    return " & ".join(pieces)
 
 
 # =========================
@@ -383,9 +627,34 @@ def build_uvl_expr(kind_name: str, feature: str, op: str, val):
 def polaris_to_uvl(check, feature_dict, kind_map):
     print(f"\nCheck: {check['id']}")
     print(check)
-
-    # 1) Resolver Kinds reales sobre los que aplica
+    print(f"Doc {check['failure']}")
+    # 0) Resolver Kinds reales sobre los que aplica
     real_kinds = resolve_target_kinds(check)
+
+    # 1) Si hay schemaString → usar parser semántico nuevo
+    if check.get("schemaString"):
+        ast = schema_string_to_ast(check["schemaString"])
+        if not ast:
+            print("  ⚠ schemaString sin AST → skip")
+            return None
+
+        semantic_conds = extract_semantic_conditions_from_ast(ast, prefix="", result=None, root_ast=ast)
+        if not semantic_conds:
+            print("  ⚠ schemaString sin condiciones semánticas → skip")
+            return None
+
+        constraint_expr = map_semantic_conds_to_uvl(check, semantic_conds, feature_dict, kind_map)
+        if not constraint_expr:
+            print("  ⚠ No se pudo mapear semantic_conds a FM → skip")
+            return None
+
+        feature_name = check["id"].replace("-", "_")
+        feature_block = (
+            f"{feature_name} "
+            f"{{doc '{check['failure']}', tool 'Polaris', category '{check['category']}'}}"
+        )
+        constraint = f"{feature_name} => {constraint_expr}"
+        return feature_block, constraint
 
     # 2) Extraer condiciones del schema
     conds = extract_conditions_from_schema(check["schema"])

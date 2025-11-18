@@ -60,6 +60,18 @@ def normalize_kind_name(kind, kind_map):
             return k  # Return correctly capitalized e.g. CronJob
     return kind.capitalize()  # fallback
 
+def clean_description(description: str) -> str:
+    return description.replace('\n', ' ') \
+                      .replace('`', '') \
+                      .replace('´', '') \
+                      .replace("'", "_") \
+                      .replace('{', '') \
+                      .replace('}', '') \
+                      .replace('"', '') \
+                      .replace("\\", "_") \
+                      .replace(".", "") \
+                      .replace("//", "_").replace('\u2019', '_').replace('\u2018', '_') ## ??''' ¡¡¡ ´´ççç`+++`
+
 def get_base_prefix(kind_prefix): ## Used by the generate_uvl_policies
     if kind_prefix == "Pod":
         return "Pod"
@@ -274,7 +286,7 @@ def extract_conditions_from_rego(rego_text, recommended_action=""):
 
 
 def parse_rego_policy(path):
-    with open(path, "r") as f:
+    with open(path, "r", encoding="utf-8") as f:
         rego = f.read()
 
     metadata = extract_metadata_from_rego(rego)
@@ -309,7 +321,9 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
     feature_name = meta["short_code"].replace("-", "_") # meta["id"] + "_" + 
     print(f"Sigue {feature_name}")## 
     ## To Do: clean the descriptions
-    feature_block = f"""{feature_name} {{doc '{meta['description']}', severity '{meta['severity']}', tool 'OPA', recommended '{meta['recommended_action']}'}}"""
+    clean_description_rego = clean_description(meta['description'])
+    clean_recommended_action_rego = clean_description(meta['recommended_action'])
+    feature_block = f"""{feature_name} {{doc '{clean_description_rego}', severity '{meta['severity'].lower()}', tool 'OPA', recommended '{clean_recommended_action_rego}'}}"""
     
     constraint_parts = [] ## Added only candidate crossed
     kinds = meta.get("kinds", [])

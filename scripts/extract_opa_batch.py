@@ -12,6 +12,19 @@ def load_polaris_severities(path):
         data = yaml.safe_load(f)
     return data.get("checks", {})
 
+def clean_description(description: str) -> str:
+    return description.replace('\n', ' ') \
+                      .replace('`', '') \
+                      .replace('´', '') \
+                      .replace("'", "_") \
+                      .replace('{', '') \
+                      .replace('}', '') \
+                      .replace('"', '') \
+                      .replace("\\", "_") \
+                      .replace(".", "") \
+                      .replace("//", "_")
+
+
 def parse_opa_directory(rego_dir):
   feature_dict = load_feature_dict('../resources/mapping_csv/kubernetes_mapping_properties_features.csv')
   kind_prefix_map = load_kinds_prefix_mapping("../resources/mapping_csv/kubernetes_kinds_versions_detected.csv")
@@ -69,8 +82,9 @@ def parse_polaris_directory(polaris_dir):
       severity = severity_map.get(check["id"], "warning")  # default to warning
 
       # Construct the feature block cleanly (this is the UVL feature definition)
+      clean_description_polaris = clean_description(check['failure'])
       feature_block = (
-          f"{check['id']} {{doc '{check['failure']}', "
+          f"{check['id']} {{doc '{clean_description_polaris}', "
           f"tool 'Polaris', severity '{severity}', category '{check['category']}'}}"
       )
 
