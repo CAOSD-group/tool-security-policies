@@ -138,7 +138,7 @@ def find_uvl_path_for_rego(kind, rego_path, feature_dict, kind_map): ## feature_
 
     # Elegir la más específica (con el mayor número de coincidencias)
     best = max(candidates, key=lambda r: len(r["Midle"]))
-    print(f"Value best  {best}")
+    #print(f"Value best  {best}")
     is_list = (best["Value"] == "-")
 
     return best["Feature"], is_list, best["Value"]
@@ -185,7 +185,7 @@ def extract_metadata_from_rego(rego_text):
 
     # Handle custom nested or flattened
     custom = meta_yaml.get("custom") or {}
-    print("Custom:", custom)
+    #print("Custom:", custom)
     if not isinstance(custom, dict):
         custom = {}
 
@@ -218,7 +218,7 @@ def extract_conditions_from_rego(rego_text, recommended_action=""):
     # Example match: container.securityContext.capabilities.add[_] == "SYS_MODULE"
     pat_str = re.compile(r'(\S+?)\s*(==|!=)\s*"([^"]+)"')
     matches_str = pat_str.findall(rego_text)
-    print(f"MATCHES NONE {matches_str}")
+    #print(f"MATCHES NONE {matches_str}")
     conditions = []
     cond_text = recommended_action.replace('"', "'")
     
@@ -233,7 +233,7 @@ def extract_conditions_from_rego(rego_text, recommended_action=""):
     
     # Extraer propiedades desde texto si no hay condiciones detectadas
     if not conditions and recommended_action:
-        print(f"reccomended {recommended_action}")
+        #print(f"reccomended {recommended_action}")
         cond_text = recommended_action.replace('"', "'")
         prop_pat = re.findall(r"'(spec[.\w\[\]]+)'", cond_text)
         for prop in prop_pat:
@@ -244,7 +244,7 @@ def extract_conditions_from_rego(rego_text, recommended_action=""):
         prop_pat_container = re.findall(r"'(containers[.\w\[\]]+)'", cond_text)
         #prop_pat_container = re.findall(r"['\"](containers(?:\[\]\.|[\w\.\[\]]+)*)['\"]", cond_text)
 
-        print(f"Prop pat  DUPLICADO EN RECCOMENDED  {prop_pat_container}")
+        #print(f"Prop pat  DUPLICADO EN RECCOMENDED  {prop_pat_container}")
         if prop_pat_container and ('>' not in cond_text and '<' not in cond_text):
             for prop01 in prop_pat_container:
                 # Si el texto dice "to true" => interpretamos que queremos != true
@@ -300,7 +300,7 @@ def parse_rego_policy(path):
 
 def rego_policy_to_uvl(policy, field_map, kind_map):
     meta = policy["metadata"]
-    print(f"Policie\n   {policy}")
+    #print(f"Policie\n   {policy}")
     cond = policy["conditions"][0]  # Asumimos 1 condición base por ahora
 
     field = cond["field"]
@@ -309,9 +309,9 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
 
     # Convert Rego container path to canonical lookup key
     
-    print(f"field key   {field}")
+    #print(f"field key   {field}")
     field_key = normalize_rego_path(field)
-    print(f"field key   {field_key}")
+    #print(f"field key   {field_key}")
    # Find translation in the field map using the appropriate function
     #feature, is_list, value_field = find_uvl_path_for_rego("pod", field_key, field_map)
     
@@ -319,7 +319,6 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
     # Feature name sanitized
     #print(f"{feature}")
     feature_name = meta["short_code"].replace("-", "_") # meta["id"] + "_" + 
-    print(f"Sigue {feature_name}")## 
     ## To Do: clean the descriptions
     clean_description_rego = clean_description(meta['description'])
     clean_recommended_action_rego = clean_description(meta['recommended_action'])
@@ -330,8 +329,7 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
     # --- Case 1: Normal Metadata (has kinds) ---
     if kinds:
         for kind in meta["kinds"]:
-            print(f"NO Sigue {feature_name}")##
-            print(f"Kind    {kind}")
+            #print(f"Kind    {kind}")
             feature, is_list, value_field = find_uvl_path_for_rego(kind, field_key, field_map, kind_map)
     
             if not feature:
@@ -348,7 +346,7 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
                 expr = f"{kind}.{feature} == true"""
 
             # Operador UVL traducido
-            print(f"operator    {operator}  {value}")
+            #print(f"operator    {operator}  {value}")
             if operator == "==" and not value.lower() == "true" and not value.lower() == "false":
                 expr = f"{kind_cap}.{feature} != '{value}'"
             elif operator == "!=" and not value.lower() == "true":
@@ -390,34 +388,34 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
                 expr = f"UNSUPPORTED_OPERATOR({operator})"
             constraint_parts.append(expr)
 
-    print(f"Const parts {constraint_parts}")
+    #print(f"Const parts {constraint_parts}")
     if not constraint_parts:
         print("[ERROR] No constraints generated, skipping policy")
         return None
 
     # Join con AND ya que todos los kinds deben cumplir la policy
     constraint = f"{feature_name} => " + " & ".join(constraint_parts)
-    print(f"CONSTRAINT: {constraint}")
+    #print(f"CONSTRAINT: {constraint}")
     return feature_block, constraint
 
 
 
 # DEMO USAGE
+if __name__ == "__main__":
+    ## ../resources/kyverno_policies_yamls
+    field_map = load_feature_dict("../resources/mapping_csv/kubernetes_mapping_properties_features.csv")
+    #data = parse_rego_policy("../resources/kyverno_policies_yamls/OPA_Policies/SYS_ADMIN_capability.rego")
+    data = parse_rego_policy("../resources/OPA_Policies/runs_as_root.rego")
 
-## ../resources/kyverno_policies_yamls
-field_map = load_feature_dict("../resources/mapping_csv/kubernetes_mapping_properties_features.csv")
-#data = parse_rego_policy("../resources/kyverno_policies_yamls/OPA_Policies/SYS_ADMIN_capability.rego")
-data = parse_rego_policy("../resources/OPA_Policies/runs_as_root.rego")
+    kind_map = load_kinds_prefix_mapping("../resources/mapping_csv/kubernetes_kinds_versions_detected.csv")
 
-kind_map = load_kinds_prefix_mapping("../resources/mapping_csv/kubernetes_kinds_versions_detected.csv")
+    # Generate UVL feature block and constraint
+    feature_block, constraint = rego_policy_to_uvl(data, field_map, kind_map)
 
-# Generate UVL feature block and constraint
-feature_block, constraint = rego_policy_to_uvl(data, field_map, kind_map)
+    print(f"######PRUEBAS")
 
-print(f"######PRUEBAS")
-
-if feature_block and constraint:
-    print("\nFeature Block:\n", feature_block)
-    print("\nConstraint:\n", constraint)
-else:
-    print("No valid UVL mapping found.")
+    if feature_block and constraint:
+        print("\nFeature Block:\n", feature_block)
+        print("\nConstraint:\n", constraint)
+    else:
+        print("No valid UVL mapping found.")
