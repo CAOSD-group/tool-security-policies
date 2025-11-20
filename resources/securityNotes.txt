@@ -216,3 +216,33 @@ https://github.com/FairwindsOps/polaris/tree/master/test/checks
 Error en def de politica polaris?
 
 FailureMessage ==> failureMessage
+
+
+
+Gatekeeper
+Se define en una tabla las politicas que implementan de pod-security-policies
+De entre ellas se puede desctacar template_host_network_ports ya que la segunda parte de las constraints
+integers ya se tiene defindo en nuetro modelo original de k8s.
+https://github.com/open-policy-agent/gatekeeper-library/blob/master/library/pod-security-policy/host-network-ports/template.yaml
+
+Aunque se detecta que hay diferencias entre los rangos de puertos permitidos entre la herramienta y el modelo;
+
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sPSPHostNetworkingPorts
+metadata:
+  name: psp-host-network-ports
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+  parameters:
+    hostNetwork: true
+    min: 80
+    max: 9000
+    exemptImages:
+    - "safeimages.com/*"
+
+
+Integer io_k8s_api_core_v1_Pod_spec_ephemeralContainers_ports_hostPort {doc 'Number of port to expose on the host If specified, this must be a valid port number, 0 < x < 65536 If HostNetwork is specified, this must match ContainerPort Most containers do not need this'}
+io_k8s_api_core_v1_Pod_spec_ephemeralContainers_ports_hostPort > 0 & io_k8s_api_core_v1_Pod_spec_ephemeralContainers_ports_hostPort < 65536

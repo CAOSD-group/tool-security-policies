@@ -180,19 +180,16 @@ def get_rego_blocks_from_template(template_obj: dict):
     return regos
 
 def find_uvl_path_for_rego(kind, rego_path, feature_dict, kind_map): ## feature_dictç
-    #print(f"Features dictss {feature_dict}")
-    #kind_cap = kind.capitalize()
+
     real_kind = normalize_kind_name(kind, kind_map)
-    #rego_key = rego_path.replace(".", "_")  # container.securityContext.capabilities.add
     rego_key = normalize_rego_path(rego_path).replace(".", "_")
 
-    #print(f"kind    rego    {real_kind}  {rego_key}")
+    print(f"kind    rego    {real_kind}  {rego_key}")
     # Buscar las coincidencias en el diccionario
     candidates = []
 
     for midle, row in feature_dict.items():
-        #print(f"Midel   {midle} {row}")
-        if midle.startswith(real_kind + "_") and rego_key in midle:##midle.endswith(rego_key): ## With these conds we take the last match with rego_key, the restrict of is necesary for future cases: In this cases all are similar _asString
+        if midle.startswith(real_kind + "_") and rego_key in midle: ##midle.endswith(rego_key): ## With these conds we take the last match with rego_key, the restrict of is necesary for future cases: In this cases all are similar _asString
             candidates.append(row)
             #print(f"Candidates: {candidates}")
     if not candidates:
@@ -200,10 +197,42 @@ def find_uvl_path_for_rego(kind, rego_path, feature_dict, kind_map): ## feature_
 
     # Elegir la más específica (con el mayor número de coincidencias)
     best = max(candidates, key=lambda r: len(r["Midle"]))
-    #print(f"Value best  {best}")
+    print(f"Value best  {best}")
     is_list = (best["Value"] == "-")
 
     return best["Feature"], is_list, best["Value"]
+
+def find_gatekeeper_uvl_paths(kind, rego_path, feature_dict, kind_map):
+
+    # 1. Normalizar el Kind para que coincida con el prefijo de Midle
+    real_kind = normalize_kind_name(kind, kind_map)   # p.ej. 'Pod'
+
+    # 2. Limpiar el path de REGO y construir el sufijo
+    cleaned = rego_path.replace("[*]", "").replace("[]", "").strip()
+    parts = cleaned.split(".")
+    print(f"Cleaned     {cleaned}   parts   {parts}")
+    """if len(parts) >= 2: ### errores por obtener mas, partes
+        # Queremos cosas tipo 'securityContext_privileged'
+        suffix = "_".join(parts[-2:])
+    else:"""
+    suffix = cleaned.replace(".", "_")
+
+    suffix = suffix.lower()
+    print(f"Suffix     {suffix}")
+    candidates = []
+
+    # 3. Recorrer TODO el feature_dict (claves son Midle)
+    #    y quedarnos solo con:
+    #    - los que empiezan por '<Kind>_'
+    #    - los que TERMINAN exactamente con ese sufijo
+    for midle, row in feature_dict.items():
+        # midle = 'Pod_spec_ephemeralContainers_securityContext_privileged'
+        if not midle.startswith(real_kind + "_"):
+            continue
+        if midle.lower().endswith(suffix):
+            candidates.append(row["Feature"])
+
+    return candidates
 
 # ------------------------------------------------------------
 # Mapear Constraint.kind -> lista de K8s Kinds (Pod, Deployment, ...)
@@ -234,6 +263,58 @@ def build_constraint_kind_map(root_directory: str):
 
     return {k: sorted(list(v)) for k, v in mapping.items()}
 
+def build_constraint_params_summary(root_directory: str):
+    root = Path(root_directory)
+    summary = {}  # kind -> param_name -> set(values)
+
+    for path in root.rglob("*.yaml"):
+        obj = load_yaml(path)
+        if not obj or not is_constraint(obj):
+            continue
+
+        kind = obj.get("kind")
+        spec = obj.get("spec", {})
+        params = spec.get("parameters", {})
+
+        if not params or not isinstance(params, dict):
+            continue
+
+        kmap = summary.setdefault(kind, {})
+
+        for pname, pvalue in params.items():
+            vset = kmap.setdefault(pname, set())
+
+            # Scalars
+            if isinstance(pvalue, (str, int, float, bool)):
+                vset.add(str(pvalue))
+            # Lists (scalars u objetos)
+            elif isinstance(pvalue, list):
+                for elem in pvalue:
+                    if isinstance(elem, (str, int, float, bool)):
+                        vset.add(str(elem))
+                    elif isinstance(elem, dict):
+                        # Caso de allowedHostPaths u estructura similar
+                        # intentamos sacar algo legible
+                        prefix = elem.get("pathPrefix", None)
+                        ro = elem.get("readOnly", None)
+                        if prefix is not None:
+                            if ro is None:
+                                vset.add(f"pathPrefix={prefix}")
+                            else:
+                                vset.add(f"pathPrefix={prefix},readOnly={ro}")
+                        else:
+                            vset.add(str(elem))
+                    else:
+                        vset.add(str(elem))
+            # Objetos (dict)
+            elif isinstance(pvalue, dict):
+                # Para objetos simples, lo guardamos como dict string
+                vset.add(str(pvalue))
+            else:
+                # Fallback genérico
+                vset.add(str(pvalue))
+
+    return summary
 
 # ------------------------------------------------------------
 # Mapeo Rego → UVL usando tu CSV
@@ -263,48 +344,37 @@ def build_uvl_expressions_for_template(
     feature_dict,
     kind_map,
 ):
-    """
-    A partir de:
-    - nombre del template
-    - bloques rego
-    - lista de K8s kinds (Pod, Deployment, ...)
-    - mapping CSV -> features UVL
-    genera una lista de expresiones UVL de la forma:
-        !Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_privileged
-    """
     expressions = []
 
     for rego in rego_blocks:
+        print(f"Rego path   {rego}")
         paths = extract_gatekeeper_conditions_from_rego(rego)
+        print(f"Rego paths 2  {paths}")
         if not paths:
             continue
 
         for k8s_kind in k8s_kinds:
+            print(f"Kind    {k8s_kind}")
             for p in paths:
-                subkey = rego_path_to_search_key(p)
-                feature, is_list, value_field = find_uvl_path_for_rego(
-                    k8s_kind, subkey, feature_dict, kind_map
+                print(f"Path indi   {p}")
+                #subkey = rego_path_to_search_key(p)
+                features = find_gatekeeper_uvl_paths(
+                    k8s_kind, p, feature_dict, kind_map
                 )
-                if not feature:
-                    print(f"[WARNING] No UVL mapping for path '{p}' (subkey '{subkey}') in kind '{k8s_kind}'")
+                if not features:
+                    print(f"[WARNING] No UVL mapping for path '{p}' in kind '{k8s_kind}'")
                     continue
 
                 base_prefix = get_base_prefix(k8s_kind.capitalize())
                 # Heurística: si aparece en la condición de violación,
                 # significa "si esto es true -> violación", así que el
                 # modelo deseable es que sea false:
-                expr = f"!{base_prefix}.{feature}"
-                expressions.append(expr)
 
-    # Deduplicar
-    uniq = []
-    seen = set()
-    for e in expressions:
-        if e not in seen:
-            uniq.append(e)
-            seen.add(e)
+                for feature in features:
+                    expr = f"!{base_prefix}.{feature}"
+                    expressions.append(expr)
 
-    return uniq
+    return expressions
 
 
 # ------------------------------------------------------------
@@ -316,6 +386,7 @@ def gatekeeper_template_to_uvl(
     constraint_kind_map,
     feature_dict,
     kind_map,
+    constraint_params_summary
 ):
     """
     Convierte un ConstraintTemplate de Gatekeeper en:
@@ -351,6 +422,15 @@ def gatekeeper_template_to_uvl(
     if description:
         attrs.append(f"doc '{clean_description(description)}'")
     attrs.append("tool 'Gatekeeper'")
+
+
+    params_for_kind = constraint_params_summary.get(crd_kind, {})
+    for pname, values in params_for_kind.items():
+        # valores posibles agregados como string
+        joined = ", ".join(sorted(values))
+        # ej: hostNetwork '{true,false}', min '80', max '9000'
+        attrs.append(f"{pname} '{joined}'")
+
     feature_line = f"{tmpl_name} {{{', '.join(attrs)}}}"
 
     if not rego_blocks:
@@ -374,13 +454,14 @@ def gatekeeper_template_to_uvl(
             "constraint": None,
         }
 
-    if len(exprs) == 1:
+    body = " & ".join(exprs) if len(exprs) > 1 else exprs[0]
+    constraint_line = f"{tmpl_name} => {body}"
+    """if len(exprs) == 1:
         body = exprs[0]
     else:
         body = " & ".join(exprs)
 
-    constraint_line = f"{tmpl_name} => {body}"
-
+    constraint_line = f"{tmpl_name} => {body}"""
     return {
         "feature": feature_line,
         "constraint": constraint_line,
@@ -405,6 +486,7 @@ def extract_gatekeeper_policies(root_directory: str):
 
     # Mapa CRDKind -> [Pod, Deployment, ...]
     constraint_kind_map = build_constraint_kind_map(root_directory)
+    constraint_params_summary = build_constraint_params_summary(root_directory)
 
     results = []
 
@@ -418,6 +500,7 @@ def extract_gatekeeper_policies(root_directory: str):
             constraint_kind_map,
             feature_dict,
             kind_map,
+            constraint_params_summary
         )
         results.append(item)
 
