@@ -80,9 +80,9 @@ def extract_gatekeeper_conditions_from_rego(rego_text):
             expanded.append(("spec", attr))
         results += expanded
     
-    """# 6. Detectar reglas de hostPort (rangos min/max)
+    # 6. Detectar reglas de hostPort (rangos min/max)
     if HOSTPORT_PATTERN.search(rego_text):
-        results.append(("c", "ports.hostPort"))"""
+        results.append(("c", "ports.hostPort"))
 
     # 7. Expandir variable a rutas K8s correctas
     final = []
