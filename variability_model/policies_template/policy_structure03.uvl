@@ -13,6 +13,7 @@ imports
     k8s.Secret as Secret
     k8s.PersistentVolumeClaim as PersistVolumeClaim
     k8s.PodDisruptionBudgetFeatures as PodDisrupBud
+    k8s.CronJob as CronJob
 features
 	PoliciesKyverno {abstract}
 		optional
@@ -111,6 +112,7 @@ features
 			Secret.SecretFeatures
 			PersistVolumeClaim.PersistentVolumeClaimFeatures
 			PodDisrupBud.PodDisruptionBudgetFeatures
+			CronJob.CronJobFeatures
 constraints
 	Disallow_Host_Namespaces => (!Pod.io_k8s_api_core_v1_Pod_spec_hostPID & !Pod.io_k8s_api_core_v1_Pod_spec_hostIPC & !Pod.io_k8s_api_core_v1_Pod_spec_hostNetwork)
 	Disallow_hostPath => !Pod.io_k8s_api_core_v1_Pod_spec_volumes_hostPath
@@ -154,15 +156,10 @@ constraints
 	no_sysmodule_capability => CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_MODULE' & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_MODULE' & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_MODULE' & Job.io_k8s_api_batch_v1_Job_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_MODULE' & Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_MODULE' & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_MODULE' & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_MODULE' & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_ephemeralContainers_securityContext_capabilities_add_StringValue != 'SYS_MODULE'
 	automountServiceAccountToken => !Pod.io_k8s_api_core_v1_Pod_spec_automountServiceAccountToken
 	dangerousCapabilities => (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_add_StringValue != 'ALL') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_add_StringValue != 'SYS_ADMIN') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_add_StringValue != 'NET_ADMIN')
-	hostIPCSet => !Pod.io_k8s_api_core_v1_Pod_spec_hostIPC
-	hostNetworkSet => !Pod.io_k8s_api_core_v1_Pod_spec_hostNetwork
-	hostPIDSet => !Pod.io_k8s_api_core_v1_Pod_spec_hostPID
 	hostPortSet => Container.io_k8s_api_core_v1_Container_ports_hostPort == 0
 	insecureCapabilities => (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'ALL') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'NET_ADMIN') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'CHOWN') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'DAC_OVERRIDE') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'FSETID') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'FOWNER') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'MKNOD') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'NET_RAW') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'SETGID') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'SETUID') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'SETFCAP') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'SETPCAP') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'NET_BIND_SERVICE') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'SYS_CHROOT') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'KILL') & (Container.io_k8s_api_core_v1_Container_securityContext_capabilities_drop_StringValue == 'AUDIT_WRITE')
 	linuxHardening => (Container.io_k8s_api_core_v1_Container_securityContext_seccompProfile_type_Unconfined)
-	notReadOnlyRootFilesystem => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_readOnlyRootFilesystem
 	privilegeEscalationAllowed => !Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_allowPrivilegeEscalation
 	procMount => (Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_procMount_StringValue == 'Default')
-	runAsPrivileged => !Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_privileged
 	runAsRootAllowed => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser > 1 & Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsNonRoot
 	tlsSettingsMissing => Ingress.io_k8s_api_networking_v1_Ingress_spec_tls

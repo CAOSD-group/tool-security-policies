@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import os
@@ -299,7 +298,6 @@ def extract_conditions_from_schema(schema, prefix="", root_schema=None):
 
         # Recursión en sub-propiedades
         if "properties" in rule:
-            print(f"No captura?")
             conds.extend(
                 extract_conditions_from_schema(rule, prefix=prop_path, root_schema=root_schema)
             )
@@ -512,7 +510,6 @@ def build_uvl_expr(kind_name: str, feature: str, op: str, val):
                 if val == 'Unconfined':
                     return f"{full_feature}_Unconfined"
                 #return f"({full_feature}_StringValue == '{val}')"
-        print(f"Nada")
     
     if op == ">=": ## differences between our modify model :: _valueInt **
         return f"{full_feature} > {val}"
@@ -625,9 +622,9 @@ def map_semantic_conds_to_uvl(check, semantic_conds, feature_dict, kind_map):
 # =========================
 
 def polaris_to_uvl(check, feature_dict, kind_map):
-    print(f"\nCheck: {check['id']}")
-    print(check)
-    print(f"Doc {check['failure']}")
+    #print(f"\nCheck: {check['id']}")
+    #print(check)
+    #print(f"Doc {check['failure']}")
     # 0) Resolver Kinds reales sobre los que aplica
     real_kinds = resolve_target_kinds(check)
 
@@ -677,7 +674,7 @@ def polaris_to_uvl(check, feature_dict, kind_map):
             fm_row = find_feature(context_kind, prop_path, feature_dict)
 
             if not fm_row:
-                print(f"    ⚠ No FM match for Context={context_kind}, prop={prop_path}")
+                print(f"No FM match for Context={context_kind}, prop={prop_path}")
                 continue
 
             feature = fm_row["Feature"]
@@ -685,7 +682,7 @@ def polaris_to_uvl(check, feature_dict, kind_map):
             all_parts.append(expr)
 
     if not all_parts:
-        print("  ❌ Ninguna condición mapeada a FM, se omite este check.")
+        print("Ninguna condición mapeada a FM, se omite este check.")
         return None
 
     # Opcional: aquí podrías quitar duplicados si quieres

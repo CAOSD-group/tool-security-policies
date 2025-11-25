@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from collections import defaultdict
 from gatekeeper_rego_parser import extract_gatekeeper_conditions_from_rego
-from extract_policies_general import (
+from scripts.tools_extraction.extract_policies_general import (
     load_kinds_prefix_mapping,
     load_feature_dict,
     clean_description,

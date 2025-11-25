@@ -246,3 +246,20 @@ spec:
 
 Integer io_k8s_api_core_v1_Pod_spec_ephemeralContainers_ports_hostPort {doc 'Number of port to expose on the host If specified, this must be a valid port number, 0 < x < 65536 If HostNetwork is specified, this must match ContainerPort Most containers do not need this'}
 io_k8s_api_core_v1_Pod_spec_ephemeralContainers_ports_hostPort > 0 & io_k8s_api_core_v1_Pod_spec_ephemeralContainers_ports_hostPort < 65536
+
+
+
+Tipos de constraints duplicadas en las distintas herramientas:
+
+Concepto	Kyverno	OPA	Polaris
+HostPID	Disallow_Host_Namespaces	no_host_pid	hostPIDSet
+HostIPC	Disallow_Host_Namespaces	no_shared_ipc_namespace	hostIPCSet
+HostNetwork	Disallow_Host_Namespaces	no_host_network	hostNetworkSet
+Privileged	Disallow_Privileged_Containers	no_privileged_containers	runAsPrivileged
+
+
+
+
+**Revisar porque son duplicadas exactamente iguales**
+no_privileged_containers 
+no_sysmodule_capability 
