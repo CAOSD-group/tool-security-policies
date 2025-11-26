@@ -263,3 +263,23 @@ Privileged	Disallow_Privileged_Containers	no_privileged_containers	runAsPrivileg
 **Revisar porque son duplicadas exactamente iguales**
 no_privileged_containers 
 no_sysmodule_capability 
+
+**Ajuste insecureCapabilities en polaris**
+**Asignar un operador comun para los strings negados: != Preguntar**
+
+Realizar validaciones con el modelo "completo"
+
+
+Duplicada: io_k8s_api_core_v1_Pod_spec_automountServiceAccountToken
+no_auto_mount_service_token -- error en la definicion de las constraints, falta prefix {kind.}
+automountServiceAccountToken
+
+Ajustar las agrupaciones de los feautures de las politicas de Polaris y Trivy con mas espacios
+
+WARNING:root:Import k8s.PodDisruptionBudgetFeatures not found in path C:\Users\CAOSD\projects\fm-security-rules\variability_model\policies_template
+
+
+Agregar el submodulo: ReplicaSet
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFmSec\Lib\site-packages\flamapy\metamodels\pysat_metamodel\models\pysat_model.py", line 23, in get_variable
+    raise FlamaException(f'Feature {key} not found')
+flamapy.core.exceptions.FlamaException: Feature ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_hostIPC not found 

@@ -523,7 +523,7 @@ def build_uvl_expr(kind_name: str, feature: str, op: str, val):
     if op == "contains":
         # Convención: para arrays tipo capabilities_drop
         if full_feature.endswith("capabilities_drop"):
-            return f"({full_feature}_StringValue == '{val}')"
+            return f"({full_feature}_StringValue != '{val}')"
         return f"({full_feature} == '{val}')"
 
     if op == "not_contains":

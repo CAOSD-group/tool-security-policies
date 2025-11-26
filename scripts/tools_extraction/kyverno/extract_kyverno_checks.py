@@ -224,6 +224,9 @@ def build_expression(feature, value):
         return f"{feature} = {value}"""
     if isinstance(value, str) and value.startswith("!"):
         clean_val = value[1:]
+        print(f"Cleningn values {clean_val}")
+        if '.' in clean_val:
+            clean_val = clean_val.replace('.', '_')
         return f"{feature} != '{clean_val}'"
     return f"{feature} == '{value}'"
 
@@ -264,11 +267,12 @@ def extract_constraints_from_policy(filepath):
                     elif re.match(r"^\d+(\.\d+)?$", str(v).strip()):
                         expr = f"{feature} = {v}"
                     else:
+                        if '.' in v:
+                            v = v.replace('.', '_')
                         expr = f"{feature} == '{v}'"
                         print(f"Expr flatten distarcet: {expr}")
                     grouped_conditions.setdefault(name, []).append(expr)
             continue
-
 
         if preconds and action == 'Enforce':
             any_conds = preconds.get("any", []) or preconds.get("all", [])
@@ -276,6 +280,8 @@ def extract_constraints_from_policy(filepath):
                 key = cond.get("key", "")
                 operator = cond.get("operator", "")
                 value = cond.get("value", "")
+                if '.' in value:
+                    value = value.replace('.', '_') 
                 # limpiar key para extraer el campo real del request.object
                 key_clean = key.replace("{{ request.object.", "").replace(" }}", "")
                 key_clean = key_clean.replace("[0]", "").replace("|| ''", "").strip()
@@ -517,6 +523,7 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
             else:
                 #print(f"ELSE   {v}   {new_prefix}") ## caso spec defaultBackend: se arregla con la deteccion automatica del prefijo y cambio
                 if isinstance(v, str):
+                    ## No usa values con punto
                     if v.lower() == "false":
                         v = "false"
                     elif v.lower() == "true": ## Caso readOnlyRootFilesystem
@@ -554,6 +561,8 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
                             new_prefix = f"{new_prefix}_asInteger" if isinstance(value_int, int) else f"{new_prefix}_asString"
                     
                     else: ## fallback
+                        if '.' in v: ## Remove the points in values of strings
+                            v = v.replace('.', '_')
                         v = f"'{str(v)}'"
                         #print(f"  {v} {new_prefix}")
                 elif isinstance(v, (int, float)):

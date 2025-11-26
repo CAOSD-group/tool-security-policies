@@ -51,8 +51,8 @@ def generate_uvl_from_policies(directory, output_path):
         category_map.setdefault(cat, []).append(entry)
 
     #lines = ["namespace PoliciesKyverno", "features", "\tPolicies {abstract}", "\t\toptional"]
-    lines = ["namespace Policies", "imports", "    k8s.Pods as Pod\n    k8s.ServiceAccount as ServAcc\n    k8s.RoleBinding as RoleBinding\n    k8s.ClusterRoleBinding as ClusRole\n    k8s.Service as Serv\n    k8s.Ingress as Ingress\n    k8s.Job as Job\n    k8s.DaemonSet as DaemonSet\n    k8s.Deployment as Deployment\n    k8s.StatefulSet as StatefulSet\n    k8s.Secret as Secret\n    k8s.PersistentVolumeClaim as PersistVolumeClaim\n    k8s.PodDisruptionBudgetFeatures as PodDisrupBud\n    k8s.CronJob as CronJob",
-              "features", "\tPoliciesKyverno {abstract}", "\t\toptional"]
+    lines = ["namespace Policies", "imports", "    k8s.Pods as Pod\n    k8s.ServiceAccount as ServAcc\n    k8s.RoleBinding as RoleBinding\n    k8s.ClusterRoleBinding as ClusRole\n    k8s.Service as Serv\n    k8s.Ingress as Ingress\n    k8s.Job as Job\n    k8s.DaemonSet as DaemonSet\n    k8s.Deployment as Deployment\n    k8s.StatefulSet as StatefulSet\n    k8s.Secret as Secret\n    k8s.PersistentVolumeClaim as PersistVolumeClaim\n    k8s.PodDisruptionBudget as PodDisrupBud\n    k8s.CronJob as CronJob",
+              "features", "\tPoliciesKubernetes {abstract}", "\t\toptional"]
     
     #opa_results = parse_opa_directory("../resources/OPA_Policies")
     #polaris_results = parse_opa_directory("../resources/Polaris-checks")
@@ -74,9 +74,8 @@ def generate_uvl_from_policies(directory, output_path):
                 lines.append(f"\t\t\t\t\t{name} {{doc '{doc}'}}")
             else:
                 lines.append(f"\t\t\t\t\t{name}")"""
-    lines.append("\tOPAConstraints {abstract}")
-    lines.append("\t\toptional")
-    lines.append("\t\t\tK8s_checks {abstract}")
+
+    lines.append("\t\t\tOPAConstraints {abstract}")
     lines.append("\t\t\t\toptional")
 
     ##ll_resources = parse_all_sources("../resources/OPA_Policies", "../resources/Polaris-checks")
@@ -87,9 +86,7 @@ def generate_uvl_from_policies(directory, output_path):
         lines.append(f"\t\t\t\t\t{feature_str}")
 
     polaris_results = parse_polaris_directory("../resources/Polaris-checks")
-    lines.append("\tPolarisConstraints {abstract}")
-    lines.append("\t\toptional")
-    lines.append("\t\t\tKubernetes_checks {abstract}")
+    lines.append("\t\t\tPolarisConstraints {abstract}")
     lines.append("\t\t\t\toptional")
 
     for check in polaris_results: ## Read OPA Policies
@@ -105,7 +102,7 @@ def generate_uvl_from_policies(directory, output_path):
     lines.append("\t\t\tServ.ServiceFeatures")
     lines.append("\t\t\tIngress.IngressFeatures")
     lines.append("\t\t\tJob.JobFeatures")
-    lines.append("\t\t\tClusRole.ClusterRoleBindingFeatures")
+    lines.append("\t\t\tDaemonSet.DaemonSetFeatures")
     lines.append("\t\t\tDeployment.DeploymentFeatures")
     lines.append("\t\t\tStatefulSet.StatefulSetFeatures")
     lines.append("\t\t\tSecret.SecretFeatures")
@@ -196,10 +193,14 @@ def generate_uvl_from_policies(directory, output_path):
             feats = extract_features(rhs)
             used_features.update(feats)
 
-
     # Añadir OPA sin duplicar expresiones
     for opa in opa_results:
-        lines.append("\t" + opa["constraint"])
+        #lines.append("\t" + opa["constraint"])
+        raw = opa["constraint"]
+        expr = raw.split("=>", 1)[1] if "=>" in raw else raw  
+        feats = extract_features(expr)
+        lines.append("\t" + raw)
+        used_features.update(feats)
 
     for polaris in polaris_results: ## Write Policies of Polaris
         #print(f"Polaris {polaris}")

@@ -49,7 +49,7 @@ def get_base_prefix(kind_prefix): ## Used by the generate_uvl_policies
         return "ReplicaSet"
     elif "Replicationcontroller" == kind_prefix:
         return "RepController"
-    elif "Deploymentconfig" == kind_prefix: ## ToDo: More specific str of types if add more kindsQ
+    elif "Deploymentconfig" == kind_prefix:
         return "DeployConfig" 
     elif "Cronjob" == kind_prefix: ## Added for Rego subtypes
         return "CronJob"
@@ -57,7 +57,7 @@ def get_base_prefix(kind_prefix): ## Used by the generate_uvl_policies
         return "ServAcc"
     elif "Service" in kind_prefix:
         return "Serv"
-    elif "Clusterolebinding" in kind_prefix: ## ToDo: More specific str of types if add more kindsQ
+    elif "Clusterolebinding" in kind_prefix:
         return "ClusRole" 
     elif "Rolebinding" in kind_prefix:
         return "RoleBinding"
