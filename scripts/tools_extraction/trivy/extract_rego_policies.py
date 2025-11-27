@@ -213,9 +213,51 @@ def parse_rego_policy(path):
 
 
 def rego_policy_to_uvl(policy, field_map, kind_map):
+
+    # Campos que queremos extraer
     meta = policy["metadata"]
-    #print(f"Policie\n   {policy}")
     cond = policy["conditions"][0]  # Asumimos 1 condición base por ahora
+    
+    # --- tool ---
+    tool = "trivy"
+    # --- feature name ---
+    feature_name = meta["short_code"].replace("-", "_")
+    # --- severity ---
+    severity = meta.get("severity", "").lower()
+    # --- nombre original ---
+    name = meta.get("short_code", "")
+    # --- Descripcion ---
+    doc = clean_description(meta.get("description", "")).replace("'", "")
+    # --- Kinds de la politica ---
+    kinds_list = sorted(set(k for k in meta.get("kinds", [])))
+    kinds_value = ", ".join(kinds_list)
+    # # --- Source of implementation ---
+    raw_source = 'OPA-Rego'
+    # --- Extraer campo canonical desde conditions ---
+    rego_field = cond["field"].replace(".", "_")
+    rego_field_key = normalize_rego_path(rego_field)
+    # # --- Accion recomendada ---
+    #clean_recommended_action_rego = clean_description(meta['recommended_action'])
+    # --- Construcción del bloque UVL ---
+    attrs = []
+    attrs.append(f"tool '{tool}'")
+    if severity:
+        attrs.append(f"severity '{severity}'")
+    if name:
+        attrs.append(f"name '{name}'")
+    if rego_field_key:
+        attrs.append(f"fields '{rego_field_key}'")
+    if kinds_value:
+        attrs.append(f"kinds '{kinds_value}'")
+    #if category:
+    #    attrs.append(f"category '{category}'")
+    if doc:
+        attrs.append(f"doc '{doc}'")
+    if raw_source:
+        attrs.append(f"raw_source '{raw_source}'")
+
+    feature_block = f"{feature_name} {{" + ", ".join(attrs) + "}"
+    #feature_block = f"""{feature_name} {{doc '{clean_description_rego}', severity '{meta['severity'].lower()}', tool 'OPA', recommended '{clean_recommended_action_rego}'}}"""
 
     field = cond["field"]
     operator = cond["operator"]
@@ -227,12 +269,12 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
     #print(f"field key   {field}")
     field_key = normalize_rego_path(field)
     
-    # Feature name sanitized
+    """# Feature name sanitized
     feature_name = meta["short_code"].replace("-", "_") # meta["id"] + "_" + 
     ## To Do: clean the descriptions
     clean_description_rego = clean_description(meta['description'])
-    clean_recommended_action_rego = clean_description(meta['recommended_action'])
-    feature_block = f"""{feature_name} {{doc '{clean_description_rego}', severity '{meta['severity'].lower()}', tool 'OPA', recommended '{clean_recommended_action_rego}'}}"""
+    clean_recommended_action_rego = clean_description(meta['recommended_action'])"""
+    #feature_block = f"""{feature_name} {{doc '{clean_description_rego}', severity '{meta['severity'].lower()}', tool 'OPA', recommended '{clean_recommended_action_rego}'}}"""
     
     constraint_parts = [] ## Added only candidate crossed
     kinds = meta.get("kinds", [])
@@ -246,14 +288,6 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
                 print(f"[WARNING] No UVL mapping for field '{field_key}' in kind '{kind}'")
                 continue
             kind_cap = get_base_prefix(kind.capitalize()) ### Import of objects, adjust like the generate_uvl_policies -- If 
-
-            ## get_base_prefix
-            # Prueba para operadores boolean UVL traducido
-
-            """if operator == "==" and value.lower() == "true":
-                expr = f"{kind}.{feature} != true"
-            elif operator == "!=" and value.lower() == "true":
-                expr = f"{kind}.{feature} == true"""
 
             # Operador UVL traducido
             #print(f"operator    {operator}  {value}")

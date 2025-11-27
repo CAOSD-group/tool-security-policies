@@ -60,18 +60,65 @@ def extract_policy_info(filepath):
         "full_yaml": policy
     }
 
+def _extract_canonical_fields_recursive(obj, prefix=""):
+    """
+    Extrae rutas como spec_hostNetwork, spec_replicas, etc.
+    Sin valores, solo la canonical field.
+    """
+    fields = set()
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            key_clean = sanitize(k.replace("=", "").replace("()", ""))
+            new_prefix = f"{prefix}_{key_clean}" if prefix else key_clean
+            #if new_prefix.count('_') > 1:
+            fields.add(new_prefix)
+            fields.update(_extract_canonical_fields_recursive(v, new_prefix))
+    return fields
+
+
 def extract_uvl_attributes_from_policy(policy: dict) -> str:
-    annotations = policy.get("metadata", {}).get("annotations", {})
-    spec = policy.get("spec", {})
 
     # Campos que queremos extraer
-    doc = annotations.get("policies.kyverno.io/description", "").replace("'", "\\'")
-    severity = annotations.get("policies.kyverno.io/severity", "")
-    k8s_version = annotations.get("kyverno.io/kubernetes-version", "")
-    action = spec.get("validationFailureAction", "")
+    annotations = policy.get("metadata", {}).get("annotations", {})
+    metadata = policy.get("metadata", {})
+    spec = policy.get("spec", {})
+    rules = spec.get("rules", [])
+    #doc = annotations.get("policies.kyverno.io/description", "").replace("'", "\\'")
 
     # Formateo en estilo UVL
+    # --- tool ---
+    tool = "kyverno"
+    # --- severity ---
+    severity = annotations.get("policies.kyverno.io/severity", "")
+    # --- name of file ---
+    file_name = metadata.get("name", "")
+    #category = sanitize(category)
+    # --- category ---
+    category = annotations.get("policies.kyverno.io/category", "Uncategorized")
+    category = sanitize(category)
+    # --- description ---
+    description = annotations.get("policies.kyverno.io/description", "")
+    description = clean_description(description).replace("'", "")
+    # --- kinds (todos los kinds usados en reglas) ---
+    kinds_value = annotations.get("policies.kyverno.io/subject", "")
+    # --- canonical_fields ---
+    canonical_fields = set()
+    for rule in rules:
+        pattern = rule.get("validate", {}).get("pattern", {})
+        canonical_fields.update(_extract_canonical_fields_recursive(pattern))
+
+    canonical_fields = { ## Delete simple fields like spec, type
+    f for f in canonical_fields 
+    if len(f.split("_")) >= 2
+    }
+    canonical_fields_value = ", ".join(sorted(canonical_fields))
+    # --- raw_source (YAML comprimido y sanitizado) ---
+    raw_source = 'YAML'
+
+    """k8s_version = annotations.get("kyverno.io/kubernetes-version", "")
+    action = spec.get("validationFailureAction", "")
     attributes = []
+    tool = "kyverno"
     if doc:
         attributes.append(f"doc '{clean_description(doc)}'")
     if severity:
@@ -84,8 +131,26 @@ def extract_uvl_attributes_from_policy(policy: dict) -> str:
 
     if attributes:
         return f" {{{', '.join(attributes)}}}"
-    return ""
+    return """
+    # --- Construcción UVL ---
+    attrs = []
+    attrs.append(f"tool '{tool}'")
+    if severity:
+        attrs.append(f"severity '{severity}'")
+    if file_name:
+        attrs.append(f"name '{file_name}'")
+    if canonical_fields_value:
+        attrs.append(f"fields '{canonical_fields_value}'")
+    if kinds_value:
+        attrs.append(f"kinds '{kinds_value}'")
+    #if category:
+    #    attrs.append(f"category '{category}'")
+    if description:
+        attrs.append(f"doc '{description}'")
+    if raw_source:
+        attrs.append(f"raw_source '{raw_source}'")
 
+    return " {" + ", ".join(attrs) + "}"
 
 def load_kinds_prefix_mapping(file_path: str) -> dict:
     """
@@ -497,11 +562,7 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
                         clean_val = value.strip()
                         sub_feature = f"{base_feature}_{clean_val}"
                         allowed_values.append(sub_feature)
-                        #print(f"ALLOWED VALUES  {allowed_values}")
-                        #conditions.append((sub_feature, "true"))  # subfeatures activos
-
-                    # registrar que el campo principal es opcional
-                    #optional_clauses.append((base_feature, allowed_values))                  
+                 
                     clauses = build_optional_clause(base_feature, allowed_values, kind_prefixes)
                     if isinstance(clauses, list):
                         optional_clauses.extend(clauses)
