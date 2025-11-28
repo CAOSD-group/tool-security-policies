@@ -2,8 +2,8 @@ import yaml
 import os
 from pathlib import Path
 from collections import defaultdict
-from gatekeeper_rego_parser import extract_gatekeeper_conditions_from_rego
-from scripts.tools_extraction.extract_policies_general import (
+from tools_extraction.gatekeeper.gatekeeper_rego_parser import extract_gatekeeper_conditions_from_rego
+from tools_extraction.extract_policies_general import (
     load_kinds_prefix_mapping,
     load_feature_dict,
     clean_description,
@@ -433,15 +433,25 @@ def gatekeeper_template_to_uvl(
 
     # ----------------- Feature UVL -----------------
     attrs = []
+    # tool
+    attrs.append("tool 'Gatekeeper'")
+    # severity (Gatekeeper no la tiene → default)
+    severity = annotations.get("severity", "undefined")
+    attrs.append(f"severity '{severity}'")
+    # category
+    category = annotations.get("metadata.gatekeeper.sh/title", "") or annotations.get("category", "") or "General"
+    attrs.append(f"category '{sanitize(category)}'")
+    # kinds (convertido en string)
+    kinds_str = ",".join(k8s_kinds)
+    attrs.append(f"kinds '{kinds_str}'")
+    # Doc of feature
     if description:
         attrs.append(f"doc '{clean_description(description)}'")
-    attrs.append("tool 'Gatekeeper'")
-
     # parámetros agregados para este CRD kind (si los hay)
     params_for_kind = constraint_params_summary.get(crd_kind, {})
     for pname, values in params_for_kind.items():
         joined = ", ".join(sorted(values))
-        attrs.append(f"{pname} '{joined}'")
+        #attrs.append(f"{pname} '{joined}'")
 
     feature_line = f"{tmpl_name} {{{', '.join(attrs)}}}"
 
@@ -459,7 +469,7 @@ def gatekeeper_template_to_uvl(
         k8s_kinds,
         feature_dict,
         kind_map,
-        params_for_kind,
+        params_for_kind
     )
 
     if not exprs:

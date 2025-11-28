@@ -25,7 +25,7 @@ RES    = ROOT / "resources"
 
 UVL_PATH = MODELS / "policy_structure03.uvl"
 # usar str(UVL_PATH) si la librería lo exige
-path_json = RES / "valid_yamls" / "core.v1.PodTemplate.after_roundtrip.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid
+path_json = RES / "valid_yamls" / "test-require-run-as-nonroot_1.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid
 
 
 def get_all_parents(feature: Feature) -> list[str]:
@@ -172,7 +172,7 @@ if __name__ == '__main__':
         print(f'Configuration {i+1}: {config.elements}')
     print(f"#########     VALIDACION")
     
-    """print("FEATURES en SAT model:") ## Uncoment for print sat features in output file
+    print("FEATURES en SAT model:") ## Uncoment for print sat features in output file
     
     out_path = os.path.join(os.path.dirname(__file__), "sat_features_dump.txt")
     with open(out_path, "w", encoding="utf-8") as f_out:
@@ -180,7 +180,7 @@ if __name__ == '__main__':
         for f in sat_model.variables.keys():
             f_out.write(f"- {f}\n")
             
-    print(f"[INFO] Se ha guardado la lista completa de features en: {out_path}")"""
+    print(f"[INFO] Se ha guardado la lista completa de features en: {out_path}")
 
     """for f in sat_model.variables.keys():
         print("-", f)"""

@@ -2,7 +2,7 @@ import os
 import yaml
 import re
 
-from tools_extraction.extract_opa_batch import parse_opa_directory, parse_polaris_directory
+from tools_extraction.extract_opa_batch import parse_opa_directory, parse_polaris_directory, parse_gatekeeper_directory_wrapper
 
 from tools_extraction.kyverno.extract_kyverno_checks import (
     sanitize,
@@ -92,6 +92,13 @@ def generate_uvl_from_policies(directory, output_path):
     for check in polaris_results: ## Read OPA Policies
         feature_str = check["feature"] ## .replace("\n", "\n\t\t\t")
         print(f"Feature str:    {feature_str}")
+        lines.append(f"\t\t\t\t\t{feature_str}")
+
+    gatekeeper_results = parse_gatekeeper_directory_wrapper("../resources/gatekeeper-library/pod-security-policy")
+    lines.append("\t\t\tGatekeeeperConstraints {abstract}")
+    lines.append("\t\t\t\toptional")
+    for gk in gatekeeper_results:
+        feature_str = gk["feature"]
         lines.append(f"\t\t\t\t\t{feature_str}")
 
 

@@ -623,7 +623,6 @@ def map_semantic_conds_to_uvl(check, semantic_conds, feature_dict, kind_map):
 
 def polaris_to_uvl(check, feature_dict, kind_map):
     #print(f"\nCheck: {check['id']}")
-    #print(check)
     #print(f"Doc {check['failure']}")
     # 0) Resolver Kinds reales sobre los que aplica
     real_kinds = resolve_target_kinds(check)
@@ -632,23 +631,26 @@ def polaris_to_uvl(check, feature_dict, kind_map):
     if check.get("schemaString"):
         ast = schema_string_to_ast(check["schemaString"])
         if not ast:
-            print("  ⚠ schemaString sin AST → skip")
+            print("schemaString sin AST -> skip")
             return None
 
         semantic_conds = extract_semantic_conditions_from_ast(ast, prefix="", result=None, root_ast=ast)
         if not semantic_conds:
-            print("  ⚠ schemaString sin condiciones semánticas → skip")
+            print("schemaString sin condiciones semánticas -> skip")
             return None
 
         constraint_expr = map_semantic_conds_to_uvl(check, semantic_conds, feature_dict, kind_map)
         if not constraint_expr:
-            print("  ⚠ No se pudo mapear semantic_conds a FM → skip")
+            print("No se pudo mapear semantic_conds a FM -> skip")
             return None
-
+        
         feature_name = check["id"].replace("-", "_")
         feature_block = (
-            f"{feature_name} "
-            f"{{doc '{check['failure']}', tool 'Polaris', category '{check['category']}'}}"
+            f"{feature_name} {{"
+            f"tool 'Polaris', "
+            f"category '{check['category']}', "
+            f"doc '{check['failure']}', "
+            f"}}"
         )
         constraint = f"{feature_name} => {constraint_expr}"
         return feature_block, constraint
@@ -656,7 +658,7 @@ def polaris_to_uvl(check, feature_dict, kind_map):
     # 2) Extraer condiciones del schema
     conds = extract_conditions_from_schema(check["schema"])
     if not conds:
-        print("  ⚠ Sin condiciones mapeables → skip")
+        print("Sin condiciones mapeables → skip")
         return None
 
     feature_name = check["id"].replace("-", "_")
@@ -669,7 +671,6 @@ def polaris_to_uvl(check, feature_dict, kind_map):
     for real_kind in real_kinds:
         for prop_path, op, val in conds:
             #print(f"  Prop path   {prop_path}  ({op} {val})   real_kind={real_kind}")
-
             context_kind = context_kind_for(real_kind, check, prop_path)
             fm_row = find_feature(context_kind, prop_path, feature_dict)
 
@@ -690,7 +691,6 @@ def polaris_to_uvl(check, feature_dict, kind_map):
 
     constraint = f"{feature_name} => " + " & ".join(all_parts)
     return feature_block, constraint
-
 
 # =========================
 # MAIN de prueba

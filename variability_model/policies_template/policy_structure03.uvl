@@ -84,20 +84,27 @@ features
 					no_sysmodule_capability {tool 'trivy', severity 'high', name 'no-sysmodule-capability', fields 'container_securityContext_capabilities_add', kinds 'cronjob, daemonset, deployment, deploymentconfig, job, pod, replicaset, replicationcontroller, statefulset', doc 'The SYS_MODULE capability grants attackers the ability to install and remove kernel modules, posing serious security risks', raw_source 'OPA-Rego'}
 			PolarisConstraints {abstract}
 				optional
-					automountServiceAccountToken {doc 'The ServiceAccount will be automounted', tool 'Polaris', severity 'warning', category 'Security'}
-					dangerousCapabilities {doc 'Container should not have dangerous capabilities', tool 'Polaris', severity 'danger', category 'Security'}
-					hostIPCSet {doc 'Host IPC should not be configured', tool 'Polaris', severity 'danger', category 'Security'}
-					hostNetworkSet {doc 'Host network should not be configured', tool 'Polaris', severity 'danger', category 'Security'}
-					hostPIDSet {doc 'Host PID should not be configured', tool 'Polaris', severity 'danger', category 'Security'}
-					hostPortSet {doc 'Host port should not be configured', tool 'Polaris', severity 'warning', category 'Security'}
-					insecureCapabilities {doc 'Container should not have insecure capabilities', tool 'Polaris', severity 'warning', category 'Security'}
-					linuxHardening {doc 'Use one of AppArmor, Seccomp, SELinux, or dropping Linux Capabilities to restrict containers using unwanted privileges', tool 'Polaris', severity 'danger', category 'Security'}
-					notReadOnlyRootFilesystem {doc 'Filesystem should be read only', tool 'Polaris', severity 'warning', category 'Security'}
-					privilegeEscalationAllowed {doc 'Privilege escalation should not be allowed', tool 'Polaris', severity 'danger', category 'Security'}
-					procMount {doc 'Proc mount must not be changed from the default', tool 'Polaris', severity 'warning', category 'Security'}
-					runAsPrivileged {doc 'Should not be running as privileged', tool 'Polaris', severity 'danger', category 'Security'}
-					runAsRootAllowed {doc 'Should not be allowed to run as root', tool 'Polaris', severity 'danger', category 'Security'}
-					tlsSettingsMissing {doc 'Ingress does not have TLS configured', tool 'Polaris', severity 'warning', category 'Security'}
+					automountServiceAccountToken {tool 'Polaris', severity 'warning', name_field 'automountServiceAccountToken', kinds 'PodSpec', doc 'The ServiceAccount will be automounted', category 'Security', raw_source 'YAML with dinamic JSON'}
+					dangerousCapabilities {tool 'Polaris', severity 'danger', name_field 'dangerousCapabilities', kinds 'Container', doc 'Container should not have dangerous capabilities', category 'Security', raw_source 'YAML with dinamic JSON'}
+					hostIPCSet {tool 'Polaris', severity 'danger', name_field 'hostIPCSet', kinds 'PodSpec', doc 'Host IPC should not be configured', category 'Security', raw_source 'YAML with dinamic JSON'}
+					hostNetworkSet {tool 'Polaris', severity 'danger', name_field 'hostNetworkSet', kinds 'PodSpec', doc 'Host network should not be configured', category 'Security', raw_source 'YAML with dinamic JSON'}
+					hostPIDSet {tool 'Polaris', severity 'danger', name_field 'hostPIDSet', kinds 'PodSpec', doc 'Host PID should not be configured', category 'Security', raw_source 'YAML with dinamic JSON'}
+					hostPortSet {tool 'Polaris', severity 'warning', name_field 'hostPortSet', kinds 'Container', doc 'Host port should not be configured', category 'Security', raw_source 'YAML with dinamic JSON'}
+					insecureCapabilities {tool 'Polaris', severity 'warning', name_field 'insecureCapabilities', kinds 'Container', doc 'Container should not have insecure capabilities', category 'Security', raw_source 'YAML with dinamic JSON'}
+					linuxHardening {tool 'Polaris', severity 'danger', name_field 'linuxHardening', kinds 'Container', doc 'Use one of AppArmor, Seccomp, SELinux, or dropping Linux Capabilities to restrict containers using unwanted privileges', category 'Security', raw_source 'YAML with dinamic JSON'}
+					notReadOnlyRootFilesystem {tool 'Polaris', severity 'warning', name_field 'notReadOnlyRootFilesystem', kinds 'PodSpec', doc 'Filesystem should be read only', category 'Security', raw_source 'YAML with dinamic JSON'}
+					privilegeEscalationAllowed {tool 'Polaris', severity 'danger', name_field 'privilegeEscalationAllowed', kinds 'PodSpec', doc 'Privilege escalation should not be allowed', category 'Security', raw_source 'YAML with dinamic JSON'}
+					procMount {tool 'Polaris', severity 'warning', name_field 'procMount', kinds 'PodSpec', doc 'Proc mount must not be changed from the default', category 'Security', raw_source 'YAML with dinamic JSON'}
+					runAsPrivileged {tool 'Polaris', severity 'danger', name_field 'runAsPrivileged', kinds 'PodSpec', doc 'Should not be running as privileged', category 'Security', raw_source 'YAML with dinamic JSON'}
+					runAsRootAllowed {tool 'Polaris', severity 'danger', name_field 'runAsRootAllowed', kinds 'PodSpec', doc 'Should not be allowed to run as root', category 'Security', raw_source 'YAML with dinamic JSON'}
+					tlsSettingsMissing {tool 'Polaris', severity 'warning', name_field 'tlsSettingsMissing', kinds 'networking_k8s_io/Ingress', doc 'Ingress does not have TLS configured', category 'Security', raw_source 'YAML with dinamic JSON'}
+			GatekeeeperConstraints {abstract}
+				optional
+					k8spsphostfilesystem {tool 'Gatekeeper', severity 'undefined', category 'Host_Filesystem', kinds 'Pod', doc 'Controls usage of the host filesystem Corresponds to the allowedHostPaths field in a PodSecurityPolicy For more information, see https:_kubernetesio/docs/concepts/policy/pod-security-policy/#volumes-and-file-systems'}
+					k8spsphostnamespace {tool 'Gatekeeper', severity 'undefined', category 'Host_Namespace', kinds 'Pod', doc 'Disallows sharing of host PID and IPC namespaces by pod containers Corresponds to the hostPID and hostIPC fields in a PodSecurityPolicy For more information, see https:_kubernetesio/docs/concepts/policy/pod-security-policy/#host-namespaces'}
+					k8spsphostnetworkingports {tool 'Gatekeeper', severity 'undefined', category 'Host_Networking_Ports', kinds 'Pod', doc 'Controls usage of host network namespace by pod containers HostNetwork verification happens without exception for exemptImages Specific ports must be specified Corresponds to the hostNetwork and hostPorts fields in a PodSecurityPolicy For more information, see https:_kubernetesio/docs/concepts/policy/pod-security-policy/#host-namespaces'}
+					k8spspprivilegedcontainer {tool 'Gatekeeper', severity 'undefined', category 'Privileged_Container', kinds 'Pod', doc 'Controls the ability of any container to enable privileged mode Corresponds to the privileged field in a PodSecurityPolicy For more information, see https:_kubernetesio/docs/concepts/policy/pod-security-policy/#privileged'}
+					k8spspvolumetypes {tool 'Gatekeeper', severity 'undefined', category 'Volume_Types', kinds 'Pod', doc 'Restricts mountable volume types to those specified by the user Corresponds to the volumes field in a PodSecurityPolicy For more information, see https:_kubernetesio/docs/concepts/policy/pod-security-policy/#volumes-and-file-systems'}
 			Pod.PodFeatures
 			ServAcc.ServiceAccountFeatures
 			RoleBinding.RoleBindingFeatures
@@ -162,5 +169,5 @@ constraints
 	linuxHardening => (Container.io_k8s_api_core_v1_Container_securityContext_seccompProfile_type_Unconfined)
 	privilegeEscalationAllowed => !Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_allowPrivilegeEscalation
 	procMount => (Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_procMount_StringValue == 'Default')
-	runAsRootAllowed => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser > 1 & Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsNonRoot
+	runAsRootAllowed => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser > 1 | Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsNonRoot
 	tlsSettingsMissing => Ingress.io_k8s_api_networking_v1_Ingress_spec_tls

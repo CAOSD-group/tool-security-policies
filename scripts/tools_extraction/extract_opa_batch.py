@@ -1,4 +1,7 @@
 import os, yaml
+
+from tools_extraction.extract_policies_general import clean_description
+
 from tools_extraction.trivy.extract_rego_policies import (
   parse_rego_policy,
   rego_policy_to_uvl,
@@ -10,23 +13,18 @@ from tools_extraction.polaris.extract_polaris_checks import (
     polaris_to_uvl
 )
 
+from tools_extraction.gatekeeper.extract_gatekeeper_policies import (
+    extract_gatekeeper_policies
+)
+
 def load_polaris_severities(path):
-    with open(path, "r") as f:
-        data = yaml.safe_load(f)
-    return data.get("checks", {})
+  with open(path, "r") as f:
+    data = yaml.safe_load(f)
+  return data.get("checks", {})
 
-def clean_description(description: str) -> str:
-    return description.replace('\n', ' ') \
-                      .replace('`', '') \
-                      .replace('´', '') \
-                      .replace("'", "_") \
-                      .replace('{', '') \
-                      .replace('}', '') \
-                      .replace('"', '') \
-                      .replace("\\", "_") \
-                      .replace(".", "") \
-                      .replace("//", "_")
-
+def parse_gatekeeper_directory_wrapper(gk_dir):
+  results = extract_gatekeeper_policies(gk_dir)
+  return results
 
 def parse_opa_directory(rego_dir):
   feature_dict = load_feature_dict('../resources/mapping_csv/kubernetes_mapping_properties_features.csv')
@@ -53,8 +51,6 @@ def parse_opa_directory(rego_dir):
         })
   
   return results
-
-
 
 def parse_polaris_directory(polaris_dir):
   results = []
@@ -83,12 +79,21 @@ def parse_polaris_directory(polaris_dir):
           continue
       # lookup severity from severity_map
       severity = severity_map.get(check["id"], "warning")  # default to warning
-
+      # Raw source
+      raw_source = 'YAML with dinamic JSON'
       # Construct the feature block cleanly (this is the UVL feature definition)
       clean_description_polaris = clean_description(check['failure'])
+      # elegir target correcto para kinds
+      schema_target = check.get("schemaTarget", "")
+      target = check.get("target", "")
+      if schema_target:
+          kind = schema_target
+      else:
+          kind = target
+      kinds_value = kind.replace(".", "_")
       feature_block = (
-          f"{check['id']} {{doc '{clean_description_polaris}', "
-          f"tool 'Polaris', severity '{severity}', category '{check['category']}'}}"
+          f"{check['id']} {{tool 'Polaris', severity '{severity}', name_field '{check['id']}', kinds '{kinds_value}', doc '{clean_description_polaris}', "
+          f"category '{check['category']}', raw_source '{raw_source}'}}"
       )
 
       # Store only the constraint expression
