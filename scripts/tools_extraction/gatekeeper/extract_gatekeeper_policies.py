@@ -89,11 +89,11 @@ def find_gatekeeper_uvl_paths(kind, rego_path, feature_dict, kind_map):
 
     cleaned = rego_path.replace("[*]", "").replace("[]", "").strip()
     parts = cleaned.split(".")
-    print(f"Cleaned     {cleaned}   parts   {parts}")
+    #print(f"Cleaned     {cleaned}   parts   {parts}")
     suffix = cleaned.replace(".", "_")
 
     suffix = suffix.lower()
-    print(f"Suffix     {suffix}")
+    #print(f"Suffix     {suffix}")
     candidates = []
 
     for midle, row in feature_dict.items():
@@ -303,20 +303,17 @@ def build_uvl_expressions_for_template(
         return min(nums) if mode == "min" else max(nums)
 
     for rego in rego_blocks:
-        print(f"Rego path   {rego}")
+        #print(f"Rego path   {rego}")
         paths = extract_gatekeeper_conditions_from_rego(rego)
-        print(f"Rego paths 2  {paths}")
         if not paths:
             continue
 
         for k8s_kind in k8s_kinds:
-            print(f"Kind    {k8s_kind}")
+            #print(f"Kind    {k8s_kind}")
             for p in paths:
-                print(f"Path indi   {p}")
                 cleaned = p.replace("[*]", "").replace("[]", "").strip()
                 parts = cleaned.split(".") if cleaned else []
                 # Ignorar spec.volumes SOLO para hostFilesystem
-                print(f"Cleaned     {cleaned}   parts   {parts}")
 
                 if cleaned == "spec.volumes":
                     tmpl_base = os.path.splitext(os.path.basename(template_name))[0].lower()

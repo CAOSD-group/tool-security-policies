@@ -296,3 +296,8 @@ Buscadas con PodTemplate, todas False desde la prevalidacion
 Logica de politicas no del todo correcta:
 	runAsRootAllowed => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser > 1 | Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsNonRoot
 Como se puso por defecto, con el & se da como true cuando ambas son False, si el primero no esta es False y si el segundo aparece y se contradice False pero al validarla se deja como True.
+
+
+Separar las constraints en individuales, al aplicarse a features diferentes se auto contradicen, 
+separarlas en const apartes para que se valide correctamente
+runAsRootAllowed

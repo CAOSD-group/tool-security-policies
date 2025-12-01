@@ -690,6 +690,7 @@ def polaris_to_uvl(check, feature_dict, kind_map):
     # all_parts = list(dict.fromkeys(all_parts))
 
     constraint = f"{feature_name} => " + " & ".join(all_parts)
+    print(f"Constraint  {constraint}")
     return feature_block, constraint
 
 # =========================

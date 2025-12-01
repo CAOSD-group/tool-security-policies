@@ -14,6 +14,7 @@ import logging
 import contextlib, io
 from scripts.configurationJSON01 import ConfigurationJSON ## clase Reader JSON
 #from configurationJSON01 import ConfigurationJSON ## clase Reader JSON
+from scripts._inference_policy import infer_policies_from_kind
 
 #FM_PATH = "../variability_model/kyverno_clusterpolicy_test2.uvl"
 #FM_PATH = "../variability_model/policies_template/policy_structure01.uvl"
@@ -79,6 +80,13 @@ def valid_config_version_json(configuration_json: Configuration, fm_model: Featu
     config.set_full(False)
     #print(f"PRINT CONFIG {config}")
 
+    auto_policies = infer_policies_from_kind(configuration_json.elements, fm_model) # **
+
+    if "policies" in configuration_json.elements:
+        configuration_json.elements["policies"].update(auto_policies)
+    else:
+        configuration_json.elements["policies"] = auto_policies # **
+    
     """ ### Previous version
     satisfiable_op = PySATSatisfiableConfiguration() 
     satisfiable_op.set_configuration(config)
@@ -151,7 +159,7 @@ if __name__ == '__main__':
     silent = io.StringIO()
     with contextlib.redirect_stdout(silent):
         sat_model = FmToPysat(flat_fm).transform()
-        
+    
     #sat_model = FmToPysat(flat_fm).transform()
 
     # Check if the model is valid
@@ -170,6 +178,7 @@ if __name__ == '__main__':
     for i, config in enumerate(configurations):
         configuration = configuration_reader.transform()
         print(f'Configuration {i+1}: {config.elements}')
+
     print(f"#########     VALIDACION")
     
     print("FEATURES en SAT model:") ## Uncoment for print sat features in output file
