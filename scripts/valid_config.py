@@ -14,7 +14,7 @@ import logging
 import contextlib, io
 from scripts.configurationJSON01 import ConfigurationJSON ## clase Reader JSON
 #from configurationJSON01 import ConfigurationJSON ## clase Reader JSON
-from scripts._inference_policy import infer_policies_from_kind
+from scripts._inference_policy import extract_policy_kinds_from_constraints, infer_policies_from_kind
 
 #FM_PATH = "../variability_model/kyverno_clusterpolicy_test2.uvl"
 #FM_PATH = "../variability_model/policies_template/policy_structure01.uvl"
@@ -75,17 +75,24 @@ def valid_config_version_json(configuration_json: Configuration, fm_model: Featu
         tuple: (bool indicating validity, list of selected feature names)
     """
     
+    # 1) EXTRAER constraints → mapa {policy: kinds}
+    constraint_kinds_map = extract_policy_kinds_from_constraints(UVL_PATH)
+
+    # 2) detectar políticas aplicables
+    auto_policies = infer_policies_from_kind(configuration_json.elements, constraint_kinds_map)
+
+    # 3) Integrarlas en la propia config (NO en el archivo JSON)
+    for policy in auto_policies: ### In testing
+        configuration_json.elements[policy] = True
+    """if "policies" in configuration_json.elements:
+        configuration_json.elements["policies"].update(auto_policies)
+    else:
+        configuration_json.elements["policies"] = auto_policies"""
+
     config = complete_configuration(configuration_json, fm_model)
     #config.set_full(True)
     config.set_full(False)
     #print(f"PRINT CONFIG {config}")
-
-    auto_policies = infer_policies_from_kind(configuration_json.elements, fm_model) # **
-
-    if "policies" in configuration_json.elements:
-        configuration_json.elements["policies"].update(auto_policies)
-    else:
-        configuration_json.elements["policies"] = auto_policies # **
     
     """ ### Previous version
     satisfiable_op = PySATSatisfiableConfiguration() 
@@ -103,7 +110,7 @@ def valid_config_version_json(configuration_json: Configuration, fm_model: Featu
             matches = [f for f in sat_features if f.endswith("_" + k) or f.endswith("_n1_" + k)]
             if matches:
                 adjusted[matches[0]] = True if v else False
-                print(f"[NORMALIZADO] {k}  →  {matches[0]}")
+                #print(f"[NORMALIZADO] {k}  →  {matches[0]}")
             else:
                 adjusted[k] = True if v else False
 
@@ -175,13 +182,13 @@ if __name__ == '__main__':
     configurations = configuration_reader.transform()
     print(f"Configuraciones que hay:    {len(configurations)}")
     ##elements = listJson
-    for i, config in enumerate(configurations):
+    """for i, config in enumerate(configurations):
         configuration = configuration_reader.transform()
-        print(f'Configuration {i+1}: {config.elements}')
+        print(f'Configuration {i+1}: {config.elements}')"""
 
     print(f"#########     VALIDACION")
     
-    print("FEATURES en SAT model:") ## Uncoment for print sat features in output file
+    """print("FEATURES en SAT model:") ## Uncoment for print sat features in output file
     
     out_path = os.path.join(os.path.dirname(__file__), "sat_features_dump.txt")
     with open(out_path, "w", encoding="utf-8") as f_out:
@@ -189,7 +196,7 @@ if __name__ == '__main__':
         for f in sat_model.variables.keys():
             f_out.write(f"- {f}\n")
             
-    print(f"[INFO] Se ha guardado la lista completa de features en: {out_path}")
+    print(f"[INFO] Se ha guardado la lista completa de features en: {out_path}")"""
 
     """for f in sat_model.variables.keys():
         print("-", f)"""
@@ -197,5 +204,5 @@ if __name__ == '__main__':
     for i, config in enumerate(configurations):
         valid, complete_config = valid_config_version_json(config, flat_fm, sat_model)
         print(f"CONF VALID? {valid}")
-        print(f"Config complet {complete_config}")
+        #print(f"Config complet {complete_config}")
         print(f'Configuration {i+1}: {config.elements}  {valid}')

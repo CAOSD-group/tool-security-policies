@@ -169,5 +169,6 @@ constraints
 	linuxHardening => (Container.io_k8s_api_core_v1_Container_securityContext_seccompProfile_type_Unconfined)
 	privilegeEscalationAllowed => !Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_allowPrivilegeEscalation
 	procMount => (Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_procMount_StringValue == 'Default')
-	runAsRootAllowed => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser > 1 | Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsNonRoot
+	runAsRootAllowed => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser > 1
+	runAsRootAllowed => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsNonRoot
 	tlsSettingsMissing => Ingress.io_k8s_api_networking_v1_Ingress_spec_tls
