@@ -589,7 +589,7 @@ def map_semantic_conds_to_uvl(check, semantic_conds, feature_dict, kind_map):
             path, op, val = cond
             row = find_feature(context_kind, path, feature_dict)
             if not row:
-                print(f"    ⚠ No FM match for Context={context_kind}, prop={path}")
+                print(f"No FM match for Context={context_kind}, prop={path}")
                 continue
             fm_feature = row["Feature"]
             uvlexpr = build_uvl_expr(kind_name, fm_feature, op, val)
@@ -679,7 +679,13 @@ def polaris_to_uvl(check, feature_dict, kind_map):
                 continue
 
             feature = fm_row["Feature"]
+
+            if feature.endswith("_runAsUser") and str(val).isdigit():
+                feature = f"{feature}_valueInt"
+
             expr = build_uvl_expr(real_kind, feature, op, val)
+            
+            print(f"Expresiones add {expr}  {val}")
             all_parts.append(expr)
 
     if not all_parts:
@@ -689,7 +695,15 @@ def polaris_to_uvl(check, feature_dict, kind_map):
     # Opcional: aquí podrías quitar duplicados si quieres
     # all_parts = list(dict.fromkeys(all_parts))
 
-    constraint = f"{feature_name} => " + " & ".join(all_parts)
+    if feature_name == "runAsRootAllowed":
+        # Caso especial: Usamos OR (|)
+        joined_parts = " | ".join([f"({part})" for part in all_parts])
+    else:
+        # Caso por defecto: Usamos AND (&)
+        joined_parts = " & ".join(all_parts)
+
+    constraint = f"{feature_name} => {joined_parts}"    
+    #constraint = f"{feature_name} => " + " & ".join(all_parts)
     print(f"Constraint  {constraint}")
     return feature_block, constraint
 

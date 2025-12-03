@@ -76,22 +76,21 @@ def valid_config_version_json(configuration_json: Configuration, fm_model: Featu
     """
     
     # 1) EXTRAER constraints → mapa {policy: kinds}
-    constraint_kinds_map = extract_policy_kinds_from_constraints(UVL_PATH)
+    """constraint_kinds_map = extract_policy_kinds_from_constraints(UVL_PATH)
 
     # 2) detectar políticas aplicables
     auto_policies = infer_policies_from_kind(configuration_json.elements, constraint_kinds_map)
 
     # 3) Integrarlas en la propia config (NO en el archivo JSON)
     for policy in auto_policies: ### In testing
-        configuration_json.elements[policy] = True
+        configuration_json.elements[policy] = True"""
     """if "policies" in configuration_json.elements:
         configuration_json.elements["policies"].update(auto_policies)
     else:
         configuration_json.elements["policies"] = auto_policies"""
 
     config = complete_configuration(configuration_json, fm_model)
-    #config.set_full(True)
-    config.set_full(False)
+    config.set_full(True)
     #print(f"PRINT CONFIG {config}")
     
     """ ### Previous version
@@ -100,7 +99,6 @@ def valid_config_version_json(configuration_json: Configuration, fm_model: Featu
     return satisfiable_op.execute(sat_model).get_result(), config.get_selected_elements()"""
 
     sat_features = set(sat_model.variables.keys())
-
     adjusted = {}
     for k, v in config.elements.items():
         if k in sat_features:
@@ -110,7 +108,7 @@ def valid_config_version_json(configuration_json: Configuration, fm_model: Featu
             matches = [f for f in sat_features if f.endswith("_" + k) or f.endswith("_n1_" + k)]
             if matches:
                 adjusted[matches[0]] = True if v else False
-                #print(f"[NORMALIZADO] {k}  →  {matches[0]}")
+                print(f"[NORMALIZADO] {k}  →  {matches[0]}")
             else:
                 adjusted[k] = True if v else False
 
@@ -188,7 +186,7 @@ if __name__ == '__main__':
 
     print(f"#########     VALIDACION")
     
-    """print("FEATURES en SAT model:") ## Uncoment for print sat features in output file
+    print("FEATURES en SAT model:") ## Uncoment for print sat features in output file
     
     out_path = os.path.join(os.path.dirname(__file__), "sat_features_dump.txt")
     with open(out_path, "w", encoding="utf-8") as f_out:
@@ -196,7 +194,7 @@ if __name__ == '__main__':
         for f in sat_model.variables.keys():
             f_out.write(f"- {f}\n")
             
-    print(f"[INFO] Se ha guardado la lista completa de features en: {out_path}")"""
+    print(f"[INFO] Se ha guardado la lista completa de features en: {out_path}")
 
     """for f in sat_model.variables.keys():
         print("-", f)"""
