@@ -15,6 +15,7 @@ import contextlib, io
 from scripts.configurationJSON01 import ConfigurationJSON ## clase Reader JSON
 #from configurationJSON01 import ConfigurationJSON ## clase Reader JSON
 from scripts._inference_policy import extract_policy_kinds_from_constraints, infer_policies_from_kind
+import time  # Libreria para calcular los tiempos de procesamiento
 
 #FM_PATH = "../variability_model/kyverno_clusterpolicy_test2.uvl"
 #FM_PATH = "../variability_model/policies_template/policy_structure01.uvl"
@@ -26,8 +27,8 @@ RES    = ROOT / "resources"
 
 UVL_PATH = MODELS / "policy_structure03.uvl"
 # usar str(UVL_PATH) si la librería lo exige
-path_json = RES / "valid_yamls" / "test-require-run-as-nonroot_1.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid
-
+path_json = RES / "valid_yamls" / "test-require-run-as-nonroot_1.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid,test-require-run-as-nonroot_1.json,
+VALIDATE_ONLY_FIRST_CONFIG = True ## Use unit or total validation version
 
 def get_all_parents(feature: Feature) -> list[str]:
     parent = feature.get_parent()
@@ -62,7 +63,7 @@ def complete_configuration(configuration: Configuration, fm_model: FeatureModel)
         configs_elements.update(parents)
     return Configuration(configs_elements)
 
-def valid_config_version_json(configuration_json: Configuration, fm_model: FeatureModel, sat_model: PySATModel) -> bool: ## Instead of passing it (configuration: list[str] we pass the JSON list we generated in the JSON Conf
+def valid_config_version_json(configuration_json: Configuration, fm_model: FeatureModel, sat_model: PySATModel, sat_features: set[str]) -> bool: ## Instead of passing it (configuration: list[str] we pass the JSON list we generated in the JSON Conf
     """
     Check if a configuration is valid (satisfiable) according to the SAT model.
 
@@ -74,35 +75,30 @@ def valid_config_version_json(configuration_json: Configuration, fm_model: Featu
     Returns:
         tuple: (bool indicating validity, list of selected feature names)
     """
-    
+    """ ### Previous version
+    satisfiable_op = PySATSatisfiableConfiguration() 
+    satisfiable_op.set_configuration(config)
+    return satisfiable_op.execute(sat_model).get_result(), config.get_selected_elements()"""
+
     # 1) EXTRAER constraints → mapa {policy: kinds}
-    """constraint_kinds_map = extract_policy_kinds_from_constraints(UVL_PATH)
+    constraint_kinds_map = extract_policy_kinds_from_constraints(UVL_PATH)
 
     # 2) detectar políticas aplicables
     auto_policies = infer_policies_from_kind(configuration_json.elements, constraint_kinds_map)
 
     # 3) Integrarlas en la propia config (NO en el archivo JSON)
     for policy in auto_policies: ### In testing
-        configuration_json.elements[policy] = True"""
-    """if "policies" in configuration_json.elements:
-        configuration_json.elements["policies"].update(auto_policies)
-    else:
-        configuration_json.elements["policies"] = auto_policies"""
+        configuration_json.elements[policy] = True
 
     config = complete_configuration(configuration_json, fm_model)
     config.set_full(True)
     #print(f"PRINT CONFIG {config}")
-    
-    """ ### Previous version
-    satisfiable_op = PySATSatisfiableConfiguration() 
-    satisfiable_op.set_configuration(config)
-    return satisfiable_op.execute(sat_model).get_result(), config.get_selected_elements()"""
 
-    sat_features = set(sat_model.variables.keys())
+    #sat_features = set(sat_model.variables.keys())
     adjusted = {}
     for k, v in config.elements.items():
         if k in sat_features:
-            adjusted[k] = True if v else False
+            adjusted[k] = bool(v) # True if v else False
         else:
             # 🔎 Intentar emparejar solo para casos de cardinality (buscar n1 en el nombre SAT)
             matches = [f for f in sat_features if f.endswith("_" + k) or f.endswith("_n1_" + k)]
@@ -164,7 +160,8 @@ if __name__ == '__main__':
     silent = io.StringIO()
     with contextlib.redirect_stdout(silent):
         sat_model = FmToPysat(flat_fm).transform()
-    
+    # 3) Precalcular set de features SAT (y si quieres, índice de sufijos)
+    SAT_FEATURES = set(sat_model.variables.keys())
     #sat_model = FmToPysat(flat_fm).transform()
 
     # Check if the model is valid
@@ -199,8 +196,18 @@ if __name__ == '__main__':
     """for f in sat_model.variables.keys():
         print("-", f)"""
     
-    for i, config in enumerate(configurations):
-        valid, complete_config = valid_config_version_json(config, flat_fm, sat_model)
-        print(f"CONF VALID? {valid}")
-        #print(f"Config complet {complete_config}")
-        print(f'Configuration {i+1}: {config.elements}  {valid}')
+    if VALIDATE_ONLY_FIRST_CONFIG:
+
+        config = configurations[0] ## The first configuration is obtained
+        start_validation_time = time.time()  # Start of validation time
+        valid, complete_config = valid_config_version_json(config, flat_fm, sat_model, SAT_FEATURES)
+        end_validation_time = time.time()  # End of validation time
+
+        validation_time = round(end_validation_time - start_validation_time, 4)
+        print(f"CONF VALID? {valid} {validation_time} \n{config.elements}")
+    else:
+        for i, config in enumerate(configurations):
+            valid, complete_config = valid_config_version_json(config, flat_fm, sat_model)
+            print(f"CONF VALID? {valid}")
+            #print(f"Config complet {complete_config}")
+            print(f'Configuration {i+1}: {config.elements}  {valid}')

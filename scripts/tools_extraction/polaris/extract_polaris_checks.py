@@ -680,9 +680,10 @@ def polaris_to_uvl(check, feature_dict, kind_map):
 
             feature = fm_row["Feature"]
 
-            if feature.endswith("_runAsUser") and str(val).isdigit():
-                feature = f"{feature}_valueInt"
-
+            if feature.endswith("_runAsUser") and str(val).isdigit(): ## 
+                #feature = f"{feature}_valueInt"
+                print(f"CONTINUE, case invalid with feat const integer")
+                continue
             expr = build_uvl_expr(real_kind, feature, op, val)
             
             print(f"Expresiones add {expr}  {val}")
@@ -695,9 +696,9 @@ def polaris_to_uvl(check, feature_dict, kind_map):
     # Opcional: aquí podrías quitar duplicados si quieres
     # all_parts = list(dict.fromkeys(all_parts))
 
-    if feature_name == "runAsRootAllowed":
+    if feature_name == "runAsRootAllowed": ## Custom use of OR AND syntax; 
         # Caso especial: Usamos OR (|)
-        joined_parts = " | ".join([f"({part})" for part in all_parts])
+        joined_parts = " | ".join([f"{part}" for part in all_parts])
     else:
         # Caso por defecto: Usamos AND (&)
         joined_parts = " & ".join(all_parts)
