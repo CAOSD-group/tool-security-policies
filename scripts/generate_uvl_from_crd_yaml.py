@@ -6,15 +6,15 @@ def sanitize(name):
 
 def clean_description(description: str) -> str:
     return description.replace('\n', ' ') \
-                      .replace('`', '') \
-                      .replace('´', '') \
-                      .replace("'", "_") \
-                      .replace('{', '') \
-                      .replace('}', '') \
-                      .replace('"', '') \
-                      .replace("\\", "_") \
-                      .replace(".", "") \
-                      .replace("//", "_")
+                    .replace('`', '') \
+                    .replace('´', '') \
+                    .replace("'", "_") \
+                    .replace('{', '') \
+                    .replace('}', '') \
+                    .replace('"', '') \
+                    .replace("\\", "_") \
+                    .replace(".", "") \
+                    .replace("//", "_")
 
 def render_feature(entry, indent=2):
     i = "\t" * indent
@@ -173,7 +173,7 @@ def generate_uvl_from_crd(yaml_path, output_path):
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(feature_lines))
 
-    print(f"✅ UVL generado: {output_path}")
+    print(f"UVL generado: {output_path}")
 
 # Uso de prueba:
 if __name__ == "__main__":

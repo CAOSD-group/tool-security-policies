@@ -249,20 +249,24 @@ io_k8s_api_core_v1_Pod_spec_ephemeralContainers_ports_hostPort > 0 & io_k8s_api_
 
 
 
-Tipos de constraints duplicadas en las distintas herramientas:
+Hay varias politicas repetidas porque en las herramientas se implementan de una manera similar, de las que se diferencian:
+Se ha pensado dejar unicamente los features para que haya constancia del enfoque similar pero quitar las constraints repetidas para evitar duplicados:
 
 Concepto	Kyverno	OPA	Polaris
 HostPID	Disallow_Host_Namespaces	no_host_pid	hostPIDSet
 HostIPC	Disallow_Host_Namespaces	no_shared_ipc_namespace	hostIPCSet
 HostNetwork	Disallow_Host_Namespaces	no_host_network	hostNetworkSet
 Privileged	Disallow_Privileged_Containers	no_privileged_containers	runAsPrivileged
-
+ServiceAccount automount	Restrict_Auto_Mount_of_Service...	no_auto_mount_service_token	automountServiceAccountToken
+Root user	—	no_root	runAsRootAllowed
+ReadOnlyRootFS	Require_Read_Only_Root_Filesystem	—	notReadOnlyRootFilesystem
+Capabilities	Disallow_procMount / Restrict_Seccomp	no_sysadmin_capability	dangerousCapabilities / insecureCapabilities
 
 
 
 **Revisar porque son duplicadas exactamente iguales**
-no_privileged_containers 
-no_sysmodule_capability 
+no_privileged_containers
+no_sysmodule_capability
 
 **Ajuste insecureCapabilities en polaris**
 **Asignar un operador comun para los strings negados: != Preguntar**

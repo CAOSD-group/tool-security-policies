@@ -281,7 +281,9 @@ def build_uvl_expressions_for_template(
 ):
     expressions = []
 
-    # Función auxiliar para extremos numéricos en min/max
+    # --------------------------------------------------
+    # Auxiliar: extremos numéricos para min/max de puertos
+    # --------------------------------------------------
     def get_numeric_extreme(pname: str, mode: str):
         """
         mode: 'min' → valor mínimo, 'max' → valor máximo
@@ -302,6 +304,8 @@ def build_uvl_expressions_for_template(
             return None
         return min(nums) if mode == "min" else max(nums)
 
+    tmpl_base = os.path.splitext(os.path.basename(template_name))[0].lower()
+
     for rego in rego_blocks:
         #print(f"Rego path   {rego}")
         paths = extract_gatekeeper_conditions_from_rego(rego)
@@ -310,31 +314,30 @@ def build_uvl_expressions_for_template(
 
         for k8s_kind in k8s_kinds:
             #print(f"Kind    {k8s_kind}")
+            base_prefix = get_base_prefix(k8s_kind.capitalize())
+
             for p in paths:
-                cleaned = p.replace("[*]", "").replace("[]", "").strip()
+                # 1) Normalizar el path (quitar índices y ']' residuales)
+                cleaned = (
+                    p.replace("[*]", "")
+                    .replace("[]", "")
+                    .replace("[_]", "")
+                    .strip()
+                )
+                # a veces se queda un ']' suelto al final (p.ej. 'securityContext]')
+                if cleaned.endswith("]"):
+                    cleaned = cleaned.rstrip("]")
+
                 parts = cleaned.split(".") if cleaned else []
+
                 # Ignorar spec.volumes SOLO para hostFilesystem
-
-                if cleaned == "spec.volumes":
-                    tmpl_base = os.path.splitext(os.path.basename(template_name))[0].lower()
-
-                    if tmpl_base in ("k8spsphostfilesystem", "hostfilesystem"):
-                        print(f"[INFO] Ignorando {cleaned} para template {tmpl_base}")
-                        continue
+                if cleaned == "spec.volumes" and tmpl_base in ("k8spsphostfilesystem", "hostfilesystem"):
+                    print(f"[INFO] Ignorando {cleaned} para template {tmpl_base}")
+                    continue
 
                 last = parts[-1].lower() if parts else ""
 
-                # ------------------------------------------------
-                # Filtro general: 'spec.volumes' es demasiado burdo
-                # para modelar volumetypes/hostfilesystem de forma correcta,
-                # así que preferimos NO generar constraint en este caso.
-                # ------------------------------------------------
-                """if cleaned == "spec.volumes":
-                    tmpl = template_name.lower()
-                    if "hostfilesystem" in tmpl:
-                        print("[INFO] Ignorando spec.volumes para hostfilesystem")
-                        continue"""
-
+                # Buscar features UVL para este path
                 features = find_gatekeeper_uvl_paths(
                     k8s_kind, cleaned, feature_dict, kind_map
                 )
@@ -342,11 +345,9 @@ def build_uvl_expressions_for_template(
                     print(f"[WARNING] No UVL mapping for path '{p}' in kind '{k8s_kind}'")
                     continue
 
-                base_prefix = get_base_prefix(k8s_kind.capitalize())
-
                 # ------------------------------------------------
-                # Caso 1: hostPort/ContainerPort/NodePort + min/max
-                #         → usamos parámetros numéricos para rango.
+                # CASO ESPECIAL 1: rangos de puertos (hostPort/ContainerPort/NodePort)
+                #         → usamos parámetros numéricos min/max.
                 # ------------------------------------------------
                 if last in ("hostport", "containerport", "nodeport") and params_for_kind:
                     # min
@@ -363,14 +364,33 @@ def build_uvl_expressions_for_template(
                             for feature in features:
                                 expr = f"{base_prefix}.{feature} < {int(num_max)}"
                                 expressions.append(expr)
-                    # no pasamos al comportamiento por defecto en este caso
+                    # ya manejado; no caemos en el comportamiento por defecto
                     continue
 
                 # ------------------------------------------------
-                # Caso 2: comportamiento por defecto para el resto,
-                #         incluyendo parámetros booleanos como hostNetwork,
-                #         y parámetros tipo 'volumes', etc.
-                #         Se modelan como "no debe darse la condición de violación":
+                # CASO ESPECIAL 2: k8spspvolumetypes (volumes)
+                #         Queremos algo del estilo:
+                #         Pod.spec.volumes_type == (configMap | secret | ...)
+                #         usando los valores reales de constraint.yaml
+                # ------------------------------------------------
+                if tmpl_base in ("k8spspvolumetypes", "volumetypes") and cleaned == "spec.volumes":
+                    if params_for_kind and "volumes" in params_for_kind:
+                        vols = sorted(params_for_kind["volumes"])
+                        if vols and "*" not in vols:
+                            # Solo usamos el primer feature (lo normal es que haya uno)
+                            feature = features[0]
+                            enum_vals = " | ".join(vols)
+                            expr = f"{base_prefix}.{feature} == ({enum_vals})"
+                            expressions.append(expr)
+                            # IMPORTANTE: no añadimos la negación por defecto
+                            continue
+                    # Si no hay params o contienen '*', caemos al caso genérico (negación)
+
+                # ------------------------------------------------
+                # CASO POR DEFECTO:
+                #   - parámetros booleanos (hostNetwork, privileged, hostPID/IPС…)
+                #   - paths normales sin rango ni enum explícito
+                # Se modela como "no debe darse la condición de violación":
                 #         → negación del feature.
                 # ------------------------------------------------
                 for feature in features:
@@ -386,7 +406,6 @@ def build_uvl_expressions_for_template(
             seen.add(e)
 
     return uniq
-
 # ============================================================
 # Conversión Template → {feature, constraint}
 # ============================================================
@@ -400,8 +419,8 @@ def gatekeeper_template_to_uvl(
 ):
     """
     Convierte un ConstraintTemplate de Gatekeeper en:
-      - feature UVL (enriquecido con parámetros agregados)
-      - constraint UVL (usando REGO + parámetros)
+    - feature UVL (enriquecido con parámetros agregados)
+    - constraint UVL (usando REGO + parámetros)
     """
     meta = template_obj.get("metadata", {})
     annotations = meta.get("annotations", {}) or {}

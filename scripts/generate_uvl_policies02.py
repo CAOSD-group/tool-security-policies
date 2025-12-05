@@ -52,7 +52,7 @@ def generate_uvl_from_policies(directory, output_path):
 
     #lines = ["namespace PoliciesKyverno", "features", "\tPolicies {abstract}", "\t\toptional"]
     lines = ["namespace Policies", "imports", "    k8s.Pods as Pod\n    k8s.ServiceAccount as ServAcc\n    k8s.RoleBinding as RoleBinding\n    k8s.ClusterRoleBinding as ClusRole\n    k8s.Service as Serv\n    k8s.Ingress as Ingress\n    k8s.Job as Job\n    k8s.DaemonSet as DaemonSet\n    k8s.Deployment as Deployment\n    k8s.StatefulSet as StatefulSet\n    k8s.Secret as Secret\n    k8s.PersistentVolumeClaim as PersistVolumeClaim\n    k8s.PodDisruptionBudget as PodDisrupBud\n    k8s.CronJob as CronJob\n    k8s.ReplicaSet as ReplicaSet\n    k8s.ReplicationController as RepController\n    k8s.Container as Container",
-              "features", "\tPoliciesKubernetes {abstract}", "\t\toptional"] ## RepController
+            "features", "\tPoliciesKubernetes {abstract}", "\t\toptional"] ## RepController
     
     #opa_results = parse_opa_directory("../resources/OPA_Policies")
     #polaris_results = parse_opa_directory("../resources/Polaris-checks")

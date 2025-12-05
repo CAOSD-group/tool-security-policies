@@ -139,10 +139,12 @@ if __name__ == '__main__':
     fm_model = UVLReader(str(UVL_PATH)).transform()
     #sat_model = FmToPysat(fm_model).transform()
     ## Pre evaluation of sectioned model. Depends of section Policies
+    start_startup_model = time.time()  # Start of validation time
     
     flat_fm_op = FlatFM(fm_model)
     flat_fm_op.set_maintain_namespaces(False)  # False para quitar el prefijo del import, con True se mantiene.
     flat_fm = flat_fm_op.transform()
+    
 
     # Baja el nivel global
     logging.basicConfig(level=logging.ERROR)
@@ -162,6 +164,11 @@ if __name__ == '__main__':
         sat_model = FmToPysat(flat_fm).transform()
     # 3) Precalcular set de features SAT (y si quieres, índice de sufijos)
     SAT_FEATURES = set(sat_model.variables.keys())
+    end_startup_model = time.time()  # End of validation time
+    validation_time = round(end_startup_model - start_startup_model, 4)
+
+    print(f"Tiempo de start config of FMs   {validation_time}")
+    
     #sat_model = FmToPysat(flat_fm).transform()
 
     # Check if the model is valid
@@ -169,7 +176,6 @@ if __name__ == '__main__':
     ##valid = PySATSatisfiable().execute(sat_model).get_result()
     ##print("SE QUEDA PILLADO AQUI 3")
     ##print(f'Valid?: {valid}')
-
     #path_json = '../resources/kyverno_policies_jsons/disallow-host-ports.json'
     #path_json = '../resources/valid_yamls/1-metallb5_2_Test01.json'
 
