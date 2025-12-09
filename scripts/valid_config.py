@@ -104,7 +104,7 @@ def valid_config_version_json(configuration_json: Configuration, fm_model: Featu
             matches = [f for f in sat_features if f.endswith("_" + k) or f.endswith("_n1_" + k)]
             if matches:
                 adjusted[matches[0]] = True if v else False
-                print(f"[NORMALIZADO] {k}  →  {matches[0]}")
+                #print(f"[NORMALIZADO] {k}  →  {matches[0]}")
             else:
                 adjusted[k] = True if v else False
 

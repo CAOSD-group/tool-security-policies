@@ -248,7 +248,11 @@ Integer io_k8s_api_core_v1_Pod_spec_ephemeralContainers_ports_hostPort {doc 'Num
 io_k8s_api_core_v1_Pod_spec_ephemeralContainers_ports_hostPort > 0 & io_k8s_api_core_v1_Pod_spec_ephemeralContainers_ports_hostPort < 65536
 
 
-
+Git Large File Storage para almacenar los archivos de prueba usados para la validacion de las herramientas o el modelo en este caso.
+git config --global http.postBuffer 524288000
+git config lfs.activitytimeout 60
+git config lfs.dialtimeout 60
+git config lfs.keepalive 60
 Hay varias politicas repetidas porque en las herramientas se implementan de una manera similar, de las que se diferencian:
 Se ha pensado dejar unicamente los features para que haya constancia del enfoque similar pero quitar las constraints repetidas para evitar duplicados:
 
@@ -305,3 +309,4 @@ Como se puso por defecto, con el & se da como true cuando ambas son False, si el
 Separar las constraints en individuales, al aplicarse a features diferentes se auto contradicen, 
 separarlas en const apartes para que se valide correctamente
 runAsRootAllowed
+
