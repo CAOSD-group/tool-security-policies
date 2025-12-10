@@ -36,23 +36,23 @@ def extract_policy_kinds_from_constraints(uvl_path: str) -> dict:
             # Extraer todos los nombres de features que aparecen en la expresión
             feature_names = re.findall(r"[A-Za-z0-9_.]+", expr)
 
-        for ft in feature_names:
-            # Ignorar prefijo del import: Pod.io_k8s_api_core_v1_Pod_spec...
-            if "." in ft:
-                ft = ft.split(".", 1)[1]
+            for ft in feature_names:
+                # Ignorar prefijo del import: Pod.io_k8s_api_core_v1_Pod_spec...
+                if "." in ft:
+                    ft = ft.split(".", 1)[1]
 
-            # Debe ser feature real del modelo
-            if not ft.startswith("io_k8s_"):
-                continue
+                # Debe ser feature real del modelo
+                if not ft.startswith("io_k8s_"):
+                    continue
 
-            # Detectar Kind usando primera mayúscula
-            aux = re.search(r"[A-Z].*", ft)
-            if not aux:
-                continue
-            kind = aux.group(0).split("_")[0]
+                # Detectar Kind usando primera mayúscula
+                aux = re.search(r"[A-Z].*", ft)
+                if not aux:
+                    continue
+                kind = aux.group(0).split("_")[0]
 
-            # Registrar el kind para la política
-            policy_kinds.setdefault(policy, set()).add(kind)
+                # Registrar el kind para la política
+                policy_kinds.setdefault(policy, set()).add(kind)
 
     return policy_kinds
 

@@ -63,7 +63,7 @@ def complete_configuration(configuration: Configuration, fm_model: FeatureModel)
         configs_elements.update(parents)
     return Configuration(configs_elements)
 
-def valid_config_version_json(configuration_json: Configuration, fm_model: FeatureModel, sat_model: PySATModel, sat_features: set[str]) -> bool: ## Instead of passing it (configuration: list[str] we pass the JSON list we generated in the JSON Conf
+def valid_config_version_json(configuration_json: Configuration, fm_model: FeatureModel, sat_model: PySATModel, sat_features: set[str], auto_policies) -> bool: ## Instead of passing it (configuration: list[str] we pass the JSON list we generated in the JSON Conf
     """
     Check if a configuration is valid (satisfiable) according to the SAT model.
 
@@ -81,10 +81,10 @@ def valid_config_version_json(configuration_json: Configuration, fm_model: Featu
     return satisfiable_op.execute(sat_model).get_result(), config.get_selected_elements()"""
 
     # 1) EXTRAER constraints → mapa {policy: kinds}
-    constraint_kinds_map = extract_policy_kinds_from_constraints(UVL_PATH)
+    #constraint_kinds_map = extract_policy_kinds_from_constraints(UVL_PATH)
 
     # 2) detectar políticas aplicables
-    auto_policies = infer_policies_from_kind(configuration_json.elements, constraint_kinds_map)
+    #auto_policies = infer_policies_from_kind(configuration_json.elements, constraint_kinds_map)
 
     # 3) Integrarlas en la propia config (NO en el archivo JSON)
     for policy in auto_policies: ### In testing
