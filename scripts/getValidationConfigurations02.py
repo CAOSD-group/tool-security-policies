@@ -17,7 +17,7 @@ ROOT_PARENT = ROOT.parent # carpeta anterior a la raiz/
 FM_PATH = ROOT / "variability_model" / "policies_template" / "policy_structure03.uvl"
 VALID_JSONS_DIR = ROOT_PARENT / "jsons_testing" ## valid_jsons 
 
-OUTPUT_CSV = HERE / "validation_results_valid_jsons.csv" ## Output csv
+OUTPUT_CSV = ROOT / "evaluation" / "validation_results_valid_jsons.csv" ## Output csv
 VALIDATE_ONLY_FIRST_CONFIG = True
 
 
@@ -42,8 +42,32 @@ def load_processed_files(csv_file_path):
                   processed.add(row[0])
   return processed
 
+def build_suffix_index(sat_features):
+    """
+    Replica EXACTAMENTE la lógica de:
+        endswith("_" + k)
+        endswith("_n1_" + k)
+    pero en O(1) en vez de O(n).
+    """
+    suffix_map = {}
 
-def validate_single_json(json_file, fm_model, sat_model, sat_features, constraints_map):
+    for sf in sat_features:
+        # Sujeto a coincidencias del original:
+        parts = sf.split("_")
+        # Regla 1: sufijo simple — lo que aparece exactamente después del símbolo "_"
+        base = parts[-1]  # ejemplo: KeyMap, name, asString
+
+        suffix_map.setdefault(base, []).append(sf)
+
+        # Regla 2: sufijo con cardinalidad
+        if len(parts) >= 2 and parts[-2].startswith("n1"):
+            card_base = parts[-1]
+            suffix_map.setdefault(card_base, []).append(sf)
+
+    return suffix_map
+
+
+def validate_single_json(json_file, fm_model, sat_model, sat_features, suffix_map, constraints_map):
     """Valida un archivo JSON concreto y devuelve métricas para el CSV."""
     policy_false = '' ## Como obtener la politica por la que se vuelve False?, agregar set de politicas aplicadas?
     tool_policy = 'Kyverno' ## Obtener tool de la herramienta de la politica que falla
@@ -74,14 +98,14 @@ def validate_single_json(json_file, fm_model, sat_model, sat_features, constrain
             #config = configurations[0]
 
             start_validation_time = time.time()
-            valid, _ = valid_config_version_json(config, fm_model, sat_model, sat_features, auto_policies)
+            valid, _ = valid_config_version_json(config, fm_model, sat_model, sat_features, suffix_map, auto_policies)
             end_validation_time = time.time()
             valid_config_bool = valid
             print(f'Configuración 1 (única validada): -> Válida: {valid}')
         else:
             start_validation_time = time.time()
             for conf in configurations:
-                valid, _ = valid_config_version_json(conf, fm_model, sat_model, sat_features, auto_policies)
+                valid, _ = valid_config_version_json(conf, fm_model, sat_model, sat_features, suffix_map, auto_policies)
                 if not valid: # Checking of each configuration of each file
                     valid_config_bool = False
                     break # If there is only one invalid conf, the entire file is considered invalid
@@ -90,14 +114,14 @@ def validate_single_json(json_file, fm_model, sat_model, sat_features, constrain
 
         validation_time = round(end_validation_time - start_validation_time, 5)
         policy_false = str(auto_policies)
-        return [os.path.basename(json_file), valid_config_bool, validation_time, conf_time, policy_false, tool_policy, severity_of_policy, num_features, num_confs,  "Ningun parametro inválido" if valid else "Recomendacion: "]
+        return [os.path.basename(json_file), valid_config_bool, validation_time, conf_time, policy_false, tool_policy, severity_of_policy, num_features, num_confs,  "Ningun parametro invalido" if valid_config_bool else "Recomendacion: "]
     
     
     except Exception as e:
         print(f"[ERROR] {json_file}: {e}")
         return [os.path.basename(json_file), "Error", "-", "-", "-", "-", "-", "-", "-", str(e)]
 
-def validate_all_configs(fm_model, sat_model, sat_features, processed_files):
+def validate_all_configs(flat_model, sat_model, sat_features, processed_files):
   
     """
     Validate all JSON configuration files in a directory.
@@ -112,19 +136,10 @@ def validate_all_configs(fm_model, sat_model, sat_features, processed_files):
     Returns:
         tuple: Counts of valid, invalid, and error files.
     """
-    """print(f"\nCargando modelo UVL: {FM_PATH}\n")
-    fm_model = UVLReader(str(FM_PATH)).transform()
-    
-    # Silenciar la salida del transformador SAT
-    silent = io.StringIO()
-    with contextlib.redirect_stdout(silent):
-        sat_model = FmToPysat(fm_model).transform()
-
-    # EXTRAEMOS SAT FEATURES UNA SOLA VEZ
-    sat_features = set(sat_model.variables.keys())"""
     print(f"SAT features cargadas: {len(sat_features)}")
     print(f"Procesando carpeta de JSONs: {VALID_JSONS_DIR.resolve()}")
     constraint_kinds_map = extract_policy_kinds_from_constraints(FM_PATH)
+    suffix_map = build_suffix_index(sat_features) ## Dict para las coincidencias con los features del flatten
 
     with open(OUTPUT_CSV, mode='w', newline='') as f:
         writer = csv.writer(f)
@@ -136,7 +151,7 @@ def validate_all_configs(fm_model, sat_model, sat_features, processed_files):
             if not filename.endswith(".json"):
                 continue
             json_path = os.path.join(VALID_JSONS_DIR, filename)
-            result = validate_single_json(json_path, fm_model, sat_model, sat_features, constraint_kinds_map)
+            result = validate_single_json(json_path, flat_model, sat_model, sat_features, suffix_map, constraint_kinds_map)
             writer.writerow(result)
 
             state = str(result[1]).lower()
@@ -146,7 +161,11 @@ def validate_all_configs(fm_model, sat_model, sat_features, processed_files):
                 invalid_count += 1
             else:
                 error_count += 1
-
+        writer.writerow([])  # línea en blanco
+        writer.writerow(["Resumen", "", "", "", "", "", "", "", "", ""])
+        writer.writerow(["Configuraciones sin errores", valid_count])
+        writer.writerow(["Configuraciones con errores de Seguridad", invalid_count])
+        writer.writerow(["Archivos sin políticas aplicables", error_count])
     print("\n=== RESUMEN FINAL ===")
     print(f"Archivos válidos:   {valid_count}")
     print(f"Archivos inválidos: {invalid_count}")
@@ -154,7 +173,6 @@ def validate_all_configs(fm_model, sat_model, sat_features, processed_files):
     print(f"Resultados guardados en: {OUTPUT_CSV}")
 
 
-            
 if __name__ == '__main__':
 
     print(f"Cargando y procesando el modelo")
@@ -178,8 +196,10 @@ if __name__ == '__main__':
     end_flatfm_proccess = time.time()
     flatfm_time = round(end_flatfm_proccess - start_flatfm_proccess, 4)
     print(f"Tiempo de silenciar FlatFm y guardar SAT_FEATURES   {flatfm_time}")
-
     #valid_count, invalid_count, error_count = 0, 0, 0
     list_processed_files = load_processed_files(OUTPUT_CSV)
     print(f"Validando JSONs desde: {VALID_JSONS_DIR.resolve()}")
-    validate_all_configs(flat_fm, sat_model,sat_features, list_processed_files)
+    validate_all_configs(flat_fm, sat_model, sat_features, list_processed_files)
+    
+    print(f"Tiempo de start config of FMs   {validation_time}")
+    print(f"Tiempo de silenciar FlatFm y guardar SAT_FEATURES   {flatfm_time}")

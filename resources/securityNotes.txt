@@ -310,3 +310,9 @@ Separar las constraints en individuales, al aplicarse a features diferentes se a
 separarlas en const apartes para que se valide correctamente
 runAsRootAllowed
 
+Relacion con el uso del path en los volumenes
+Disallow_hostPath, dice que el uso de esta prop es mejor no usarla:
+!Pod.io_k8s_api_core_v1_Pod_spec_volumes_hostPath
+Por otro lado, en la politica de Trivy se especifican los paths que no se deberian de usar para evitar usar paths "reservados"
+no_docker_sock_mount
+Pod.io_k8s_api_core_v1_Pod_spec_volumes_hostPath_path != '/var/run/docker_sock'
