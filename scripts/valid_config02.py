@@ -63,7 +63,7 @@ def complete_configuration(configuration: Configuration, fm_model: FeatureModel)
         configs_elements.update(parents)
     return Configuration(configs_elements)
 
-def valid_config_version_json(configuration_json: Configuration, fm_model: FeatureModel, sat_model: PySATModel, sat_features: set[str], suffix_map, auto_policies) -> bool: ## Instead of passing it (configuration: list[str] we pass the JSON list we generated in the JSON Conf
+def valid_config_version_json(configuration_json: Configuration, fm_model: FeatureModel, sat_model: PySATModel, sat_features: set[str], auto_policies) -> bool: ## Instead of passing it (configuration: list[str] we pass the JSON list we generated in the JSON Conf suffix_map: dict[str, list[str]],
     """
     Check if a configuration is valid (satisfiable) according to the SAT model.
 
@@ -96,7 +96,28 @@ def valid_config_version_json(configuration_json: Configuration, fm_model: Featu
 
     #sat_features = set(sat_model.variables.keys())
     adjusted = {}
+    match_cache = {}
+    start_mathing_features = time.time()
     for k, v in config.elements.items():
+        if k in match_cache:
+            matches = match_cache[k]
+        else:
+            matches = [
+                f for f in sat_features
+                if f.endswith("_" + k) or f.endswith("_n1_" + k)
+            ]
+            match_cache[k] = matches
+
+        if matches:
+            adjusted[matches[0]] = bool(v)
+        else:
+            adjusted[k] = bool(v)
+            
+    end_mathing_features = time.time()
+    matching_time = round(end_mathing_features - start_mathing_features, 4)
+    print(f"Tiempo de coincidencias de la configuracion {matching_time}")
+    
+    """for k, v in config.elements.items():
         # CASO 1: coincidencia exacta
         if k in sat_features:
             adjusted[k] = bool(v)
@@ -109,11 +130,15 @@ def valid_config_version_json(configuration_json: Configuration, fm_model: Featu
             adjusted[matches[0]] = bool(v)
         else:
             # CASO 3: dejar el nombre original (igual que antes)
-            adjusted[k] = bool(v)
+            adjusted[k] = bool(v)"""
     # Crear nueva configuración normalizada
     config = Configuration(adjusted)
 
+    start_satisfiable_model = time.time()  # Start of validation time
     satisfiable_op = PySATSatisfiableConfiguration()
+    end_satisfiable_model = time.time()
+    satisfiable_time = round(end_satisfiable_model - start_satisfiable_model, 4)
+    print(f"Tiempo de satisfacer la config  {satisfiable_time}")
     satisfiable_op.set_configuration(config)
     return satisfiable_op.execute(sat_model).get_result(), config.get_selected_elements()
 
@@ -203,7 +228,7 @@ if __name__ == '__main__':
 
     """for f in sat_model.variables.keys():
         print("-", f)"""
-    
+    #suffix_map = build_suffix_index(SAT_FEATURES)
     if VALIDATE_ONLY_FIRST_CONFIG:
 
         config = configurations[0] ## The first configuration is obtained

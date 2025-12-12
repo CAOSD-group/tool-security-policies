@@ -334,7 +334,12 @@ def extract_constraints_from_policy(filepath):
                     else:
                         if '.' in v:
                             v = v.replace('.', '_')
-                        expr = f"{feature} == '{v}'"
+                        if '!' in v:
+                            print(f"STR expected {v}")
+                            aux_value = v.replace("!", "")
+                            expr = f"{feature} != {aux_value}"
+                        else:
+                            expr = f"{feature} == '{v}'"
                         print(f"Expr flatten distarcet: {expr}")
                     grouped_conditions.setdefault(name, []).append(expr)
             continue
@@ -437,7 +442,14 @@ def extract_constraints_from_policy(filepath):
                         else:
                             if optional_clauses_from_spec:
                                 continue
-                            expr = f"{full_feature} == {expected}"
+                            ## Probar mod de los string con ! aqui ###
+                            if '!' in expected:
+                                print(f"STR expected {expected}")
+                                aux_expected = expected.replace("!", "")
+                                expr = f"{full_feature} != {aux_expected}"
+                            else:
+                                expr = f"{full_feature} == {expected}"
+
                     grouped_conditions.setdefault(name, []).append(expr)
             # Add the constraints
             #for clause in opt_clauses:

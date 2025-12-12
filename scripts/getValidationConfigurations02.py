@@ -2,7 +2,7 @@ from flamapy.metamodels.fm_metamodel.transformations import UVLReader, FlatFM
 from flamapy.metamodels.pysat_metamodel.transformations import FmToPysat
 
 from scripts.configurationJSON01 import ConfigurationJSON
-from scripts.valid_config import valid_config_version_json  # versión que acepta sat_features
+from scripts.valid_config02 import valid_config_version_json  # versión que acepta sat_features
 
 import os
 import csv
@@ -15,9 +15,9 @@ HERE = Path(__file__).resolve().parent # scripts/
 ROOT = HERE.parent # fm-security-rules/
 ROOT_PARENT = ROOT.parent # carpeta anterior a la raiz/
 FM_PATH = ROOT / "variability_model" / "policies_template" / "policy_structure03.uvl"
-VALID_JSONS_DIR = ROOT_PARENT / "jsons_testing" ## valid_jsons 
+VALID_JSONS_DIR = ROOT_PARENT / "valid_jsons" ## valid_jsons jsons_testing
 
-OUTPUT_CSV = ROOT / "evaluation" / "validation_results_valid_jsons.csv" ## Output csv
+OUTPUT_CSV = ROOT / "evaluation" / "validation_results_valid_jsons02.csv" ## Output csv
 VALIDATE_ONLY_FIRST_CONFIG = True
 
 
@@ -43,31 +43,31 @@ def load_processed_files(csv_file_path):
   return processed
 
 def build_suffix_index(sat_features):
-    """
-    Replica EXACTAMENTE la lógica de:
-        endswith("_" + k)
-        endswith("_n1_" + k)
-    pero en O(1) en vez de O(n).
-    """
+
     suffix_map = {}
 
     for sf in sat_features:
-        # Sujeto a coincidencias del original:
-        parts = sf.split("_")
-        # Regla 1: sufijo simple — lo que aparece exactamente después del símbolo "_"
-        base = parts[-1]  # ejemplo: KeyMap, name, asString
 
-        suffix_map.setdefault(base, []).append(sf)
+        # 1) Guardar el NOMBRE COMPLETO como clave (para coincidencia exacta)
+        suffix_map.setdefault(sf, []).append(sf)
 
-        # Regla 2: sufijo con cardinalidad
-        if len(parts) >= 2 and parts[-2].startswith("n1"):
-            card_base = parts[-1]
-            suffix_map.setdefault(card_base, []).append(sf)
+        # 2) Sufijo final (última parte)
+        idx = sf.rfind("_")
+        if idx != -1:
+            suffix_final = sf[idx+1:]
+            suffix_map.setdefault(suffix_final, []).append(sf)
+
+        # 3) Cardinalidades: extraer lo que sigue a "_n1_"
+        marker = "_n1_"
+        if marker in sf:
+            suffix_card = sf.split(marker, 1)[1]
+            suffix_map.setdefault(suffix_card, []).append(sf)
 
     return suffix_map
 
 
-def validate_single_json(json_file, fm_model, sat_model, sat_features, suffix_map, constraints_map):
+
+def validate_single_json(json_file, fm_model, sat_model, sat_features, constraints_map):
     """Valida un archivo JSON concreto y devuelve métricas para el CSV."""
     policy_false = '' ## Como obtener la politica por la que se vuelve False?, agregar set de politicas aplicadas?
     tool_policy = 'Kyverno' ## Obtener tool de la herramienta de la politica que falla
@@ -98,14 +98,14 @@ def validate_single_json(json_file, fm_model, sat_model, sat_features, suffix_ma
             #config = configurations[0]
 
             start_validation_time = time.time()
-            valid, _ = valid_config_version_json(config, fm_model, sat_model, sat_features, suffix_map, auto_policies)
+            valid, _ = valid_config_version_json(config, fm_model, sat_model, sat_features, auto_policies)
             end_validation_time = time.time()
             valid_config_bool = valid
-            print(f'Configuración 1 (única validada): -> Válida: {valid}')
+            #print(f'Configuración 1 (única validada): -> Válida: {valid}')
         else:
             start_validation_time = time.time()
             for conf in configurations:
-                valid, _ = valid_config_version_json(conf, fm_model, sat_model, sat_features, suffix_map, auto_policies)
+                valid, _ = valid_config_version_json(conf, fm_model, sat_model, sat_features, auto_policies)
                 if not valid: # Checking of each configuration of each file
                     valid_config_bool = False
                     break # If there is only one invalid conf, the entire file is considered invalid
@@ -139,7 +139,7 @@ def validate_all_configs(flat_model, sat_model, sat_features, processed_files):
     print(f"SAT features cargadas: {len(sat_features)}")
     print(f"Procesando carpeta de JSONs: {VALID_JSONS_DIR.resolve()}")
     constraint_kinds_map = extract_policy_kinds_from_constraints(FM_PATH)
-    suffix_map = build_suffix_index(sat_features) ## Dict para las coincidencias con los features del flatten
+    #suffix_map = build_suffix_index(sat_features) ## Dict para las coincidencias con los features del flatten
 
     with open(OUTPUT_CSV, mode='w', newline='') as f:
         writer = csv.writer(f)
@@ -151,7 +151,7 @@ def validate_all_configs(flat_model, sat_model, sat_features, processed_files):
             if not filename.endswith(".json"):
                 continue
             json_path = os.path.join(VALID_JSONS_DIR, filename)
-            result = validate_single_json(json_path, flat_model, sat_model, sat_features, suffix_map, constraint_kinds_map)
+            result = validate_single_json(json_path, flat_model, sat_model, sat_features, constraint_kinds_map)
             writer.writerow(result)
 
             state = str(result[1]).lower()
@@ -169,7 +169,7 @@ def validate_all_configs(flat_model, sat_model, sat_features, processed_files):
     print("\n=== RESUMEN FINAL ===")
     print(f"Archivos válidos:   {valid_count}")
     print(f"Archivos inválidos: {invalid_count}")
-    print(f"Errores:            {error_count}")
+    print(f"Archivos sin politicas aplicables: {error_count}")
     print(f"Resultados guardados en: {OUTPUT_CSV}")
 
 
