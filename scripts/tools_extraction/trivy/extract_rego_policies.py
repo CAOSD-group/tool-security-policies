@@ -38,11 +38,71 @@ def find_uvl_path_for_rego(kind, rego_path, feature_dict, kind_map): ## feature_
     #rego_key = rego_path.replace(".", "_")  # container.securityContext.capabilities.add
     rego_key = normalize_rego_path(rego_path).replace(".", "_")
 
-    #print(f"kind    rego    {real_kind}  {rego_key}")
     # Buscar las coincidencias en el diccionario
     candidates = []
 
+    # 1. Definimos los "ámbitos" que nos interesan buscar
+    # 'default' es para propiedades del Pod (hostPID, etc.)
+    # Los otros son para propiedades de contenedores
+    scope_buckets = {
+        "default": [],
+        "containers": [],
+        "initContainers": [],
+        "ephemeralContainers": []
+    }
+
+    markers = {
+        "containers": "_containers_",
+        "initContainers": "_initContainers_",
+        "ephemeralContainers": "_ephemeralContainers_"
+    }
+    found_any = False
+# 2. Búsqueda y Clasificación
     for midle, row in feature_dict.items():
+        # Filtro básico: Debe ser del Kind correcto y contener la clave Rego
+        if midle.startswith(real_kind + "_") and rego_key in midle:
+            found_any = True
+            
+            # Clasificamos en el bucket correcto
+            assigned_scope = "default"
+            for scope, marker in markers.items():
+                if marker in midle:
+                    assigned_scope = scope
+                    break
+            
+            scope_buckets[assigned_scope].append(row)
+
+    if not found_any:
+        return [] # Devolvemos lista vacía en lugar de None
+
+    results = []
+
+    # 3. Selección de Ganadores (Fan-Out)
+    
+    # Verificamos si encontramos propiedades de contenedores
+    container_matches = any(scope_buckets[k] for k in markers)
+
+    if container_matches:
+        # CASO A: Es una propiedad de contenedor (ej: securityContext, image, env)
+        # Devolvemos el mejor candidato de CADA tipo de contenedor que exista
+        for scope in markers:
+            candidates = scope_buckets[scope]
+            if candidates:
+                # Elegimos la más específica (path más largo) dentro de su categoría
+                best = max(candidates, key=lambda r: len(r["Midle"]))
+                is_list = (best["Value"] == "-")
+                results.append((best["Feature"], is_list, best["Value"]))
+    else:
+        # CASO B: Es una propiedad global del Pod (ej: hostPID, restartPolicy)
+        # Solo miramos el bucket default
+        candidates = scope_buckets["default"]
+        if candidates:
+            best = max(candidates, key=lambda r: len(r["Midle"]))
+            is_list = (best["Value"] == "-")
+            results.append((best["Feature"], is_list, best["Value"]))
+
+
+    """for midle, row in feature_dict.items():
         #print(f"Midel   {midle} {row}")
         if midle.startswith(real_kind + "_") and rego_key in midle:##midle.endswith(rego_key): ## With these conds we take the last match with rego_key, the restrict of is necesary for future cases: In this cases all are similar _asString
             candidates.append(row)
@@ -55,7 +115,9 @@ def find_uvl_path_for_rego(kind, rego_path, feature_dict, kind_map): ## feature_
     #print(f"Value best  {best}")
     is_list = (best["Value"] == "-")
 
-    return best["Feature"], is_list, best["Value"]
+    return best["Feature"], is_list, best["Value"]"""
+    return results
+    
 
 
 def extract_metadata_from_rego(rego_text):
@@ -198,7 +260,6 @@ def extract_conditions_from_rego(rego_text, recommended_action=""):
 
     return conditions
 
-
 def parse_rego_policy(path):
     with open(path, "r", encoding="utf-8") as f:
         rego = f.read()
@@ -212,12 +273,29 @@ def parse_rego_policy(path):
     }
 
 
+def detect_intent(recommended_action, value):
+    """
+    Intenta adivinar si es una Prohibición (Forbidden) o un Requerimiento (Required)
+    basado en el texto para desempatar casos dudosos.
+    """
+    #text = (meta.get("recommended_action", "") + " " + meta.get("short_code", "")).lower()
+    
+    # Palabras clave de Prohibición
+    if any(x in recommended_action.lower() for x in ["do not set", "false", "disallow", "no-", "drop", "to 'false'"]):
+        return "PROHIBITION" # Esperamos !Feature
+    
+    # Palabras clave de Requerimiento
+    if any(x in recommended_action.lower() for x in ["to true", "require", "must be", "enable"]):
+        return "REQUIREMENT" # Esperamos Feature
+    
+    return "UNKNOWN"
+
 def rego_policy_to_uvl(policy, field_map, kind_map):
 
     # Campos que queremos extraer
     meta = policy["metadata"]
     cond = policy["conditions"][0]  # Asumimos 1 condición base por ahora
-    
+    recommended_action = meta['recommended_action']
     # --- tool ---
     tool = "trivy"
     # --- feature name ---
@@ -237,7 +315,7 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
     rego_field = cond["field"].replace(".", "_")
     rego_field_key = normalize_rego_path(rego_field)
     # # --- Accion recomendada ---
-    #clean_recommended_action_rego = clean_description(meta['recommended_action'])
+    clean_recommended_action_rego = clean_description(recommended_action)
     # --- Construcción del bloque UVL ---
     attrs = []
     attrs.append(f"tool '{tool}'")
@@ -253,6 +331,8 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
     #    attrs.append(f"category '{category}'")
     if doc:
         attrs.append(f"doc '{doc}'")
+    if clean_recommended_action_rego:
+        attrs.append(f"RecommendedAction '{clean_recommended_action_rego}'")
     if raw_source:
         attrs.append(f"raw_source '{raw_source}'")
 
@@ -278,33 +358,35 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
     
     constraint_parts = [] ## Added only candidate crossed
     kinds = meta.get("kinds", [])
-    # --- Case 1: Normal Metadata (has kinds) ---
+    intent = detect_intent(recommended_action, value)
+
     if kinds:
         for kind in meta["kinds"]:
             #print(f"Kind    {kind}")
-            feature, is_list, value_field = find_uvl_path_for_rego(kind, field_key, field_map, kind_map)
+            found_features = find_uvl_path_for_rego(kind, field_key, field_map, kind_map)
     
-            if not feature:
+            if not found_features:
                 print(f"[WARNING] No UVL mapping for field '{field_key}' in kind '{kind}'")
                 continue
             kind_cap = get_base_prefix(kind.capitalize()) ### Import of objects, adjust like the generate_uvl_policies -- If 
 
             # Operador UVL traducido
             #print(f"operator    {operator}  {value}")
-            if operator == "==" and not value.lower() == "true" and not value.lower() == "false":
-                expr = f"{kind_cap}.{feature} != '{value}'"
-            elif operator == "!=" and not value.lower() == "true":
-                expr = f"{kind_cap}.{feature} == '{value}'"
-            elif operator == "==" and value.lower() == "true": ## Do not set ... true:: maybe change the condition with a regex expression 
-                # We can use the value and the expressions in recommended_action to define the ! or true addition
-                expr = f"{kind_cap}.{feature}"
-            elif operator == "==" and value.lower() == "false": ## Case privileged
-                expr = f"!{kind_cap}.{feature}"
-            elif operator == ">": ## Case runs_with_UID_le_10000
-                expr = f"{kind_cap}.{feature} > {value}"            
-            else:
-                expr = f"UNSUPPORTED_OPERATOR({operator})"
-            constraint_parts.append(expr)
+            for feature, is_list, value_field in found_features:
+                if operator == "==" and not value.lower() == "true" and not value.lower() == "false":
+                    expr = f"{kind_cap}.{feature} != '{value}'"
+                elif operator == "!=" and not value.lower() == "true":
+                    expr = f"{kind_cap}.{feature} == '{value}'"
+                elif intent == "PROHIBITION":
+                    expr = f"!{kind_cap}.{feature}"
+                elif intent == "REQUIREMENT":
+                    expr = f"{kind_cap}.{feature}"
+                elif operator == ">": ## Case runs_with_UID_le_10000
+                    expr = f"{kind_cap}.{feature} > {value}"            
+                else:
+                    expr = f"UNSUPPORTED_OPERATOR({operator})"
+                if expr:
+                    constraint_parts.append(expr)
     # --- Case 2: No kinds → buscar por feature global --- Se asigna Pod por defecto
     else:
         print("[INFO] Policy without explicit kinds. Searching by property only...")

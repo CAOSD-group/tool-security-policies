@@ -27,7 +27,7 @@ RES    = ROOT / "resources"
 
 UVL_PATH = MODELS / "policy_structure03.uvl"
 # usar str(UVL_PATH) si la librería lo exige
-path_json = RES / "valid_yamls" / "test-require-run-as-nonroot_1.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid,test-require-run-as-nonroot_1.json,
+path_json = RES / "valid_yamls" / ".rc-template.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid,test-require-run-as-nonroot_1.json,
 VALIDATE_ONLY_FIRST_CONFIG = True ## Use unit or total validation version
 
 def get_all_parents(feature: Feature) -> list[str]:
@@ -63,7 +63,7 @@ def complete_configuration(configuration: Configuration, fm_model: FeatureModel)
         configs_elements.update(parents)
     return Configuration(configs_elements)
 
-def valid_config_version_json(configuration_json: Configuration, fm_model: FeatureModel, sat_model: PySATModel, sat_features: set[str], auto_policies) -> bool: ## Instead of passing it (configuration: list[str] we pass the JSON list we generated in the JSON Conf suffix_map: dict[str, list[str]],
+def valid_config_version_json(configuration_json: Configuration, fm_model: FeatureModel, sat_model: PySATModel, sat_features: set[str]) -> bool: ## Instead of passing it (configuration: list[str] we pass the JSON list we generated in the JSON Conf suffix_map: dict[str, list[str]],
     """
     Check if a configuration is valid (satisfiable) according to the SAT model.
 
@@ -75,16 +75,11 @@ def valid_config_version_json(configuration_json: Configuration, fm_model: Featu
     Returns:
         tuple: (bool indicating validity, list of selected feature names)
     """
-    """ ### Previous version
-    satisfiable_op = PySATSatisfiableConfiguration() 
-    satisfiable_op.set_configuration(config)
-    return satisfiable_op.execute(sat_model).get_result(), config.get_selected_elements()"""
-
     # 1) EXTRAER constraints → mapa {policy: kinds}
-    #constraint_kinds_map = extract_policy_kinds_from_constraints(UVL_PATH)
+    constraint_kinds_map = extract_policy_kinds_from_constraints(UVL_PATH)
 
     # 2) detectar políticas aplicables
-    #auto_policies = infer_policies_from_kind(configuration_json.elements, constraint_kinds_map)
+    auto_policies = infer_policies_from_kind(configuration_json.elements, constraint_kinds_map)
 
     # 3) Integrarlas en la propia config (NO en el archivo JSON)
     for policy in auto_policies: ### In testing
@@ -116,7 +111,7 @@ def valid_config_version_json(configuration_json: Configuration, fm_model: Featu
     end_mathing_features = time.time()
     matching_time = round(end_mathing_features - start_mathing_features, 4)
     print(f"Tiempo de coincidencias de la configuracion {matching_time}")
-    
+
     """for k, v in config.elements.items():
         # CASO 1: coincidencia exacta
         if k in sat_features:
