@@ -335,3 +335,14 @@ Requests and limits cpu, memory; partional mapping
 Traducir a bool selection ? => Aumentar el porcentaje de restriccion y subir los invalidos para ser mas "estricto"
 resources_limits 
 resources_requests
+
+
+Como definir las politicas que son String y requieren ser usadas pero sin algo especifico de String=?
+
+  required:
+  - priorityClassName
+
+successMessage: Priority class has been set
+failureMessage: Priority class should be set
+
+String io_k8s_api_batch_v1_CronJobSpec_jobTemplate_spec_template_spec_priorityClassName

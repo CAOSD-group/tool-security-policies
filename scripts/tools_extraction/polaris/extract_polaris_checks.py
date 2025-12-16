@@ -5,6 +5,7 @@ import csv
 import yaml
 import re
 
+from tools_extraction.extract_policies_general import clean_description
 # =========================
 # Carga de FM y Kinds
 # =========================
@@ -309,6 +310,13 @@ def extract_conditions_from_schema(schema, prefix="", root_schema=None):
         for req in schema["required"] and not :
             prop_path = f"{prefix}.{req}" if prefix else req
             conds.append((prop_path, "!=", None))"""
+    
+    required_preperty = schema.get("required")
+    if not props and required_preperty: ## Checks simples without properties => Directly required
+        print(f"Required property simple    {required_preperty}")
+        for required in required_preperty:
+            prop_path = f"{prefix}.{required}" if prefix else required
+            conds.append((prop_path, "match", "required"))
 
     # 3) anyOf / allOf
     for key in ("anyOf", "allOf"):
@@ -497,6 +505,8 @@ def build_uvl_expr(kind_name: str, feature: str, op: str, val):
             return f"{full_feature} == null"
         if full_feature.endswith('securityContext_procMount'):
             return f"({full_feature}_StringValue == '{val}')"
+        if full_feature.endswith('_imagePullPolicy'):
+            return f"({full_feature}_{val})"
         
         return f"{full_feature} == '{val}'"
 
@@ -517,10 +527,14 @@ def build_uvl_expr(kind_name: str, feature: str, op: str, val):
         return f"{full_feature} > {val}"
 
     if op == "matches":
-        return f"{full_feature} matches '{val}'"
+        if full_feature.endswith("Container_image"):
+            return f"{full_feature}_Removed"
+        return f"{full_feature} == '{val}'"
     ##not_contains
     if op == "not matches":
-            return f"!({full_feature} matches '{val}')"
+            if '.' in val:
+                val = clean_description(val)
+            return f"({full_feature} != '{val}')" 
     
     if op == "contains":
         # Convención: para arrays tipo capabilities_drop
@@ -532,6 +546,13 @@ def build_uvl_expr(kind_name: str, feature: str, op: str, val):
         if full_feature.endswith("capabilities_add"):
             return f"({full_feature}_StringValue != '{val}')"
         return f"({full_feature} != '{val}')"
+    
+    ## New match Simple
+    if op == "match":
+        #if full_feature.endswith("spec_priorityClassName "):
+        #    return f"({full_feature} == '{val}')" # Is a Str feature with a simple use
+        return f"({full_feature}')" ## We define as a simple feature Boolean to use the functionatilly of select it
+    
     # Fallback genérico
     return f"{full_feature} {op} '{val}'"
 
@@ -660,7 +681,9 @@ def polaris_to_uvl(check, feature_dict, kind_map):
     # 2) Extraer condiciones del schema
     conds = extract_conditions_from_schema(check["schema"])
     if not conds:
-        print("Sin condiciones mapeables → skip")
+        id_check = check["id"]
+        print(f"Sin condiciones mapeables → skip    {id_check}")
+        print(check)
         return None
 
     feature_name = check["id"].replace("-", "_")
@@ -682,12 +705,16 @@ def polaris_to_uvl(check, feature_dict, kind_map):
 
             feature = fm_row["Feature"]
 
-            if feature.endswith("_runAsUser") and str(val).isdigit(): ## 
+            if feature.endswith("_runAsUser") and str(val).isdigit(): ## _Removed
                 #feature = f"{feature}_valueInt"
                 print(f"CONTINUE, case invalid with feat const integer")
                 continue
+
             expr = build_uvl_expr(real_kind, feature, op, val)
             
+            if expr.endswith("_Removed"): ## Cases that we need Remove
+                continue
+
             print(f"Expresiones add {expr}  {val}")
             all_parts.append(expr)
 
@@ -711,6 +738,7 @@ def polaris_to_uvl(check, feature_dict, kind_map):
     constraint = f"{feature_name} => {joined_parts}"    
     #constraint = f"{feature_name} => " + " & ".join(all_parts)
     print(f"Constraint  {constraint}")
+    
     return feature_block, constraint
 
 # =========================

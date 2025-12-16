@@ -59,7 +59,7 @@ def parse_polaris_directory(polaris_dir):
   kind_prefix_map = load_kinds_prefix_mapping("../resources/mapping_csv/kubernetes_kinds_versions_detected.csv")
   for root, _, files in os.walk(polaris_dir):
     for file in files:
-      if not file.endswith(".yaml"):
+      if not file.endswith((".yaml", ".yml")):
           continue
 
       full_path = os.path.join(root, file)
@@ -70,11 +70,11 @@ def parse_polaris_directory(polaris_dir):
           continue
 
       # polaris_to_uvl returns (feature_block, constraint_expression)
-      uvl_feature_block, uvl_constraint_expr = polaris_to_uvl(
+      uvl_feature_block, uvl_constraint_expr = polaris_to_uvl( ### Error en la llamada
           check, feature_dict, kind_prefix_map
       )
 
-      if not uvl_constraint_expr:
+      if not uvl_constraint_expr: ## or not uvl_feature_block
           print(f"[SKIP] No mappable conditions in {file}")
           continue
       # lookup severity from severity_map
