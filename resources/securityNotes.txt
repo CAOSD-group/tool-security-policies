@@ -316,3 +316,22 @@ Disallow_hostPath, dice que el uso de esta prop es mejor no usarla:
 Por otro lado, en la politica de Trivy se especifican los paths que no se deberian de usar para evitar usar paths "reservados"
 no_docker_sock_mount
 Pod.io_k8s_api_core_v1_Pod_spec_volumes_hostPath_path != '/var/run/docker_sock'
+
+	runAsRootAllowed => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsNonRoot
+  Al expandir las politicas en los demas objetos de container, initContainer se cubre
+
+
+no_auto_mount_service_token => !Pod.io_k8s_api_core_v1_Pod_spec_automountServiceAccountToken & !Pod.io_k8s_api_core_v1_PodList_items_spec_automountServiceAccountToken & !Pod.io_k8s_api_core_v1_PodTemplate_template_spec_automountServiceAccountToken & !Pod.io_k8s_api_core_v1_PodTemplateList_items_template_spec_automountServiceAccountToken & !Pod.io_k8s_api_core_v1_PodTemplateSpec_spec_automountServiceAccountToken
+Separar los objetos de la politica para no tener que "llamar" a los demas Objetos
+
+Igualmente se busca en cada objeto por separado...
+Quizas sea mejor borrar las politicas con diferente kind que salgan en la politica(?)
+
+Para un proceso global y de comparacion de miles de archivos me recomendarias omitir las constraints
+de tipo String e Integer? Dado que el comportamiento no se tiene en cuenta tal y como se declaran, creo que no seria conveniente por si altera el resultado de las comprobaciones?
+
+
+Requests and limits cpu, memory; partional mapping
+Traducir a bool selection ? => Aumentar el porcentaje de restriccion y subir los invalidos para ser mas "estricto"
+resources_limits 
+resources_requests

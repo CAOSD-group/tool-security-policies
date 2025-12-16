@@ -234,14 +234,16 @@ def extract_conditions_from_schema(schema, prefix="", root_schema=None):
                 if isinstance(contains, dict) and "pattern" in contains:
                     literal = clean_cap_pattern(contains["pattern"])
                     conds.append((prop_path, "contains", literal))
+                    print(f"Condition with oneOf    {prop_path} {literal}")
 
                 # Opción compuesta: allOf con varios contains
-                if "allOf" in option and isinstance(option["allOf"], list):
+                """if "allOf" in option and isinstance(option["allOf"], list): ## Uncomment if want to use the full insecureCapabilities Strs
                     for sub in option["allOf"]:
                         sub_contains = sub.get("contains")
                         if isinstance(sub_contains, dict) and "pattern" in sub_contains:
                             literal = clean_cap_pattern(sub_contains["pattern"])
-                            conds.append((prop_path, "contains", literal))
+                            conds.append((prop_path, "not_contains", literal))
+                            print(f"Condition with allOf    {prop_path} {literal}")"""
         if "$ref" in rule:
             resolved = resolve_ref(root_schema, rule["$ref"])
             if resolved:
@@ -523,7 +525,7 @@ def build_uvl_expr(kind_name: str, feature: str, op: str, val):
     if op == "contains":
         # Convención: para arrays tipo capabilities_drop
         if full_feature.endswith("capabilities_drop"):
-            return f"({full_feature}_StringValue != '{val}')"
+            return f"({full_feature}_StringValue == '{val}')"
         return f"({full_feature} == '{val}')"
 
     if op == "not_contains":
@@ -670,7 +672,7 @@ def polaris_to_uvl(check, feature_dict, kind_map):
 
     for real_kind in real_kinds:
         for prop_path, op, val in conds:
-            #print(f"  Prop path   {prop_path}  ({op} {val})   real_kind={real_kind}")
+            print(f"  Prop path   {prop_path}  ({op} {val})   real_kind={real_kind}")
             context_kind = context_kind_for(real_kind, check, prop_path)
             fm_row = find_feature(context_kind, prop_path, feature_dict)
 
@@ -696,12 +698,15 @@ def polaris_to_uvl(check, feature_dict, kind_map):
     # Opcional: aquí podrías quitar duplicados si quieres
     # all_parts = list(dict.fromkeys(all_parts))
 
-    if feature_name == "runAsRootAllowed": ## Custom use of OR AND syntax; 
+    if feature_name == "runAsRootAllowed": ## Unnused
         # Caso especial: Usamos OR (|)
         joined_parts = " | ".join([f"{part}" for part in all_parts])
     else:
         # Caso por defecto: Usamos AND (&)
         joined_parts = " & ".join(all_parts)
+
+    """if feature_name == "insecureCapabilities" and joined_parts.count(" & ") >= 1: ## Uncomment if want to use the full insecureCapabilities Strs
+        joined_parts = joined_parts.replace(" & ", " | ", 1)"""
 
     constraint = f"{feature_name} => {joined_parts}"    
     #constraint = f"{feature_name} => " + " & ".join(all_parts)

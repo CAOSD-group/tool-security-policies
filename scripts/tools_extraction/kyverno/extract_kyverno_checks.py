@@ -289,7 +289,6 @@ def build_expression(feature, value):
         return f"{feature} = {value}"""
     if isinstance(value, str) and value.startswith("!"):
         clean_val = value[1:]
-        print(f"Cleningn values {clean_val}")
         if '.' in clean_val:
             clean_val = clean_val.replace('.', '_')
         return f"{feature} != '{clean_val}'"
@@ -335,7 +334,6 @@ def extract_constraints_from_policy(filepath):
                         if '.' in v:
                             v = v.replace('.', '_')
                         if '!' in v:
-                            print(f"STR expected {v}")
                             aux_value = v.replace("!", "")
                             expr = f"{feature} != {aux_value}"
                         else:
@@ -444,7 +442,6 @@ def extract_constraints_from_policy(filepath):
                                 continue
                             ## Probar mod de los string con ! aqui ###
                             if '!' in expected:
-                                print(f"STR expected {expected}")
                                 aux_expected = expected.replace("!", "")
                                 expr = f"{full_feature} != {aux_expected}"
                             else:

@@ -44,7 +44,15 @@ def clean_description(description: str) -> str:
 
 def get_base_prefix(kind_prefix): ## Used by the generate_uvl_policies
     if kind_prefix == "Pod":
-        return "Pod"
+        return "Pod" ## _PodList    PodTemplate  PodTemplateList PodTemplateSpec
+    elif "PodList" == kind_prefix:
+        return "PodList"
+    elif "PodTemplate" == kind_prefix:
+        return "PodTemplate"
+    elif "PodTemplateList" == kind_prefix:
+        return "PodTemplateList"
+    elif "PodTemplateSpec" == kind_prefix:
+        return "PodTemplateSpec"
     elif "Replicaset" == kind_prefix:
         return "ReplicaSet"
     elif "Replicationcontroller" == kind_prefix:

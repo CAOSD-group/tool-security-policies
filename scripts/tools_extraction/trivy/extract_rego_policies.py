@@ -403,6 +403,9 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
 
         for row in matches:
             feature = row["Feature"]
+            aux = re.search(r"[A-Z].*", feature)
+            kind = aux.group(0).split("_")[0]
+            kind_cap = get_base_prefix(kind.capitalize()) ## Added the matching Kind
             if operator == "==" and value.lower() in ("true", "false"):
                 expr = f"!{kind}.{feature}" if value.lower() == "true" else f"{feature}"
             elif operator == "==" and value not in ("true", "false"):
