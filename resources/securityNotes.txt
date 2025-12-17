@@ -346,3 +346,22 @@ successMessage: Priority class has been set
 failureMessage: Priority class should be set
 
 String io_k8s_api_batch_v1_CronJobSpec_jobTemplate_spec_template_spec_priorityClassName
+
+Para mapear el Controller :: se ha buscado el origen de la definicion de los kinds a los que se aplican:
+https://github.com/FairwindsOps/controller-utils/blob/master/pkg/controller/controller.go
+
+var knownKinds = []knownKind{{
+	"Deployment", "apps/v1",
+}, {
+	"ReplicaSet", "apps/v1",
+}, {
+	"CronJob", "batch/v1",
+}, {
+	"Job", "batch/v1",
+}, {
+	"DaemonSet", "apps/v1",
+}, {
+	"StatefulSet", "apps/v1",
+}}
+
+Se usaran todos como kinds objetivos para los checks de Polaris que usen el target Controller

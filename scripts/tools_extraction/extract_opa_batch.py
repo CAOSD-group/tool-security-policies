@@ -68,15 +68,14 @@ def parse_polaris_directory(polaris_dir):
       if not check:
           print(f"[SKIP] Invalid YAML {file}")
           continue
-
-      # polaris_to_uvl returns (feature_block, constraint_expression)
-      uvl_feature_block, uvl_constraint_expr = polaris_to_uvl( ### Error en la llamada
-          check, feature_dict, kind_prefix_map
-      )
-
-      if not uvl_constraint_expr: ## or not uvl_feature_block
+      result = polaris_to_uvl(check, feature_dict, kind_prefix_map)
+      if not result:
           print(f"[SKIP] No mappable conditions in {file}")
           continue
+      
+      # polaris_to_uvl returns (feature_block, constraint_expression)
+      uvl_feature_block, uvl_constraint_expr = result
+
       # lookup severity from severity_map
       severity = severity_map.get(check["id"], "warning")  # default to warning
       # Raw source
@@ -91,6 +90,7 @@ def parse_polaris_directory(polaris_dir):
       else:
           kind = target
       kinds_value = kind.replace(".", "_")
+      
       feature_block = (
           f"{check['id']} {{tool 'Polaris', severity '{severity}', name_field '{check['id']}', kinds '{kinds_value}', doc '{clean_description_polaris}', "
           f"category '{check['category']}', raw_source '{raw_source}'}}"

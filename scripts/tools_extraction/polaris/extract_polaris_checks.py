@@ -6,6 +6,8 @@ import yaml
 import re
 
 from tools_extraction.extract_policies_general import clean_description
+from tools_extraction.polaris.definitions_objects import CONTROLLER_KINDS
+
 # =========================
 # Carga de FM y Kinds
 # =========================
@@ -137,7 +139,10 @@ def resolve_target_kinds(check: dict):
 
     # Caso especial: Controller
     if target == "Controller":
-        include = controllers.get("include") or []
+        include = []
+        # Usamos la variable importada directamente
+        for kind in CONTROLLER_KINDS:
+            include.append(kind)
         if include:
             return include
 
@@ -184,8 +189,9 @@ def context_kind_for(real_kind: str, check: dict, prop_path: str) -> str:
 
     # Controller + Deployment/StatefulSet/... → <Kind>_spec_*
     if target == "Controller" and real_kind in (
-        "Deployment", "StatefulSet", "DaemonSet", "Job", "CronJob", "ReplicaSet"
-    ):
+        "Deployment", "StatefulSet", "DaemonSet", "Job", "CronJob", "ReplicaSet"):
+        if "metadata" in prop_path: 
+            return f"{real_kind}"
         return f"{real_kind}_spec"
 
     # Recursos tipo Pod, Deployment,... si el path empieza por spec. → <Kind>_spec
@@ -300,10 +306,22 @@ def extract_conditions_from_schema(schema, prefix="", root_schema=None):
             conds.append((prop_path, ">=", rule["minimum"]))
 
         # Recursión en sub-propiedades
-        if "properties" in rule:
+        if "properties" in rule and not "metadata" in name: ## Check for special deffs
             conds.extend(
                 extract_conditions_from_schema(rule, prefix=prop_path, root_schema=root_schema)
             )
+        if "metadata" in name:
+            print(f"Metadata detectado {rule}   {prop_path}")
+            aux_value_key = rule.get("required")
+            print(f"Aux value   {aux_value_key}")
+            for prop in aux_value_key:
+                if prop == "labels":
+                    prop_path += f"_{prop}"
+                    aux_properties = rule.get("properties")
+                    aux_rule = aux_properties.get("labels").get("properties")
+                    print(f"Prop path aux   {prop_path} aux_properties:  {aux_properties}   get {aux_rule}")   
+                    conds.append((prop_path, "Map", aux_rule))
+
 
     # 2) required → != null
     """if "required" in schema and isinstance(schema["required"], list):
@@ -312,8 +330,9 @@ def extract_conditions_from_schema(schema, prefix="", root_schema=None):
             conds.append((prop_path, "!=", None))"""
     
     required_preperty = schema.get("required")
-    if not props and required_preperty: ## Checks simples without properties => Directly required
-        print(f"Required property simple    {required_preperty}")
+    required_aux_allOf = schema.get("allOf") ## oneOf
+    if not props and required_preperty and not required_aux_allOf: ## Checks simples without properties => Directly required
+        #print(f"Required property simple    {required_preperty} {required_aux_allOf}")
         for required in required_preperty:
             prop_path = f"{prefix}.{required}" if prefix else required
             conds.append((prop_path, "match", "required"))
@@ -492,7 +511,7 @@ def parse_polaris_check(path):
 
 def build_uvl_expr(kind_name: str, feature: str, op: str, val):
     full_feature = f"{kind_name}.{feature}"
-
+    print(f"Full {full_feature}")
     if op == "==":
         #print(f"full feature ===    {full_feature}  op  {op}    {kind_name}")
         if isinstance(val, bool):
@@ -553,6 +572,18 @@ def build_uvl_expr(kind_name: str, feature: str, op: str, val):
         #    return f"({full_feature} == '{val}')" # Is a Str feature with a simple use
         return f"({full_feature}')" ## We define as a simple feature Boolean to use the functionatilly of select it
     
+    if op == "Map":
+        feature_map_key = f"{full_feature}_KeyMap"
+        feature_map_value = f"{full_feature}_ValueMap"
+        const_value = val.get("const")
+        for key, value  in val.items():
+            const_value = value.get('const')
+         ##.replace("{", "","}", "", ".", "")
+        print(f"Full feauture   {full_feature}  {val}   {const_value}  {value}")
+        const_value = const_value.replace("{", "").replace("}", "").replace(".", "")
+        return f"{feature_map_key} == '{key}' & {feature_map_value} == '{const_value}'"
+        
+        
     # Fallback genérico
     return f"{full_feature} {op} '{val}'"
 
@@ -695,7 +726,9 @@ def polaris_to_uvl(check, feature_dict, kind_map):
 
     for real_kind in real_kinds:
         for prop_path, op, val in conds:
-            print(f"  Prop path   {prop_path}  ({op} {val})   real_kind={real_kind}")
+            #if "metadata" in prop_path:
+            #    print(f"Condition:  {prop_path} {op}    {val}")
+            print(f"  Prop path   {prop_path}  {op} {val}   real_kind={real_kind}")
             context_kind = context_kind_for(real_kind, check, prop_path)
             fm_row = find_feature(context_kind, prop_path, feature_dict)
 
@@ -738,7 +771,7 @@ def polaris_to_uvl(check, feature_dict, kind_map):
     constraint = f"{feature_name} => {joined_parts}"    
     #constraint = f"{feature_name} => " + " & ".join(all_parts)
     print(f"Constraint  {constraint}")
-    
+
     return feature_block, constraint
 
 # =========================
