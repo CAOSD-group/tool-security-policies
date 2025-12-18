@@ -575,12 +575,12 @@ def build_uvl_expr(kind_name: str, feature: str, op: str, val):
     if op == "Map":
         feature_map_key = f"{full_feature}_KeyMap"
         feature_map_value = f"{full_feature}_ValueMap"
-        const_value = val.get("const")
         for key, value  in val.items():
             const_value = value.get('const')
-         ##.replace("{", "","}", "", ".", "")
+            key = key.replace(".", "_")
+        ##.replace("{", "","}", "", ".", "")
         print(f"Full feauture   {full_feature}  {val}   {const_value}  {value}")
-        const_value = const_value.replace("{", "").replace("}", "").replace(".", "")
+        const_value = const_value.replace("{", "").replace("}", "").replace(".", "_").replace(" ","")
         return f"{feature_map_key} == '{key}' & {feature_map_value} == '{const_value}'"
         
         
