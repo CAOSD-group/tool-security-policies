@@ -185,6 +185,7 @@ def context_kind_for(real_kind: str, check: dict, prop_path: str) -> str:
 
     # PodSpec directo → Pod_spec_*
     if target == "PodSpec" and real_kind == "Pod":
+        ### Use the 5 templates with PodSpec target
         return f"{real_kind}_spec"
 
     # Controller + Deployment/StatefulSet/... → <Kind>_spec_*
@@ -212,7 +213,7 @@ def context_kind_for(real_kind: str, check: dict, prop_path: str) -> str:
 # Extracción de condiciones desde JSON Schema Polaris
 # =========================
 
-def extract_conditions_from_schema(schema, prefix="", root_schema=None):
+def extract_conditions_from_schema(schema, controllers=None, prefix="", root_schema=None):
     """
     Extrae condiciones reales de un JSON Schema Polaris.
 
@@ -337,6 +338,22 @@ def extract_conditions_from_schema(schema, prefix="", root_schema=None):
             prop_path = f"{prefix}.{required}" if prefix else required
             conds.append((prop_path, "match", "required"))
 
+    if controllers:
+        print(f"Controllers detected in cond  {controllers} {required_preperty}")
+        kinds_excluded = controllers.get("exclude", [])
+        """for kind_excluded in kinds_excluded:
+            print(f"Kind excluded  {kind_excluded}  {prefix}")
+            if kind_excluded == prefix: ## if kind is excluded, we skip the required conditions
+                continue"""
+        if required_preperty:
+            for required in required_preperty:
+                print(f"Kind excluded for  {prefix}  {required} {prop_path}")
+                prop_path = f"{prefix}.{required}" if prefix else required
+                conds.append((prop_path, "==", "true"))
+        """unique_schema = schema.get("required")
+        if unique_schema:
+            print(f"required property   {required_preperty} {unique_schema} ")"""
+
     # 3) anyOf / allOf
     for key in ("anyOf", "allOf"):
         if key in schema and isinstance(schema[key], list):
@@ -382,6 +399,7 @@ def extract_semantic_conditions_from_ast(ast, prefix="", result=None, root_ast=N
         result.append((prefix, "==", ast["const"]))
 
     if "minimum" in ast:
+        print(f"AST schme   {ast}  {prefix}")
         result.append((prefix, ">=", ast["minimum"]))
 
     # contains (ej. array contains elementos que matchean un patrón)
@@ -439,6 +457,7 @@ def find_feature(context_kind: str, prop_path: str, feature_dict: dict):
       4) fallback: cualquier Midle de ese contexto que contenga prop_key
     """
     prop_key = prop_path.replace(".", "_")
+    version_default = "v1"
     exact_midle = f"{context_kind}_{prop_key}"
 
     # 1) match exacto
@@ -449,7 +468,7 @@ def find_feature(context_kind: str, prop_path: str, feature_dict: dict):
     candidates_suffix = []
     fallback = []
 
-    for midle, row in feature_dict.items():
+    for midle, row in feature_dict.items(): ## {version_default}
         if not midle.startswith(context_kind + "_"):
             continue
         suffix = midle[len(context_kind) + 1 :]  # quitar "<context>_"
@@ -511,10 +530,10 @@ def parse_polaris_check(path):
 
 def build_uvl_expr(kind_name: str, feature: str, op: str, val):
     full_feature = f"{kind_name}.{feature}"
-    print(f"Full {full_feature}")
+    print(f"Full feature build {full_feature}")
     if op == "==":
         #print(f"full feature ===    {full_feature}  op  {op}    {kind_name}")
-        if isinstance(val, bool):
+        if isinstance(val, bool) or val == "true" or val == "false":
             return full_feature if val else f"!{full_feature}"
         
         if isinstance(val, (int,float)):
@@ -613,6 +632,21 @@ def map_semantic_conds_to_uvl(check, semantic_conds, feature_dict, kind_map):
     all_simple_exprs = []   # AND global (fuera de OR groups)
     all_or_groups = []      # cada OR group es algo tipo "(expr1 and expr2) or (expr3)"
 
+    paths = {cond[0] for cond in semantic_conds}
+    
+    if "spec.minReplicas" in paths and "spec.maxReplicas" in paths:
+        print(f"Check minMaxReplicas detectado {check['id']}    {paths}")
+        interval_max_min = []
+        for path, op, val in semantic_conds:
+            row = find_feature(context_kind, path, feature_dict)
+            feature = row["Feature"]
+            if feature.endswith("spec_minReplicas"):
+                feature_max = feature.replace("minReplicas", "maxReplicas")
+                interval_max_min.append(f"{kind_name}.{feature_max} < {kind_name}.{feature}")
+            elif feature.endswith("spec_maxReplicas"):
+                interval_max_min.append(f"{kind_name}.{feature} < {val}")
+        return " & ".join(interval_max_min)
+    
     for cond in semantic_conds:
         # OR-group: ("__OR__", [ [ (path,op,val)... ], [ ... ] ])
         if isinstance(cond, tuple) and len(cond) == 2 and cond[0] == "__OR__":
@@ -623,9 +657,10 @@ def map_semantic_conds_to_uvl(check, semantic_conds, feature_dict, kind_map):
                 for path, op, val in branch:
                     row = find_feature(context_kind, path, feature_dict)
                     if not row:
-                        print(f"    ⚠ No FM match for Context={context_kind}, prop={path}")
+                        print(f" No FM match for Context={context_kind}, prop={path}")
                         continue
                     fm_feature = row["Feature"]
+
                     uvlexpr = build_uvl_expr(kind_name, fm_feature, op, val)
                     if uvlexpr:
                         local_exprs.append(uvlexpr)
@@ -640,14 +675,16 @@ def map_semantic_conds_to_uvl(check, semantic_conds, feature_dict, kind_map):
 
         # Condición simple: (path, op, val)
         if isinstance(cond, tuple) and len(cond) == 3:
+            print(f"Semantic conditions to map continue {cond}")
             path, op, val = cond
+            #print(f"Simple condition cond   {path}  {op}  {val}")
             row = find_feature(context_kind, path, feature_dict)
             if not row:
                 print(f"No FM match for Context={context_kind}, prop={path}")
                 continue
             fm_feature = row["Feature"]
             uvlexpr = build_uvl_expr(kind_name, fm_feature, op, val)
-            if uvlexpr:
+            if uvlexpr: ### Pendent of mapping
                 all_simple_exprs.append(uvlexpr)
             continue
 
@@ -706,11 +743,13 @@ def polaris_to_uvl(check, feature_dict, kind_map):
             f"doc '{check['failure']}', "
             f"}}"
         )
+            
         constraint = f"{feature_name} => {constraint_expr}"
         return feature_block, constraint
-
+    
+    controllers = check.get("controllers", {}) or {} 
     # 2) Extraer condiciones del schema
-    conds = extract_conditions_from_schema(check["schema"])
+    conds = extract_conditions_from_schema(check["schema"], controllers)
     if not conds:
         id_check = check["id"]
         print(f"Sin condiciones mapeables → skip    {id_check}")
@@ -730,6 +769,14 @@ def polaris_to_uvl(check, feature_dict, kind_map):
             #    print(f"Condition:  {prop_path} {op}    {val}")
             print(f"  Prop path   {prop_path}  {op} {val}   real_kind={real_kind}")
             context_kind = context_kind_for(real_kind, check, prop_path)
+
+            ## Check for excluded kinds in controllers property if target is PodSpec
+            kinds_excluded = controllers.get("exclude", [])
+            if kinds_excluded:
+                for kind_excluded in kinds_excluded:
+                        print(f"Kind excluded  {kind_excluded}")
+                        if kind_excluded == real_kind: ## if kind is excluded, we skip the required conditions
+                            continue
             fm_row = find_feature(context_kind, prop_path, feature_dict)
 
             if not fm_row:
@@ -758,9 +805,9 @@ def polaris_to_uvl(check, feature_dict, kind_map):
     # Opcional: aquí podrías quitar duplicados si quieres
     # all_parts = list(dict.fromkeys(all_parts))
 
-    if feature_name == "runAsRootAllowed": ## Unnused
+    if feature_name == "metadataAndInstanceMismatched": ## Unnused
         # Caso especial: Usamos OR (|)
-        joined_parts = " | ".join([f"{part}" for part in all_parts])
+        joined_parts = " | ".join([f"({part})" for part in all_parts])
     else:
         # Caso por defecto: Usamos AND (&)
         joined_parts = " & ".join(all_parts)
