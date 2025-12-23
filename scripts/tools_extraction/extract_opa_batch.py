@@ -10,7 +10,8 @@ from tools_extraction.trivy.extract_rego_policies import (
 )
 from tools_extraction.polaris.extract_polaris_checks import (
     parse_polaris_check,
-    polaris_to_uvl
+    polaris_to_uvl,
+    load_feature_dict_polaris
 )
 
 from tools_extraction.gatekeeper.extract_gatekeeper_policies import (
@@ -55,7 +56,7 @@ def parse_opa_directory(rego_dir):
 def parse_polaris_directory(polaris_dir):
   results = []
   severity_map = load_polaris_severities("../resources/polaris_severity_enhances/config-full.yaml")
-  feature_dict = load_feature_dict('../resources/mapping_csv/kubernetes_mapping_properties_features.csv')
+  feature_dict = load_feature_dict_polaris('../resources/mapping_csv/kubernetes_mapping_properties_features.csv')
   kind_prefix_map = load_kinds_prefix_mapping("../resources/mapping_csv/kubernetes_kinds_versions_detected.csv")
   for root, _, files in os.walk(polaris_dir):
     for file in files:

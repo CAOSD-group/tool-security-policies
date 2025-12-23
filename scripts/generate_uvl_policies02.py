@@ -212,7 +212,7 @@ def generate_uvl_from_policies(directory, output_path):
     for opa in opa_results:
         #lines.append("\t" + opa["constraint"])
         raw = opa["constraint"]
-        expr = raw.split("=>", 1)[1] if "=>" in raw else raw  
+        expr = raw.split("=>", 1)[1] if "=>" in raw else raw
         feats = extract_features(expr)
         lines.append("\t" + raw)
         used_features.update(feats)
@@ -220,7 +220,7 @@ def generate_uvl_from_policies(directory, output_path):
     for polaris in polaris_results: ## Write Policies of Polaris
         #print(f"Polaris {polaris}")
         raw = polaris["constraint"]
-        expr = raw.split("=>", 1)[1] if "=>" in raw else raw  
+        expr = raw.split("=>", 1)[1] if "=>" in raw else raw
         feats = extract_features(expr)
 
         # Si CUALQUIER feature ya ha sido usado → deduplicar

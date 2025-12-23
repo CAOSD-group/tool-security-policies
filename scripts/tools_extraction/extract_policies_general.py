@@ -32,15 +32,15 @@ def load_feature_dict(csv_file="../resources/mapping_csv/kubernetes_mapping_prop
 
 def clean_description(description: str) -> str:
     return description.replace('\n', ' ') \
-                      .replace('`', '') \
-                      .replace('´', '') \
-                      .replace("'", "_") \
-                      .replace('{', '') \
-                      .replace('}', '') \
-                      .replace('"', '') \
-                      .replace("\\", "_") \
-                      .replace(".", "") \
-                      .replace("//", "_").replace('\u2019', '_').replace('\u2018', '_') ## ??''' ¡¡¡ ´´ççç`+++`
+                    .replace('`', '') \
+                    .replace('´', '') \
+                    .replace("'", "_") \
+                    .replace('{', '') \
+                    .replace('}', '') \
+                    .replace('"', '') \
+                    .replace("\\", "_") \
+                    .replace(".", "") \
+                    .replace("//", "_").replace('\u2019', '_').replace('\u2018', '_') ## ??''' ¡¡¡ ´´ççç`+++`
 
 def get_base_prefix(kind_prefix): ## Used by the generate_uvl_policies
     if kind_prefix == "Pod":
@@ -66,7 +66,7 @@ def get_base_prefix(kind_prefix): ## Used by the generate_uvl_policies
     elif "Service" in kind_prefix:
         return "Serv"
     elif "Clusterolebinding" in kind_prefix:
-        return "ClusRole" 
+        return "ClusRole"
     elif "Rolebinding" in kind_prefix:
         return "RoleBinding"
     elif "Ingress" in kind_prefix:
@@ -90,13 +90,13 @@ def get_base_prefix(kind_prefix): ## Used by the generate_uvl_policies
     
 
 def normalize_kind_name(kind, kind_map):
-  """
-  Match kind string (rego: lower) to correct official K8s Kind casing.
-  Ex: 'cronjob' -> 'CronJob'
-  """
-  ## kind_prefix_map = load_kinds_prefix_mapping("../resources/mapping_csv/kubernetes_kinds_versions_detected.csv")
-  kind_lower = kind.lower()
-  for k in kind_map.keys():
-      if k.lower() == kind_lower:
-          return k  # Return correctly capitalized e.g. CronJob
-  return kind.capitalize()
+    """
+    Match kind string (rego: lower) to correct official K8s Kind casing.
+    Ex: 'cronjob' -> 'CronJob'
+    """
+    ## kind_prefix_map = load_kinds_prefix_mapping("../resources/mapping_csv/kubernetes_kinds_versions_detected.csv")
+    kind_lower = kind.lower()
+    for k in kind_map.keys():
+        if k.lower() == kind_lower:
+            return k  # Return correctly capitalized e.g. CronJob
+    return kind.capitalize()

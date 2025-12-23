@@ -12,14 +12,14 @@ from tools_extraction.polaris.definitions_objects import CONTROLLER_KINDS
 # Carga de FM y Kinds
 # =========================
 
-def load_feature_dict(csv_file):
+def load_feature_dict_polaris(csv_file):
     """
     Carga Midle -> fila completa del CSV de mapping K8s.
     """
     feature_dict = {}
     with open(csv_file, newline="", encoding="utf-8") as f:
         for row in csv.DictReader(f):
-            feature_dict[row["Midle"]] = row
+            feature_dict[row["Feature"]] = row
     return feature_dict
 
 
@@ -29,12 +29,43 @@ def load_kinds_prefix_mapping(csv_file):
     Feature ya viene con el prefijo completo, pero lo dejamos
     por si quieres hacer fallbacks o debug.
     """
-    kind_map = {}
+    # Definimos qué preferimos (puedes ajustar el orden)
+    VERSION_PRIORITY = ["v1", "v2", "v1beta1", "v1beta2", "v2beta1"]
+    
+    """kind_map = {}
     with open(csv_file, newline="", encoding="utf-8") as f:
         for row in csv.DictReader(f):
             prefix = row.get("Prefix") or row.get("Version") or ""
-            kind_map[row["Kind"]] = prefix
-    return kind_map
+            kind_map[row["Kind"]] = prefix"""
+    # Paso 1: Agrupar todas las opciones
+    raw_map = {}
+    with open(csv_file, newline="", encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            kind = row["Kind"]
+            prefix = row.get("Prefix") or row.get("Version") or ""
+            version = row.get("Version", "")
+
+            if kind not in raw_map:
+                raw_map[kind] = []
+            
+            # Guardamos la info completa
+            raw_map[kind].append({"prefix": prefix, "version": version})
+
+    # Paso 2: Elegir el ganador para cada Kind
+    final_kind_map = {}
+    
+    for kind, candidates in raw_map.items():
+        # Función para ordenar: Si la versión está en nuestra lista, usa su índice (0 es mejor).
+        # Si no está (ej. 'extensions'), ponle un valor alto (99) para que quede al final.
+        candidates.sort(key=lambda x: VERSION_PRIORITY.index(x["version"])
+                        if x["version"] in VERSION_PRIORITY else 99)
+        
+        # El primero de la lista ordenada es el mejor
+        best_candidate = candidates[0]
+        final_kind_map[kind] = best_candidate["prefix"]
+
+    return final_kind_map
+    #return kind_map
 
 def resolve_ast_ref(ast, ref: str):
     """
@@ -98,9 +129,9 @@ def clean_cap_pattern(pattern: str) -> str:
     """
     return (
         pattern.replace("^(?i)", "")
-               .replace("(?i)", "")
-               .lstrip("^")
-               .rstrip("$")
+            .replace("(?i)", "")
+            .lstrip("^")
+            .rstrip("$")
     )
 
 def resolve_ref(root_schema: dict, ref: str):
@@ -126,12 +157,12 @@ def resolve_target_kinds(check: dict):
     Devuelve lista de Kinds "reales" K8s sobre las que aplica el check.
 
     Reglas:
-      - target: Controller + controllers.include -> los Kinds incluidos (Deployment, StatefulSet, ...)
-      - target: PodSpec -> ["Pod"]
-      - target: Container + schemaTarget: PodSpec -> ["Pod"]
-      - target: Container sin schemaTarget -> ["Container"] (kind lógico abstracto)
-      - target: apiGroup/Kind (rbac.authorization.k8s.io/ClusterRole) -> ["ClusterRole"]
-      - target simple (Pod, Deployment, ...) -> [target]
+    - target: Controller + controllers.include -> los Kinds incluidos (Deployment, StatefulSet, ...)
+    - target: PodSpec -> ["Pod"]
+    - target: Container + schemaTarget: PodSpec -> ["Pod"]
+    - target: Container sin schemaTarget -> ["Container"] (kind lógico abstracto)
+    - target: apiGroup/Kind (rbac.authorization.k8s.io/ClusterRole) -> ["ClusterRole"]
+    - target simple (Pod, Deployment, ...) -> [target]
     """
     target = check.get("target", "")
     controllers = check.get("controllers", {}) or {}
@@ -171,10 +202,10 @@ def context_kind_for(real_kind: str, check: dict, prop_path: str) -> str:
     Determina el contexto de FM (prefijo Midle) que usaremos para buscar en el CSV.
 
     Ejemplos:
-      - runAsPrivileged (target=Container, schemaTarget=PodSpec) -> "Pod_spec_containers"
-      - hostIPCSet       (target=PodSpec)                        -> "Pod_spec"
-      - deploymentMissingReplicas (target=Controller + Deployment) -> "Deployment_spec"
-      - readinessProbeMissing (target=Container sin schemaTarget)  -> "Container"
+    - runAsPrivileged (target=Container, schemaTarget=PodSpec) -> "Pod_spec_containers"
+    - hostIPCSet       (target=PodSpec)                        -> "Pod_spec"
+    - deploymentMissingReplicas (target=Controller + Deployment) -> "Deployment_spec"
+    - readinessProbeMissing (target=Container sin schemaTarget)  -> "Container"
     """
     target = check.get("target", "")
     schema_target = check.get("schemaTarget", "")
@@ -191,7 +222,7 @@ def context_kind_for(real_kind: str, check: dict, prop_path: str) -> str:
     # Controller + Deployment/StatefulSet/... → <Kind>_spec_*
     if target == "Controller" and real_kind in (
         "Deployment", "StatefulSet", "DaemonSet", "Job", "CronJob", "ReplicaSet"):
-        if "metadata" in prop_path: 
+        if "metadata" in prop_path:
             return f"{real_kind}"
         return f"{real_kind}_spec"
 
@@ -218,9 +249,9 @@ def extract_conditions_from_schema(schema, controllers=None, prefix="", root_sch
     Extrae condiciones reales de un JSON Schema Polaris.
 
     Devuelve lista de (prop_path, op, val), p.ej.:
-      - ("automountServiceAccountToken", "!=", True)
-      - ("spec.replicas", ">=", 2)
-      - ("securityContext.allowPrivilegeEscalation", "==", False)
+    - ("automountServiceAccountToken", "!=", True)
+    - ("spec.replicas", ">=", 2)
+    - ("securityContext.allowPrivilegeEscalation", "==", False)
     """
     if root_schema is None:
         root_schema = schema
@@ -274,9 +305,9 @@ def extract_conditions_from_schema(schema, controllers=None, prefix="", root_sch
                         # Convertir ^(?i)SYS_ADMIN$ → SYS_ADMIN
                         literal = (
                             pattern.replace("^(?i)", "")
-                                   .replace("(?i)", "")
-                                   .replace("^", "")
-                                   .replace("$", "")
+                                .replace("(?i)", "")
+                                .replace("^", "")
+                                .replace("$", "")
                         )
 
                         conds.append((prop_path, "not_contains", literal))
@@ -361,7 +392,7 @@ def extract_conditions_from_schema(schema, controllers=None, prefix="", root_sch
                 conds.extend(
                     extract_conditions_from_schema(block, prefix=prefix, root_schema=root_schema)
                 )
-   
+
     return conds
 
 def extract_semantic_conditions_from_ast(ast, prefix="", result=None, root_ast=None):
@@ -369,8 +400,8 @@ def extract_semantic_conditions_from_ast(ast, prefix="", result=None, root_ast=N
     Extrae condiciones semánticas desde el AST de un schemaString.
 
     Devuelve una lista que puede contener:
-      - Tuplas simples:   (prop_path, op, val)
-      - Marcadores OR:    ("__OR__", [ [conds_branch1], [conds_branch2], ... ])
+    - Tuplas simples:   (prop_path, op, val)
+    - Marcadores OR:    ("__OR__", [ [conds_branch1], [conds_branch2], ... ])
 
     Donde cada conds_branch es una lista de tuplas (prop_path, op, val).
     """
@@ -436,59 +467,95 @@ def extract_semantic_conditions_from_ast(ast, prefix="", result=None, root_ast=N
 
     return result
 
-
-# =========================
-# Búsqueda de Feature en FM usando Midle
-# =========================
-
-def find_feature(context_kind: str, prop_path: str, feature_dict: dict):
+def find_feature(context_kind: str, prop_path: str, feature_dict: dict, kind_map: dict = None):
     """
-    Dado:
-      - context_kind: 'Pod_spec', 'Pod_spec_containers', 'Container', 'Deployment_spec', ...
-      - prop_path:    'hostIPC', 'automountServiceAccountToken',
-                      'spec.replicas', 'securityContext.allowPrivilegeEscalation'
-
-    construye un Midle candidato y lo busca en el FM.
-
-    Estrategia:
-      1) match exacto:  <context>_<prop_key>
-      2) suffix igual
-      3) suffix que termina en "_" + prop_key
-      4) fallback: cualquier Midle de ese contexto que contenga prop_key
+    Busca una característica en el Feature Model con estrategia híbrida.
+    
+    1. Estrategia Rápida (Recomendada): Usa kind_map para construir la key exacta.
+    2. Estrategia Fallback: Escanea todo el dict priorizando versiones estables.
     """
+    # Normalizamos la propiedad (spec.replicas -> spec_replicas)
     prop_key = prop_path.replace(".", "_")
-    version_default = "v1"
-    exact_midle = f"{context_kind}_{prop_key}"
+    clean_kind = context_kind.split("_")[0]
 
-    # 1) match exacto
-    if exact_midle in feature_dict:
-        return feature_dict[exact_midle]
+    # ---------------------------------------------------------
+    # ESTRATEGIA 1: Búsqueda Directa (O(1)) - "Happy Path"
+    # ---------------------------------------------------------
+    if kind_map:
+        prefix = kind_map.get(clean_kind)
+        if prefix:
+            # Construimos la llave maestra: Prefijo + Kind + Propiedad
+            # Ej: io_k8s_api_autoscaling_v1_HorizontalPodAutoscaler_spec_minReplicas
+            candidate_key = f"{prefix}_{clean_kind}_{prop_key}"
+            
+            if candidate_key in feature_dict:
+                return feature_dict[candidate_key]
+                
+            # Optimización: Si tenemos prefijo pero falló el match exacto,
+            # podríamos intentar buscar solo features que empiecen por ese prefijo
+            # antes de ir al fallback global. (Opcional, para mantenerlo simple pasamos al 2)
 
+    # ---------------------------------------------------------
+    # ESTRATEGIA 2: Fallback Heurístico (O(N)) - "Rescue Path"
+    # ---------------------------------------------------------
+    
     candidates_equal = []
     candidates_suffix = []
     fallback = []
 
-    for midle, row in feature_dict.items(): ## {version_default}
-        if not midle.startswith(context_kind + "_"):
+    # Definimos la prioridad AQUÍ, mirando la KEY (Nombre Largo), no el Midle.
+    def get_priority_key(item_tuple):
+        """
+        Recibe (feature_long_name, row_data).
+        Devuelve (score_version, longitud).
+        """
+        f_name, row = item_tuple
+        midle = row.get("Midle", "")
+
+        # 1. Prioridad por Versión (Buscamos en el NOMBRE LARGO)
+        if "_v1_" in f_name:      score = 1
+        elif "_v2_" in f_name:    score = 2
+        elif "beta" in f_name:    score = 3
+        else:                     score = 10
+
+        # 2. Desempate por Longitud (Buscamos en el MIDLE)
+        return (score, len(midle))
+
+    # Iteramos sobre el diccionario completo
+    for feature_long_name, row in feature_dict.items():
+        midle = row.get("Midle", "")
+        
+        # Filtro de contexto básico
+        if not midle.startswith(clean_kind + "_"):
             continue
-        suffix = midle[len(context_kind) + 1 :]  # quitar "<context>_"
+
+        # Extraemos el sufijo real
+        suffix = midle[len(clean_kind) + 1 :]
+
+        # Empaquetamos el candidato (Key + Value) para la función de prioridad
+        candidate = (feature_long_name, row)
 
         if suffix == prop_key:
-            candidates_equal.append(row)
+            candidates_equal.append(candidate)
         elif suffix.endswith("_" + prop_key):
-            candidates_suffix.append(row)
+            candidates_suffix.append(candidate)
         elif prop_key in suffix:
-            fallback.append(row)
+            fallback.append(candidate)
 
+    # Selección del ganador
+    # min() devuelve la tupla (key, row), nosotros retornamos row
+    
     if candidates_equal:
-        # el más corto suele ser el más directo
-        return min(candidates_equal, key=lambda r: len(r["Midle"]))
+        best = min(candidates_equal, key=get_priority_key)
+        return best[1]
 
     if candidates_suffix:
-        return min(candidates_suffix, key=lambda r: len(r["Midle"]))
+        best = min(candidates_suffix, key=get_priority_key)
+        return best[1]
 
     if fallback:
-        return min(fallback, key=lambda r: len(r["Midle"]))
+        best = min(fallback, key=get_priority_key)
+        return best[1]
 
     return None
 
@@ -572,7 +639,7 @@ def build_uvl_expr(kind_name: str, feature: str, op: str, val):
     if op == "not matches":
             if '.' in val:
                 val = clean_description(val)
-            return f"({full_feature} != '{val}')" 
+            return f"({full_feature} != '{val}')"
     
     if op == "contains":
         # Convención: para arrays tipo capabilities_drop
@@ -613,9 +680,9 @@ def map_semantic_conds_to_uvl(check, semantic_conds, feature_dict, kind_map):
     en una única expresión UVL para este check.
 
     Usa:
-      - target del check para elegir contexto (Container, Pod, etc.)
-      - find_feature(kind_context, prop_path, feature_dict)
-      - build_uvl_expr(real_kind, fm_feature, op, val)
+    - target del check para elegir contexto (Container, Pod, etc.)
+    - find_feature(kind_context, prop_path, feature_dict)
+    - build_uvl_expr(real_kind, fm_feature, op, val)
     """
     from collections import OrderedDict
 
@@ -644,7 +711,7 @@ def map_semantic_conds_to_uvl(check, semantic_conds, feature_dict, kind_map):
                 feature_max = feature.replace("minReplicas", "maxReplicas")
                 interval_max_min.append(f"{kind_name}.{feature_max} < {kind_name}.{feature}")
             elif feature.endswith("spec_maxReplicas"):
-                interval_max_min.append(f"{kind_name}.{feature} < {val}")
+                interval_max_min.append(f"{kind_name}.{feature} > {val}")
         return " & ".join(interval_max_min)
     
     for cond in semantic_conds:
@@ -803,7 +870,7 @@ def polaris_to_uvl(check, feature_dict, kind_map):
         return None
 
     # Opcional: aquí podrías quitar duplicados si quieres
-    # all_parts = list(dict.fromkeys(all_parts))
+    all_parts = list(dict.fromkeys(all_parts))
 
     if feature_name == "metadataAndInstanceMismatched": ## Unnused
         # Caso especial: Usamos OR (|)
@@ -815,7 +882,7 @@ def polaris_to_uvl(check, feature_dict, kind_map):
     """if feature_name == "insecureCapabilities" and joined_parts.count(" & ") >= 1: ## Uncomment if want to use the full insecureCapabilities Strs
         joined_parts = joined_parts.replace(" & ", " | ", 1)"""
 
-    constraint = f"{feature_name} => {joined_parts}"    
+    constraint = f"{feature_name} => {joined_parts}"
     #constraint = f"{feature_name} => " + " & ".join(all_parts)
     print(f"Constraint  {constraint}")
 
@@ -830,7 +897,7 @@ if __name__ == "__main__":
     KINDS_CSV    = "../resources/mapping_csv/kubernetes_kinds_versions_detected.csv"
     POLARIS_DIR  = "../resources/Polaris-checks"
 
-    feature_dict = load_feature_dict(FEATURES_CSV)
+    feature_dict = load_feature_dict_polaris(FEATURES_CSV)
     kind_map = load_kinds_prefix_mapping(KINDS_CSV)
 
     results = []
