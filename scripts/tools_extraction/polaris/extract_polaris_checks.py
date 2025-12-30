@@ -170,13 +170,18 @@ def resolve_target_kinds(check: dict):
 
     # Caso especial: Controller
     if target == "Controller":
-        include = []
+        # 1. Si existe 'include', es una lista taxativa. Solo devolvemos esos.
+        included = controllers.get("include", [])
+        if included:
+                return included
         # Usamos la variable importada directamente
-        for kind in CONTROLLER_KINDS:
-            include.append(kind)
-        if include:
-            return include
-
+        candidates = list(CONTROLLER_KINDS) # Copia de la lista global
+        
+        # 3. Filtramos los 'exclude' si existen
+        excluded = controllers.get("exclude", [])
+        final_list = [k for k in candidates if k not in excluded]
+        
+        return final_list
     # PodSpec: se refiere al spec de un Pod
     if target == "PodSpec":
         return ["Pod"]
@@ -261,6 +266,7 @@ def extract_conditions_from_schema(schema, controllers=None, prefix="", root_sch
         return conds
 
     props = schema.get("properties", {})
+    aux_min = False
     #print(f"Props extraction    {props}")
     # 1) Propiedades directas
     for name, rule in props.items():
@@ -336,7 +342,10 @@ def extract_conditions_from_schema(schema, controllers=None, prefix="", root_sch
         # mínimo numérico (p.ej. replicas >= 2)
         if "minimum" in rule:
             conds.append((prop_path, ">=", rule["minimum"]))
-
+        ## minItems for arrays
+        if "minItems" in rule:
+            conds.append((prop_path, "==", "true"))
+            
         # Recursión en sub-propiedades
         if "properties" in rule and not "metadata" in name: ## Check for special deffs
             conds.extend(
@@ -351,9 +360,11 @@ def extract_conditions_from_schema(schema, controllers=None, prefix="", root_sch
                     prop_path += f"_{prop}"
                     aux_properties = rule.get("properties")
                     aux_rule = aux_properties.get("labels").get("properties")
-                    print(f"Prop path aux   {prop_path} aux_properties:  {aux_properties}   get {aux_rule}")   
-                    conds.append((prop_path, "Map", aux_rule))
-
+                    if aux_rule:
+                        print(f"Prop path aux   {prop_path} aux_properties:  {aux_properties}   get {aux_rule}")   
+                        conds.append((prop_path, "Map", aux_rule))
+                    else: ## preparar caso minProperties
+                        print(f"No aux rule for labels   {prop_path} ")
 
     # 2) required → != null
     """if "required" in schema and isinstance(schema["required"], list):
@@ -369,19 +380,14 @@ def extract_conditions_from_schema(schema, controllers=None, prefix="", root_sch
             prop_path = f"{prefix}.{required}" if prefix else required
             conds.append((prop_path, "match", "required"))
 
-    if controllers:
+    """if controllers: ## Done for controllers property simple without properties
         print(f"Controllers detected in cond  {controllers} {required_preperty}")
-        kinds_excluded = controllers.get("exclude", [])
-        """for kind_excluded in kinds_excluded:
-            print(f"Kind excluded  {kind_excluded}  {prefix}")
-            if kind_excluded == prefix: ## if kind is excluded, we skip the required conditions
-                continue"""
-        if required_preperty:
+        if required_preperty and not aux_min:
             for required in required_preperty:
                 print(f"Kind excluded for  {prefix}  {required} {prop_path}")
                 prop_path = f"{prefix}.{required}" if prefix else required
-                conds.append((prop_path, "==", "true"))
-        """unique_schema = schema.get("required")
+                conds.append((prop_path, "==", "true")) ##
+        unique_schema = schema.get("required")
         if unique_schema:
             print(f"required property   {required_preperty} {unique_schema} ")"""
 
@@ -709,7 +715,7 @@ def map_semantic_conds_to_uvl(check, semantic_conds, feature_dict, kind_map):
             feature = row["Feature"]
             if feature.endswith("spec_minReplicas"):
                 feature_max = feature.replace("minReplicas", "maxReplicas")
-                interval_max_min.append(f"{kind_name}.{feature_max} < {kind_name}.{feature}")
+                interval_max_min.append(f"{kind_name}.{feature_max} > {kind_name}.{feature}")
             elif feature.endswith("spec_maxReplicas"):
                 interval_max_min.append(f"{kind_name}.{feature} > {val}")
         return " & ".join(interval_max_min)

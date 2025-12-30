@@ -221,10 +221,11 @@ def generate_uvl_from_policies(directory, output_path):
         #print(f"Polaris {polaris}")
         raw = polaris["constraint"]
         expr = raw.split("=>", 1)[1] if "=>" in raw else raw
+        expr02 = raw.split("=>", 1)[0]
         feats = extract_features(expr)
 
         # Si CUALQUIER feature ya ha sido usado → deduplicar
-        if any(f in used_features for f in feats):
+        if any(f in used_features for f in feats) and not expr02.strip() == "hpaMinAvailability": ## Exception for hpaMinAvailability
             print(f"[DEDUP] Omitida constraint con features ya usados: {feats}")
             continue
 

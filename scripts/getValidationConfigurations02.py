@@ -26,21 +26,21 @@ VALIDATE_ONLY_FIRST_CONFIG = True
 # --------------------------------------------------
 
 def load_processed_files(csv_file_path):
-  """
-  Load already processed filenames from a CSV file.
-  
-  :param csv_file_path (str): Path to the CSV results file.
-  
-  """
-  processed = set()
-  if os.path.exists(csv_file_path):
-      with open(csv_file_path, mode="r", newline="") as f:
-          reader = csv.reader(f)
-          next(reader, None)  # Skip header
-          for row in reader:
-              if row and row[0].endswith(".json"):  # Ensure that it is a valid row of data.
-                  processed.add(row[0])
-  return processed
+    """
+    Load already processed filenames from a CSV file.
+    
+    :param csv_file_path (str): Path to the CSV results file.
+    
+    """
+    processed = set()
+    if os.path.exists(csv_file_path):
+        with open(csv_file_path, mode="r", newline="") as f:
+            reader = csv.reader(f)
+            next(reader, None)  # Skip header
+            for row in reader:
+                if row and row[0].endswith(".json"):  # Ensure that it is a valid row of data.
+                    processed.add(row[0])
+    return processed
 
 def build_suffix_index(sat_features):
 
