@@ -266,7 +266,6 @@ def extract_conditions_from_schema(schema, controllers=None, prefix="", root_sch
         return conds
 
     props = schema.get("properties", {})
-    aux_min = False
     #print(f"Props extraction    {props}")
     # 1) Propiedades directas
     for name, rule in props.items():
@@ -319,6 +318,8 @@ def extract_conditions_from_schema(schema, controllers=None, prefix="", root_sch
                         conds.append((prop_path, "not_contains", literal))
         # not.const → !=
         if "not" in rule and isinstance(rule["not"], dict) and "const" in rule["not"]:
+            ## {name} have the cpu, memory requests/limits Efficiency case to modify with the Strings updates would be done
+            #print(f"not const detected  {rule}  {name}")
             conds.append((prop_path, "!=", rule["not"]["const"]))
 
         # const → ==
@@ -355,17 +356,19 @@ def extract_conditions_from_schema(schema, controllers=None, prefix="", root_sch
             print(f"Metadata detectado {rule}   {prop_path}")
             aux_value_key = rule.get("required")
             print(f"Aux value   {aux_value_key}")
-            for prop in aux_value_key:
-                if prop == "labels":
-                    prop_path += f"_{prop}"
-                    aux_properties = rule.get("properties")
-                    aux_rule = aux_properties.get("labels").get("properties")
-                    if aux_rule:
-                        print(f"Prop path aux   {prop_path} aux_properties:  {aux_properties}   get {aux_rule}")   
-                        conds.append((prop_path, "Map", aux_rule))
-                    else: ## preparar caso minProperties
-                        print(f"No aux rule for labels   {prop_path} ")
-
+            if aux_value_key:
+                for prop in aux_value_key:
+                    if prop == "labels":
+                        prop_path += f"_{prop}"
+                        aux_properties = rule.get("properties")
+                        aux_rule = aux_properties.get("labels").get("properties")
+                        if aux_rule:
+                            print(f"Prop path aux   {prop_path} aux_properties:  {aux_properties}   get {aux_rule}")   
+                            conds.append((prop_path, "Map", aux_rule))
+                        else: ## preparar caso minProperties
+                            print(f"No aux rule for labels   {prop_path} ")
+            else:
+                print(f"No aux value key for metadata   {prop_path} {aux_value_key}")
     # 2) required → != null
     """if "required" in schema and isinstance(schema["required"], list):
         for req in schema["required"] and not :
@@ -626,7 +629,10 @@ def build_uvl_expr(kind_name: str, feature: str, op: str, val):
         if isinstance(val, bool):
             return f"!{full_feature}" ## {str(val).lower()}
         elif isinstance(val, str) and val == 'null':
-            return f"{full_feature} != null"""
+            return f"{full_feature} != null"
+        elif val == '': ## Case Efficiency empty string
+            print("Empty string detected")
+            return f"{full_feature}"
         if val is None:
             return f"{full_feature}"
         if full_feature.endswith('securityContext_seccompProfile_type'):
@@ -662,7 +668,7 @@ def build_uvl_expr(kind_name: str, feature: str, op: str, val):
     if op == "match":
         #if full_feature.endswith("spec_priorityClassName "):
         #    return f"({full_feature} == '{val}')" # Is a Str feature with a simple use
-        return f"({full_feature}')" ## We define as a simple feature Boolean to use the functionatilly of select it
+        return f"{full_feature}" ## We define as a simple feature Boolean to use the functionatilly of select it
     
     if op == "Map":
         feature_map_key = f"{full_feature}_KeyMap"
@@ -790,6 +796,8 @@ def polaris_to_uvl(check, feature_dict, kind_map):
     #print(f"Doc {check['failure']}")
     # 0) Resolver Kinds reales sobre los que aplica
     real_kinds = resolve_target_kinds(check)
+    # Lista provisional para evitar la encadenacion de las propiedades con recursos Strings detectados en Efficiency
+    suffixes_to_strip = ("requests.cpu", "limits.cpu", "requests.memory", "limits.memory")
 
     # 1) Si hay schemaString → usar parser semántico nuevo
     if check.get("schemaString"):
@@ -835,7 +843,6 @@ def polaris_to_uvl(check, feature_dict, kind_map):
     )
 
     all_parts = []
-
     for real_kind in real_kinds:
         for prop_path, op, val in conds:
             #if "metadata" in prop_path:
@@ -850,6 +857,8 @@ def polaris_to_uvl(check, feature_dict, kind_map):
                         print(f"Kind excluded  {kind_excluded}")
                         if kind_excluded == real_kind: ## if kind is excluded, we skip the required conditions
                             continue
+            if prop_path.endswith(suffixes_to_strip):
+                prop_path = prop_path.rsplit(".", 1)[0]
             fm_row = find_feature(context_kind, prop_path, feature_dict)
 
             if not fm_row:

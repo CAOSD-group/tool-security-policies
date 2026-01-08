@@ -374,3 +374,13 @@ DaemonSetspec.template.spec
 Jobspec.template.spec
 ReplicaSetspec.template.spec
 Podspec
+
+
+01-config-node-local-dns_3
+no_host_network: --> io_k8s_api_apps_v1_DaemonSet_spec_template_spec_hostNetwork
+
+01-elasticsearch
+no_privileged_containers: --> io_k8s_api_apps_v1_StatefulSet_spec_template_spec_initContainers_securityContext_privileged
+
+el % de invalidacion sigue siendo bajo, quizas seria apropiado ampliar el "margen" de aplicación de restricciones, completar y extender
+las restricciones a todos los grupos de objetos que compartan la propiedad en cuestion...

@@ -107,7 +107,20 @@ def valid_config_version_json(configuration_json: Configuration, fm_model: Featu
                 #print(f"[NORMALIZADO] {k}  →  {matches[0]}")
             else:
                 adjusted[k] = True if v else False
+    """for k, v in config.elements.items():
+    # CASO 1: coincidencia exacta
+    if k in sat_features:
+        adjusted[k] = bool(v)
+        continue
+    # CASO 2: coincidencia original → endswith("_" + k) OR endswith("_n1_" + k)
+    matches = suffix_map.get(k, [])
 
+    if matches:
+        # Tomamos la PRIMER coincidencia (igual que antes)
+        adjusted[matches[0]] = bool(v)
+    else:
+        # CASO 3: dejar el nombre original (igual que antes)
+            adjusted[k] = bool(v)"""
     # Crear nueva configuración normalizada
     config = Configuration(adjusted)
 

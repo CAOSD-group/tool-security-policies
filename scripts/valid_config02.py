@@ -63,7 +63,7 @@ def complete_configuration(configuration: Configuration, fm_model: FeatureModel)
         configs_elements.update(parents)
     return Configuration(configs_elements)
 
-def valid_config_version_json(configuration_json: Configuration, fm_model: FeatureModel, sat_model: PySATModel, sat_features: set[str]) -> bool: ## Instead of passing it (configuration: list[str] we pass the JSON list we generated in the JSON Conf suffix_map: dict[str, list[str]],
+def valid_config_version_json(configuration_json: Configuration, fm_model: FeatureModel, sat_model: PySATModel, sat_features: set[str], auto_policies) -> bool: ## Instead of passing it (configuration: list[str] we pass the JSON list we generated in the JSON Conf suffix_map: dict[str, list[str]],
     """
     Check if a configuration is valid (satisfiable) according to the SAT model.
 
@@ -76,6 +76,67 @@ def valid_config_version_json(configuration_json: Configuration, fm_model: Featu
         tuple: (bool indicating validity, list of selected feature names)
     """
     # 1) EXTRAER constraints → mapa {policy: kinds}
+    #constraint_kinds_map = extract_policy_kinds_from_constraints(UVL_PATH)
+
+    # 2) detectar políticas aplicables
+    #auto_policies = infer_policies_from_kind(configuration_json.elements, constraint_kinds_map)
+
+    # 3) Integrarlas en la propia config (NO en el archivo JSON)
+    for policy in auto_policies: ### In testing
+        configuration_json.elements[policy] = True
+
+    config = complete_configuration(configuration_json, fm_model)
+    config.set_full(True)
+    #print(f"PRINT CONFIG {config}")
+
+    #sat_features = set(sat_model.variables.keys())
+    adjusted = {}
+    match_cache = {}
+    start_mathing_features = time.time()
+    for k, v in config.elements.items():
+        if k in match_cache:
+            matches = match_cache[k]
+        else:
+            matches = [
+                f for f in sat_features
+                if f.endswith("_" + k) or f.endswith("_n1_" + k)
+            ]
+            match_cache[k] = matches
+
+        if matches:
+            adjusted[matches[0]] = bool(v)
+        else:
+            adjusted[k] = bool(v)
+            
+    end_mathing_features = time.time()
+    matching_time = round(end_mathing_features - start_mathing_features, 4)
+    print(f"Tiempo de coincidencias de la configuracion {matching_time}")
+
+    # Crear nueva configuración normalizada
+    config = Configuration(adjusted)
+
+    start_satisfiable_model = time.time()  # Start of validation time
+    satisfiable_op = PySATSatisfiableConfiguration()
+    end_satisfiable_model = time.time()
+    satisfiable_time = round(end_satisfiable_model - start_satisfiable_model, 4)
+    print(f"Tiempo de satisfacer la config  {satisfiable_time}")
+    satisfiable_op.set_configuration(config)
+    return satisfiable_op.execute(sat_model).get_result(), config.get_selected_elements()
+
+
+#def valid_config_version_json(configuration_json: Configuration, fm_model: FeatureModel, sat_model: PySATModel, sat_features: set[str]) -> bool: ## Instead of passing it (configuration: list[str] we pass the JSON list we generated in the JSON Conf suffix_map: dict[str, list[str]],
+    """
+    Check if a configuration is valid (satisfiable) according to the SAT model.
+
+    Args:
+        configuration_json (Configuration): Configuration to validate.
+        fm_model (FeatureModel): The feature model.
+        sat_model (PySATModel): The SAT-based feature model.
+
+    Returns:
+        tuple: (bool indicating validity, list of selected feature names)
+    """
+    """# 1) EXTRAER constraints → mapa {policy: kinds}
     constraint_kinds_map = extract_policy_kinds_from_constraints(UVL_PATH)
 
     # 2) detectar políticas aplicables
@@ -112,20 +173,6 @@ def valid_config_version_json(configuration_json: Configuration, fm_model: Featu
     matching_time = round(end_mathing_features - start_mathing_features, 4)
     print(f"Tiempo de coincidencias de la configuracion {matching_time}")
 
-    """for k, v in config.elements.items():
-        # CASO 1: coincidencia exacta
-        if k in sat_features:
-            adjusted[k] = bool(v)
-            continue
-        # CASO 2: coincidencia original → endswith("_" + k) OR endswith("_n1_" + k)
-        matches = suffix_map.get(k, [])
-
-        if matches:
-            # Tomamos la PRIMER coincidencia (igual que antes)
-            adjusted[matches[0]] = bool(v)
-        else:
-            # CASO 3: dejar el nombre original (igual que antes)
-            adjusted[k] = bool(v)"""
     # Crear nueva configuración normalizada
     config = Configuration(adjusted)
 
@@ -135,7 +182,7 @@ def valid_config_version_json(configuration_json: Configuration, fm_model: Featu
     satisfiable_time = round(end_satisfiable_model - start_satisfiable_model, 4)
     print(f"Tiempo de satisfacer la config  {satisfiable_time}")
     satisfiable_op.set_configuration(config)
-    return satisfiable_op.execute(sat_model).get_result(), config.get_selected_elements()
+    return satisfiable_op.execute(sat_model).get_result(), config.get_selected_elements()"""
 
 def inizialize_model(model_path):
     fm_model = UVLReader(model_path).transform()
