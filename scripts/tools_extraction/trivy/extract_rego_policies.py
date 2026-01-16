@@ -101,24 +101,8 @@ def find_uvl_path_for_rego(kind, rego_path, feature_dict, kind_map): ## feature_
             is_list = (best["Value"] == "-")
             results.append((best["Feature"], is_list, best["Value"]))
 
-
-    """for midle, row in feature_dict.items():
-        #print(f"Midel   {midle} {row}")
-        if midle.startswith(real_kind + "_") and rego_key in midle:##midle.endswith(rego_key): ## With these conds we take the last match with rego_key, the restrict of is necesary for future cases: In this cases all are similar _asString
-            candidates.append(row)
-            #print(f"Candidates: {candidates}")
-    if not candidates:
-        return None, None, None
-
-    # Elegir la más específica (con el mayor número de coincidencias)
-    best = max(candidates, key=lambda r: len(r["Midle"]))
-    #print(f"Value best  {best}")
-    is_list = (best["Value"] == "-")
-
-    return best["Feature"], is_list, best["Value"]"""
     return results
     
-
 
 def extract_metadata_from_rego(rego_text):
     lines = rego_text.splitlines()
