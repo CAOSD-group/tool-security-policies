@@ -45,6 +45,7 @@ features
 			Best_Practices
 				optional
 					Disallow_NodePort {tool 'kyverno', severity 'medium', name 'restrict-nodeport', fields 'spec_type', kinds 'Service', doc 'A Kubernetes Service of type NodePort uses a host port to receive traffic from any source A NetworkPolicy cannot be used to control traffic to host ports Although NodePort Services can be useful, their use must be limited to Services with additional upstream security checks This policy validates that any new Services do not use the NodePort type', raw_source 'YAML'}
+					Restrict_External_IPs {tool 'kyverno', severity 'medium', name 'restrict-external-ips', fields 'spec_XexternalIPs', kinds 'Service', doc 'Service externalIPs can be used for a MITM attack (CVE-2020-8554) Restrict externalIPs or limit to a known set of addresses See: https:_githubcom/kyverno/kyverno/issues/1367 This policy validates that the externalIPs field is not set on a Service', raw_source 'YAML'}
 					Restrict_Ingress_defaultBackend {tool 'kyverno', severity 'high', name 'restrict-ingress-defaultbackend', fields 'spec_XdefaultBackend', kinds 'Ingress', doc 'An Ingress with no rules sends all traffic to a single default backend The defaultBackend is conventionally a configuration option of the Ingress controller and is not specified in your Ingress resources If none of the hosts or paths match the HTTP request in the Ingress objects, the traffic is routed to your default backend In a multi-tenant environment, you want users to use explicit hosts, they should not be able to overwrite the global default backend service This policy prohibits the use of the defaultBackend field', raw_source 'YAML'}
 			Security
 				optional
@@ -160,6 +161,7 @@ constraints
 	Disallow_Default_Namespace => (Pod.io_k8s_api_core_v1_Pod_metadata_namespace != 'default' & DaemonSet.io_k8s_api_apps_v1_DaemonSet_metadata_namespace != 'default' & Deployment.io_k8s_api_apps_v1_Deployment_metadata_namespace != 'default' & Job.io_k8s_api_batch_v1_Job_metadata_namespace != 'default' & StatefulSet.io_k8s_api_apps_v1_StatefulSet_metadata_namespace != 'default')
 	Require_Read_Only_Root_Filesystem => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_readOnlyRootFilesystem
 	Disallow_NodePort => !Serv.io_k8s_api_core_v1_Service_spec_type_NodePort
+	Restrict_External_IPs => !Serv.io_k8s_api_core_v1_Service_spec_externalIPs
 	Deny_Secret_Service_Account_Token_Type => Secret.io_k8s_api_core_v1_Secret_type != kubernetes_io/service-account-token
 	Enforce_ReadWriteOncePod => PersistVolumeClaim.io_k8s_api_core_v1_PersistentVolumeClaim_spec_accessModes_StringValue == ReadWriteOncePod
 	PodDisruptionBudget_maxUnavailable_Non_Zero => PodDisrupBud.io_k8s_api_policy_v1_PodDisruptionBudget_spec_maxUnavailable_asInteger > 0

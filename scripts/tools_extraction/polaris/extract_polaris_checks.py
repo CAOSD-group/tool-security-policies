@@ -32,11 +32,6 @@ def load_kinds_prefix_mapping(csv_file):
     # Definimos qué preferimos (puedes ajustar el orden)
     VERSION_PRIORITY = ["v1", "v2", "v1beta1", "v1beta2", "v2beta1"]
     
-    """kind_map = {}
-    with open(csv_file, newline="", encoding="utf-8") as f:
-        for row in csv.DictReader(f):
-            prefix = row.get("Prefix") or row.get("Version") or ""
-            kind_map[row["Kind"]] = prefix"""
     # Paso 1: Agrupar todas las opciones
     raw_map = {}
     with open(csv_file, newline="", encoding="utf-8") as f:

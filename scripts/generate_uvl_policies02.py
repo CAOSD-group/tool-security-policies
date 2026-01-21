@@ -241,6 +241,6 @@ def generate_uvl_from_policies(directory, output_path):
 # Ejemplo de uso
 if __name__ == "__main__":
     generate_uvl_from_policies(
-        directory="../resources/kyverno_policies_yamls",
-        output_path="../variability_model/policies_template/policy_structure03.uvl"
+        directory="../resources/dataset_final_validated", ## dataset_filtered kyverno_policies_yamls
+        output_path="../variability_model/policies_template/policy_structure05.uvl"
     )

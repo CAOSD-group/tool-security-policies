@@ -279,6 +279,50 @@ def is_flat_pattern(pattern):
     # Solo consideramos plano si todos los valores son simples
     return all(not isinstance(v, (dict, list)) for v in pattern.values())
 
+
+"""def build_expression(feature, value):
+    val_str = str(value).strip()
+
+    # 1. Caso NULL -> !feature
+    if val_str.lower() == "null":
+        return f"!{feature}"
+
+    # 2. Caso BOOLEANOS -> feature o !feature
+    # ESTE ES EL CAMBIO CLAVE QUE BUSCABAS
+    if val_str.lower() == "true":
+        return f"{feature}"   # Equivale a "feature == true"
+    if val_str.lower() == "false":
+        return f"!{feature}"  # Equivale a "feature == false"
+
+    # 3. Caso NÚMEROS (Sin comillas)
+    if re.match(r"^-?\d+(\.\d+)?$", val_str):
+        return f"{feature} == {val_str}"
+
+    # 4. Caso NEGACIÓN (!)
+    if val_str.startswith("!"):
+        clean_val = val_str[1:]
+        
+        # Si negamos un booleano explícito (!true / !false)
+        if clean_val.lower() == "true":
+            return f"!{feature}" # !true es false
+        if clean_val.lower() == "false":
+            return f"{feature}"  # !false es true
+            
+        # Si es número
+        if re.match(r"^-?\d+(\.\d+)?$", clean_val):
+            return f"{feature} != {clean_val}"
+            
+        # String normal
+        return f"{feature} != '{clean_val}'"
+
+    # 5. Caso RANGOS O MULTI-VALOR (Kyverno "|")
+    if "|" in val_str:
+        return f"{feature} == '{val_str}'"
+
+    # 6. Caso STRINGS (Default -> Con comillas simples)
+    return f"{feature} == '{val_str}'"""
+
+
 def build_expression(feature, value):
     """Construye la expresión UVL adecuada según el valor detectado."""
     """if value is None or str(value).lower() == "null":
@@ -287,6 +331,7 @@ def build_expression(feature, value):
         return f"{feature} = {str(value).lower()}"
     if isinstance(value, (int, float)) or re.match(r"^\d+(\.\d+)?$", str(value).strip()):
         return f"{feature} = {value}"""
+    ### Used before
     if isinstance(value, str) and value.startswith("!"):
         clean_val = value[1:]
         if '.' in clean_val:
@@ -331,11 +376,14 @@ def extract_constraints_from_policy(filepath):
                     elif re.match(r"^\d+(\.\d+)?$", str(v).strip()):
                         expr = f"{feature} = {v}"
                     else:
+                        if v is None or str(v).lower() == "null":
+                            print(f"Expr flatten distarcet null: !{feature}")
+                            continue
                         if '.' in v:
                             v = v.replace('.', '_')
                         if '!' in v:
                             aux_value = v.replace("!", "")
-                            expr = f"{feature} != {aux_value}"
+                            expr = f"{feature} != '{aux_value}'"
                         else:
                             expr = f"{feature} == '{v}'"
                         print(f"Expr flatten distarcet: {expr}")
@@ -443,7 +491,7 @@ def extract_constraints_from_policy(filepath):
                             ## Probar mod de los string con ! aqui ###
                             if '!' in expected:
                                 aux_expected = expected.replace("!", "")
-                                expr = f"{full_feature} != {aux_expected}"
+                                expr = f"{full_feature} != '{aux_expected}'"
                             else:
                                 expr = f"{full_feature} == {expected}"
 
@@ -500,20 +548,29 @@ def extract_constraints_from_deny_conditions(policy):
                         feature_base = f"Pod.{kind_prefix + sanitized_path}" ## Change de basic_prefix for the Imported module?
                         if feature_base.endswith("_"):
                             feature_base = feature_base[:-1]
-
-                        for v in values:
-                            if operator == "AnyNotIn":
-                                if isinstance(v, str) and "-" in v:
-                                    try:
-                                        start, end = v.split("-")
-                                        start = int(start) - 1
-                                        end = int(end) + 1
-                                        condition = f"({feature_base} > {start} & {feature_base} < {end})"
-                                    except ValueError:
-                                        continue
-                                else:
-                                    condition = f"{feature_base} = {v}"
-                                exprs_by_feature.setdefault(feature_base, []).append(condition)
+                        if (isinstance(values, list) and len(values) > 0) and operator and feature_base:
+                            for v in values:
+                                if operator == "AnyNotIn":
+                                    if isinstance(v, str) and "-" in v:
+                                        try:
+                                            start, end = v.split("-")
+                                            start = int(start) - 1
+                                            end = int(end) + 1
+                                            condition = f"({feature_base} > {start} & {feature_base} < {end})"
+                                        except ValueError:
+                                            continue
+                                    else:
+                                        condition = f"{feature_base} = {v}"
+                                    exprs_by_feature.setdefault(feature_base, []).append(condition)
+                        elif isinstance(values, int):
+                            if operator == "GreaterThan":
+                                condition = f"{feature_base} > {values}"
+                            elif operator == "LessThan":
+                                condition = f"{feature_base} < {values}"
+                            else:
+                                continue
+                            exprs_by_feature.setdefault(feature_base, []).append(condition)
+                            print(f"Salida provisional de error en values INT: {condition}  {feature_base}")
 
         # Agroup the expressions by features
         all_exprs = []
@@ -614,18 +671,31 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
                                 v = "true"
                             new_prefix = f"{new_prefix}_{aux_value}"
                     elif '<'  in v or '>' in v: ## Not works actually for string max, min
-                        #print(f"Valor del V {v}")
-                        aux_value = []
-                        value_int = 1 ## Value for convert to int if the value captured is Integer
-                        if '< ' in v and not '> ' in v: ## spec_maxUnavailable
-                            aux_value = v.split("<")
-                            value_int = int(aux_value[1]) if aux_value[1].isdigit() else print("Caso intervalo con String")
-                            v = f"< {aux_value[1]}"
+                        s = v.strip()
+
+                        # Captura operadores: <, >, <=, >=  y el valor a la derecha (si existe)
+                        m = re.match(r'^\s*(<=|>=|<|>)\s*(.+?)\s*$', s)
+
+                        if not m:
+                            # Caso raro: tiene < o > pero no es "operador valor" (ej: "a < b")
+                            # Decide: o lo dejas como string tal cual, o lo registras y sigues
+                            value_int = None
+                            # v se queda igual
                         else:
-                            ## Defect case. Only works for solitary Maxs, Mins
-                            aux_value = v.split(">")
-                            value_int = int(aux_value[1]) if aux_value[1].isdigit() else print("Caso intervalo con String")
-                            v = f"> {aux_value[1]}"
+                            op, raw_rhs = m.group(1), m.group(2).strip()
+
+                            # Si no hay nada a la derecha, evitamos el IndexError y lo tratamos como string
+                            if raw_rhs == "":
+                                value_int = None
+                                v = op  # o v = s, según lo que quieras
+                            else:
+                                # Int si es entero (soporta negativos). Si no, string.
+                                if re.fullmatch(r'-?\d+', raw_rhs):
+                                    value_int = int(raw_rhs)
+                                    v = f"{op} {value_int}"
+                                else:
+                                    value_int = raw_rhs
+                                    v = f"{op} {raw_rhs}"
                               
                         if new_prefix.endswith('spec_maxUnavailable'): ## specific case for alternatyve types values; asString, asInteger
                             new_prefix = f"{new_prefix}_asInteger" if isinstance(value_int, int) else f"{new_prefix}_asString"
@@ -633,8 +703,8 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
                     else: ## fallback
                         if '.' in v: ## Remove the points in values of strings
                             v = v.replace('.', '_')
-                        v = f"'{str(v)}'"
-                        #print(f"  {v} {new_prefix}")
+                        v = str(v)  #v = f"'{str(v)}'"
+                        #print(f"{v} {new_prefix}")
                 elif isinstance(v, (int, float)):
                     #print(f"Valores Caso INT   {v}")
                     v == str(v)
@@ -648,7 +718,7 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
                 else:
                     # fallback
                     print(f"Valores fallback   {v}")
-                    v = f"'{str(v)}'"
+                    v = f"{str(v)}" ##v = f"'{str(v)}'"
                 
                 conditions.append((new_prefix, v))
     return conditions, optional_clauses
