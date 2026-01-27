@@ -384,3 +384,13 @@ no_privileged_containers: --> io_k8s_api_apps_v1_StatefulSet_spec_template_spec_
 
 el % de invalidacion sigue siendo bajo, quizas seria apropiado ampliar el "margen" de aplicación de restricciones, completar y extender
 las restricciones a todos los grupos de objetos que compartan la propiedad en cuestion...
+
+
+Nuevas pruebas del modelo de politicas v4:
+
+PS C:\Users\CAOSD\proyectos\fm-security-policies\scripts> py .\AAtester.py
+Cantidad de filas con valid=True: 103423
+Cantidad de filas con valid=False: 82928
+Cantidad archivos en total: 186351
+
+Equivalente al 44,5 % de configuraciones con problemas de seguridad detectados

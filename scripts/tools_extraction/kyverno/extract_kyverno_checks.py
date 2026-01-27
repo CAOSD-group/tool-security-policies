@@ -493,7 +493,7 @@ def extract_constraints_from_policy(filepath):
                     base_prefix = get_base_prefix(kind_prefix)
                     full_feature = f"{base_prefix}.{sanitize(kind_prefix + path)}" ## se usa el kind_prefix encontrado. Se agrega aqui tb el prefijo de metadata..
                     #full_feature = f"Pod.{sanitize(kind_prefix + path)}" ## Deff of features from fm Kubernetes
-                    print(f"EXPECTED:   {expected}  {base_prefix}")
+                    #print(f"EXPECTED:   {expected}  {base_prefix}")
                     if expected == "null":
                         expr = f"!{full_feature}"
                     elif expected == "false": ## expected in ("true", "false"):
@@ -605,6 +605,7 @@ def extract_constraints_from_deny_conditions(policy):
 
         if all_exprs:
             if len(all_exprs) > 1:
+                print(f"All expressions appends {all_exprs}")
                 combined = f"({' & '.join(all_exprs)})"
             else:
                 combined = all_exprs[0]
@@ -667,7 +668,7 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
                 optional_clauses.extend(child_optional_clauses)                
             elif isinstance(v, list) and len(v) > 0 and isinstance(v[0], dict):
                 #conditions.extend(extract_conditions_from_spec(v[0], new_prefix))
-                #print(f"V list elif   {v}   {new_prefix}")
+                print(f"V list elif   {v}   {new_prefix}")
                 child_conditions, child_optional_clauses = extract_conditions_from_spec(v[0], new_prefix, kind_prefixes) ## Prevent
                 conditions.extend(child_conditions)
                 optional_clauses.extend(child_optional_clauses)             
