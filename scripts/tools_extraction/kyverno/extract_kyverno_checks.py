@@ -220,6 +220,40 @@ def build_optional_clause(parent, allowed_values, kind_prefixes):
 
     return clauses if len(clauses) > 1 else clauses[0]
 
+def group_keymap_valuemap_pairs(exprs: list[str]) -> list[str]:
+    """
+    Agrupa secuencias KeyMap/ValueMap del estilo:
+      KeyMap == 'k', ValueMap == 'v1', KeyMap == 'k', ValueMap == 'v2'
+    en:
+      (KeyMap == 'k' & ValueMap == 'v1') | (KeyMap == 'k' & ValueMap == 'v2')
+    Devuelve una lista de expresiones (si no aplica, devuelve exprs sin cambios).
+    """
+    # Solo aplica si detectamos que hay al menos un KeyMap y un ValueMap
+    has_key = any("_KeyMap" in e for e in exprs)
+    has_val = any("_ValueMap" in e for e in exprs)
+    if not (has_key and has_val):
+        return exprs
+
+    pairs = []
+    i = 0
+    while i < len(exprs) - 1:
+        a = exprs[i].strip()
+        b = exprs[i + 1].strip()
+
+        # patrón simple: KeyMap ... seguido de ValueMap ...
+        if "_KeyMap" in a and "_ValueMap" in b:
+            pairs.append(f"({a} & {b})")
+            i += 2
+        else:
+            # si no encaja, salimos y no tocamos (evita romper otros casos)
+            return exprs
+
+    # si sobró uno, mejor no tocar
+    if i != len(exprs):
+        return exprs
+
+    # OR entre pares
+    return [ " | ".join(pairs) ]
 
 def handle_annotation_with_wildcard(key: str, value: str, prefix: str):
     """
@@ -235,10 +269,12 @@ def handle_annotation_with_wildcard(key: str, value: str, prefix: str):
 
     pairs = [] ## dict?
     for v in values:
+        branch = []
         # Cada valor posible genera dos pares: uno para la clave, otro para el valor
-        pairs.append((key_feature, f"{clean_key}"))
-        pairs.append((value_feature, f"{v}"))
-        #pairs.append((f"{key_feature} '{clean_key}'" ,f"{value_feature} '{v}'"))
+        branch.append((key_feature, f"{clean_key}"))
+        branch.append((value_feature, f"{v}"))
+        pairs.append(branch)
+
     print(f"[Wildcard] Generados {len(pairs)} pares para {clean_key}: {pairs}")
     return pairs
 
@@ -246,6 +282,7 @@ def handle_annotation_with_wildcard(key: str, value: str, prefix: str):
 def extract_conditions_from_metadata(obj, prefix="metadata", kind_prefixes=None):
     conditions = []
     optional_clauses = []
+    complex_constraints = []
     #print(f"Kind Prefixes: {kind_prefixes}")
     if isinstance(obj, dict):
         for k, v in obj.items():
@@ -253,31 +290,15 @@ def extract_conditions_from_metadata(obj, prefix="metadata", kind_prefixes=None)
             # Subnivel: metadata.annotations
             key = k.strip("=() ")
             new_prefix = f"{prefix}_{key}"
-            if key == "annotations" and isinstance(v, dict):
+            if (key == "annotations" or key == "labels") and isinstance(v, dict):
                 #print(f"detect CASE ANNOTATIONS {v}")
                 for subkey, subval in v.items():
-                    if '*' in subkey or '.' in subkey: ## Detect of the Key Value of the Pairs
+                    if '*' in subkey or '.' in subkey or '-' in subkey or '*' in subval or '|' in subval: ## Detect of the Key Value of the Pairs ## or '-' in subval
                         # Caso de anotación con wildcard
-                        #if '!' in subval:
-                        #    subval = subval.replace("!", " ")
-                        conditions.extend(
-                            handle_annotation_with_wildcard(subkey, subval, new_prefix)
-                        )
+                        branches = handle_annotation_with_wildcard(subkey, subval, new_prefix)
+                        complex_constraints.append(branches)
+                        #conditions.extend(handle_annotation_with_wildcard(subkey, subval, new_prefix))
                     else:
-                        # Anotación fija (sin wildcard)
-                        key_feature = f"{new_prefix}{sanitize(subkey)}"
-                        conditions.append((key_feature, f"{subval}"))
-            elif key == "labels" and isinstance(v, dict):
-                print(f"detect CASE ANNOTATIONS {v}")
-                for subkey, subval in v.items():
-                    if '*' in subkey or '.' in subkey or '-' in subkey or '*' in subval: ## Detect of the Key Value of the Pairs ## or '-' in subval
-                        # Caso de anotación con wildcard
-
-                        conditions.extend(
-                            handle_annotation_with_wildcard(subkey, subval, new_prefix)
-                        )
-                    else:
-                        print(f"NO CASE ANNOTATIONS {subkey} {subval}")
                         # Anotación fija (sin wildcard)
                         key_feature = f"{new_prefix}{sanitize(subkey)}"
                         conditions.append((key_feature, f"{subval}"))
@@ -287,8 +308,8 @@ def extract_conditions_from_metadata(obj, prefix="metadata", kind_prefixes=None)
                 full_key = f"{prefix}_{sanitize(key)}"
                 #print(f"Full key else:  {full_key}")
                 conditions.append((full_key, f"{v}"))
-        #print(f"Conditions: {conditions}     {optional_clauses}")
-    return conditions, optional_clauses
+        print(f"Conditions: {conditions}     {optional_clauses}")
+    return conditions, optional_clauses, complex_constraints
 
 def is_flat_pattern(pattern):
     """Devuelve True si el patrón no contiene subniveles (dicts/listas)."""
@@ -299,49 +320,6 @@ def is_flat_pattern(pattern):
         return False
     # Solo consideramos plano si todos los valores son simples
     return all(not isinstance(v, (dict, list)) for v in pattern.values())
-
-
-"""def build_expression(feature, value):
-    val_str = str(value).strip()
-
-    # 1. Caso NULL -> !feature
-    if val_str.lower() == "null":
-        return f"!{feature}"
-
-    # 2. Caso BOOLEANOS -> feature o !feature
-    # ESTE ES EL CAMBIO CLAVE QUE BUSCABAS
-    if val_str.lower() == "true":
-        return f"{feature}"   # Equivale a "feature == true"
-    if val_str.lower() == "false":
-        return f"!{feature}"  # Equivale a "feature == false"
-
-    # 3. Caso NÚMEROS (Sin comillas)
-    if re.match(r"^-?\d+(\.\d+)?$", val_str):
-        return f"{feature} == {val_str}"
-
-    # 4. Caso NEGACIÓN (!)
-    if val_str.startswith("!"):
-        clean_val = val_str[1:]
-        
-        # Si negamos un booleano explícito (!true / !false)
-        if clean_val.lower() == "true":
-            return f"!{feature}" # !true es false
-        if clean_val.lower() == "false":
-            return f"{feature}"  # !false es true
-            
-        # Si es número
-        if re.match(r"^-?\d+(\.\d+)?$", clean_val):
-            return f"{feature} != {clean_val}"
-            
-        # String normal
-        return f"{feature} != '{clean_val}'"
-
-    # 5. Caso RANGOS O MULTI-VALOR (Kyverno "|")
-    if "|" in val_str:
-        return f"{feature} == '{val_str}'"
-
-    # 6. Caso STRINGS (Default -> Con comillas simples)
-    return f"{feature} == '{val_str}'"""
 
 
 def build_expression(feature, value):
@@ -481,12 +459,11 @@ def extract_constraints_from_policy(filepath):
                 print(f" Sección no soportada aún: {section_key}")
                 continue
 
-            conditions, optional_clauses_from_spec = extractor(
+            conditions, optional_clauses_from_spec, complex_constraints_list = extractor(
                 pattern[section_key],
                 prefix=clean_key,
                 kind_prefixes=kind_prefixes
             )
-
             for path, expected in conditions:
                 for kind_prefix in kind_prefixes:
                     # Determinar el submodelo al que pertenece
@@ -517,8 +494,33 @@ def extract_constraints_from_policy(filepath):
                                 expr = f"{full_feature} == '{expected}'"
                             else:
                                 expr = f"{full_feature} == {expected}"
-
                     grouped_conditions.setdefault(name, []).append(expr)
+
+            for branches in complex_constraints_list:
+                for kind_prefix in kind_prefixes: # Para cada Kind, construimos su propia restricción completa
+                    base_prefix = get_base_prefix(kind_prefix)
+                    or_parts = []
+
+                    for branch in branches: # Iteramos las opciones (kasten | none)
+                        and_parts = []
+                        for raw_feat, raw_val in branch:
+                            # Construir feature completa
+                            full_feature = f"{base_prefix}.{sanitize(kind_prefix + raw_feat)}"
+                            # Construir expresión (reusando tu lógica simple)
+                            expr = build_expression(full_feature, raw_val)
+                            and_parts.append(expr)
+                        
+                        # Unir las partes de una opción con AND (Key=X & Val=Y)
+                        if len(and_parts) > 1:
+                            or_parts.append(f"({' & '.join(and_parts)})")
+                        else:
+                            or_parts.append(and_parts[0])
+
+                    # Unir las opciones con OR (Opción1 | Opción2)
+                    if or_parts:
+                        final_expr = " | ".join(or_parts)
+                        # Agrupar con paréntesis para aislar la lógica del Kind
+                        grouped_conditions.setdefault(name, []).append(f"{final_expr}") ## ()
             # Add the constraints
             #for clause in opt_clauses:
             #    grouped_conditions.setdefault(name, []).append(clause)
@@ -637,6 +639,8 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
             key = k.strip("=() ").replace("X(", "").replace(")", "")
             new_prefix = f"{prefix}_{key}"
 
+            #if key == "name" and (v == "*" or v == "?*"):
+            #    continue
             if key in special_features_config: ## Change the special features if procedure
                 new_prefix = f"{new_prefix}_nameStr"
                 #print(f"New Prefix: {new_prefix}")
@@ -663,13 +667,13 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
             if isinstance(v, dict):
                 #conditions.extend(extract_conditions_from_spec(v, new_prefix))
                 #¡print(f"V IF V   {v}   {new_prefix}")
-                child_conditions, child_optional_clauses = extract_conditions_from_spec(v, new_prefix, kind_prefixes)
+                child_conditions, child_optional_clauses, child_complex_constraints = extract_conditions_from_spec(v, new_prefix, kind_prefixes)
                 conditions.extend(child_conditions)
                 optional_clauses.extend(child_optional_clauses)                
             elif isinstance(v, list) and len(v) > 0 and isinstance(v[0], dict):
                 #conditions.extend(extract_conditions_from_spec(v[0], new_prefix))
                 print(f"V list elif   {v}   {new_prefix}")
-                child_conditions, child_optional_clauses = extract_conditions_from_spec(v[0], new_prefix, kind_prefixes) ## Prevent
+                child_conditions, child_optional_clauses, child_complex_constraints = extract_conditions_from_spec(v[0], new_prefix, kind_prefixes) ## Prevent
                 conditions.extend(child_conditions)
                 optional_clauses.extend(child_optional_clauses)             
             else:
@@ -746,4 +750,4 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
                     v = f"{str(v)}" ##v = f"'{str(v)}'"
                 
                 conditions.append((new_prefix, v))
-    return conditions, optional_clauses
+    return conditions, optional_clauses, []
