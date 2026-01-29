@@ -301,13 +301,13 @@ def extract_conditions_from_metadata(obj, prefix="metadata", kind_prefixes=None)
                     else:
                         # Anotación fija (sin wildcard)
                         key_feature = f"{new_prefix}{sanitize(subkey)}"
-                        conditions.append((key_feature, f"{subval}"))
+                        conditions.append((key_feature, f"{subval}", False))
             else:
                 # Otro tipo de clave bajo metadata (p. ej., name, labels)
                 #key = k.strip("=() ")
                 full_key = f"{prefix}_{sanitize(key)}"
                 #print(f"Full key else:  {full_key}")
-                conditions.append((full_key, f"{v}"))
+                conditions.append((full_key, f"{v}", False))
         print(f"Conditions: {conditions}     {optional_clauses}")
     return conditions, optional_clauses, complex_constraints
 
@@ -464,7 +464,7 @@ def extract_constraints_from_policy(filepath):
                 prefix=clean_key,
                 kind_prefixes=kind_prefixes
             )
-            for path, expected in conditions:
+            for path, expected, is_optional in conditions:
                 for kind_prefix in kind_prefixes:
                     # Determinar el submodelo al que pertenece
                     base_prefix = get_base_prefix(kind_prefix)
@@ -474,7 +474,7 @@ def extract_constraints_from_policy(filepath):
                     if expected == "null":
                         expr = f"!{full_feature}"
                     elif expected == "false": ## expected in ("true", "false"):
-                        expr = f"{full_feature} = {expected}"
+                        expr = f"!{full_feature}" ## = {expected}"
                     elif expected == True or expected == "true": ## Case of True; readOnlyRootFilesystem 
                         expr = f"{full_feature}"
                     else:
@@ -494,6 +494,11 @@ def extract_constraints_from_policy(filepath):
                                 expr = f"{full_feature} == '{expected}'"
                             else:
                                 expr = f"{full_feature} == {expected}"
+                                
+                    if is_optional: # Agregar lógica para condiciones opcionales
+                        if not expr.startswith("!") and "!=" not in expr:
+                            expr = f"(!{full_feature} | {expr})"
+
                     grouped_conditions.setdefault(name, []).append(expr)
 
             for branches in complex_constraints_list:
@@ -630,17 +635,26 @@ def expand_path_brackets(path):
 
     return expand(path)
 
-def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
+def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None, parent_optional=False):
     conditions = []
     optional_clauses = []
     if isinstance(obj, dict):
         for k, v in obj.items():
+            # Detectar si la clave actual es opcional (empieza por =()
+            is_optional_key = k.startswith("=(")
+            # La condición es opcional si esta clave lo es, O si venimos de un padre opcional
+            is_current_branch_optional = is_optional_key or parent_optional
             #print(f"Key value   {k}   {v}")
             key = k.strip("=() ").replace("X(", "").replace(")", "")
             new_prefix = f"{prefix}_{key}"
 
-            #if key == "name" and (v == "*" or v == "?*"):
-            #    continue
+            if key == "name" and (v == "*" or v == "?*"):
+                if 'ports' in new_prefix: ## Specific case for the wildcard of the container ports names
+                    conditions.append((f"{new_prefix}", "true", False))
+                    continue
+                else: 
+                    continue
+            
             if key in special_features_config: ## Change the special features if procedure
                 new_prefix = f"{new_prefix}_nameStr"
                 #print(f"New Prefix: {new_prefix}")
@@ -664,16 +678,18 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
                         optional_clauses.append(clauses)                                     
             elif new_prefix.endswith('securityContext_supplementalGroups'): ## Specific case for the personality modification of the representation of the Integer Arrays:: Build the two cases
                 new_prefix = f"{new_prefix}_IntegerValue"
+                print(f"New Prefix for Integer Arrays: {new_prefix} {v} {k}")
+                
             if isinstance(v, dict):
                 #conditions.extend(extract_conditions_from_spec(v, new_prefix))
                 #¡print(f"V IF V   {v}   {new_prefix}")
-                child_conditions, child_optional_clauses, child_complex_constraints = extract_conditions_from_spec(v, new_prefix, kind_prefixes)
+                child_conditions, child_optional_clauses, child_complex_constraints = extract_conditions_from_spec(v, new_prefix, kind_prefixes, is_current_branch_optional)
                 conditions.extend(child_conditions)
                 optional_clauses.extend(child_optional_clauses)                
             elif isinstance(v, list) and len(v) > 0 and isinstance(v[0], dict):
                 #conditions.extend(extract_conditions_from_spec(v[0], new_prefix))
                 print(f"V list elif   {v}   {new_prefix}")
-                child_conditions, child_optional_clauses, child_complex_constraints = extract_conditions_from_spec(v[0], new_prefix, kind_prefixes) ## Prevent
+                child_conditions, child_optional_clauses, child_complex_constraints = extract_conditions_from_spec(v[0], new_prefix, kind_prefixes, is_current_branch_optional) ## Prevent
                 conditions.extend(child_conditions)
                 optional_clauses.extend(child_optional_clauses)             
             else:
@@ -732,8 +748,14 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
                     else: ## fallback
                         if '.' in v: ## Remove the points in values of strings
                             v = v.replace('.', '_')
+                        val_str = str(v).strip()
+                        if isinstance(v, str) and re.search(r'\d+-\d+', val_str) and 'supplementalGroups' in new_prefix:
+                            print(f"Valores Rango detectado   {val_str}   {new_prefix}") ### Detectado de rangos en arrays de enteros
+                            #val_str = str(v).strip()
+                            #v = v.replace('-', '_')
+
                         v = str(v)  #v = f"'{str(v)}'"
-                        #print(f"{v} {new_prefix}")
+                        print(f"{v} {new_prefix}")
                 elif isinstance(v, (int, float)):
                     #print(f"Valores Caso INT   {v}")
                     v == str(v)
@@ -749,5 +771,5 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None):
                     print(f"Valores fallback   {v}")
                     v = f"{str(v)}" ##v = f"'{str(v)}'"
                 
-                conditions.append((new_prefix, v))
+                conditions.append((new_prefix, v, is_current_branch_optional))
     return conditions, optional_clauses, []
