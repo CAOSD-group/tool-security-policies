@@ -45,6 +45,12 @@ def get_base_prefix(kind_prefix):
         return "PersistentVolume"
     elif "StorageClass" in kind_prefix:
         return "StorageClass"
+    elif "HorizontalPodAutoscaler" in kind_prefix:
+        return "HorizontalPodAutoscaler"
+    elif "StorageClass" in kind_prefix:
+        return "StorageClass"
+    elif "ConfigMap" in kind_prefix:
+        return "ConfigMap"
     else:
         return "Kubernetes"
     
@@ -471,11 +477,19 @@ def extract_constraints_from_policy(filepath):
                     full_feature = f"{base_prefix}.{sanitize(kind_prefix + path)}" ## se usa el kind_prefix encontrado. Se agrega aqui tb el prefijo de metadata..
                     #full_feature = f"Pod.{sanitize(kind_prefix + path)}" ## Deff of features from fm Kubernetes
                     #print(f"EXPECTED:   {expected}  {base_prefix}")
-                    if expected == "null":
+                    ## Nueva lógica para rangos complejos
+                    if isinstance(expected, str) and expected.startswith("COMPLEX_RANGE:"):
+                        # Extraemos la lógica cruda: "{feature} > 99 & {feature} < 201 | ..."
+                        raw_logic = expected.replace("COMPLEX_RANGE:", "")
+                        # Reemplazamos el placeholder {feature} por el nombre real completo con Kind
+                        expr = raw_logic.format(feature=full_feature)
+                        # Envolvemos en paréntesis generales
+                        expr = f"({expr})"
+                    elif expected == "null":
                         expr = f"!{full_feature}"
                     elif expected == "false": ## expected in ("true", "false"):
                         expr = f"!{full_feature}" ## = {expected}"
-                    elif expected == True or expected == "true": ## Case of True; readOnlyRootFilesystem 
+                    elif expected == True or expected == "true" or expected == "True": ## Case of True; readOnlyRootFilesystem 
                         expr = f"{full_feature}"
                     else:
                         #if isinstance(expected, str) and expected.startswith("'!"):
@@ -654,7 +668,9 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None, paren
                     continue
                 else: 
                     continue
-            
+            if k.startswith("(image") and not k.startswith("=("):
+                    print(f" [Ignorado] Conditional Anchor detectado: {k}. La regla pasará a ser global.")
+                    continue  # <--- Al hacer continue, esta condición desaparece, dejando solo el resto.
             if key in special_features_config: ## Change the special features if procedure
                 new_prefix = f"{new_prefix}_nameStr"
                 #print(f"New Prefix: {new_prefix}")
@@ -723,7 +739,6 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None, paren
 
                         if not m:
                             # Caso raro: tiene < o > pero no es "operador valor" (ej: "a < b")
-                            # Decide: o lo dejas como string tal cual, o lo registras y sigues
                             value_int = None
                             # v se queda igual
                         else:
@@ -749,16 +764,49 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None, paren
                         if '.' in v: ## Remove the points in values of strings
                             v = v.replace('.', '_')
                         val_str = str(v).strip()
-                        if isinstance(v, str) and re.search(r'\d+-\d+', val_str) and 'supplementalGroups' in new_prefix:
+                        #print(f"Valores STR   {val_str}   {new_prefix}")
+                        if isinstance(v, str) and (' | ' in val_str or re.search(r'\d+-\d+', val_str)): ## and 'supplementalGroups' in new_prefix
                             print(f"Valores Rango detectado   {val_str}   {new_prefix}") ### Detectado de rangos en arrays de enteros
                             #val_str = str(v).strip()
                             #v = v.replace('-', '_')
+                            # Dividir opciones por '|' y parsear rangos
+                            options = [opt.strip() for opt in val_str.split('|')]
+                            print(f"Options detected for ranges:  {options}")
+                            or_expressions = []
 
-                        v = str(v)  #v = f"'{str(v)}'"
-                        print(f"{v} {new_prefix}")
+                            for opt in options:
+                                # Rango "min-max"
+                                match = re.match(r"^(\d+)-(\d+)$", opt)
+                                if match:
+                                    start = int(match.group(1))
+                                    end = int(match.group(2))
+                                    # Placeholder {feature} para el Kind
+                                    expr = f"({{feature}} > {start - 1} & {{feature}} < {end + 1})"
+                                    or_expressions.append(expr)
+                                elif opt.isdigit():
+                                    or_expressions.append(f"{{feature}} == {opt}")
+                                else:
+                                    # Aseguramos comillas simples para strings
+                                    or_expressions.append(f"{{feature}} == '{opt}'")
+
+                            if or_expressions:
+                                final_val = " | ".join(or_expressions)
+                                # Usamos 'COMPLEX_RANGE:' para avisar al bucle principal
+                                conditions.append((new_prefix, f"COMPLEX_RANGE:{final_val}", is_current_branch_optional))
+                                continue # IMPORTANTE: Saltamos el resto del código antiguo
+                        else:
+                            # DETECCIÓN DE ENUMS (Alternative Groups)
+                            enum_fields = ["imagePullPolicy"] # type para Service: , "restartPolicy", "type"
+                            if any(k.endswith(f"_{field}") or k == field for field in enum_fields): ## Specific case for the Always value of the policy
+                                v = 'Always'
+                                child_feature = f"{new_prefix}_{val_str}"
+                                conditions.append((child_feature, "true", is_current_branch_optional))
+                                continue
+                            v = str(v)  #v = f"'{str(v)}'"
+                            print(f"Else final {v} {new_prefix}")
                 elif isinstance(v, (int, float)):
                     #print(f"Valores Caso INT   {v}")
-                    v == str(v)
+                    v = str(v)
                 elif isinstance(v,list): ## Capture cases where the value is a arr not typed yet
                     if new_prefix.endswith('spec_accessModes'): ## Specific case for the personality modification of the representation of the String Arrays
                         for value_access in v:

@@ -25,7 +25,7 @@ ROOT   = HERE.parent
 MODELS = ROOT / "variability_model" / "policies_template"
 RES    = ROOT / "resources"
 
-UVL_PATH = MODELS / "policy_structure03.uvl"
+UVL_PATH = MODELS / "policy_structure05.uvl"
 # usar str(UVL_PATH) si la librería lo exige
 path_json = RES / "valid_yamls" / "test-require-run-as-nonroot_1.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid,test-require-run-as-nonroot_1.json,
 VALIDATE_ONLY_FIRST_CONFIG = True ## Use unit or total validation version

@@ -52,7 +52,8 @@ def generate_uvl_from_policies(directory, output_path):
 
     #lines = ["namespace PoliciesKyverno", "features", "\tPolicies {abstract}", "\t\toptional"]
     lines = ["namespace Policies", "imports", "    k8s.Pod as Pod\n    k8s.ServiceAccount as ServAcc\n    k8s.RoleBinding as RoleBinding\n    k8s.ClusterRoleBinding as ClusRole\n    k8s.Service as Serv\n    k8s.Ingress as Ingress\n    k8s.Job as Job\n    k8s.DaemonSet as DaemonSet\n    k8s.Deployment as Deployment\n    k8s.StatefulSet as StatefulSet\n    k8s.Secret as Secret\n    k8s.PersistentVolumeClaim as PersistVolumeClaim\n"
-    "    k8s.PodDisruptionBudget as PodDisrupBud\n    k8s.CronJob as CronJob\n    k8s.ReplicaSet as ReplicaSet\n    k8s.ReplicationController as RepController\n    k8s.Container as Container\n    k8s.PodList as PodList\n    k8s.PodTemplate as PodTemplate\n    k8s.PodTemplateList as PodTemplateList\n    k8s.PodTemplateSpec as PodTemplateSpec\n    k8s.HorizontalPodAutoscaler as HorizontalPodAutoscaler\n    k8s.Namespace as Namespace\n    k8s.PersistentVolume as PersistentVolume\n    k8s.StorageClass as StorageClass",
+    "    k8s.PodDisruptionBudget as PodDisrupBud\n    k8s.CronJob as CronJob\n    k8s.ReplicaSet as ReplicaSet\n    k8s.ReplicationController as RepController\n    k8s.Container as Container\n    k8s.PodList as PodList\n    k8s.PodTemplate as PodTemplate\n    k8s.PodTemplateList as PodTemplateList\n    k8s.PodTemplateSpec as PodTemplateSpec\n    k8s.HorizontalPodAutoscaler as HorizontalPodAutoscaler\n    k8s.Namespace as Namespace\n"
+    "    k8s.PersistentVolume as PersistentVolume\n    k8s.StorageClass as StorageClass\n    k8s.ConfigMap as ConfigMap",
     "features", "\tPoliciesKubernetes {abstract}", "\t\toptional"] ## RepController
     
     #opa_results = parse_opa_directory("../resources/OPA_Policies")
@@ -128,6 +129,7 @@ def generate_uvl_from_policies(directory, output_path):
     lines.append("\t\t\tNamespace.NamespaceFeatures")
     lines.append("\t\t\tPersistentVolume.PersistentVolumeFeatures")
     lines.append("\t\t\tStorageClass.StorageClassFeatures")
+    lines.append("\t\t\tConfigMap.ConfigMapFeatures")
 
     lines.append("constraints")
     # Recolectar todos los archivos YAML del directorio principal y subcarpetas (recursivo)
@@ -156,6 +158,12 @@ def generate_uvl_from_policies(directory, output_path):
     # Formatear y agregar constraints al archivo UVL
     for policy_name, exprs in merged.items():
         normalized_exprs = []
+        valid_exprs = [e for e in exprs if e and e.strip()]
+        if not valid_exprs:
+            # CASO 1: No hay restricciones válidas para esta política.
+            # Opción A: No escribir nada en la sección de constraints (la feature queda en el árbol pero sin lógica extra).
+            print(f" [INFO] La política '{policy_name}' no generó restricciones estáticas válidas. Se omite en constraints.")
+            continue
         for expr in exprs:
             if expr.endswith("= false"): ## Formating cases for changed a correct syntax
                 normalized_exprs.append(f"!{expr.replace(' = false', '')}")
