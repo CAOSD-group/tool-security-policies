@@ -7,9 +7,25 @@ from flamapy.metamodels.pysat_metamodel.models import PySATModel
 from flamapy.metamodels.pysat_metamodel.transformations import FmToPysat
 from flamapy.metamodels.pysat_metamodel.operations import (PySATSatisfiable, PySATSatisfiableConfiguration)
 
+
+from flamapy.metamodels.z3_metamodel.transformations import FmToZ3
+from flamapy.metamodels.z3_metamodel.operations import (
+    Z3Satisfiable,
+    Z3Configurations,
+    Z3ConfigurationsNumber,
+    Z3CoreFeatures,
+    Z3DeadFeatures,
+    Z3FalseOptionalFeatures,
+    Z3AttributeOptimization,
+    Z3SatisfiableConfiguration,
+)
+from flamapy.metamodels.z3_metamodel.operations.interfaces import OptimizationGoal
+
+from flamapy.metamodels.configuration_metamodel.transformations import ConfigurationJSONReader
+
+
 from pathlib import Path
 import os
-import z3
 import logging
 import contextlib, io
 from scripts.configurationJSON01 import ConfigurationJSON ## clase Reader JSON
@@ -20,12 +36,18 @@ import time  # Libreria para calcular los tiempos de procesamiento
 #FM_PATH = "../variability_model/kyverno_clusterpolicy_test2.uvl"
 #FM_PATH = "../variability_model/policies_template/policy_structure01.uvl"
 
+logging.basicConfig(
+    level=logging.DEBUG, 
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+
+
 HERE   = Path(__file__).resolve().parent
 ROOT   = HERE.parent
 MODELS = ROOT / "variability_model" / "policies_template"
 RES    = ROOT / "resources"
 
-UVL_PATH = MODELS / "policy_structure05.uvl"
+UVL_PATH = MODELS / "policy_structure03_aux.uvl"
 # usar str(UVL_PATH) si la librería lo exige
 path_json = RES / "valid_yamls" / "podcontroller-bad1_1.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid,test-require-run-as-nonroot_1.json,
 VALIDATE_ONLY_FIRST_CONFIG = True ## Use unit or total validation version
@@ -210,11 +232,14 @@ if __name__ == '__main__':
     ## Pre evaluation of sectioned model. Depends of section Policies
     start_startup_model = time.time()  # Start of validation time
     
+
     flat_fm_op = FlatFM(fm_model)
     flat_fm_op.set_maintain_namespaces(False)  # False para quitar el prefijo del import, con True se mantiene.
     flat_fm = flat_fm_op.transform()
     
-
+    z3_model = FmToZ3(flat_fm).transform()
+    result = Z3Satisfiable().execute(z3_model).get_result()
+    print(f'Satisfiable: {result}')
     # Baja el nivel global
     logging.basicConfig(level=logging.ERROR)
 
@@ -266,6 +291,13 @@ if __name__ == '__main__':
     """for i, config in enumerate(configurations):
         configuration = configuration_reader.transform()
         print(f'Configuration {i+1}: {config.elements}')"""
+    configurations_z3 = Z3Configurations().execute(z3_model).get_result()
+    print(f'Configurations: {len(configurations_z3)}')
+    for i, config in enumerate(configurations_z3, 1):
+        config_str = ', '.join(f'{f}={v}' if not isinstance(v, bool) else f'{f}' for f,v in config.elements.items() if config.is_selected(f))
+        print(f'Config. Z3 {i}: {config_str}')
+
+
 
     print(f"#########     VALIDACION")
     

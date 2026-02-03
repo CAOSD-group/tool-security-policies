@@ -27,7 +27,7 @@ RES    = ROOT / "resources"
 
 UVL_PATH = MODELS / "policy_structure05.uvl"
 # usar str(UVL_PATH) si la librería lo exige
-path_json = RES / "valid_yamls" / "test-require-run-as-nonroot_1.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid,test-require-run-as-nonroot_1.json,
+path_json = RES / "valid_yamls" / "podcontroller-bad1_1.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid,test-require-run-as-nonroot_1.json,
 VALIDATE_ONLY_FIRST_CONFIG = True ## Use unit or total validation version
 
 def get_all_parents(feature: Feature) -> list[str]:
@@ -63,7 +63,7 @@ def complete_configuration(configuration: Configuration, fm_model: FeatureModel)
         configs_elements.update(parents)
     return Configuration(configs_elements)
 
-def valid_config_version_json(configuration_json: Configuration, fm_model: FeatureModel, sat_model: PySATModel, sat_features: set[str], auto_policies) -> bool: ## Instead of passing it (configuration: list[str] we pass the JSON list we generated in the JSON Conf
+def valid_config_version_json(configuration_json: Configuration, fm_model: FeatureModel, sat_model: PySATModel, sat_features: set[str]) -> bool: ## Instead of passing it (configuration: list[str] we pass the JSON list we generated in the JSON Conf
     """
     Check if a configuration is valid (satisfiable) according to the SAT model.
 
@@ -81,10 +81,10 @@ def valid_config_version_json(configuration_json: Configuration, fm_model: Featu
     return satisfiable_op.execute(sat_model).get_result(), config.get_selected_elements()"""
 
     # 1) EXTRAER constraints → mapa {policy: kinds}
-    #constraint_kinds_map = extract_policy_kinds_from_constraints(UVL_PATH)
+    constraint_kinds_map = extract_policy_kinds_from_constraints(UVL_PATH)
 
     # 2) detectar políticas aplicables
-    #auto_policies = infer_policies_from_kind(configuration_json.elements, constraint_kinds_map)
+    auto_policies = infer_policies_from_kind(configuration_json.elements, constraint_kinds_map)
 
     # 3) Integrarlas en la propia config (NO en el archivo JSON)
     for policy in auto_policies: ### In testing
@@ -172,6 +172,18 @@ if __name__ == '__main__':
 
     print("SE LLEGA HASTA AQUI")
     
+    # Intenta estas variantes (según el tipo real del objeto):
+    print("== Constraints del FM ==")
+    if hasattr(flat_fm, "constraints"):
+        for c in flat_fm.constraints:
+            print(c)
+    elif hasattr(flat_fm, "get_constraints"):
+        for c in flat_fm.get_constraints():
+            print(c)
+    else:
+        print("No veo un atributo/método estándar de constraints en este objeto.")
+
+
     silent = io.StringIO()
     with contextlib.redirect_stdout(silent):
         sat_model = FmToPysat(flat_fm).transform()
@@ -179,7 +191,9 @@ if __name__ == '__main__':
     SAT_FEATURES = set(sat_model.variables.keys())
     end_startup_model = time.time()  # End of validation time
     validation_time = round(end_startup_model - start_startup_model, 4)
-
+    # Check if the model is valid
+    valid = PySATSatisfiable().execute(sat_model).get_result()
+    print(f'FM is Valid?: {valid}')
     print(f"Tiempo de start config of FMs   {validation_time}")
     
     #sat_model = FmToPysat(flat_fm).transform()
@@ -210,7 +224,7 @@ if __name__ == '__main__':
         for f in sat_model.variables.keys():
             f_out.write(f"- {f}\n")
             
-    print(f"[INFO] Se ha guardado la lista completa de features en: {out_path}")
+    #print(f"[INFO] Se ha guardado la lista completa de features en: {out_path}")
 
     """for f in sat_model.variables.keys():
         print("-", f)"""
