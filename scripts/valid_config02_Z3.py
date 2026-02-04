@@ -37,7 +37,7 @@ import time  # Libreria para calcular los tiempos de procesamiento
 #FM_PATH = "../variability_model/policies_template/policy_structure01.uvl"
 
 logging.basicConfig(
-    level=logging.DEBUG, 
+    level=logging.DEBUG,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 
@@ -274,16 +274,6 @@ if __name__ == '__main__':
 
     print(f"Tiempo de start config of FMs   {validation_time}")
 
-    #sat_model = FmToPysat(flat_fm).transform()
-
-    # Check if the model is valid
-    ##### Omited
-    ##valid = PySATSatisfiable().execute(sat_model).get_result()
-    ##print("SE QUEDA PILLADO AQUI 3")
-    ##print(f'Valid?: {valid}')
-    #path_json = '../resources/kyverno_policies_jsons/disallow-host-ports.json'
-    #path_json = '../resources/valid_yamls/1-metallb5_2_Test01.json'
-
     configuration_reader = ConfigurationJSON(str(path_json))
     configurations = configuration_reader.transform()
     print(f"Configuraciones que hay:    {len(configurations)}")
@@ -291,14 +281,7 @@ if __name__ == '__main__':
     """for i, config in enumerate(configurations):
         configuration = configuration_reader.transform()
         print(f'Configuration {i+1}: {config.elements}')"""
-    configurations_z3 = Z3Configurations().execute(z3_model).get_result()
-    print(f'Configurations: {len(configurations_z3)}')
-    for i, config in enumerate(configurations_z3, 1):
-        config_str = ', '.join(f'{f}={v}' if not isinstance(v, bool) else f'{f}' for f,v in config.elements.items() if config.is_selected(f))
-        print(f'Config. Z3 {i}: {config_str}')
-
-
-
+        
     print(f"#########     VALIDACION")
     
     print("FEATURES en SAT model:") ## Uncoment for print sat features in output file
@@ -313,6 +296,15 @@ if __name__ == '__main__':
 
     """for f in sat_model.variables.keys():
         print("-", f)"""
+        
+    configuration_Z3 = ConfigurationJSONReader(path_json).transform()
+    configuration_Z3.set_full(False)
+    print(f'Configuration from {path_json}: {configuration_Z3.elements}')
+    satisfiable_configuration_op = Z3SatisfiableConfiguration()
+    satisfiable_configuration_op.set_configuration(configuration_Z3)
+    is_satisfiable = satisfiable_configuration_op.execute(z3_model).get_result()
+    print(f'Is the configuration Z3 satisfiable? {is_satisfiable}')
+    
     #suffix_map = build_suffix_index(SAT_FEATURES)
     if VALIDATE_ONLY_FIRST_CONFIG:
 

@@ -21,7 +21,7 @@ class ConfigurationJSON(TextToModel):
         if not p.is_absolute():
             base = Path(__file__).resolve().parent   # ...\scripts
             p = (base / p).resolve()
-        self._path = str(p)    
+        self._path = str(p)
     @staticmethod
     def qualify(fid: str, namespace: str = "") -> str:
         """Add the namespace if not present"""

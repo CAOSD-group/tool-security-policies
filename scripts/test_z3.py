@@ -19,7 +19,7 @@ from flamapy.metamodels.configuration_metamodel.transformations import Configura
 
 
 logging.basicConfig(
-    level=logging.DEBUG, 
+    level=logging.DEBUG,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 

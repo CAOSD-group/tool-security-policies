@@ -162,8 +162,8 @@ constraints
 	Require_Read_Only_Root_Filesystem => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_readOnlyRootFilesystem
 	Disallow_NodePort => !Serv.io_k8s_api_core_v1_Service_spec_type_NodePort
 	Restrict_External_IPs => !Serv.io_k8s_api_core_v1_Service_spec_externalIPs
-	Deny_Secret_Service_Account_Token_Type => Secret.io_k8s_api_core_v1_Secret_type != kubernetes_io/service-account-token
-	Enforce_ReadWriteOncePod => PersistVolumeClaim.io_k8s_api_core_v1_PersistentVolumeClaim_spec_accessModes_StringValue == ReadWriteOncePod
+	Deny_Secret_Service_Account_Token_Type => Secret.io_k8s_api_core_v1_Secret_type != 'kubernetes_io/service-account-token'
+	Enforce_ReadWriteOncePod => PersistVolumeClaim.io_k8s_api_core_v1_PersistentVolumeClaim_spec_accessModes_StringValue == 'ReadWriteOncePod'
 	PodDisruptionBudget_maxUnavailable_Non_Zero => PodDisrupBud.io_k8s_api_policy_v1_PodDisruptionBudget_spec_maxUnavailable_asInteger > 0
 	Require_Annotations => (Pod.io_k8s_api_core_v1_Pod_metadata_annotations_KeyMap == 'corp_org/department' & Pod.io_k8s_api_core_v1_Pod_metadata_annotations_ValueMap == '?*')
 	Require_Multiple_Replicas => Deployment.io_k8s_api_apps_v1_Deployment_spec_replicas > 1
