@@ -407,3 +407,44 @@ Value con null => !key ?
  Se omite la primera parte y se deja la enum
 
  	Require_Pod_priorityClassName => Pod.io_k8s_api_core_v1_Pod_spec_priorityClassName == '?*'
+
+
+Z3_ Pruebas config simple:
+
+{
+    "Require_Multiple_Replicas": true,
+    "io_k8s_api_apps_v1_Deployment": true,
+    "io_k8s_api_apps_v1_Deployment_apiVersion": "apps/v1",
+    "io_k8s_api_apps_v1_Deployment_kind": "Deployment",
+    
+    "io_k8s_api_apps_v1_Deployment_metadata": true,
+    "io_k8s_api_apps_v1_Deployment_metadata_name": "baddeploy02",
+    "io_k8s_api_apps_v1_Deployment_metadata_labels": true,
+    "io_k8s_api_apps_v1_Deployment_metadata_labels_KeyMap": "app",
+    "io_k8s_api_apps_v1_Deployment_metadata_labels_ValueMap": "busybox",
+    "io_k8s_api_apps_v1_Deployment_spec": true,
+    "io_k8s_api_apps_v1_Deployment_spec_replicas": 1,
+    
+    "io_k8s_api_apps_v1_Deployment_spec_selector": true,
+    "io_k8s_api_apps_v1_Deployment_spec_selector_matchLabels": true,
+    "io_k8s_api_apps_v1_Deployment_spec_selector_matchLabels_KeyMap": "app",
+    "io_k8s_api_apps_v1_Deployment_spec_selector_matchLabels_ValueMap": "busybox",
+    
+    "io_k8s_api_apps_v1_Deployment_spec_template": true,
+    "io_k8s_api_apps_v1_Deployment_spec_template_metadata": true,
+    "io_k8s_api_apps_v1_Deployment_spec_template_metadata_labels": true,
+    "io_k8s_api_apps_v1_Deployment_spec_template_metadata_labels_KeyMap": "owner",
+    "io_k8s_api_apps_v1_Deployment_spec_template_metadata_labels_ValueMap": "foo",
+    
+    "io_k8s_api_apps_v1_Deployment_spec_template_spec": true,
+    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers": true,
+    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_name": "busybox",
+    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_image": "busybox:1.35"
+}
+
+
+
+validation_results_valid_jsons03_Z3:
+
+Nueva prueba con policy_structure03_aux :: Sin quitar tagNotSpecified o labels
+Modelo simple sin cardinalidad compleja...

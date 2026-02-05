@@ -1,8 +1,21 @@
 from flamapy.metamodels.fm_metamodel.transformations import UVLReader, FlatFM
 from flamapy.metamodels.pysat_metamodel.transformations import FmToPysat
 
+from flamapy.metamodels.z3_metamodel.transformations import FmToZ3
+
+from flamapy.metamodels.z3_metamodel.operations import (
+    Z3Satisfiable,
+    Z3Configurations,
+    Z3ConfigurationsNumber,
+    Z3CoreFeatures,
+    Z3DeadFeatures,
+    Z3FalseOptionalFeatures,
+    Z3AttributeOptimization,
+    Z3SatisfiableConfiguration,
+)
 from scripts.configurationJSON01 import ConfigurationJSON
-from scripts.valid_config02 import valid_config_version_json
+#from scripts.valid_config02 import valid_config_version_json
+from scripts.valid_config02_Z3 import valid_config_version_json_Z3
 
 import os
 import csv
@@ -14,10 +27,10 @@ from scripts._inference_policy import extract_policy_kinds_from_constraints, inf
 HERE = Path(__file__).resolve().parent # scripts/
 ROOT = HERE.parent # fm-security-rules/
 ROOT_PARENT = ROOT.parent # carpeta anterior a la raiz/
-FM_PATH = ROOT / "variability_model" / "policies_template" / "policy_structure05.uvl"
+FM_PATH = ROOT / "variability_model" / "policies_template" / "policy_structure03_aux.uvl"
 VALID_JSONS_DIR = ROOT_PARENT / "valid_jsons" ## valid_jsons jsons_testing
 
-OUTPUT_CSV = ROOT / "evaluation" / "validation_results_valid_jsons05_Z3.csv" ## Output csv
+OUTPUT_CSV = ROOT / "evaluation" / "validation_results_valid_jsons03_Z3.csv" ## Output csv
 VALIDATE_ONLY_FIRST_CONFIG = True
 
 
@@ -67,7 +80,7 @@ def build_suffix_index(sat_features):
 
 
 
-def validate_single_json(json_file, fm_model, sat_model, sat_features, constraints_map):
+def validate_single_json(json_file, flat_fm, z3_model, constraints_map):
     """Valida un archivo JSON concreto y devuelve métricas para el CSV."""
     policy_false = '' ## Como obtener la politica por la que se vuelve False?, agregar set de politicas aplicadas?
     tool_policy = 'Kyverno' ## Obtener tool de la herramienta de la politica que falla
@@ -84,7 +97,7 @@ def validate_single_json(json_file, fm_model, sat_model, sat_features, constrain
 
         # detectar políticas aplicables
         auto_policies = infer_policies_from_kind(config.elements, constraints_map)
-        print(f"Detectar politicas aplicadas a la configg: {auto_policies}")
+        #print(f"Detectar politicas aplicadas a la configg: {auto_policies}")
         if not auto_policies: ## If para comprobar si la configuracion tiene alguna politica para comprobar del fm; sino skip
             ## Definir funcion para comprobar si hay coincidencia entre kinds de la config y 
             return [os.path.basename(json_file), "Configuracion sin politicas que verificar", "-", "-", "-", "-", "-", "-", "-", "Skip"]
@@ -98,14 +111,16 @@ def validate_single_json(json_file, fm_model, sat_model, sat_features, constrain
             #config = configurations[0]
 
             start_validation_time = time.time()
-            valid, _ = valid_config_version_json(config, fm_model, sat_model, sat_features, auto_policies)
+            #valid, _ = valid_config_version_json(config, fm_model, sat_model, sat_features, auto_policies)
+            valid, _ = valid_config_version_json_Z3(config, flat_fm, z3_model, auto_policies)
             end_validation_time = time.time()
             valid_config_bool = valid
             #print(f'Configuración 1 (única validada): -> Válida: {valid}')
         else:
             start_validation_time = time.time()
             for conf in configurations:
-                valid, _ = valid_config_version_json(conf, fm_model, sat_model, sat_features, auto_policies)
+                #valid, _ = valid_config_version_json(conf, fm_model, sat_model, sat_features, auto_policies)
+                valid, _ = valid_config_version_json_Z3(conf, flat_fm, z3_model, auto_policies)
                 if not valid: # Checking of each configuration of each file
                     valid_config_bool = False
                     break # If there is only one invalid conf, the entire file is considered invalid
@@ -121,7 +136,7 @@ def validate_single_json(json_file, fm_model, sat_model, sat_features, constrain
         print(f"[ERROR] {json_file}: {e}")
         return [os.path.basename(json_file), "Error", "-", "-", "-", "-", "-", "-", "-", str(e)]
 
-def validate_all_configs(flat_model, sat_model, sat_features, processed_files):
+def validate_all_configs(flat_model, z3_model, processed_files):
   
     """
     Validate all JSON configuration files in a directory.
@@ -136,7 +151,7 @@ def validate_all_configs(flat_model, sat_model, sat_features, processed_files):
     Returns:
         tuple: Counts of valid, invalid, and error files.
     """
-    print(f"SAT features cargadas: {len(sat_features)}")
+    #print(f"Z3 features cargadas: {len(z3_model.variables.keys())}")
     print(f"Procesando carpeta de JSONs: {VALID_JSONS_DIR.resolve()}")
     constraint_kinds_map = extract_policy_kinds_from_constraints(FM_PATH)
     #suffix_map = build_suffix_index(sat_features) ## Dict para las coincidencias con los features del flatten
@@ -159,7 +174,7 @@ def validate_all_configs(flat_model, sat_model, sat_features, processed_files):
                 continue
             
             json_path = os.path.join(VALID_JSONS_DIR, filename)
-            result = validate_single_json(json_path, flat_model, sat_model, sat_features, constraint_kinds_map)
+            result = validate_single_json(json_path, flat_model, z3_model, constraint_kinds_map)
             writer.writerow(result)
             processed_files.add(filename)
             
@@ -193,6 +208,11 @@ if __name__ == '__main__':
     flat_fm = flat_fm_op.transform()
 
     end_startup_model = time.time()  # End of validation time
+
+    z3_model = FmToZ3(flat_fm).transform() ## New FM Z3 model for the validation of the JSONs with Z3
+    result = Z3Satisfiable().execute(z3_model).get_result()
+    print(f'Satisfiable: {result}')
+
     validation_time = round(end_startup_model - start_startup_model, 4)
     print(f"Tiempo de start config of FMs   {validation_time}")
     
@@ -202,14 +222,15 @@ if __name__ == '__main__':
     silent = io.StringIO()
     with contextlib.redirect_stdout(silent):
         sat_model = FmToPysat(flat_fm).transform()
-    sat_features = set(sat_model.variables.keys())
+    #sat_features = set(sat_model.variables.keys())
     end_flatfm_proccess = time.time()
     flatfm_time = round(end_flatfm_proccess - start_flatfm_proccess, 4)
     print(f"Tiempo de silenciar FlatFm y guardar SAT_FEATURES   {flatfm_time}")
+    
     #valid_count, invalid_count, error_count = 0, 0, 0
     list_processed_files = load_processed_files(OUTPUT_CSV)
     print(f"Validando JSONs desde: {VALID_JSONS_DIR.resolve()}")
-    validate_all_configs(flat_fm, sat_model, sat_features, list_processed_files)
+    validate_all_configs(flat_fm, z3_model, list_processed_files)
     
     print(f"Tiempo de start config of FMs   {validation_time}")
     print(f"Tiempo de silenciar FlatFm y guardar SAT_FEATURES   {flatfm_time}")
