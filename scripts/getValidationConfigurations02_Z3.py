@@ -1,17 +1,9 @@
 from flamapy.metamodels.fm_metamodel.transformations import UVLReader, FlatFM
-from flamapy.metamodels.pysat_metamodel.transformations import FmToPysat
 
 from flamapy.metamodels.z3_metamodel.transformations import FmToZ3
 
 from flamapy.metamodels.z3_metamodel.operations import (
     Z3Satisfiable,
-    Z3Configurations,
-    Z3ConfigurationsNumber,
-    Z3CoreFeatures,
-    Z3DeadFeatures,
-    Z3FalseOptionalFeatures,
-    Z3AttributeOptimization,
-    Z3SatisfiableConfiguration,
 )
 from scripts.configurationJSON01 import ConfigurationJSON
 #from scripts.valid_config02 import valid_config_version_json
@@ -77,8 +69,6 @@ def build_suffix_index(sat_features):
             suffix_map.setdefault(suffix_card, []).append(sf)
 
     return suffix_map
-
-
 
 def validate_single_json(json_file, flat_fm, z3_model, constraints_map):
     """Valida un archivo JSON concreto y devuelve métricas para el CSV."""
@@ -216,21 +206,8 @@ if __name__ == '__main__':
     validation_time = round(end_startup_model - start_startup_model, 4)
     print(f"Tiempo de start config of FMs   {validation_time}")
     
-    print(f"Procesando el Flat FM")
-    start_flatfm_proccess = time.time()  # Start of validation time
-    ## Silent the outputs logs of the flatten proccess
-    silent = io.StringIO()
-    with contextlib.redirect_stdout(silent):
-        sat_model = FmToPysat(flat_fm).transform()
-    #sat_features = set(sat_model.variables.keys())
-    end_flatfm_proccess = time.time()
-    flatfm_time = round(end_flatfm_proccess - start_flatfm_proccess, 4)
-    print(f"Tiempo de silenciar FlatFm y guardar SAT_FEATURES   {flatfm_time}")
-    
     #valid_count, invalid_count, error_count = 0, 0, 0
     list_processed_files = load_processed_files(OUTPUT_CSV)
     print(f"Validando JSONs desde: {VALID_JSONS_DIR.resolve()}")
     validate_all_configs(flat_fm, z3_model, list_processed_files)
-    
     print(f"Tiempo de start config of FMs   {validation_time}")
-    print(f"Tiempo de silenciar FlatFm y guardar SAT_FEATURES   {flatfm_time}")

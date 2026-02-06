@@ -692,10 +692,12 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None, paren
                         optional_clauses.extend(clauses)
                     else:
                         optional_clauses.append(clauses)                                     
-            elif new_prefix.endswith('securityContext_supplementalGroups'): ## Specific case for the personality modification of the representation of the Integer Arrays:: Build the two cases
+            ## Specific case for the personality modification of the representation of the Integer Arrays:: Build the two cases
+            elif "supplementalGroups" in new_prefix: 
                 new_prefix = f"{new_prefix}_IntegerValue"
                 print(f"New Prefix for Integer Arrays: {new_prefix} {v} {k}")
-                
+            elif "fsGroup" in new_prefix or "runAsGroup" in new_prefix or new_prefix.endswith('runAsUser'):
+                new_prefix = f"{new_prefix}_valueInt"
             if isinstance(v, dict):
                 #conditions.extend(extract_conditions_from_spec(v, new_prefix))
                 #¡print(f"V IF V   {v}   {new_prefix}")
