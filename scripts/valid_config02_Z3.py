@@ -33,6 +33,8 @@ from scripts.configurationJSON01 import ConfigurationJSON ## clase Reader JSON
 from scripts._inference_policy import extract_policy_kinds_from_constraints, infer_policies_from_kind
 import time  # Libreria para calcular los tiempos de procesamiento
 
+from scripts.regex_validator import RegexPolicyValidator
+
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -45,9 +47,9 @@ ROOT   = HERE.parent
 MODELS = ROOT / "variability_model" / "policies_template"
 RES    = ROOT / "resources"
 
-UVL_PATH = MODELS / "policy_structure05_Z3.uvl"
+UVL_PATH = MODELS / "policy_structure03_aux.uvl"
 # usar str(UVL_PATH) si la librería lo exige
-path_json = RES / "valid_yamls" / "podcontroller-bad1_1.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid,test-require-run-as-nonroot_1.json,
+path_json = RES / "valid_yamls" / "04-pod-annotation.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid,test-require-run-as-nonroot_1.json,
 VALIDATE_ONLY_FIRST_CONFIG = True ## Use unit or total validation version
 
 def get_all_parents(feature: Feature) -> list[str]:
@@ -66,7 +68,7 @@ def get_all_mandatory_children(feature: Feature) -> list[str]:
 
 def complete_configuration(configuration: Configuration, fm_model: FeatureModel) -> Configuration:
     """Given a partial configuration completes it by adding the parent's features and
-    children's features that must be included because of the tree relationships of the 
+    children's features that must be included because of the tree relationships of the
     provided FM model."""
     configs_elements = dict(configuration.elements)
     for element in configuration.get_selected_elements():
@@ -95,13 +97,21 @@ def valid_config_version_json_Z3(configuration_json: Configuration, flat_fm, z3_
     Returns:
         tuple: (bool indicating validity, list of selected feature names)
     """
-    # 1) EXTRAER constraints → mapa {policy: kinds}
-    #constraint_kinds_map = extract_policy_kinds_from_constraints(UVL_PATH)
-
-    # 2) detectar políticas aplicables
-    #auto_policies = infer_policies_from_kind(configuration_json.elements, constraint_kinds_map)
-
-    # 3) Integrarlas en la propia config (NO en el archivo JSON)
+    auto_policies = ['tagNotSpecified']
+    
+    config_elements_str = [str(element) for element in configuration_json.elements]
+    # --- PASO 2: Validación Previa con Regex ---
+    # Instanciamos el validador
+    validator = RegexPolicyValidator()
+    
+    # Ejecutamos la validación. Si devuelve False, cortamos aquí.
+    # No tiene sentido gastar tiempo en Z3 si el formato del string ya es inválido.
+    regex_passed = validator.validate(config_elements_str, auto_policies)
+    
+    if not regex_passed:
+        print("-> Configuración rechazada por validación de Regex (formato de string incorrecto).")
+        # Retornamos False y una lista vacía o los elementos actuales
+        return False, [str(e) for e in configuration_json.elements]
     for policy in auto_policies: ### In testing
         configuration_json.elements[policy] = True
 
