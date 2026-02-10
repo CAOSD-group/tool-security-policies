@@ -49,7 +49,7 @@ RES    = ROOT / "resources"
 
 UVL_PATH = MODELS / "policy_structure03_aux.uvl"
 # usar str(UVL_PATH) si la librería lo exige
-path_json = RES / "valid_yamls" / "04-pod-annotation.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid,test-require-run-as-nonroot_1.json,
+path_json = RES / "valid_yamls" / "08-Pod_DNS_1.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid,test-require-run-as-nonroot_1.json,
 VALIDATE_ONLY_FIRST_CONFIG = True ## Use unit or total validation version
 
 def get_all_parents(feature: Feature) -> list[str]:
@@ -85,7 +85,7 @@ def complete_configuration(configuration: Configuration, fm_model: FeatureModel)
         configs_elements.update(parents)
     return Configuration(configs_elements)
 
-def valid_config_version_json_Z3(configuration_json: Configuration, flat_fm, z3_model, auto_policies) -> bool:## auto_policies ## Instead of passing it (configuration: list[str] we pass the JSON list we generated in the JSON Conf suffix_map: dict[str, list[str]],
+def valid_config_version_json_Z3(configuration_json: Configuration, flat_fm, z3_model, constraint_kinds_map) -> bool:## auto_policies ## Instead of passing it (configuration: list[str] we pass the JSON list we generated in the JSON Conf suffix_map: dict[str, list[str]],
     """
     Check if a configuration is valid (satisfiable) according to the Z3 model.
 
@@ -96,22 +96,20 @@ def valid_config_version_json_Z3(configuration_json: Configuration, flat_fm, z3_
 
     Returns:
         tuple: (bool indicating validity, list of selected feature names)
-    """
-    auto_policies = ['tagNotSpecified']
-    
-    config_elements_str = [str(element) for element in configuration_json.elements]
-    # --- PASO 2: Validación Previa con Regex ---
-    # Instanciamos el validador
+    """    
+    print(f"[DEBUG MAIN] Tipo de datos pasado al validador: {type(configuration_json.elements)}")
+    auto_policies = infer_policies_from_kind(configuration_json.elements, constraint_kinds_map)
+    print(f"[INFO] Políticas activas para este archivo: {auto_policies}")
+
+    #auto_policies = ['no_root']
     validator = RegexPolicyValidator()
-    
-    # Ejecutamos la validación. Si devuelve False, cortamos aquí.
-    # No tiene sentido gastar tiempo en Z3 si el formato del string ya es inválido.
-    regex_passed = validator.validate(config_elements_str, auto_policies)
+    regex_passed = validator.validate(configuration_json.elements, auto_policies)
     
     if not regex_passed:
         print("-> Configuración rechazada por validación de Regex (formato de string incorrecto).")
         # Retornamos False y una lista vacía o los elementos actuales
-        return False, [str(e) for e in configuration_json.elements]
+        return False, []
+    print("-> Validación Regex PASADA. Continuando a Z3...")
     for policy in auto_policies: ### In testing
         configuration_json.elements[policy] = True
 
@@ -217,6 +215,8 @@ if __name__ == '__main__':
 
     """for f in sat_model.variables.keys():
         print("-", f)"""
+    # 1) EXTRAER constraints → mapa {policy: kinds}
+    constraint_kinds_map = extract_policy_kinds_from_constraints(UVL_PATH)
     #configuration_reader = ConfigurationJSON(str(path_json))
     if VALIDATE_ONLY_FIRST_CONFIG:
         print(f"Validando solo la primera configuración Z3 )")
@@ -224,13 +224,11 @@ if __name__ == '__main__':
         #configuration_Z3.set_full(False)
         print(f'Configuration from {path_json}: {configurations[0].elements}')
         config_Z3 = configurations[0]
-        # 1) EXTRAER constraints → mapa {policy: kinds}
-        constraint_kinds_map = extract_policy_kinds_from_constraints(UVL_PATH)
 
         # 2) detectar políticas aplicables
-        auto_policies = infer_policies_from_kind(config_Z3.elements, constraint_kinds_map)
+        #auto_policies = infer_policies_from_kind(config_Z3.elements, constraint_kinds_map)
         start_validation_time = time.time()  # Start of validation time
-        valid, complete_config = valid_config_version_json_Z3(config_Z3, flat_fm, z3_model, auto_policies) ## valid_config_version_json_Z3
+        valid, complete_config = valid_config_version_json_Z3(config_Z3, flat_fm, z3_model, constraint_kinds_map) ## valid_config_version_json_Z3
         end_validation_time = time.time()  # End of validation time
         validation_time = round(end_validation_time - start_validation_time, 4)
         print(f"CONF VALID? {valid} {validation_time} \n{config_Z3.elements}")

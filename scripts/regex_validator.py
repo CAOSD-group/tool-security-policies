@@ -50,6 +50,7 @@ class RegexPolicyValidator:
                 for suffix in self.TARGET_IMAGE_SUFFIXES:
                     if key_str.endswith(suffix):
                         # Encontrado! Guardamos el valor (ej: "busybox:1.28")
+                        print(f"[DEBUG HIT] ¡Encontrada clave de imagen!: {key_str} {value}")
                         if isinstance(value, str):
                             found_values.append(value)
                 
@@ -77,9 +78,11 @@ class RegexPolicyValidator:
         
         # Debug para ver qué está encontrando (puedes quitarlo luego)
         # print(f"DEBUG Regex: Imágenes encontradas: {images}")
+        print(f"[DEBUG VALIDATOR] Lista final de imágenes encontradas: {images}")
 
         if not images:
             # Si no hay imágenes, no hay violación de política de imágenes.
+            print("[ALERTA] No se encontraron imágenes. ¿Es esto correcto o falló la búsqueda?")
             return True
 
         # 2. Compilación de Regex
