@@ -33,7 +33,7 @@ from scripts.configurationJSON01 import ConfigurationJSON ## clase Reader JSON
 from scripts._inference_policy import extract_policy_kinds_from_constraints, infer_policies_from_kind
 import time  # Libreria para calcular los tiempos de procesamiento
 
-from scripts.regex_validator import RegexPolicyValidator
+from scripts.regex_validator import ContentPolicyValidator
 
 
 logging.basicConfig(
@@ -102,7 +102,7 @@ def valid_config_version_json_Z3(configuration_json: Configuration, flat_fm, z3_
     print(f"[INFO] Políticas activas para este archivo: {auto_policies}")
 
     #auto_policies = ['no_root']
-    validator = RegexPolicyValidator()
+    validator = ContentPolicyValidator()
     regex_passed = validator.validate(configuration_json.elements, auto_policies)
     
     if not regex_passed:
