@@ -11,6 +11,9 @@ class ContentPolicyValidator:
             'Require_Run_As_ContainerUser_Windows': self._validate_run_as_container_user_windows,
             'Require_Annotations': self._validate_require_annotations,
             'Restrict_AppArmor': self._validate_restrict_apparmor,
+            'Require_Labels': self._validate_require_labels,
+            'Restrict_Ingress_Classes': self._validate_restrict_ingress_classes,
+            'Restrict_Jobs': self._validate_restrict_jobs
         }
         
         # Definimos los sufijos que identifican a una imagen en tu modelo generado.
@@ -125,7 +128,22 @@ class ContentPolicyValidator:
                 found_annotations.update(self._find_all_annotations_recursive(item))
                 
         return found_annotations
+
+    def _find_all_labels_recursive(self, data):
+        """Igual que _find_all_annotations pero para 'labels'"""
+        found_labels = {}
+        if isinstance(data, dict):
+            for k, v in data.items():
+                if str(k).endswith("labels") and isinstance(v, dict):
+                    found_labels.update(v)
+                elif isinstance(v, (dict, list)):
+                    found_labels.update(self._find_all_labels_recursive(v))
+        elif isinstance(data, list):
+            for item in data:
+                found_labels.update(self._find_all_labels_recursive(item))
+        return found_labels
     
+
     def _validate_tag_specified_and_not_latest(self, config_elements):
         """
         Implementación de la política 'tagNotSpecified':
@@ -201,6 +219,26 @@ class ContentPolicyValidator:
 
         return True
     
+    # POLÍTICA: Require Labels
+    def _validate_require_labels(self, config_elements):
+        """
+        Policy: Require Labels
+        Regla: Debe existir la label 'app.kubernetes.io/name' con algún valor.
+        """
+        # Reutilizamos la lógica de anotaciones pero buscando 'labels'
+        labels = self._find_all_labels_recursive(config_elements)
+        target_key = "app.kubernetes.io/name"
+
+        if target_key not in labels:
+            # Fallo silencioso o verbose según prefieras
+            # print(f"[Fail] Require_Labels: Falta la label obligatoria '{target_key}'.")
+            return False
+
+        if not labels[target_key]: # Chequeo de valor vacío (?*)
+            return False
+
+        return True
+    
     # POLÍTICA: Restrict AppArmor
     def _validate_restrict_apparmor(self, config_elements):
         """
@@ -256,7 +294,7 @@ class ContentPolicyValidator:
         # 1. Aquí SÍ es obligatorio comprobar el Kind.
         # Si no comprobamos el Kind, obligaríamos a los 'Deployment' o 'Pod' a tener ownerReference,
         # lo cual sería un error. La política solo aplica a Jobs.
-        kinds = self._find_values_by_suffix_recursive(config_elements, "_kind")
+        kinds = self._find_values_by_suffix_recursive(config_elements, "_Job_kind")
         
         # Si no hay Jobs en este archivo, la política pasa.
         if "Job" not in kinds:
@@ -286,3 +324,4 @@ class ContentPolicyValidator:
             return False
 
         return True
+    
