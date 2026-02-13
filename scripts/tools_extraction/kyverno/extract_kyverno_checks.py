@@ -509,7 +509,7 @@ def extract_constraints_from_policy(filepath):
                             else:
                                 expr = f"{full_feature} == {expected}"
                                 
-                    if is_optional: # Agregar lógica para condiciones opcionales
+                    if is_optional and "==" in expr and isinstance(expected, str) and not '<' in expected and not '>' in expected: # Agregar lógica para condiciones opcionales
                         if not expr.startswith("!") and "!=" not in expr:
                             expr = f"(!{full_feature} | {expr})"
 
@@ -691,7 +691,8 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None, paren
                     if isinstance(clauses, list):
                         optional_clauses.extend(clauses)
                     else:
-                        optional_clauses.append(clauses)                                     
+                        optional_clauses.append(clauses)
+                continue  # La condición se maneja en optional_clauses, no como una simple igualdad                                
             ## Specific case for the personality modification of the representation of the Integer Arrays:: Build the two cases
             elif "supplementalGroups" in new_prefix: 
                 new_prefix = f"{new_prefix}_IntegerValue"

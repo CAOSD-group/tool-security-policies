@@ -613,7 +613,7 @@ def build_uvl_expr(kind_name: str, feature: str, op: str, val):
         if val is None:
             return f"{full_feature} == null"
         if full_feature.endswith('securityContext_procMount'):
-            return f"({full_feature}_StringValue == '{val}')"
+            return f"({full_feature}_nameStr == '{val}')"
         if full_feature.endswith('_imagePullPolicy'):
             return f"({full_feature}_{val})"
         
