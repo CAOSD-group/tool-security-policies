@@ -18,7 +18,6 @@
 
 Repository for the project **Hybrid Validation of Kubernetes Security Policies using Feature Models and Content Analysis**.
 
-![Overview of the validation process](resources/fm_security_overview.PNG)
 
 ## Description
 
