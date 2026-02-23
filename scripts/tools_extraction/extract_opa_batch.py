@@ -11,7 +11,8 @@ from tools_extraction.trivy.extract_rego_policies import (
 from tools_extraction.polaris.extract_polaris_checks import (
     parse_polaris_check,
     polaris_to_uvl,
-    load_feature_dict_polaris
+    load_feature_dict_polaris,
+    severity_to_weight
 )
 
 from tools_extraction.gatekeeper.extract_gatekeeper_policies import (
@@ -79,6 +80,9 @@ def parse_polaris_directory(polaris_dir):
 
       # lookup severity from severity_map
       severity = severity_map.get(check["id"], "warning")  # default to warning
+      # obtain weight from severity
+      weight = severity_to_weight(severity)
+
       # Raw source
       raw_source = 'YAML with dinamic JSON'
       # Construct the feature block cleanly (this is the UVL feature definition)
@@ -93,7 +97,7 @@ def parse_polaris_directory(polaris_dir):
       kinds_value = kind.replace(".", "_")
       
       feature_block = (
-          f"{check['id']} {{tool 'Polaris', severity '{severity}', name_field '{check['id']}', kinds '{kinds_value}', doc '{clean_description_polaris}', "
+          f"{check['id']} {{tool 'polaris', severity '{severity}', weight {weight}, name_field '{check['id']}', kinds '{kinds_value}', doc '{clean_description_polaris}', "
           f"category '{check['category']}', raw_source '{raw_source}'}}"
       )
 

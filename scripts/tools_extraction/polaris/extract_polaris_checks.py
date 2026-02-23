@@ -146,6 +146,14 @@ def resolve_ref(root_schema: dict, ref: str):
             return None
     return node
 
+def severity_to_weight(sev: str) -> float:
+    """Convierte una severidad de Polaris a un peso numérico."""
+    sev = (sev or "").strip().lower()
+    if sev == "danger":
+        return 1.0
+    if sev == "warning":
+        return 0.7
+    return 0.5  # si aparece algo raro o vacío, default
 
 def resolve_target_kinds(check: dict):
     """

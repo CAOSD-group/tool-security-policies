@@ -87,6 +87,14 @@ def _extract_canonical_fields_recursive(obj, prefix=""):
             fields.update(_extract_canonical_fields_recursive(v, new_prefix))
     return fields
 
+def severity_to_weight(sev: str) -> float:
+    """Convierte una severidad de Kyverno a un peso numérico."""
+    sev = (sev or "").strip().lower()
+    if sev == "high":
+        return 1.0
+    if sev == "medium":
+        return 0.7
+    return 0.5  # si aparece algo raro o vacío, default
 
 def extract_uvl_attributes_from_policy(policy: dict) -> str:
 
@@ -102,6 +110,8 @@ def extract_uvl_attributes_from_policy(policy: dict) -> str:
     tool = "kyverno"
     # --- severity ---
     severity = annotations.get("policies.kyverno.io/severity", "")
+    # --- severity weight ---
+    severity_weight = severity_to_weight(severity)
     # --- name of file ---
     file_name = metadata.get("name", "")
     #category = sanitize(category)
@@ -126,29 +136,13 @@ def extract_uvl_attributes_from_policy(policy: dict) -> str:
     canonical_fields_value = ", ".join(sorted(canonical_fields))
     # --- raw_source (YAML comprimido y sanitizado) ---
     raw_source = 'YAML'
-
-    """k8s_version = annotations.get("kyverno.io/kubernetes-version", "")
-    action = spec.get("validationFailureAction", "")
-    attributes = []
-    tool = "kyverno"
-    if doc:
-        attributes.append(f"doc '{clean_description(doc)}'")
-    if severity:
-        attributes.append(f"severity '{severity}'")
-    if action:
-        attributes.append(f"action '{action.lower()}'")
-    if k8s_version:
-        version_clean = k8s_version.replace(".", "_").replace("-", "‑")  # Usa guiones no separables
-        attributes.append(f"k8sRange '{version_clean}'")
-
-    if attributes:
-        return f" {{{', '.join(attributes)}}}"
-    return """
     # --- Construcción UVL ---
     attrs = []
     attrs.append(f"tool '{tool}'")
     if severity:
         attrs.append(f"severity '{severity}'")
+    # Always include weight (even if severity missing)
+    attrs.append(f"weight '{severity_weight}'")
     if file_name:
         attrs.append(f"name '{file_name}'")
     if canonical_fields_value:

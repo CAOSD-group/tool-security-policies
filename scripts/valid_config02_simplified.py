@@ -48,7 +48,7 @@ RES    = ROOT / "resources"
 
 UVL_PATH = MODELS / "policy_structure03_aux_simplified.uvl"
 # usar str(UVL_PATH) si la librería lo exige
-path_json = RES / "valid_yamls" / "005-pod-with-secrets.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid,test-require-run-as-nonroot_1.json,
+path_json = RES / "valid_yamls" / "08-Pod_DNS_1_copy.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid,test-require-run-as-nonroot_1.json,
 VALIDATE_ONLY_FIRST_CONFIG = True ## Use unit or total validation version
 
 def get_all_parents(feature: Feature) -> list[str]:
@@ -70,18 +70,32 @@ def complete_configuration(configuration: Configuration, fm_model: FeatureModel)
     children's features that must be included because of the tree relationships of the
     provided FM model."""
     configs_elements = dict(configuration.elements)
+        
     for element in configuration.get_selected_elements():
         feature = fm_model.get_feature_by_name(element)
         if feature is None:
             raise Exception(f'Error: the element "{element}" is not present in the FM model.')
-        children = {child: True for child in get_all_mandatory_children(feature)}
-        parents = {parent: True for parent in get_all_parents(feature)}
-        for parent in parents:
+        
+        # 1. Obtenemos listas de nombres de hijos obligatorios y padres
+        children_names = get_all_mandatory_children(feature)
+        parent_names = get_all_parents(feature)
+        
+        # Añadimos los hijos obligatorios de los padres
+        for parent in parent_names:
             parent_feature = fm_model.get_feature_by_name(parent)
-            parent_children = get_all_mandatory_children(parent_feature)
-            children.update({child: True for child in parent_children})
-        configs_elements.update(children)
-        configs_elements.update(parents)
+            children_names.extend(get_all_mandatory_children(parent_feature))
+            
+        # 2. Inyectamos los padres a True SOLO si no están ya en el diccionario
+        for parent in parent_names:
+            if parent not in configs_elements:
+                configs_elements[parent] = True
+                
+        # 3. Inyectamos los hijos obligatorios a True SOLO si no están ya
+        # (Esto evita sobrescribir 'Default' con True)
+        for child in children_names:
+            if child not in configs_elements: ## To avoid overwriting 'Default' with True, we only set to True if the child is not already in the config (which means it was not explicitly set to False or Default)
+                configs_elements[child] = True
+                
     return Configuration(configs_elements)
 
 
@@ -273,15 +287,15 @@ if __name__ == '__main__':
         print("\n" + "="*70)
         print(f" RESULTADO DE LA AUDITORÍA DE SEGURIDAD ({validation_time} seg)")
         print("="*70)
-        print(f"✅ Manifiesto Seguro (SAT): {valid}")
+        print(f" Manifiesto Seguro (SAT): {valid}")
         
         if not valid:
-            print(f"\n❌ SE HAN DETECTADO {len(report)} VULNERABILIDADES EN EL MANIFIESTO:\n")
+            print(f"\n SE HAN DETECTADO {len(report)} VULNERABILIDADES EN EL MANIFIESTO:\n")
             for issue in report:
                 severity = issue.get('severity', 'UNKNOWN')
                 if severity: severity = str(severity).upper()
                 
-                print(f"🔸 POLÍTICA ROTA : {issue['policy']} [Severidad: {severity}]")
+                print(f" POLÍTICA VIOLADA : {issue['policy']} [Severidad: {severity}]")
                 print(f"   Motivo        : {issue['description']}")
                 print(f"   Recomendación : {issue['remediation']}")
                 print("-" * 70)

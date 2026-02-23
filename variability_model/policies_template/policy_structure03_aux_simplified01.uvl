@@ -1,0 +1,26 @@
+namespace Policies
+imports
+    k8s.Pod as Pod
+    k8s.PodDisruptionBudget as PodDisrupBud
+    k8s.PodList as PodList
+    k8s.PodTemplate as PodTemplate
+    k8s.PodTemplateList as PodTemplateList
+    k8s.PodTemplateSpec as PodTemplateSpec
+    k8s.HorizontalPodAutoscaler as HorizontalPodAutoscaler
+features
+	PoliciesKubernetes {abstract}
+		optional
+			Pod_Security_Standards_Baseline
+				optional
+					Disallow_Host_Namespaces {tool 'kyverno', severity 'medium', name 'disallow-host-namespaces', fields 'spec_hostIPC, spec_hostNetwork, spec_hostPID', kinds 'Pod', doc 'Host namespaces (Process ID namespace, Inter-Process Communication namespace, and network namespace) allow access to shared information and can be used to elevate privileges Pods should not be allowed access to host namespaces This policy ensures fields which make use of these host namespaces are unset or set to false', raw_source 'YAML'}
+					Disallow_hostPath {tool 'kyverno', severity 'medium', name 'disallow-host-path', fields 'spec_volumes', kinds 'Pod,Volume', doc 'HostPath volumes let Pods use host directories and volumes in containers Using host resources can be used to access shared data or escalate privileges and should not be allowed This policy ensures no hostPath volumes are in use', raw_source 'YAML'}
+			Pod.PodFeatures
+			PodDisrupBud.PodDisruptionBudgetFeatures
+			PodList.PodListFeatures
+			PodTemplate.PodTemplateFeatures
+			PodTemplateList.PodTemplateListFeatures
+			PodTemplateSpec.PodTemplateSpecFeatures
+			HorizontalPodAutoscaler.HorizontalPodAutoscalerFeatures
+constraints
+	Disallow_Host_Namespaces => (!Pod.io_k8s_api_core_v1_Pod_spec_hostPID & !Pod.io_k8s_api_core_v1_Pod_spec_hostIPC & !Pod.io_k8s_api_core_v1_Pod_spec_hostNetwork)
+	Disallow_hostPath => !Pod.io_k8s_api_core_v1_Pod_spec_volumes_hostPath
