@@ -94,7 +94,7 @@ def severity_to_weight(sev: str) -> float:
         return 1.0
     if sev == "medium":
         return 0.7
-    return 0.5  # si aparece algo raro o vacío, default
+    return 0.5  # default o cualquier otro valor
 
 def extract_uvl_attributes_from_policy(policy: dict) -> str:
 
@@ -109,7 +109,7 @@ def extract_uvl_attributes_from_policy(policy: dict) -> str:
     # --- tool ---
     tool = "kyverno"
     # --- severity ---
-    severity = annotations.get("policies.kyverno.io/severity", "")
+    severity = annotations.get("policies.kyverno.io/severity", "default") ## Severity is default if not specified, but it can be also High, Medium
     # --- severity weight ---
     severity_weight = severity_to_weight(severity)
     # --- name of file ---

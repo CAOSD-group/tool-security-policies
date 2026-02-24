@@ -77,7 +77,7 @@ def generate_uvl_from_policies(directory, output_path):
             else:
                 lines.append(f"\t\t\t\t\t{name}")"""
 
-    lines.append("\t\t\tOPAConstraints {abstract}")
+    lines.append("\t\t\tTrivyConstraints {abstract}")
     lines.append("\t\t\t\toptional")
 
     ##ll_resources = parse_all_sources("../resources/OPA_Policies", "../resources/Polaris-checks")

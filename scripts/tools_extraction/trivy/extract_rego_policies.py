@@ -31,6 +31,15 @@ def normalize_rego_path(rego_path):
         return rego_path.replace("container.", "")
     return rego_path
 
+def severity_to_weight(sev: str) -> float:
+    """Convierte una severidad de Kyverno a un peso numérico."""
+    sev = (sev or "").strip().lower()
+    if sev == "high":
+        return 1.0
+    if sev == "medium":
+        return 0.7
+    return 0.5  # default o cualquier otro valor
+
 def find_uvl_path_for_rego(kind, rego_path, feature_dict, kind_map): ## feature_dictç
     #print(f"Features dictss {feature_dict}")
     #kind_cap = kind.capitalize()
@@ -286,6 +295,8 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
     feature_name = meta["short_code"].replace("-", "_")
     # --- severity ---
     severity = meta.get("severity", "").lower()
+    # --- severity weight ---
+    severity_weight = severity_to_weight(severity)
     # --- nombre original ---
     name = meta.get("short_code", "")
     # --- Descripcion ---
@@ -305,6 +316,7 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
     attrs.append(f"tool '{tool}'")
     if severity:
         attrs.append(f"severity '{severity}'")
+    attrs.append(f"weight {severity_weight}")
     if name:
         attrs.append(f"name '{name}'")
     if rego_field_key:
