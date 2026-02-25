@@ -172,6 +172,10 @@ def generate_uvl_from_policies(directory, output_path):
             elif ' < ' in expr or ' > ' in expr: ## Case of mins of maxs
                 expr = re.sub(r"==\s*([<>])\s*(\d+)", r"\1 \2", expr) ## Obtain the signal of interval and the number and replaced in 1, 2
                 normalized_exprs.append(expr)
+            elif "'?*'" in expr: ## Case for changing the syntax of "== ?*" for "!= ''" to detect the presence a value for a string feature
+                expr = expr.replace("== '?*'", "!= ''") ## Change for a correct syntax
+                normalized_exprs.append(expr)
+                
             elif re.search(r"\b\d+\s*-\s*\d+\b", expr): ## Case of interval with a '-' between the numbers
                 match = re.search(r"(\d+)\s*-\s*(\d+)", expr)
                 if match:
@@ -252,6 +256,6 @@ def generate_uvl_from_policies(directory, output_path):
 # Ejemplo de uso
 if __name__ == "__main__":
     generate_uvl_from_policies(
-        directory="../resources/kyverno_policies_yamls", ## dataset_filtered kyverno_policies_yamls
-        output_path="../variability_model/policies_template/model_policies.uvl"
+        directory="../resources/dataset_final", ## dataset_filtered kyverno_policies_yamls
+        output_path="../variability_model/policies_template/model_policies02.uvl"
     )

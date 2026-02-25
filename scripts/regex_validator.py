@@ -13,7 +13,13 @@ class ContentPolicyValidator:
             'Restrict_AppArmor': self._validate_restrict_apparmor,
             'Require_Labels': self._validate_require_labels,
             'Restrict_Ingress_Classes': self._validate_restrict_ingress_classes,
-            'Restrict_Jobs': self._validate_restrict_jobs
+            'Restrict_Jobs': self._validate_restrict_jobs,
+            ## New policies can be added here with their corresponding validation methods.
+            'Restrict_Image_Registries': self._validate_restrict_image_registries,
+            'Require_Images_Use_Checksums': self._validate_require_images_use_checksums,
+            'Require_Ingress_HTTPS': self._validate_require_ingress_https,
+            'Limit_hostPath_PersistentVolumes_to_Specific_Directories': self._validate_limit_pv_hostpath_specific_dirs,
+
         }
         
         # Definimos los sufijos que identifican a una imagen en tu modelo generado.
@@ -325,3 +331,142 @@ class ContentPolicyValidator:
 
         return True
     
+
+    def _validate_require_ingress_https(self, config_elements):
+        """
+        Kyverno require-ingress-https:
+        - Aplica SOLO a Ingress
+        - Requiere metadata.annotations['kubernetes.io/ingress.allow-http'] == "false"
+        - Requiere que exista spec.tls (clave tls presente)
+        """
+        # 0) Si no hay Ingress en el YAML/config, la política NO aplica -> pasa
+        if not self._has_kind(config_elements, "Ingress"):
+            return True
+
+        # 1) Validar anotación allow-http = "false"
+        annotations = self._find_all_annotations_recursive(config_elements)
+
+        # Kyverno usa la clave real con puntos/slash:
+        # kubernetes.io/ingress.allow-http
+        allow_http_keys = [
+            "kubernetes.io/ingress.allow-http",
+
+            # variantes por si tu parser normaliza caracteres (por si acaso)
+            "kubernetes_io/ingress.allow-http",
+            "kubernetes_io/ingress_allow-http",
+            "kubernetes_io/ingress_allow_http",
+        ]
+
+        found = False
+        for k in allow_http_keys:
+            if k in annotations:
+                found = True
+                val = str(annotations.get(k)).strip().lower()
+                if val != "false":
+                    print(f"[Fail] Require_Ingress_HTTPS: la anotación '{k}' debe ser 'false' (actual: '{annotations.get(k)}').")
+                    return False
+                break
+
+        # En Kyverno la anotación es obligatoria -> si no está, FALLA
+        if not found:
+            print("[Fail] Require_Ingress_HTTPS: falta la anotación obligatoria 'kubernetes.io/ingress.allow-http'.")
+            return False
+
+        # 2) Validar que exista TLS (spec.tls presente)
+        # En tu modelo UVL tienes: Ingress...spec_tls (feature de presencia)
+        tls_vals = self._find_values_by_suffix_recursive(config_elements, "Ingress_spec_tls")
+
+        # Si no encontramos ninguna clave/valor tls -> no existe spec.tls -> FALLA
+        if not tls_vals:
+            print("[Fail] Require_Ingress_HTTPS: TLS must be defined (spec.tls no encontrado).")
+            return False
+
+        # Si existe pero viene vacío/falso, también fallamos (por seguridad)
+        # Nota: dependiendo del aplanado, puede ser bool, list, dict, string...
+        any_present = False
+        for v in tls_vals:
+            if isinstance(v, bool):
+                if v is True:
+                    any_present = True
+                    break
+            elif v is None:
+                continue
+            elif isinstance(v, (str, int)):
+                if str(v).strip() != "":
+                    any_present = True
+                    break
+            else:
+                # si llega algo raro, lo consideramos presente (porque la clave existe)
+                any_present = True
+                break
+
+        if not any_present:
+            print("[Fail] Require_Ingress_HTTPS: TLS must be defined (spec.tls vacío/no presente).")
+            return False
+
+        return True
+
+    
+    def _validate_require_images_use_checksums(self, config_elements):
+        """
+        Require_Images_Use_Checksums:
+        - Exigir que las imágenes incluyan digest '@sha256:...' (o al menos '@').
+        - Mejor que '*@*' en UVL.
+        """
+        images = self._find_image_values_recursive(config_elements)
+        if not images:
+            return True
+
+        # Estricto: '@sha256:'; si prefieres laxo, usa solo '@'
+        regex_digest = re.compile(r".+@sha256:[0-9a-fA-F]{64}$")
+
+        for img in images:
+            if not regex_digest.match(img):
+                print(f"[Fail] Require_Images_Use_Checksums: imagen '{img}' no usa digest '@sha256:...'.")
+                return False
+        return True
+    
+    def _validate_restrict_image_registries(self, config_elements):
+        """
+        Valida que TODAS las imágenes (containers/init/ephemeral) provengan de registries permitidos.
+        Basado en Kyverno: "eu.foo.io/* | bar.io/*"
+        """
+        allowed_prefixes = ["eu.foo.io/", "bar.io/"]
+
+        images = self._find_image_values_recursive(config_elements)
+        if not images:
+            # Si no hay imágenes, no tiene sentido fallar aquí.
+            return True
+
+        for img in images:
+            img = str(img).strip()
+            if not any(img.startswith(p) for p in allowed_prefixes):
+                print(f"[Fail] Restrict_Image_Registries: imagen '{img}' fuera de registries permitidos {allowed_prefixes}.")
+                return False
+
+        return True
+    
+    def _validate_limit_pv_hostpath_specific_dirs(self, config_elements):
+        """
+        Kyverno: si PV.spec.hostPath existe -> spec.hostPath.path debe empezar por '/data'
+        """
+        # 1) Solo aplica si hay un PersistentVolume en el YAML
+        if not self._has_kind(config_elements, "PersistentVolume"):
+            return True
+
+        # 2) Extraer posibles hostPath.path
+        # Ajusta el sufijo si en tu aplanado se llama distinto.
+        paths = self._find_values_by_suffix_recursive(config_elements, "PersistentVolume_spec_hostPath_path")
+        if not paths:
+            # No hay hostPath.path => significa "no hay hostPath" o no aparece => pasa
+            return True
+
+        for p in paths:
+            if p is None:
+                continue
+            p = str(p).strip()
+            if not p.startswith("/data"):
+                print(f"[Fail] Limit_hostPath_PersistentVolumes_to_Specific_Directories: hostPath '{p}' no permitido (debe empezar por '/data').")
+                return False
+
+        return True

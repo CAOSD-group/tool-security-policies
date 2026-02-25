@@ -445,10 +445,23 @@ Z3_ Pruebas config simple:
 
 
 validation_results_valid_jsons03_Z3:
+(envFlamapyZ3) PS C:\Users\CAOSD\projects\fm-security-rules\scripts> py .\AAtester.py
+Cantidad de filas con valid=True: 23422
+Cantidad de filas con valid=False: 152674
+Cantidad archivos en total: 176096
+86% tiene 1 o mas errores en las políticas definidas... demasiado restrictivas?
 
 Nueva prueba con policy_structure03_aux :: Sin quitar tagNotSpecified o labels que es lo que tenia el 03 con errores de ''
 Modelo simple sin cardinalidad compleja...
 
 
-Pol omitidas interesantes:
+
+
+Politicas omitidas interesantes:
 	Require_Annotations => (Pod.io_k8s_api_core_v1_Pod_metadata_annotations_KeyMap == 'corp_org/department' & Pod.io_k8s_api_core_v1_Pod_metadata_annotations_ValueMap == '?*')
+
+
+Restrict_Annotations
+Menciona varios tipos de mapas y puede generar conflictos a la hora de la validacion completa, tampoco se mantiene el string literal con puntos por lo que no refleja correctamente la politica
+	Restrict_Annotations => ((Deployment.io_k8s_api_apps_v1_Deployment_metadata_annotations_KeyMap == 'fluxcd_io' & Deployment.io_k8s_api_apps_v1_Deployment_metadata_annotations_ValueMap == '*?') & (Job.io_k8s_api_batch_v1_CronJob_metadata_annotations_KeyMap == 'fluxcd_io' & Job.io_k8s_api_batch_v1_CronJob_metadata_annotations_ValueMap == '*?')) | ((Job.io_k8s_api_batch_v1_Job_metadata_annotations_KeyMap == 'fluxcd_io' & Job.io_k8s_api_batch_v1_Job_metadata_annotations_ValueMap == '*?') & (StatefulSet.io_k8s_api_apps_v1_StatefulSet_metadata_annotations_KeyMap == 'fluxcd_io' & StatefulSet.io_k8s_api_apps_v1_StatefulSet_metadata_annotations_ValueMap == '*?')) | ((DaemonSet.io_k8s_api_apps_v1_DaemonSet_metadata_annotations_KeyMap == 'fluxcd_io' & DaemonSet.io_k8s_api_apps_v1_DaemonSet_metadata_annotations_ValueMap == '*?') & (Pod.io_k8s_api_core_v1_Pod_metadata_annotations_KeyMap == 'fluxcd_io' & Pod.io_k8s_api_core_v1_Pod_metadata_annotations_ValueMap == '*?'))
+
