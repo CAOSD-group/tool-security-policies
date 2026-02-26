@@ -91,7 +91,7 @@ def severity_to_weight(sev: str) -> float:
     """Convierte una severidad de Kyverno a un peso numérico."""
     sev = (sev or "").strip().lower()
     if sev == "high":
-        return 1.0
+        return 1.0 ## invalid syntax for uvl
     if sev == "medium":
         return 0.7
     return 0.5  # default o cualquier otro valor

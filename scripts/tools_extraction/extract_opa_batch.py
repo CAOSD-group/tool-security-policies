@@ -97,7 +97,7 @@ def parse_polaris_directory(polaris_dir):
       kinds_value = kind.replace(".", "_")
       
       feature_block = (
-          f"{check['id']} {{tool 'polaris', severity '{severity}', weight {weight}, name_field '{check['id']}', kinds '{kinds_value}', doc '{clean_description_polaris}', "
+          f"{check['id']} {{tool 'polaris', severity '{severity}', weight '{weight}', name_field '{check['id']}', kinds '{kinds_value}', doc '{clean_description_polaris}', "
           f"category '{check['category']}', raw_source '{raw_source}'}}"
       )
 

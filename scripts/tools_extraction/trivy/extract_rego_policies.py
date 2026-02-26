@@ -316,7 +316,7 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
     attrs.append(f"tool '{tool}'")
     if severity:
         attrs.append(f"severity '{severity}'")
-    attrs.append(f"weight {severity_weight}")
+    attrs.append(f"weight '{severity_weight}'")
     if name:
         attrs.append(f"name '{name}'")
     if rego_field_key:

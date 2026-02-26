@@ -19,10 +19,10 @@ from scripts._inference_policy import extract_policy_kinds_from_constraints, inf
 HERE = Path(__file__).resolve().parent # scripts/
 ROOT = HERE.parent # fm-security-rules/
 ROOT_PARENT = ROOT.parent # carpeta anterior a la raiz/
-FM_PATH = ROOT / "variability_model" / "policies_template" / "policy_structure03_aux.uvl"
+FM_PATH = ROOT / "variability_model" / "policies_template" / "model_policies02.uvl"
 VALID_JSONS_DIR = ROOT_PARENT / "valid_jsons" ## valid_jsons jsons_testing
 
-OUTPUT_CSV = ROOT / "evaluation" / "validation_results_valid_jsons03_Z3.csv" ## Output csv
+OUTPUT_CSV = ROOT / "evaluation" / "validation_results_valid_jsons_model_policies02_Z3.csv" ## Output csv
 VALIDATE_ONLY_FIRST_CONFIG = True
 
 

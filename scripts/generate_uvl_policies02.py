@@ -173,7 +173,7 @@ def generate_uvl_from_policies(directory, output_path):
                 expr = re.sub(r"==\s*([<>])\s*(\d+)", r"\1 \2", expr) ## Obtain the signal of interval and the number and replaced in 1, 2
                 normalized_exprs.append(expr)
             elif "'?*'" in expr: ## Case for changing the syntax of "== ?*" for "!= ''" to detect the presence a value for a string feature
-                expr = expr.replace("== '?*'", "!= ''") ## Change for a correct syntax
+                expr = expr.replace("== '?*'", "!= ' '") ## Change for a correct syntax
                 normalized_exprs.append(expr)
                 
             elif re.search(r"\b\d+\s*-\s*\d+\b", expr): ## Case of interval with a '-' between the numbers

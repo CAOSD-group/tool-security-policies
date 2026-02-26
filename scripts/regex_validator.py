@@ -19,17 +19,38 @@ class ContentPolicyValidator:
             'Require_Images_Use_Checksums': self._validate_require_images_use_checksums,
             'Require_Ingress_HTTPS': self._validate_require_ingress_https,
             'Limit_hostPath_PersistentVolumes_to_Specific_Directories': self._validate_limit_pv_hostpath_specific_dirs,
-
+            ## Added more policies here as needed...
+            'Restrict_sysctls': self._validate_restrict_sysctls_allowlist,
+            'Prevent_cr8escape_CVE_2022_0811': self._validate_prevent_cr8escape_sysctl_values,
+            'Require_Container_Port_Names': self._validate_require_container_port_names,
+            #'Require_imagePullSecrets': self._validate_require_imagepullsecrets, ## no detected at the moment
+            #'cpuLimitsMissing': self._validate_cpu_limits_set, ## pendente to add the function
+            #'cpuRequestsMissing': self._validate_cpu_requests_set,
+            #'livenessProbeMissing': self._validate_liveness_probe_configured,
+            #'readinessProbeMissing': self._validate_readiness_probe_configured,
         }
         
         # Definimos los sufijos que identifican a una imagen en tu modelo generado.
-        # Esto cubre Pods, Deployments, DaemonSets, etc., ya que el final de la clave
-        # siempre mantiene la semántica del campo.
         self.TARGET_IMAGE_SUFFIXES = [
             "_containers_image",           # Caso estándar
             "_initContainers_image",       # Caso inicialización
             "_ephemeralContainers_image",  # Caso efímero
-            # "_image"                     # <-- Descomentar si quieres ser ultra-permisivo
+        ]
+
+        # Allowlist exact (valores reales con puntos, como en YAML)
+        self.SYSCTL_ALLOWLIST = {
+            "kernel.shm_rmid_forced",
+            "net.ipv4.ip_local_port_range",
+            "net.ipv4.ip_unprivileged_port_start",
+            "net.ipv4.tcp_syncookies",
+            "net.ipv4.ping_group_range",
+        }
+
+        # Claves "container lists" típicas en PodSpec
+        self.CONTAINER_LIST_KEY_SUFFIXES = [
+            "spec_containers",
+            "spec_initContainers",
+            "spec_ephemeralContainers",
         ]
 
     def validate(self, config_elements, active_policies):
@@ -470,3 +491,192 @@ class ContentPolicyValidator:
                 return False
 
         return True
+    
+    ### More added (26/02/2026)
+
+    # --- helper: saca el primer valor de un dict cuya key termine en suffix ---
+    def _get_value_by_key_suffix(self, d: dict, suffix: str):
+        for k, v in d.items():
+            if str(k).endswith(suffix):
+                return v
+        return None
+
+    # --- helper: encuentra lista de dicts bajo una key que termine en suffix ---
+    def _find_dict_list_under_key_suffix_recursive(self, data, key_suffix: str):
+        found = []
+        if isinstance(data, dict):
+            for k, v in data.items():
+                if str(k).endswith(key_suffix) and isinstance(v, list):
+                    for it in v:
+                        if isinstance(it, dict):
+                            found.append(it)
+                if isinstance(v, (dict, list)):
+                    found.extend(self._find_dict_list_under_key_suffix_recursive(v, key_suffix))
+        elif isinstance(data, list):
+            for it in data:
+                found.extend(self._find_dict_list_under_key_suffix_recursive(it, key_suffix))
+        return found
+    
+    def _validate_restrict_sysctls_allowlist(self, config_elements):
+        # sysctls es una lista de dicts
+        sysctl_items = self._find_dict_list_under_key_suffix_recursive(config_elements, "sysctls")
+
+        # Si no hay sysctls -> PASS
+        if not sysctl_items:
+            return True
+
+        for item in sysctl_items:
+            name = self._get_value_by_key_suffix(item, "sysctls_name")
+            if name is None:
+                print("[Fail] Restrict_sysctls: sysctl sin campo '*_sysctls_name'.")
+                return False
+
+            name_str = str(name).strip()
+            if name_str not in self.SYSCTL_ALLOWLIST:
+                print(f"[Fail] Restrict_sysctls: sysctl '{name_str}' no permitido.")
+                return False
+
+        return True
+    
+    def _validate_prevent_cr8escape_sysctl_values(self, config_elements):
+        sysctl_items = self._find_dict_list_under_key_suffix_recursive(config_elements, "sysctls")
+
+        if not sysctl_items:
+            return True
+
+        bad_chars = re.compile(r"[+=]")
+
+        for item in sysctl_items:
+            value = self._get_value_by_key_suffix(item, "sysctls_value")
+            if value is None:
+                # si falta value, no hay nada que validar
+                continue
+
+            value_str = str(value)
+            if bad_chars.search(value_str):
+                print(f"[Fail] Prevent_cr8escape_CVE_2022_0811: valor sysctl inválido '{value_str}' (contiene '+' o '=').")
+                return False
+
+        return True
+    
+
+    def _find_container_dicts_recursive(self, data):
+        """Devuelve todos los dicts que representan contenedores (items de spec.containers/init/ephemeral)."""
+        containers = []
+
+        if isinstance(data, dict):
+            for k, v in data.items():
+                k_str = str(k)
+
+                # Si esta clave es una lista de contenedores
+                if any(k_str.endswith(suf) for suf in self.CONTAINER_LIST_KEY_SUFFIXES) and isinstance(v, list):
+                    for item in v:
+                        if isinstance(item, dict):
+                            containers.append(item)
+
+                # Seguir buscando
+                if isinstance(v, (dict, list)):
+                    containers.extend(self._find_container_dicts_recursive(v))
+
+        elif isinstance(data, list):
+            for it in data:
+                containers.extend(self._find_container_dicts_recursive(it))
+
+        return containers
+
+
+    def _validate_require_container_port_names(self, config_elements):
+        """
+        Kyverno: para cada contenedor, si define ports[], cada item debe tener name: "*".
+        En tu modelo: io_k8s_api_core_v1_Pod_spec_containers_ports_name (string no vacío).
+        """
+        container_dicts = self._find_container_dicts_recursive(config_elements)
+
+        # Si no hay contenedores en este YAML, no aplica / PASS
+        if not container_dicts:
+            return True
+
+        for c in container_dicts:
+            # (Opcional) nombre del contenedor para debug
+            c_name = self._get_value_by_key_suffix(c, "containers_name")
+            c_name = str(c_name) if c_name is not None else "<unknown>"
+
+            # localizar ports dentro del dict del contenedor
+            ports_items = []
+            for k, v in c.items():
+                if str(k).endswith("ports") and isinstance(v, list):
+                    ports_items = [it for it in v if isinstance(it, dict)]
+                    break
+
+            # si el contenedor no define ports, no hay nada que exigir
+            if not ports_items:
+                continue
+
+            # si define ports, cada port debe tener ports_name no vacío
+            for p in ports_items:
+                port_name = self._get_value_by_key_suffix(p, "ports_name")
+                if port_name is None or str(port_name).strip() == "":
+                    print(f"[Fail] Require_Container_Port_Names: contenedor '{c_name}' tiene un port sin 'name'.")
+                    return False
+
+        return True
+    
+
+
+
+    """
+    def _validate_require_imagepullsecrets(self, config_elements):
+        #Kyverno require-imagepullsecrets:
+        #Si algún container image registry NO es ghcr.io ni quay.io => requiere spec.imagePullSecrets[0].name no vacío
+    
+
+        # 1) sacar todas las imágenes del manifest (ya tienes helper + sufijos)
+        images = self._find_image_values_recursive(config_elements)
+        if not images:
+            return True  # sin imágenes, no aplica
+
+        allowed = {"ghcr.io", "quay.io"}
+
+        def extract_registry(image: str) -> str | None:
+        
+            #Kubernetes image reference rules (simplificado):
+            #- Si no hay '/', suele ser Docker Hub library -> registry implícito (no es ghcr/quay)
+            #- Si hay '/', el primer segmento puede ser registry si contiene '.' o ':' o es 'localhost'
+         
+            if not isinstance(image, str) or not image:
+                return None
+            first = image.split("/")[0]
+            if "." in first or ":" in first or first == "localhost":
+                return first
+            return None  # registry implícito (docker hub)
+
+        # 2) chequear precondición: AnyNotIn -> si existe alguno fuera del allowlist
+        needs_secret = False
+        for img in images:
+            reg = extract_registry(img)
+            if reg is None:
+                # docker hub / registry implícito => NO está en allowlist, por tanto dispara
+                needs_secret = True
+                break
+            if reg not in allowed:
+                needs_secret = True
+                break
+
+        if not needs_secret:
+            return True  # todos en ghcr/quay
+
+        # 3) validar imagePullSecrets name ?*
+        # en YAML: spec.imagePullSecrets: - name: "...".
+        # En tu JSON aplanado puede salir como lista de dicts o claves con sufijo.
+        secret_names = self._find_values_by_suffix_recursive(config_elements, "imagePullSecrets_name")
+        # fallback común si tu flatten lo nombra distinto:
+        if not secret_names:
+            secret_names = self._find_values_by_suffix_recursive(config_elements, "_spec_imagePullSecrets_name")
+
+        # ?* => no vacío / no whitespace
+        for name in secret_names:
+            if isinstance(name, str) and name.strip():
+                return True
+
+        print("[Fail] Require_imagePullSecrets: se detectó registry no permitido y falta spec.imagePullSecrets[].name.")
+        return False """
