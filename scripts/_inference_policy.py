@@ -103,11 +103,11 @@ def infer_policies_from_kind(config_elements: dict, policy_kinds_map: dict) -> l
                 selected_policies.add(policy)
 
     # --- 2. Inferencia basada en CONTENIDO (Heurística) ---
-    #if _has_image_recursive(config_elements):
+    if _has_image_recursive(config_elements):
         #print("[Inferencia] Detectadas imágenes en la config -> Activando 'tagNotSpecified'")
-    #    selected_policies.add('tagNotSpecified')
-        
-        # selected_policies.add('Restrict_Image_Registries') 
+        selected_policies.add('tagNotSpecified')
+        selected_policies.discard('Restrict_Image_Registries') ## Omiting Restrict_Image_Registries for conflicts with tagNotSpecified
+        selected_policies.discard('Require_Images_Use_Checksums')## Omiting Require_Images_Use_Checksums for conflicts with tagNotSpecified
 
     return list(selected_policies)
 

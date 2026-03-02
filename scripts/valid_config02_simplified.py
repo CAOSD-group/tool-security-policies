@@ -145,34 +145,45 @@ def valid_config_version_json_Z3(configuration_json: Configuration, flat_fm, z3_
 
     # EVALUACIÓN ITERATIVA: Probamos cada política de forma independiente
     for policy in auto_policies:
-        # 1. Hacemos una copia limpia de los elementos base (el manifiesto original)
-        temp_elements = configuration_json.elements.copy()
-        
-        # 2. Activamos SOLO la política actual que queremos auditar
-        temp_elements[policy] = True
-        
-        # 3. Completamos la configuración para esta prueba
-        temp_config = Configuration(temp_elements)
-        temp_config_completed = complete_configuration(temp_config, flat_fm)
-        temp_config_completed.set_full(True)
-        
-        # 4. Validamos con Z3
-        sat_op = Z3SatisfiableConfiguration()
-        sat_op.set_configuration(temp_config_completed)
-        is_sat = sat_op.execute(z3_model).get_result()
-        
-        # 5. Si falla, registramos la vulnerabilidad
-        if not is_sat:
-            remediation_info = get_policy_remediation_info(flat_fm, policy)
+        try: 
+            # 1. Hacemos una copia limpia de los elementos base (el manifiesto original)
+            temp_elements = configuration_json.elements.copy()
+            
+            # 2. Activamos SOLO la política actual que queremos auditar
+            temp_elements[policy] = True
+            
+            # 3. Completamos la configuración para esta prueba
+            temp_config = Configuration(temp_elements)
+            temp_config_completed = complete_configuration(temp_config, flat_fm)
+            temp_config_completed.set_full(True)
+            
+            # 4. Validamos con Z3
+            sat_op = Z3SatisfiableConfiguration()
+            sat_op.set_configuration(temp_config_completed)
+            is_sat = sat_op.execute(z3_model).get_result()
+            
+            # 5. Si falla, registramos la vulnerabilidad
+            if not is_sat:
+                remediation_info = get_policy_remediation_info(flat_fm, policy)
+                failed_policies_report.append({
+                    "policy": policy,
+                    "description": remediation_info.get("description"),
+                    "remediation": remediation_info.get("remediation"),
+                    "severity": remediation_info.get("severity")
+                })
+            else:
+                passed_policies.append(policy)
+        except Exception as e:
+            # CLAVE: una policy puede estar mal “mapeada” o referenciar features que no existen,
+            # o Z3/FlamaPy puede fallar con esa combinación -> no paramos, lo reportamos.
             failed_policies_report.append({
                 "policy": policy,
-                "description": remediation_info.get("description"),
-                "remediation": remediation_info.get("remediation"),
-                "severity": remediation_info.get("severity")
+                "severity": "error",
+                "description": f"Error interno evaluando la política: {e}",
+                "remediation": "Revisar mapeo de la policy / nombres de features / constraints."
             })
-        else:
-            passed_policies.append(policy)
-
+            # seguimos con la siguiente policy
+            continue
     # El resultado global es válido solo si NINGUNA política ha fallado
     global_is_satisfiable = len(failed_policies_report) == 0
 
@@ -192,7 +203,7 @@ def inizialize_model(model_path):
     sat_model = FmToPysat(fm_model).transform()
     return fm_model, sat_model
 
-def main(configuration, fm_model, sat_model, cardinality):
+def main(configuration, fm_model, sat_model, cardinality=False):
     error = ''
     report = []
     try:
@@ -275,7 +286,7 @@ if __name__ == '__main__':
         config_Z3 = configurations[0]
 
         # --- AQUÍ OCURRE LA MAGIA ---
-        start_validation_time = time.time()  
+        start_validation_time = time.time()
         
         # Desempaquetamos los 3 valores: Booleano, Lista de features, y el Reporte de Errores
         valid, complete_config, report = valid_config_version_json_Z3(config_Z3, flat_fm, z3_model, constraint_kinds_map) 
@@ -297,7 +308,7 @@ if __name__ == '__main__':
                 
                 print(f" POLÍTICA VIOLADA : {issue['policy']} [Severidad: {severity}]")
                 print(f"   Motivo        : {issue['description']}")
-                print(f"   Recomendación : {issue['remediation']}")
+                #print(f"   Recomendación : {issue['remediation']}")
                 print("-" * 70)
         else:
             print("\n🚀 El manifiesto cumple con todas las políticas de seguridad activas.")

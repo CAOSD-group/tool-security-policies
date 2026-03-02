@@ -621,7 +621,70 @@ class ContentPolicyValidator:
 
         return True
     
+    # Polaris: New recursive helper to check if any resources cpu or memory limits/requests are defined (for future policies)
 
+
+def _find_objects_in_lists_by_suffix(self, data, list_suffixes):
+    """
+    Busca recursivamente listas cuya CLAVE termine en alguno de list_suffixes
+    y devuelve todos los dicts (items) dentro de esas listas.
+    """
+    if isinstance(list_suffixes, str):
+        list_suffixes = [list_suffixes]
+
+    found = []
+
+    if isinstance(data, dict):
+        for k, v in data.items():
+            k_str = str(k)
+
+            # Si esta clave es una lista objetivo, extraemos sus items dict
+            if any(k_str.endswith(suf) for suf in list_suffixes) and isinstance(v, list):
+                for item in v:
+                    if isinstance(item, dict):
+                        found.append(item)
+
+            # Recursión
+            if isinstance(v, (dict, list)):
+                found.extend(self._find_objects_in_lists_by_suffix(v, list_suffixes))
+
+    elif isinstance(data, list):
+        for item in data:
+            found.extend(self._find_objects_in_lists_by_suffix(item, list_suffixes))
+
+    return found
+
+
+def _get_kinds_in_file(self, config_elements):
+    """
+    Devuelve un set con los kinds detectados en el JSON aplanado/reconstruido.
+    """
+    kinds = set(self._find_values_by_suffix_recursive(config_elements, "_kind"))
+    # Normalizamos
+    return set(str(k) for k in kinds if k is not None)
+
+
+    def _get_workload_containers(self, config_elements, include_ephemeral=True):
+        """
+        Devuelve dicts de containers:
+        - containers (siempre)
+        - ephemeralContainers (opcional)
+        Excluye initContainers (porque Polaris suele excluirlos en estos checks).
+        """
+        containers = self._find_objects_in_lists_by_suffix(
+            config_elements,
+            [
+                "_spec_containers",
+                # en algunos dumps/plantillas puede aparecer con prefijo distinto, añade si lo ves
+            ],
+        )
+
+        if include_ephemeral:
+            eph = self._find_objects_in_lists_by_suffix(config_elements, "_spec_ephemeralContainers")
+            containers.extend(eph)
+
+        # initContainers explícitamente excluidos en los checks que has pegado
+        return containers
 
 
     """
