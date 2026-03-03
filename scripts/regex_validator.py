@@ -1,4 +1,5 @@
 import re
+import io, contextlib
 
 class ContentPolicyValidator:
     """
@@ -67,6 +68,41 @@ class ContentPolicyValidator:
                 if not is_valid:
                     return False
         return True
+    
+    
+    def validate_with_report(self, config_elements: dict, active_policies: list[str]):
+        """
+        Devuelve una lista de policies que fallan por regex, con motivo si lo hay.
+        """
+        report = []
+        passed_all = True
+
+        for policy in active_policies:
+            fn = self.policy_map.get(policy)
+            if fn is None:
+                continue  # no es una policy de regex
+
+            try:
+                buf = io.StringIO()
+                with contextlib.redirect_stdout(buf):
+                    ok = fn(config_elements)
+                reason = buf.getvalue().strip()
+
+                if not ok:
+                    passed_all = False
+                    report.append({
+                        "policy": policy,
+                        "reason": reason or "Regex/content validation failed."
+                    })
+
+            except Exception as e:
+                passed_all = False
+                report.append({
+                    "policy": policy,
+                    "reason": f"Regex validator error: {e}"
+                })
+
+        return passed_all, report
 
     def _find_image_values_recursive(self, data):
         """

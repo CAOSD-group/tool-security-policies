@@ -48,7 +48,7 @@ RES    = ROOT / "resources"
 
 UVL_PATH = MODELS / "model_policies02.uvl"
 # usar str(UVL_PATH) si la librería lo exige
-path_json = RES / "valid_yamls" / "08-Pod_DNS_1_copy.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid,test-require-run-as-nonroot_1.json,
+path_json = RES / "valid_yamls" / ".serviceaccount.json" ##1-metallb5_2_Test01  1-metallb5_2_Test02-Invalid,test-require-run-as-nonroot_1.json,
 VALIDATE_ONLY_FIRST_CONFIG = True ## Use unit or total validation version
 
 def get_all_parents(feature: Feature) -> list[str]:
@@ -131,17 +131,29 @@ def valid_config_version_json_Z3(configuration_json: Configuration, flat_fm, z3_
     print(f"[INFO] Políticas activas para este archivo: {auto_policies}")
 
     validator = ContentPolicyValidator()
-    regex_passed = validator.validate(configuration_json.elements, auto_policies)
+    #regex_passed = validator.validate(configuration_json.elements, auto_policies)
+    regex_passed, regex_failures = validator.validate_with_report(configuration_json.elements, auto_policies)
     
-    if not regex_passed:
-        print("-> Configuración rechazada por validación de Regex (formato de string incorrecto).")
-        # Retornamos False, config vacía y un reporte de error
-        return False, [], [{"policy": "Regex Validation", "severity": "high", "description": "String format error in YAML.", "remediation": "Check syntax."}]
-    
-    print("-> Validación Regex PASADA. Entrando a diagnóstico Z3 iterativo...")
-
     failed_policies_report = []
     passed_policies = []
+
+    # Añadimos cada fallo regex como issue de SU policy (con metadata del UVL)
+    for f in regex_failures:
+        policy = f["policy"]
+        meta = get_policy_metadata(flat_fm, policy)
+        failed_policies_report.append({
+            "policy": policy,
+            "tool": meta.get("tool", "unknown"),
+            "severity": meta.get("severity", "unknown"),
+            "weight": meta.get("weight", ""),
+            "kinds": meta.get("kinds", ""),
+            "raw_source": meta.get("raw_source", ""),
+            "description": meta.get("doc", ""),
+            "regex_reason": f.get("reason", ""),
+            "result": "FAILED_REGEX"
+        })
+    print("-> Entrando a diagnóstico Z3 iterativo...")
+
 
     # EVALUACIÓN ITERATIVA: Probamos cada política de forma independiente
     for policy in auto_policies:
@@ -197,6 +209,28 @@ def valid_config_version_json_Z3(configuration_json: Configuration, flat_fm, z3_
 
     return global_is_satisfiable, final_config.get_selected_elements(), failed_policies_report
 
+def get_policy_metadata(flat_fm, policy_name: str) -> dict:
+    feat = flat_fm.get_feature_by_name(policy_name)
+    info = {
+        "tool": "unknown",
+        "severity": "unknown",
+        "weight": "",
+        "doc": "",
+        "kinds": "",
+        "raw_source": "",
+        "name": "",
+    }
+    if not feat:
+        return info
+
+    for attr in feat.get_attributes():
+        val = attr.get_default_value()
+        if attr.name in info:
+            info[attr.name] = val
+        elif attr.name == "RecommendedAction":
+            info["remediation"] = val
+
+    return info
 
 def inizialize_model(model_path):
     fm_model = UVLReader(model_path).transform()
@@ -298,7 +332,7 @@ if __name__ == '__main__':
         print("\n" + "="*70)
         print(f" RESULTADO DE LA AUDITORÍA DE SEGURIDAD ({validation_time} seg)")
         print("="*70)
-        print(f" Manifiesto Seguro (SAT): {valid}")
+        print(f" Manifiesto Seguro (Z3): {valid}")
         
         if not valid:
             print(f"\n SE HAN DETECTADO {len(report)} VULNERABILIDADES EN EL MANIFIESTO:\n")
@@ -311,5 +345,5 @@ if __name__ == '__main__':
                 #print(f"   Recomendación : {issue['remediation']}")
                 print("-" * 70)
         else:
-            print("\n🚀 El manifiesto cumple con todas las políticas de seguridad activas.")
+            print("\n El manifiesto cumple con todas las políticas de seguridad activas.")
         print("="*70)
