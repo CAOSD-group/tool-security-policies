@@ -1,0 +1,59 @@
+{
+    "filename": "alertmanager-podDisruptionBudget8.yaml",
+    "apiVersion": "policy_v1",
+    "config": {
+        "io_k8s_api_policy_v1_PodDisruptionBudget_apiVersion": "policy/v1",
+        "io_k8s_api_policy_v1_PodDisruptionBudget_kind": "PodDisruptionBudget",
+        "io_k8s_api_policy_v1_PodDisruptionBudget_metadata": {
+            "io_k8s_api_policy_v1_PodDisruptionBudget_metadata_labels": [
+                {
+                    "io_k8s_api_policy_v1_PodDisruptionBudget_metadata_labels_KeyMap": "app.kubernetes.io/component",
+                    "io_k8s_api_policy_v1_PodDisruptionBudget_metadata_labels_ValueMap": "alert-router"
+                },
+                {
+                    "io_k8s_api_policy_v1_PodDisruptionBudget_metadata_labels_KeyMap": "app.kubernetes.io/instance",
+                    "io_k8s_api_policy_v1_PodDisruptionBudget_metadata_labels_ValueMap": "main"
+                },
+                {
+                    "io_k8s_api_policy_v1_PodDisruptionBudget_metadata_labels_KeyMap": "app.kubernetes.io/name",
+                    "io_k8s_api_policy_v1_PodDisruptionBudget_metadata_labels_ValueMap": "alertmanager"
+                },
+                {
+                    "io_k8s_api_policy_v1_PodDisruptionBudget_metadata_labels_KeyMap": "app.kubernetes.io/part-of",
+                    "io_k8s_api_policy_v1_PodDisruptionBudget_metadata_labels_ValueMap": "kube-prometheus"
+                },
+                {
+                    "io_k8s_api_policy_v1_PodDisruptionBudget_metadata_labels_KeyMap": "app.kubernetes.io/version",
+                    "io_k8s_api_policy_v1_PodDisruptionBudget_metadata_labels_ValueMap": "0.23.0"
+                }
+            ],
+            "io_k8s_api_policy_v1_PodDisruptionBudget_metadata_name": "alertmanager-main",
+            "io_k8s_api_policy_v1_PodDisruptionBudget_metadata_namespace": "monitoring"
+        },
+        "io_k8s_api_policy_v1_PodDisruptionBudget_spec": {
+            "io_k8s_api_policy_v1_PodDisruptionBudget_spec_maxUnavailable": {
+                "io_k8s_api_policy_v1_PodDisruptionBudget_spec_maxUnavailable_asInteger": 1
+            },
+            "io_k8s_api_policy_v1_PodDisruptionBudget_spec_selector": {
+                "io_k8s_api_policy_v1_PodDisruptionBudget_spec_selector_matchLabels": [
+                    {
+                        "io_k8s_api_policy_v1_PodDisruptionBudget_spec_selector_matchLabels_KeyMap": "app.kubernetes.io/component",
+                        "io_k8s_api_policy_v1_PodDisruptionBudget_spec_selector_matchLabels_ValueMap": "alert-router"
+                    },
+                    {
+                        "io_k8s_api_policy_v1_PodDisruptionBudget_spec_selector_matchLabels_KeyMap": "app.kubernetes.io/instance",
+                        "io_k8s_api_policy_v1_PodDisruptionBudget_spec_selector_matchLabels_ValueMap": "main"
+                    },
+                    {
+                        "io_k8s_api_policy_v1_PodDisruptionBudget_spec_selector_matchLabels_KeyMap": "app.kubernetes.io/name",
+                        "io_k8s_api_policy_v1_PodDisruptionBudget_spec_selector_matchLabels_ValueMap": "alertmanager"
+                    },
+                    {
+                        "io_k8s_api_policy_v1_PodDisruptionBudget_spec_selector_matchLabels_KeyMap": "app.kubernetes.io/part-of",
+                        "io_k8s_api_policy_v1_PodDisruptionBudget_spec_selector_matchLabels_ValueMap": "kube-prometheus"
+                    }
+                ]
+            }
+        }
+    }
+}

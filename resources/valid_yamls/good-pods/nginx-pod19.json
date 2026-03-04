@@ -1,0 +1,184 @@
+{
+    "filename": "nginx-pod19.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_creationTimestamp": "2024-02-02T01:09:06Z",
+            "io_k8s_api_core_v1_Pod_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "run",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "nginx"
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_metadata_name": "nginx",
+            "io_k8s_api_core_v1_Pod_metadata_namespace": "default",
+            "io_k8s_api_core_v1_Pod_metadata_resourceVersion": "375761",
+            "io_k8s_api_core_v1_Pod_metadata_uid": "61be49db-8c52-452f-b952-56efb46b8684"
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "nginx",
+                    "io_k8s_api_core_v1_Pod_spec_containers_imagePullPolicy": {
+                        "io_k8s_api_core_v1_Pod_spec_containers_imagePullPolicy_Always": true
+                    },
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "nginx",
+                    "io_k8s_api_core_v1_Pod_spec_containers_resources": {},
+                    "io_k8s_api_core_v1_Pod_spec_containers_terminationMessagePath": "/dev/termination-log",
+                    "io_k8s_api_core_v1_Pod_spec_containers_terminationMessagePolicy": "File",
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "kube-api-access-9z9n2",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_readOnly": true
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_dnsPolicy": {
+                "io_k8s_api_core_v1_Pod_spec_dnsPolicy_ClusterFirst": true
+            },
+            "io_k8s_api_core_v1_Pod_spec_enableServiceLinks": true,
+            "io_k8s_api_core_v1_Pod_spec_nodeName": "minikube",
+            "io_k8s_api_core_v1_Pod_spec_preemptionPolicy": {
+                "io_k8s_api_core_v1_Pod_spec_preemptionPolicy_PreemptLowerPriority": true
+            },
+            "io_k8s_api_core_v1_Pod_spec_priority": 0,
+            "io_k8s_api_core_v1_Pod_spec_restartPolicy": {
+                "io_k8s_api_core_v1_Pod_spec_restartPolicy_Always": true
+            },
+            "io_k8s_api_core_v1_Pod_spec_schedulerName": "default-scheduler",
+            "io_k8s_api_core_v1_Pod_spec_securityContext": {},
+            "io_k8s_api_core_v1_Pod_spec_serviceAccount": "default",
+            "io_k8s_api_core_v1_Pod_spec_serviceAccountName": "default",
+            "io_k8s_api_core_v1_Pod_spec_terminationGracePeriodSeconds": 30,
+            "io_k8s_api_core_v1_Pod_spec_tolerations": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_tolerations_effect": {
+                        "io_k8s_api_core_v1_Pod_spec_tolerations_effect_NoExecute": true
+                    },
+                    "io_k8s_api_core_v1_Pod_spec_tolerations_key": "node.kubernetes.io/not-ready",
+                    "io_k8s_api_core_v1_Pod_spec_tolerations_operator": {
+                        "io_k8s_api_core_v1_Pod_spec_tolerations_operator_Exists": true
+                    },
+                    "io_k8s_api_core_v1_Pod_spec_tolerations_tolerationSeconds": 300
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_spec_tolerations_effect": {
+                        "io_k8s_api_core_v1_Pod_spec_tolerations_effect_NoExecute": true
+                    },
+                    "io_k8s_api_core_v1_Pod_spec_tolerations_key": "node.kubernetes.io/unreachable",
+                    "io_k8s_api_core_v1_Pod_spec_tolerations_operator": {
+                        "io_k8s_api_core_v1_Pod_spec_tolerations_operator_Exists": true
+                    },
+                    "io_k8s_api_core_v1_Pod_spec_tolerations_tolerationSeconds": 300
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_volumes": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "kube-api-access-9z9n2",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_projected": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_projected_defaultMode": 420,
+                        "io_k8s_api_core_v1_Pod_spec_volumes_projected_sources": [
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_volumes_projected_sources_serviceAccountToken": {
+                                    "io_k8s_api_core_v1_Pod_spec_volumes_projected_sources_serviceAccountToken_expirationSeconds": 3607,
+                                    "io_k8s_api_core_v1_Pod_spec_volumes_projected_sources_serviceAccountToken_path": "token"
+                                }
+                            },
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_volumes_projected_sources_configMap": {
+                                    "io_k8s_api_core_v1_Pod_spec_volumes_projected_sources_configMap_items": [
+                                        {
+                                            "io_k8s_api_core_v1_Pod_spec_volumes_projected_sources_configMap_items_key": "ca.crt",
+                                            "io_k8s_api_core_v1_Pod_spec_volumes_projected_sources_configMap_items_path": "ca.crt"
+                                        }
+                                    ],
+                                    "io_k8s_api_core_v1_Pod_spec_volumes_projected_sources_configMap_name": "kube-root-ca.crt"
+                                }
+                            },
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_volumes_projected_sources_downwardAPI": {
+                                    "io_k8s_api_core_v1_Pod_spec_volumes_projected_sources_downwardAPI_items": [
+                                        {
+                                            "io_k8s_api_core_v1_Pod_spec_volumes_projected_sources_downwardAPI_items_fieldRef": {
+                                                "io_k8s_api_core_v1_Pod_spec_volumes_projected_sources_downwardAPI_items_fieldRef_apiVersion": "v1",
+                                                "io_k8s_api_core_v1_Pod_spec_volumes_projected_sources_downwardAPI_items_fieldRef_fieldPath": "metadata.namespace"
+                                            },
+                                            "io_k8s_api_core_v1_Pod_spec_volumes_projected_sources_downwardAPI_items_path": "namespace"
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "io_k8s_api_core_v1_Pod_status": {
+            "io_k8s_api_core_v1_Pod_status_conditions": [
+                {
+                    "io_k8s_api_core_v1_Pod_status_conditions_lastProbeTime": null,
+                    "io_k8s_api_core_v1_Pod_status_conditions_lastTransitionTime": "2024-02-02T01:09:06Z",
+                    "io_k8s_api_core_v1_Pod_status_conditions_status": {
+                        "io_k8s_api_core_v1_Pod_status_conditions_status_True": true
+                    },
+                    "io_k8s_api_core_v1_Pod_status_conditions_type": "Initialized"
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_status_conditions_lastProbeTime": null,
+                    "io_k8s_api_core_v1_Pod_status_conditions_lastTransitionTime": "2024-02-02T01:10:18Z",
+                    "io_k8s_api_core_v1_Pod_status_conditions_status": {
+                        "io_k8s_api_core_v1_Pod_status_conditions_status_True": true
+                    },
+                    "io_k8s_api_core_v1_Pod_status_conditions_type": "Ready"
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_status_conditions_lastProbeTime": null,
+                    "io_k8s_api_core_v1_Pod_status_conditions_lastTransitionTime": "2024-02-02T01:10:18Z",
+                    "io_k8s_api_core_v1_Pod_status_conditions_status": {
+                        "io_k8s_api_core_v1_Pod_status_conditions_status_True": true
+                    },
+                    "io_k8s_api_core_v1_Pod_status_conditions_type": "ContainersReady"
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_status_conditions_lastProbeTime": null,
+                    "io_k8s_api_core_v1_Pod_status_conditions_lastTransitionTime": "2024-02-02T01:09:06Z",
+                    "io_k8s_api_core_v1_Pod_status_conditions_status": {
+                        "io_k8s_api_core_v1_Pod_status_conditions_status_True": true
+                    },
+                    "io_k8s_api_core_v1_Pod_status_conditions_type": "PodScheduled"
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_status_containerStatuses": [
+                {
+                    "io_k8s_api_core_v1_Pod_status_containerStatuses_containerID": "docker://596dc198a2ed7170b1f358304f391c9819bdcd057f195ec8c25330a1e38bd330",
+                    "io_k8s_api_core_v1_Pod_status_containerStatuses_image": "nginx:latest",
+                    "io_k8s_api_core_v1_Pod_status_containerStatuses_imageID": "docker-pullable://nginx@sha256:6eb953446a36ad7aaa1624ff7b0fba5c8f8742e13fbef572cda3cac202fcf4aa",
+                    "io_k8s_api_core_v1_Pod_status_containerStatuses_lastState": {},
+                    "io_k8s_api_core_v1_Pod_status_containerStatuses_name": "nginx",
+                    "io_k8s_api_core_v1_Pod_status_containerStatuses_ready": true,
+                    "io_k8s_api_core_v1_Pod_status_containerStatuses_restartCount": 0,
+                    "io_k8s_api_core_v1_Pod_status_containerStatuses_started": true,
+                    "io_k8s_api_core_v1_Pod_status_containerStatuses_state": {
+                        "io_k8s_api_core_v1_Pod_status_containerStatuses_state_running": {
+                            "io_k8s_api_core_v1_Pod_status_containerStatuses_state_running_startedAt": "2024-02-02T01:10:18Z"
+                        }
+                    }
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_status_hostIP": "192.168.67.2",
+            "io_k8s_api_core_v1_Pod_status_phase": "Running",
+            "io_k8s_api_core_v1_Pod_status_podIP": "10.244.0.158",
+            "io_k8s_api_core_v1_Pod_status_podIPs": [
+                {
+                    "io_k8s_api_core_v1_Pod_status_podIPs_ip": "10.244.0.158"
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_status_qosClass": "BestEffort",
+            "io_k8s_api_core_v1_Pod_status_startTime": "2024-02-02T01:09:06Z"
+        }
+    }
+}

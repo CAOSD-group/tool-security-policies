@@ -15,7 +15,7 @@ from scripts.regex_validator import ContentPolicyValidator
 
 HERE = Path(__file__).resolve().parent  # scripts/
 ROOT = HERE.parent                      # fm-security-rules/
-ROOT_PARENT = ROOT.parent               # carpeta anterior a la raiz/
+ROOT_PARENT = ROOT.parent               # under folder root/
 FM_PATH = ROOT / "variability_model" / "policies_template" / "model_policies02.uvl"
 VALID_JSONS_DIR = ROOT_PARENT / "valid_jsons"
 
@@ -41,7 +41,7 @@ def severity_to_weight_fallback(sev: str) -> float:
 _POLICY_META_CACHE: dict[str, dict] = {}
 
 def get_policy_metadata(flat_fm, policy_name: str) -> dict:
-    """Lee tool/severity/weight/doc/raw_source/etc. del UVL (con cache)."""
+    """Read tool/severity/weight/doc/raw_source/etc. from the UVL (with cache)."""
     if policy_name in _POLICY_META_CACHE:
         return _POLICY_META_CACHE[policy_name]
 
@@ -111,7 +111,7 @@ _PARENT_CACHE: dict[str, list[str]] = {}
 _MAND_DESC_CACHE: dict[str, list[str]] = {}
 
 def _parents_of(feature) -> list[str]:
-    """Lista de nombres de padres (cache)."""
+    """List of parent names (cache)."""
     n = feature.name
     if n in _PARENT_CACHE:
         return _PARENT_CACHE[n]
@@ -125,7 +125,7 @@ def _parents_of(feature) -> list[str]:
 
 
 def _mandatory_descendants(feature) -> list[str]:
-    """Lista de descendientes mandatory (cache)."""
+    """List of mandatory descendants (cache)."""
     n = feature.name
     if n in _MAND_DESC_CACHE:
         return _MAND_DESC_CACHE[n]
@@ -140,21 +140,21 @@ def _mandatory_descendants(feature) -> list[str]:
 
 def add_feature_closure(config_elements: dict, fm_model, feature_name: str) -> dict:
     """
-    Inyecta:
-      - padres del feature
-      - mandatory children del feature y de sus padres
-    sin sobrescribir valores existentes (p.ej. strings 'Default', 'v1', etc).
+    Inject:
+      - parents of the feature
+      - mandatory children of the feature and its parents
+    without overwriting existing values (e.g., strings 'Default', 'v1', etc.).
     """
     feat = fm_model.get_feature_by_name(feature_name)
     if not feat:
         return config_elements
 
-    # mandatory del propio feature
+    # mandatory of this feature
     for ch in _mandatory_descendants(feat):
         if ch not in config_elements:
             config_elements[ch] = True
 
-    # padres + mandatory de cada padre
+    # parents + mandatory of each parent
     for parent_name in _parents_of(feat):
         if parent_name not in config_elements:
             config_elements[parent_name] = True
@@ -170,7 +170,7 @@ def add_feature_closure(config_elements: dict, fm_model, feature_name: str) -> d
 
 def complete_configuration_fast(configuration: Configuration, fm_model) -> Configuration:
     """
-    Completa UNA VEZ la config base. Luego por policy solo añades closure de esa policy.
+    Complete the configuration by adding parents and mandatory features of all selected features (closure).
     """
     elems = dict(configuration.elements)
     for selected in configuration.get_selected_elements():
@@ -179,7 +179,7 @@ def complete_configuration_fast(configuration: Configuration, fm_model) -> Confi
 
 
 # --------------------------------------------------
-# Core: evaluación completa (Regex + Z3 + score) CORREGIDA
+# Core: complete evaluation (Regex + Z3 + score)
 # --------------------------------------------------
 
 _VALIDATOR = ContentPolicyValidator()

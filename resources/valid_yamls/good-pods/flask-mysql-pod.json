@@ -1,0 +1,53 @@
+{
+    "filename": "flask-mysql-pod.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "flask-mysql-pod"
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "todo-backend",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "gcr.io/<YOUR_PROJECT_ID>/todo-backend",
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 5000
+                        }
+                    ]
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "mysql",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "mysql:5.7",
+                    "io_k8s_api_core_v1_Pod_spec_containers_env": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "MYSQL_ROOT_PASSWORD",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "password"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 3306
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "mysql-init-volume",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/docker-entrypoint-initdb.d"
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_volumes": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "mysql-init-volume",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_configMap": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_configMap_name": "mysql-init-db-config"
+                    }
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,47 @@
+{
+    "filename": "bbox-pod-conf-map-json.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "pod-conf-map-json",
+            "io_k8s_api_core_v1_Pod_metadata_namespace": "student"
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_imagePullSecrets": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_imagePullSecrets_name": "dock5001"
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "ctr-conf-map2",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "dock01:5001/bbox:nov",
+                    "io_k8s_api_core_v1_Pod_spec_containers_command": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "/bin/sh"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "-c"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "echo started!!\nsleep 60\nenv\nsleep 30\ncat /etc/resolv.conf\nsleep 10\nping 1.1.1.1\n    \n"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_env": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "HELLOJS",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom": {
+                                "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef": {
+                                    "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef_name": "greets-json",
+                                    "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef_key": "greets"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

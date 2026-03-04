@@ -1,0 +1,70 @@
+{
+    "filename": "3-pod-anti-affinity.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "k8s-demo-pod-anti-affinity",
+            "io_k8s_api_core_v1_Pod_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "env",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "frontend-anti-affinity"
+                }
+            ]
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "k8s-demo-container",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "vivek2508/k8s-demo:latest",
+                    "io_k8s_api_core_v1_Pod_spec_containers_imagePullPolicy": {
+                        "io_k8s_api_core_v1_Pod_spec_containers_imagePullPolicy_IfNotPresent": true
+                    },
+                    "io_k8s_api_core_v1_Pod_spec_containers_resources": {
+                        "io_k8s_api_core_v1_Pod_spec_containers_resources_requests": [
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_containers_resources_requests_asString": "memory:128Mi"
+                            },
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_containers_resources_requests_asString": "cpu:250m"
+                            }
+                        ],
+                        "io_k8s_api_core_v1_Pod_spec_containers_resources_limits": [
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_containers_resources_limits_asString": "memory:512Mi"
+                            },
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_containers_resources_limits_asString": "cpu:500m"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_affinity": {
+                "io_k8s_api_core_v1_Pod_spec_affinity_podAntiAffinity": {
+                    "io_k8s_api_core_v1_Pod_spec_affinity_podAntiAffinity_requiredDuringSchedulingIgnoredDuringExecution": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_affinity_podAntiAffinity_requiredDuringSchedulingIgnoredDuringExecution_labelSelector": {
+                                "io_k8s_api_core_v1_Pod_spec_affinity_podAntiAffinity_requiredDuringSchedulingIgnoredDuringExecution_labelSelector_matchExpressions": [
+                                    {
+                                        "io_k8s_api_core_v1_Pod_spec_affinity_podAntiAffinity_requiredDuringSchedulingIgnoredDuringExecution_labelSelector_matchExpressions_key": "env",
+                                        "io_k8s_api_core_v1_Pod_spec_affinity_podAntiAffinity_requiredDuringSchedulingIgnoredDuringExecution_labelSelector_matchExpressions_operator": {
+                                            "io_k8s_api_core_v1_Pod_spec_affinity_podAntiAffinity_requiredDuringSchedulingIgnoredDuringExecution_labelSelector_matchExpressions_operator_In": true
+                                        },
+                                        "io_k8s_api_core_v1_Pod_spec_affinity_podAntiAffinity_requiredDuringSchedulingIgnoredDuringExecution_labelSelector_matchExpressions_values": [
+                                            {
+                                                "io_k8s_api_core_v1_Pod_spec_affinity_podAntiAffinity_requiredDuringSchedulingIgnoredDuringExecution_labelSelector_matchExpressions_values_StringValue": "backend"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "io_k8s_api_core_v1_Pod_spec_affinity_podAntiAffinity_requiredDuringSchedulingIgnoredDuringExecution_topologyKey": "kubernetes.io/hostname"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

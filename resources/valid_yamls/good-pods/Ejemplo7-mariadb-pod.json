@@ -1,0 +1,62 @@
+{
+    "filename": "Ejemplo7-mariadb-pod.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "mariadb-pod",
+            "io_k8s_api_core_v1_Pod_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "app",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "mariadb"
+                }
+            ]
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "mariadb-container",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "mariadb:latest",
+                    "io_k8s_api_core_v1_Pod_spec_containers_env": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "MARIADB_ROOT_PASSWORD",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "password"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "MARIADB_DATABASE",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "midb"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "MARIADB_USER",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "usuario"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "MARIADB_PASSWORD",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "password"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 3306
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "datos-bbdd",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/var/lib/mysql"
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_volumes": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "datos-bbdd",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_persistentVolumeClaim": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_persistentVolumeClaim_claimName": "mariadb-peticion-volumen"
+                    }
+                }
+            ]
+        }
+    }
+}

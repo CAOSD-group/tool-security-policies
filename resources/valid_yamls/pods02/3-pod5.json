@@ -1,0 +1,86 @@
+{
+    "filename": "3-pod5.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "myapp"
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_initContainers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_initContainers_name": "istio-init",
+                    "io_k8s_api_core_v1_Pod_spec_initContainers_image": "docker.io/istio/proxyv2:1.20.0",
+                    "io_k8s_api_core_v1_Pod_spec_initContainers_args": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_args_StringValue": "istio-iptables"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_args_StringValue": "-p"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_args_StringValue": "15001"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_args_StringValue": "-z"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_args_StringValue": "15006"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_args_StringValue": "-u"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_args_StringValue": "1337"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_args_StringValue": "-m"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_args_StringValue": "REDIRECT"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_args_StringValue": "-i"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_args_StringValue": "*"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_args_StringValue": "-x"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_args_StringValue": ""
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_args_StringValue": "-b"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_args_StringValue": "*"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_args_StringValue": "-d"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_args_StringValue": "15090,15021,15020"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_args_StringValue": "--log_output_level=default:info"
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "myapp",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "aputra/myapp-182:0.1.0",
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 8080
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

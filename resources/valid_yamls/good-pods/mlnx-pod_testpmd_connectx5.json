@@ -1,0 +1,74 @@
+{
+    "filename": "mlnx-pod_testpmd_connectx5.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "testpmd",
+            "io_k8s_api_core_v1_Pod_metadata_annotations": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_annotations_KeyMap": "k8s.v1.cni.cncf.io/networks",
+                    "io_k8s_api_core_v1_Pod_metadata_annotations_ValueMap": "sriov-dpdk-mlnx-connectx5"
+                }
+            ]
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "testpmd",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "<DPDK testpmd image>",
+                    "io_k8s_api_core_v1_Pod_spec_containers_imagePullPolicy": {
+                        "io_k8s_api_core_v1_Pod_spec_containers_imagePullPolicy_IfNotPresent": true
+                    },
+                    "io_k8s_api_core_v1_Pod_spec_containers_securityContext": {
+                        "io_k8s_api_core_v1_Pod_spec_containers_securityContext_capabilities": {
+                            "io_k8s_api_core_v1_Pod_spec_containers_securityContext_capabilities_add": [
+                                {
+                                    "io_k8s_api_core_v1_Pod_spec_containers_securityContext_capabilities_add_StringValue": "IPC_LOCK"
+                                }
+                            ]
+                        }
+                    },
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/dev/hugepages",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "hugepage"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_resources": {
+                        "io_k8s_api_core_v1_Pod_spec_containers_resources_requests": [
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_containers_resources_requests_asString": "memory:1Gi"
+                            },
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_containers_resources_requests_asString": "hugepages-1Gi:2Gi"
+                            }
+                        ],
+                        "io_k8s_api_core_v1_Pod_spec_containers_resources_limits": [
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_containers_resources_limits_asString": "hugepages-1Gi:2Gi"
+                            }
+                        ]
+                    },
+                    "io_k8s_api_core_v1_Pod_spec_containers_command": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "sleep"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "infinity"
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_volumes": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "hugepage",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_emptyDir": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_emptyDir_medium": "HugePages"
+                    }
+                }
+            ]
+        }
+    }
+}

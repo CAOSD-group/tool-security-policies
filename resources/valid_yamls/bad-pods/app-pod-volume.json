@@ -1,0 +1,43 @@
+{
+    "filename": "app-pod-volume.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "nginx-vol"
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "nginx-1",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "nginx:latest",
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "nginx-volume",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/app/data"
+                        }
+                    ]
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "nginx-2",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "nginx:latest",
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "nginx-volume",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/app/data"
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_volumes": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "nginx-volume1",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_emptyDir": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_emptyDir_isEmpty": true
+                    }
+                }
+            ]
+        }
+    }
+}

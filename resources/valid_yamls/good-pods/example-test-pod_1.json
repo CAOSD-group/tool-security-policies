@@ -1,0 +1,69 @@
+{
+    "filename": "example-test-pod_1.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "local-pv-pod",
+            "io_k8s_api_core_v1_Pod_metadata_namespace": "default",
+            "io_k8s_api_core_v1_Pod_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "app",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "example-app"
+                }
+            ]
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_affinity": {
+                "io_k8s_api_core_v1_Pod_spec_affinity_nodeAffinity": {
+                    "io_k8s_api_core_v1_Pod_spec_affinity_nodeAffinity_requiredDuringSchedulingIgnoredDuringExecution": {
+                        "io_k8s_api_core_v1_Pod_spec_affinity_nodeAffinity_requiredDuringSchedulingIgnoredDuringExecution_nodeSelectorTerms": [
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_affinity_nodeAffinity_requiredDuringSchedulingIgnoredDuringExecution_nodeSelectorTerms_matchExpressions": [
+                                    {
+                                        "io_k8s_api_core_v1_Pod_spec_affinity_nodeAffinity_requiredDuringSchedulingIgnoredDuringExecution_nodeSelectorTerms_matchExpressions_key": "disktype",
+                                        "io_k8s_api_core_v1_Pod_spec_affinity_nodeAffinity_requiredDuringSchedulingIgnoredDuringExecution_nodeSelectorTerms_matchExpressions_operator": {
+                                            "io_k8s_api_core_v1_Pod_spec_affinity_nodeAffinity_requiredDuringSchedulingIgnoredDuringExecution_nodeSelectorTerms_matchExpressions_operator_In": true
+                                        },
+                                        "io_k8s_api_core_v1_Pod_spec_affinity_nodeAffinity_requiredDuringSchedulingIgnoredDuringExecution_nodeSelectorTerms_matchExpressions_values": [
+                                            {
+                                                "io_k8s_api_core_v1_Pod_spec_affinity_nodeAffinity_requiredDuringSchedulingIgnoredDuringExecution_nodeSelectorTerms_matchExpressions_values_StringValue": "hdd"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            "io_k8s_api_core_v1_Pod_spec_volumes": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "local-pv-storage",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_persistentVolumeClaim": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_persistentVolumeClaim_claimName": "local-pv-claim"
+                    }
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "task-pv-container",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "nginx",
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 80,
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_name": "http-server"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/usr/share/nginx/html",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "local-pv-storage"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

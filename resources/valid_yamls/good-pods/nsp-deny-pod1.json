@@ -1,0 +1,26 @@
+{
+    "filename": "nsp-deny-pod1.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_networking_v1_NetworkPolicy_apiVersion": "networking.k8s.io/v1",
+        "io_k8s_api_networking_v1_NetworkPolicy_kind": "NetworkPolicy",
+        "io_k8s_api_networking_v1_NetworkPolicy_metadata": {
+            "io_k8s_api_networking_v1_NetworkPolicy_metadata_name": "default-deny-pod",
+            "io_k8s_api_networking_v1_NetworkPolicy_metadata_namespace": "default"
+        },
+        "io_k8s_api_networking_v1_NetworkPolicy_spec": {
+            "io_k8s_api_networking_v1_NetworkPolicy_spec_podSelector": {
+                "io_k8s_api_networking_v1_NetworkPolicy_spec_podSelector_matchLabels": [
+                    {
+                        "io_k8s_api_networking_v1_NetworkPolicy_spec_podSelector_matchLabels_KeyMap": "run",
+                        "io_k8s_api_networking_v1_NetworkPolicy_spec_podSelector_matchLabels_ValueMap": "pod01"
+                    }
+                ]
+            },
+            "io_k8s_api_networking_v1_NetworkPolicy_spec_policyTypes": [
+                "Ingress",
+                "Egress"
+            ]
+        }
+    }
+}

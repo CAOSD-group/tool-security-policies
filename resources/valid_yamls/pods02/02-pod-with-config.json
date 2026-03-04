@@ -1,0 +1,49 @@
+{
+    "filename": "02-pod-with-config.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "centos-pod"
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "centos-container",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "centos:7",
+                    "io_k8s_api_core_v1_Pod_spec_containers_command": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "sleep"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "10000"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_env": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "URL",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "www.devops.com"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "DOMAIN",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "roboshop.internal"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "MONGO_URL",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "http://mongo-asdfsdaf.abc.com"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "USERNAME",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "admin"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "TIMEOUT",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "10"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

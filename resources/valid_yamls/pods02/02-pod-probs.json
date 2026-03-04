@@ -1,0 +1,58 @@
+{
+    "filename": "02-pod-probs.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "probe-pod"
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "test",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "busybox",
+                    "io_k8s_api_core_v1_Pod_spec_containers_args": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_args_StringValue": "/bin/sh"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_args_StringValue": "-c"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_args_StringValue": "touch /healthy; touch /ready; sleep 20; rm -rf /ready; sleep 40; rm -rf /healthy; sleep 100"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_livenessProbe": {
+                        "io_k8s_api_core_v1_Pod_spec_containers_livenessProbe_exec": {
+                            "io_k8s_api_core_v1_Pod_spec_containers_livenessProbe_exec_command": [
+                                {
+                                    "io_k8s_api_core_v1_Pod_spec_containers_livenessProbe_exec_command_StringValue": "cat"
+                                },
+                                {
+                                    "io_k8s_api_core_v1_Pod_spec_containers_livenessProbe_exec_command_StringValue": "/healthy"
+                                }
+                            ]
+                        },
+                        "io_k8s_api_core_v1_Pod_spec_containers_livenessProbe_initialDelaySeconds": 3,
+                        "io_k8s_api_core_v1_Pod_spec_containers_livenessProbe_periodSeconds": 5
+                    },
+                    "io_k8s_api_core_v1_Pod_spec_containers_readinessProbe": {
+                        "io_k8s_api_core_v1_Pod_spec_containers_readinessProbe_exec": {
+                            "io_k8s_api_core_v1_Pod_spec_containers_readinessProbe_exec_command": [
+                                {
+                                    "io_k8s_api_core_v1_Pod_spec_containers_readinessProbe_exec_command_StringValue": "cat"
+                                },
+                                {
+                                    "io_k8s_api_core_v1_Pod_spec_containers_readinessProbe_exec_command_StringValue": "/ready"
+                                }
+                            ]
+                        },
+                        "io_k8s_api_core_v1_Pod_spec_containers_readinessProbe_initialDelaySeconds": 3,
+                        "io_k8s_api_core_v1_Pod_spec_containers_readinessProbe_periodSeconds": 5
+                    }
+                }
+            ]
+        }
+    }
+}

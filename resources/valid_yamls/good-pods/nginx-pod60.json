@@ -1,0 +1,72 @@
+{
+    "filename": "nginx-pod60.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "nginx-pod",
+            "io_k8s_api_core_v1_Pod_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "app",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "nginx-pod"
+                }
+            ]
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "nginx",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "nginx",
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 80,
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_name": "http"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/etc/nginx/conf.d/default.conf",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "nginx-config",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_subPath": "nginx.conf"
+                        }
+                    ]
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "nginx-exporte",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "nginx/nginx-prometheus-exporter:0.11.0",
+                    "io_k8s_api_core_v1_Pod_spec_containers_args": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_args_StringValue": "-nginx.scrape-uri=http://localhost/metrics"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_resources": {
+                        "io_k8s_api_core_v1_Pod_spec_containers_resources_limits": [
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_containers_resources_limits_asString": "memory:128Mi"
+                            },
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_containers_resources_limits_asNumber": "cpu:0.3"
+                            }
+                        ]
+                    },
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 9113,
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_name": "metrics"
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_volumes": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "nginx-config",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_configMap": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_configMap_defaultMode": 420,
+                        "io_k8s_api_core_v1_Pod_spec_volumes_configMap_name": "nginx-config"
+                    }
+                }
+            ]
+        }
+    }
+}

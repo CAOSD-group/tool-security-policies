@@ -1,0 +1,85 @@
+{
+    "filename": "cka-q8-pod.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_creationTimestamp": {
+                "io_k8s_api_core_v1_Pod_metadata_creationTimestamp_isNull": true
+            },
+            "io_k8s_api_core_v1_Pod_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "run",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "voyager"
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_metadata_name": "voyager",
+            "io_k8s_api_core_v1_Pod_metadata_namespace": "space"
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "httpd",
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "voyager",
+                    "io_k8s_api_core_v1_Pod_spec_containers_resources": {},
+                    "io_k8s_api_core_v1_Pod_spec_containers_env": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "APP",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom": {
+                                "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef": {
+                                    "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef_name": "cm-7",
+                                    "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef_key": "app"
+                                }
+                            }
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "EXAM",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom": {
+                                "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef": {
+                                    "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef_name": "cm-7",
+                                    "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef_key": "exam"
+                                }
+                            }
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "cka-q8",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/cka-Q8/data"
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_volumes": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "cka-q8",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_configMap": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_configMap_name": "cm-8",
+                        "io_k8s_api_core_v1_Pod_spec_volumes_configMap_items": [
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_volumes_configMap_items_key": "tier1",
+                                "io_k8s_api_core_v1_Pod_spec_volumes_configMap_items_path": "tier1"
+                            },
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_volumes_configMap_items_key": "tier2",
+                                "io_k8s_api_core_v1_Pod_spec_volumes_configMap_items_path": "tier2"
+                            },
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_volumes_configMap_items_key": "tier3",
+                                "io_k8s_api_core_v1_Pod_spec_volumes_configMap_items_path": "tier3"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_dnsPolicy": {
+                "io_k8s_api_core_v1_Pod_spec_dnsPolicy_ClusterFirst": true
+            },
+            "io_k8s_api_core_v1_Pod_spec_restartPolicy": {
+                "io_k8s_api_core_v1_Pod_spec_restartPolicy_Always": true
+            }
+        },
+        "io_k8s_api_core_v1_Pod_status": {}
+    }
+}

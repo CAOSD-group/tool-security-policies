@@ -1,0 +1,16 @@
+{
+    "filename": "multi-pod-configmap1.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_ConfigMap_apiVersion": "v1",
+        "io_k8s_api_core_v1_ConfigMap_kind": "ConfigMap",
+        "io_k8s_api_core_v1_ConfigMap_metadata": {
+            "io_k8s_api_core_v1_ConfigMap_metadata_name": "mc3-nginx-conf"
+        },
+        "io_k8s_api_core_v1_ConfigMap_data": [
+            {
+                "io_k8s_api_core_v1_ConfigMap_data_StringValueAdditional": "nginx.conf:user  nginx;                           # Set the user for the Nginx process to 'nginx'.\nworker_processes  1;                   # Configure one worker process for Nginx.\nerror_log  /var/log/nginx/error.log warn;\n                                       # Define the location for error logs.\npid        /var/run/nginx.pid;\n                                       # Define the location for the process ID file.\nevents {                               # Configure event handling for Nginx.\n    worker_connections  1024;          # Limit the number of connections per worker.\n}                                      # Close the 'events' block.\n\nhttp {                                 # Configure HTTP settings for Nginx.\n    include       /etc/nginx/mime.types;\n                                       # Include the MIME types configuration.\n    default_type  application/octet-stream;\n                                       # Set the default MIME type for responses.\n    sendfile        on;                # Enable the use of sendfile for sending files efficiently.\n    keepalive_timeout  65;             # Set the timeout for keep-alive connections.\n    upstream webapp {                  # Define an upstream server named 'webapp'.\n        server 127.0.0.1:5000;         # Configure the address and port of the upstream server.\n    }                                  # Close the 'upstream' block.\n    \n    server {                           # Configure an HTTP server block.\n        listen 80;                     # Listen on port 80 for incoming HTTP requests.\n        location / {                   # Define a location block for the root path.\n            proxy_pass         http://webapp;\n                                       # Proxy incoming requests to the 'webapp' upstream server.\n            proxy_redirect     off;    # Disable automatic redirection of proxy responses.\n        }                              # Close the 'location' block.\n    }                                  # Close the 'server' block.\n}                                      # Close the 'http' block.\n                                "
+            }
+        ]
+    }
+}

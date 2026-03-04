@@ -1,0 +1,13 @@
+{
+    "filename": "01-testing-pod.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_ServiceAccount_apiVersion": "v1",
+        "io_k8s_api_core_v1_ServiceAccount_kind": "ServiceAccount",
+        "io_k8s_api_core_v1_ServiceAccount_metadata": {
+            "io_k8s_api_core_v1_ServiceAccount_metadata_name": "ndb-cluster-testing-pod-sa",
+            "io_k8s_api_core_v1_ServiceAccount_metadata_namespace": "ndb-cluster"
+        },
+        "io_k8s_api_core_v1_ServiceAccount_automountServiceAccountToken": true
+    }
+}

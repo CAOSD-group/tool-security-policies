@@ -1,0 +1,67 @@
+{
+    "filename": "admin-pod2.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "db",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "rethinkdb"
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "role",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "admin"
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_metadata_name": "rethinkdb-admin"
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "registry.k8s.io/rethinkdb:1.16.0_1",
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "rethinkdb",
+                    "io_k8s_api_core_v1_Pod_spec_containers_env": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "POD_NAMESPACE",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom": {
+                                "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_fieldRef": {
+                                    "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_fieldRef_fieldPath": "metadata.namespace"
+                                }
+                            }
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 8080,
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_name": "admin-port"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 28015,
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_name": "driver-port"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 29015,
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_name": "cluster-port"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/data/rethinkdb_data",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "rethinkdb-storage"
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_volumes": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "rethinkdb-storage",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_emptyDir": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_emptyDir_isEmpty": true
+                    }
+                }
+            ]
+        }
+    }
+}

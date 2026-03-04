@@ -1,0 +1,71 @@
+{
+    "filename": "mavenwebapprs_podaffinity1.yaml",
+    "apiVersion": "apps_v1",
+    "config": {
+        "io_k8s_api_apps_v1_ReplicaSet_apiVersion": "apps/v1",
+        "io_k8s_api_apps_v1_ReplicaSet_kind": "ReplicaSet",
+        "io_k8s_api_apps_v1_ReplicaSet_metadata": {
+            "io_k8s_api_apps_v1_ReplicaSet_metadata_name": "mavenwebapp",
+            "io_k8s_api_apps_v1_ReplicaSet_metadata_namespace": "test-ns"
+        },
+        "io_k8s_api_apps_v1_ReplicaSet_spec": {
+            "io_k8s_api_apps_v1_ReplicaSet_spec_replicas": 2,
+            "io_k8s_api_apps_v1_ReplicaSet_spec_selector": {
+                "io_k8s_api_apps_v1_ReplicaSet_spec_selector_matchLabels": [
+                    {
+                        "io_k8s_api_apps_v1_ReplicaSet_spec_selector_matchLabels_KeyMap": "app",
+                        "io_k8s_api_apps_v1_ReplicaSet_spec_selector_matchLabels_ValueMap": "mavenwebapp"
+                    }
+                ]
+            },
+            "io_k8s_api_apps_v1_ReplicaSet_spec_template": {
+                "io_k8s_api_apps_v1_ReplicaSet_spec_template_metadata": {
+                    "io_k8s_api_apps_v1_ReplicaSet_spec_template_metadata_name": "mavenwebapppod",
+                    "io_k8s_api_apps_v1_ReplicaSet_spec_template_metadata_labels": [
+                        {
+                            "io_k8s_api_apps_v1_ReplicaSet_spec_template_metadata_labels_KeyMap": "app",
+                            "io_k8s_api_apps_v1_ReplicaSet_spec_template_metadata_labels_ValueMap": "mavenwebapp"
+                        }
+                    ]
+                },
+                "io_k8s_api_apps_v1_ReplicaSet_spec_template_spec": {
+                    "io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_affinity": {
+                        "io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_affinity_podAffinity": {
+                            "io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_affinity_podAffinity_requiredDuringSchedulingIgnoredDuringExecution": [
+                                {
+                                    "io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_affinity_podAffinity_requiredDuringSchedulingIgnoredDuringExecution_labelSelector": {
+                                        "io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_affinity_podAffinity_requiredDuringSchedulingIgnoredDuringExecution_labelSelector_matchExpressions": [
+                                            {
+                                                "io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_affinity_podAffinity_requiredDuringSchedulingIgnoredDuringExecution_labelSelector_matchExpressions_key": "app",
+                                                "io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_affinity_podAffinity_requiredDuringSchedulingIgnoredDuringExecution_labelSelector_matchExpressions_operator": {
+                                                    "io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_affinity_podAffinity_requiredDuringSchedulingIgnoredDuringExecution_labelSelector_matchExpressions_operator_In": true
+                                                },
+                                                "io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_affinity_podAffinity_requiredDuringSchedulingIgnoredDuringExecution_labelSelector_matchExpressions_values": [
+                                                    {
+                                                        "io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_affinity_podAffinity_requiredDuringSchedulingIgnoredDuringExecution_labelSelector_matchExpressions_values_StringValue": "nginx"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_affinity_podAffinity_requiredDuringSchedulingIgnoredDuringExecution_topologyKey": "kubernetes.io/hostname"
+                                }
+                            ]
+                        }
+                    },
+                    "io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_containers": [
+                        {
+                            "io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_containers_name": "mavenwebappcontainer",
+                            "io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_containers_image": "nomrajdevops/maven-web-application:2",
+                            "io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_containers_ports": [
+                                {
+                                    "io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_containers_ports_containerPort": 8080
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

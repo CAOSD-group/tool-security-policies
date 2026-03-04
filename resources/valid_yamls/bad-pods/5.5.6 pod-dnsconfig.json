@@ -1,0 +1,54 @@
+{
+    "filename": "5.5.6 pod-dnsconfig.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "custom-dns"
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "custom-dns",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "tomcat",
+                    "io_k8s_api_core_v1_Pod_spec_containers_imagePullPolicy": {
+                        "io_k8s_api_core_v1_Pod_spec_containers_imagePullPolicy_IfNotPresent": true
+                    },
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 8080
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_dnsPolicy": {
+                "io_k8s_api_core_v1_Pod_spec_dnsPolicy_None": true
+            },
+            "io_k8s_api_core_v1_Pod_spec_dnsConfig": {
+                "io_k8s_api_core_v1_Pod_spec_dnsConfig_nameservers": [
+                    {
+                        "io_k8s_api_core_v1_Pod_spec_dnsConfig_nameservers_StringValue": "8.8.8.8"
+                    }
+                ],
+                "io_k8s_api_core_v1_Pod_spec_dnsConfig_searches": [
+                    {
+                        "io_k8s_api_core_v1_Pod_spec_dnsConfig_searches_StringValue": "ns1.svc.cluster-domain.example"
+                    },
+                    {
+                        "io_k8s_api_core_v1_Pod_spec_dnsConfig_searches_StringValue": "my.dns.search.suffix"
+                    }
+                ],
+                "io_k8s_api_core_v1_Pod_spec_dnsConfig_options": [
+                    {
+                        "io_k8s_api_core_v1_Pod_spec_dnsConfig_options_name": "ndots",
+                        "io_k8s_api_core_v1_Pod_spec_dnsConfig_options_value": "2"
+                    },
+                    {
+                        "io_k8s_api_core_v1_Pod_spec_dnsConfig_options_name": "edns0"
+                    }
+                ]
+            }
+        }
+    }
+}

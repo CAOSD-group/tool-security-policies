@@ -1,0 +1,64 @@
+{
+    "filename": "arctic4pidev_back_db_pod_ser.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "pod-pidev-backend-database",
+            "io_k8s_api_core_v1_Pod_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "app",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "label-pod-pidev-backend-database"
+                }
+            ]
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "pidev-database",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "mysql:latest",
+                    "io_k8s_api_core_v1_Pod_spec_containers_env": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "MYSQL_ROOT_PASSWORD",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "root"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 3306,
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_name": "cport-3306"
+                        }
+                    ]
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "pidev-backend",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "mdjdocker/arctic4_pidev_backend:latest",
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 9000,
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_name": "cport-9000"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 2424,
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_name": "cport-2424"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_livenessProbe": {
+                        "io_k8s_api_core_v1_Pod_spec_containers_livenessProbe_tcpSocket": {
+                            "io_k8s_api_core_v1_Pod_spec_containers_livenessProbe_tcpSocket_port": {
+                                "io_k8s_api_core_v1_Pod_spec_containers_livenessProbe_tcpSocket_port_asInteger": 3306
+                            }
+                        },
+                        "io_k8s_api_core_v1_Pod_spec_containers_livenessProbe_initialDelaySeconds": 5,
+                        "io_k8s_api_core_v1_Pod_spec_containers_livenessProbe_periodSeconds": 20,
+                        "io_k8s_api_core_v1_Pod_spec_containers_livenessProbe_failureThreshold": 3
+                    }
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_restartPolicy": {
+                "io_k8s_api_core_v1_Pod_spec_restartPolicy_Always": true
+            }
+        }
+    }
+}

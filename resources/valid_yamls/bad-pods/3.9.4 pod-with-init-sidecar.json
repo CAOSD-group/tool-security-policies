@@ -1,0 +1,124 @@
+{
+    "filename": "3.9.4 pod-with-init-sidecar.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "pod-with-init-sidecar",
+            "io_k8s_api_core_v1_Pod_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "app",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "init-sidecar"
+                }
+            ]
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_initContainers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_initContainers_name": "create-log-file",
+                    "io_k8s_api_core_v1_Pod_spec_initContainers_image": "busybox",
+                    "io_k8s_api_core_v1_Pod_spec_initContainers_imagePullPolicy": {
+                        "io_k8s_api_core_v1_Pod_spec_containers_imagePullPolicy_IfNotPresent": true,
+                        "io_k8s_api_core_v1_Pod_spec_initContainers_imagePullPolicy_IfNotPresent": true
+                    },
+                    "io_k8s_api_core_v1_Pod_spec_initContainers_command": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_command_StringValue": "sh"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_command_StringValue": "-c"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_command_StringValue": "touch /opt/logs.txt"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_initContainers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_volumeMounts_name": "data",
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_volumeMounts_mountPath": "/opt"
+                        }
+                    ]
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_spec_initContainers_name": "log-reader",
+                    "io_k8s_api_core_v1_Pod_spec_initContainers_image": "busybox",
+                    "io_k8s_api_core_v1_Pod_spec_initContainers_imagePullPolicy": {
+                        "io_k8s_api_core_v1_Pod_spec_containers_imagePullPolicy_IfNotPresent": true,
+                        "io_k8s_api_core_v1_Pod_spec_initContainers_imagePullPolicy_IfNotPresent": true
+                    },
+                    "io_k8s_api_core_v1_Pod_spec_initContainers_command": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_command_StringValue": "sh"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_command_StringValue": "-c"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_command_StringValue": "tail -f /opt/logs.txt"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_initContainers_restartPolicy": "Always",
+                    "io_k8s_api_core_v1_Pod_spec_initContainers_readinessProbe": {
+                        "io_k8s_api_core_v1_Pod_spec_initContainers_readinessProbe_exec": {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_readinessProbe_exec_command": [
+                                {
+                                    "io_k8s_api_core_v1_Pod_spec_initContainers_readinessProbe_exec_command_StringValue": "sh"
+                                },
+                                {
+                                    "io_k8s_api_core_v1_Pod_spec_initContainers_readinessProbe_exec_command_StringValue": "-c"
+                                },
+                                {
+                                    "io_k8s_api_core_v1_Pod_spec_initContainers_readinessProbe_exec_command_StringValue": "ls /opt/logs.txt"
+                                }
+                            ]
+                        },
+                        "io_k8s_api_core_v1_Pod_spec_initContainers_readinessProbe_initialDelaySeconds": 1,
+                        "io_k8s_api_core_v1_Pod_spec_initContainers_readinessProbe_timeoutSeconds": 1
+                    },
+                    "io_k8s_api_core_v1_Pod_spec_initContainers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_volumeMounts_name": "data",
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_volumeMounts_mountPath": "/opt"
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "log-writer",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "busybox",
+                    "io_k8s_api_core_v1_Pod_spec_containers_imagePullPolicy": {
+                        "io_k8s_api_core_v1_Pod_spec_containers_imagePullPolicy_IfNotPresent": true,
+                        "io_k8s_api_core_v1_Pod_spec_initContainers_imagePullPolicy_IfNotPresent": true
+                    },
+                    "io_k8s_api_core_v1_Pod_spec_containers_command": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "sh"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "-c"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "i=1; while true; do echo \"$i hello\" >> /opt/logs.txt; i=$((i+1)); sleep 1; done"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "data",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/opt"
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_volumes": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "data",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_emptyDir": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_emptyDir_isEmpty": true
+                    }
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,50 @@
+{
+    "filename": "2-pod2.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "pod1"
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "contenedor1",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "nginx:latest",
+                    "io_k8s_api_core_v1_Pod_spec_containers_env": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "variable1",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "valor1"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "variable2",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "valor2"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_name": "web",
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 80,
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_protocol": {
+                                "io_k8s_api_core_v1_Pod_spec_containers_ports_protocol_TCP": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "contenedor2",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "ubuntu:latest",
+                    "io_k8s_api_core_v1_Pod_spec_containers_command": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "sleep"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "3600"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,49 @@
+{
+    "filename": "app-pod4.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "web-app-pod",
+            "io_k8s_api_core_v1_Pod_metadata_namespace": "webapp-namespace",
+            "io_k8s_api_core_v1_Pod_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "app",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "employees"
+                }
+            ]
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "web-app-container",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "945233852280.dkr.ecr.us-east-1.amazonaws.com/apprepo:v0.0",
+                    "io_k8s_api_core_v1_Pod_spec_containers_env": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "DBPORT",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "3306"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "DBHOST",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "10.244.0.31"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "DBUSER",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "root"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "DBPWD",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "vbbarot"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 8080
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

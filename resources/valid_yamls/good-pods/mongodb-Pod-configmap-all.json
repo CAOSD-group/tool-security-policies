@@ -1,0 +1,46 @@
+{
+    "filename": "mongodb-Pod-configmap-all.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "mongodb"
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "mongodb",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "mongo:latest",
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 27017
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_envFrom": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_envFrom_prefix": "MONGO",
+                            "io_k8s_api_core_v1_Pod_spec_containers_envFrom_configMapRef": {
+                                "io_k8s_api_core_v1_Pod_spec_containers_envFrom_configMapRef_name": "mongodb-config"
+                            }
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "mongo-persistent-storage",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/data/db"
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_volumes": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "mongo-persistent-storage",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_persistentVolumeClaim": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_persistentVolumeClaim_claimName": "mongodb-pvc"
+                    }
+                }
+            ]
+        }
+    }
+}

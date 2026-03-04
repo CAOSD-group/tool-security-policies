@@ -1,0 +1,77 @@
+{
+    "filename": "config-pod-2.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "config-pod",
+            "io_k8s_api_core_v1_Pod_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "app.kubernetes.io/name",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "config-pod"
+                }
+            ]
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "config",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "busybox",
+                    "io_k8s_api_core_v1_Pod_spec_containers_command": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "sh"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "-c"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "sleep 3600"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_env": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "FIRST_NAME",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom": {
+                                "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef": {
+                                    "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef_name": "simple-config",
+                                    "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef_key": "name"
+                                }
+                            }
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "PORT_NUMBER",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom": {
+                                "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef": {
+                                    "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef_name": "simple-config",
+                                    "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef_key": "portNumber"
+                                }
+                            }
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "config",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/config",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_readOnly": true
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_volumes": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "config",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_configMap": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_configMap_name": "simple-config",
+                        "io_k8s_api_core_v1_Pod_spec_volumes_configMap_items": [
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_volumes_configMap_items_key": "settings.env",
+                                "io_k8s_api_core_v1_Pod_spec_volumes_configMap_items_path": "local.env"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+}

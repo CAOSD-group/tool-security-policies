@@ -1,0 +1,50 @@
+{
+    "filename": "nbody-pod_1.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "nbody-gpu-benchmark",
+            "io_k8s_api_core_v1_Pod_metadata_namespace": "default"
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_restartPolicy": {
+                "io_k8s_api_core_v1_Pod_spec_restartPolicy_OnFailure": true
+            },
+            "io_k8s_api_core_v1_Pod_spec_runtimeClassName": "nvidia",
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "cuda-container",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "nvcr.io/nvidia/k8s/cuda-sample:nbody",
+                    "io_k8s_api_core_v1_Pod_spec_containers_args": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_args_StringValue": "nbody"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_args_StringValue": "-gpu"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_args_StringValue": "-benchmark"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_resources": {
+                        "io_k8s_api_core_v1_Pod_spec_containers_resources_limits": [
+                            "nvidia.com/gpu"
+                        ]
+                    },
+                    "io_k8s_api_core_v1_Pod_spec_containers_env": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "NVIDIA_VISIBLE_DEVICES",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "all"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "NVIDIA_DRIVER_CAPABILITIES",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "all"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

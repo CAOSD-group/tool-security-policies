@@ -1,0 +1,59 @@
+{
+    "filename": "db-pod7.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "db",
+            "io_k8s_api_core_v1_Pod_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "app",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "postgres"
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "role",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "database"
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "tier",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "back"
+                }
+            ]
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "db",
+                    "io_k8s_api_core_v1_Pod_spec_containers_env": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "POSTGRES_PASSWORD",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "root"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "postgres:9.4",
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 5432
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "db-data",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/var/lib/postgresql/data"
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_volumes": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "db-data",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_hostPath": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_hostPath_path": "/var/lib/pgdata",
+                        "io_k8s_api_core_v1_Pod_spec_volumes_hostPath_type": "DirectoryOrCreate"
+                    }
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,63 @@
+{
+    "filename": "jekyll-pod2.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_namespace": "development",
+            "io_k8s_api_core_v1_Pod_metadata_name": "jekyll",
+            "io_k8s_api_core_v1_Pod_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "run",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "jekyll"
+                }
+            ]
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "jekyll",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "kodekloud/jekyll-serve",
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/site",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "site"
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_initContainers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_initContainers_name": "copy-jekyll-site",
+                    "io_k8s_api_core_v1_Pod_spec_initContainers_image": "kodekloud/jekyll",
+                    "io_k8s_api_core_v1_Pod_spec_initContainers_command": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_command_StringValue": "jekyll"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_command_StringValue": "new"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_command_StringValue": "/site"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_initContainers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_volumeMounts_mountPath": "/site",
+                            "io_k8s_api_core_v1_Pod_spec_initContainers_volumeMounts_name": "site"
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_volumes": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "site",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_persistentVolumeClaim": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_persistentVolumeClaim_claimName": "jekyll-site"
+                    }
+                }
+            ]
+        }
+    }
+}

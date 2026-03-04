@@ -1,0 +1,66 @@
+{
+    "filename": "1.pod_auth-api_1.yaml",
+    "apiVersion": "apps_v1",
+    "config": {
+        "io_k8s_api_apps_v1_Deployment_apiVersion": "apps/v1",
+        "io_k8s_api_apps_v1_Deployment_kind": "Deployment",
+        "io_k8s_api_apps_v1_Deployment_metadata": {
+            "io_k8s_api_apps_v1_Deployment_metadata_name": "auth-api-deployment",
+            "io_k8s_api_apps_v1_Deployment_metadata_namespace": "ns-todo-app-k8s-local",
+            "io_k8s_api_apps_v1_Deployment_metadata_labels": [
+                {
+                    "io_k8s_api_apps_v1_Deployment_metadata_labels_KeyMap": "app",
+                    "io_k8s_api_apps_v1_Deployment_metadata_labels_ValueMap": "auth-api"
+                }
+            ]
+        },
+        "io_k8s_api_apps_v1_Deployment_spec": {
+            "io_k8s_api_apps_v1_Deployment_spec_replicas": 2,
+            "io_k8s_api_apps_v1_Deployment_spec_selector": {
+                "io_k8s_api_apps_v1_Deployment_spec_selector_matchLabels": [
+                    {
+                        "io_k8s_api_apps_v1_Deployment_spec_selector_matchLabels_KeyMap": "app",
+                        "io_k8s_api_apps_v1_Deployment_spec_selector_matchLabels_ValueMap": "auth-api"
+                    }
+                ]
+            },
+            "io_k8s_api_apps_v1_Deployment_spec_template": {
+                "io_k8s_api_apps_v1_Deployment_spec_template_metadata": {
+                    "io_k8s_api_apps_v1_Deployment_spec_template_metadata_labels": [
+                        {
+                            "io_k8s_api_apps_v1_Deployment_spec_template_metadata_labels_KeyMap": "app",
+                            "io_k8s_api_apps_v1_Deployment_spec_template_metadata_labels_ValueMap": "auth-api"
+                        }
+                    ]
+                },
+                "io_k8s_api_apps_v1_Deployment_spec_template_spec": {
+                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers": [
+                        {
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_name": "auth-api",
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_image": "leandrohinz/auth-api:v1",
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_ports": [
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_ports_containerPort": 8000
+                                }
+                            ],
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_env": [
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_env_name": "AUTH_API_PORT",
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_env_value": "8000"
+                                },
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_env_name": "USERS_API_ADDRESS",
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_env_value": "http://users-api-service.ns-todo-app-k8s-local.svc.cluster.local:8083"
+                                },
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_env_name": "JWT_SECRET",
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_env_value": "foo"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

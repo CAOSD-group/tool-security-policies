@@ -1,0 +1,53 @@
+{
+    "filename": "mariadb_pod.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "mariadb-demo",
+            "io_k8s_api_core_v1_Pod_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "app",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "mariadb"
+                }
+            ]
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_nodeSelector": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_nodeSelector_StringValueAdditional": "topology.kubernetes.io/zone:us-west1-a"
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "mariadb-container",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "mariadb:latest",
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/var/lib/mysql",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "mariadb-volume"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_env": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "MARIADB_ROOT_PASSWORD",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "your database password"
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_volumes": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "mariadb-volume",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_gcePersistentDisk": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_gcePersistentDisk_pdName": "mariadb-disk",
+                        "io_k8s_api_core_v1_Pod_spec_volumes_gcePersistentDisk_fsType": {
+                            "io_k8s_api_core_v1_Pod_spec_volumes_gcePersistentDisk_fsType_ext4": true
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

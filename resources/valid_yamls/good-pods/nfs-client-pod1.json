@@ -1,0 +1,85 @@
+{
+    "filename": "nfs-client-pod1.yaml",
+    "apiVersion": "apps_v1",
+    "config": {
+        "io_k8s_api_apps_v1_Deployment_apiVersion": "apps/v1",
+        "io_k8s_api_apps_v1_Deployment_kind": "Deployment",
+        "io_k8s_api_apps_v1_Deployment_metadata": {
+            "io_k8s_api_apps_v1_Deployment_metadata_name": "nfs-client-provisioner",
+            "io_k8s_api_apps_v1_Deployment_metadata_labels": [
+                {
+                    "io_k8s_api_apps_v1_Deployment_metadata_labels_KeyMap": "app",
+                    "io_k8s_api_apps_v1_Deployment_metadata_labels_ValueMap": "nfs-client-provisioner"
+                }
+            ],
+            "io_k8s_api_apps_v1_Deployment_metadata_namespace": "default"
+        },
+        "io_k8s_api_apps_v1_Deployment_spec": {
+            "io_k8s_api_apps_v1_Deployment_spec_replicas": 1,
+            "io_k8s_api_apps_v1_Deployment_spec_selector": {
+                "io_k8s_api_apps_v1_Deployment_spec_selector_matchLabels": [
+                    {
+                        "io_k8s_api_apps_v1_Deployment_spec_selector_matchLabels_KeyMap": "app",
+                        "io_k8s_api_apps_v1_Deployment_spec_selector_matchLabels_ValueMap": "nfs-client-provisioner"
+                    }
+                ]
+            },
+            "io_k8s_api_apps_v1_Deployment_spec_strategy": {
+                "io_k8s_api_apps_v1_Deployment_spec_strategy_type": {
+                    "io_k8s_api_apps_v1_Deployment_spec_strategy_type_Recreate": true
+                }
+            },
+            "io_k8s_api_apps_v1_Deployment_spec_template": {
+                "io_k8s_api_apps_v1_Deployment_spec_template_metadata": {
+                    "io_k8s_api_apps_v1_Deployment_spec_template_metadata_labels": [
+                        {
+                            "io_k8s_api_apps_v1_Deployment_spec_template_metadata_labels_KeyMap": "app",
+                            "io_k8s_api_apps_v1_Deployment_spec_template_metadata_labels_ValueMap": "nfs-client-provisioner"
+                        }
+                    ]
+                },
+                "io_k8s_api_apps_v1_Deployment_spec_template_spec": {
+                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_serviceAccountName": "nfs-client-provisioner",
+                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers": [
+                        {
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_name": "nfs-client-provisioner",
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_image": "registry.cn-beijing.aliyuncs.com/pylixm/nfs-subdir-external-provisioner:v4.0.0",
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_imagePullPolicy": {
+                                "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_imagePullPolicy_IfNotPresent": true
+                            },
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_volumeMounts": [
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_volumeMounts_name": "nfs-client-root",
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_volumeMounts_mountPath": "/persistentvolumes"
+                                }
+                            ],
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_env": [
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_env_name": "PROVISIONER_NAME",
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_env_value": "nfs-client-provisioner"
+                                },
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_env_name": "NFS_SERVER",
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_env_value": "10.40.4.155"
+                                },
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_env_name": "NFS_PATH",
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_env_value": "/home/nfs_share/k8s-data"
+                                }
+                            ]
+                        }
+                    ],
+                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_volumes": [
+                        {
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_volumes_name": "nfs-client-root",
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_volumes_nfs": {
+                                "io_k8s_api_apps_v1_Deployment_spec_template_spec_volumes_nfs_server": "10.40.4.155",
+                                "io_k8s_api_apps_v1_Deployment_spec_template_spec_volumes_nfs_path": "/home/nfs_share/k8s-data"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

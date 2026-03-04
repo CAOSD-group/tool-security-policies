@@ -1,0 +1,27 @@
+{
+    "filename": "5.5.3 pod-hostname-subdomain_1.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Service_apiVersion": "v1",
+        "io_k8s_api_core_v1_Service_kind": "Service",
+        "io_k8s_api_core_v1_Service_metadata": {
+            "io_k8s_api_core_v1_Service_metadata_name": "mysubdomain"
+        },
+        "io_k8s_api_core_v1_Service_spec": {
+            "io_k8s_api_core_v1_Service_spec_selector": [
+                {
+                    "io_k8s_api_core_v1_Service_spec_selector_KeyMap": "app",
+                    "io_k8s_api_core_v1_Service_spec_selector_ValueMap": "webapp"
+                }
+            ],
+            "io_k8s_api_core_v1_Service_spec_clusterIP": {
+                "io_k8s_api_core_v1_Service_spec_clusterIP_None": true
+            },
+            "io_k8s_api_core_v1_Service_spec_ports": [
+                {
+                    "io_k8s_api_core_v1_Service_spec_ports_port": 8080
+                }
+            ]
+        }
+    }
+}

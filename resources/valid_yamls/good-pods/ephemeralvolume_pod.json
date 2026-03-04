@@ -1,0 +1,63 @@
+{
+    "filename": "ephemeralvolume_pod.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "ephemeralvolume-pod",
+            "io_k8s_api_core_v1_Pod_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "pod",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "timeserver-pod"
+                }
+            ]
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "timeserver-container",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "docker.io/wdenniss/timeserver:1",
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/scratch",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "scratch-volume"
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_volumes": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "scratch-volume",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_ephemeral": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_ephemeral_volumeClaimTemplate": {
+                            "io_k8s_api_core_v1_Pod_spec_volumes_ephemeral_volumeClaimTemplate_metadata": {
+                                "io_k8s_api_core_v1_Pod_spec_volumes_ephemeral_volumeClaimTemplate_metadata_labels": [
+                                    {
+                                        "io_k8s_api_core_v1_Pod_spec_volumes_ephemeral_volumeClaimTemplate_metadata_labels_KeyMap": "type",
+                                        "io_k8s_api_core_v1_Pod_spec_volumes_ephemeral_volumeClaimTemplate_metadata_labels_ValueMap": "scratch-volume"
+                                    }
+                                ]
+                            },
+                            "io_k8s_api_core_v1_Pod_spec_volumes_ephemeral_volumeClaimTemplate_spec": {
+                                "io_k8s_api_core_v1_Pod_spec_volumes_ephemeral_volumeClaimTemplate_spec_accessModes": [
+                                    {
+                                        "io_k8s_api_core_v1_Pod_spec_volumes_ephemeral_volumeClaimTemplate_spec_accessModes_StringValue": "ReadWriteOnce"
+                                    }
+                                ],
+                                "io_k8s_api_core_v1_Pod_spec_volumes_ephemeral_volumeClaimTemplate_spec_storageClassName": "ephemeral",
+                                "io_k8s_api_core_v1_Pod_spec_volumes_ephemeral_volumeClaimTemplate_spec_resources": {
+                                    "io_k8s_api_core_v1_Pod_spec_volumes_ephemeral_volumeClaimTemplate_spec_resources_requests": [
+                                        {
+                                            "io_k8s_api_core_v1_Pod_spec_volumes_ephemeral_volumeClaimTemplate_spec_resources_requests_asString": "storage:1Ti"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,75 @@
+{
+    "filename": "deployment-podsecuritycontext1.yaml",
+    "apiVersion": "apps_v1",
+    "config": {
+        "io_k8s_api_apps_v1_Deployment_apiVersion": "apps/v1",
+        "io_k8s_api_apps_v1_Deployment_kind": "Deployment",
+        "io_k8s_api_apps_v1_Deployment_metadata": {
+            "io_k8s_api_apps_v1_Deployment_metadata_name": "pi-web",
+            "io_k8s_api_apps_v1_Deployment_metadata_labels": [
+                {
+                    "io_k8s_api_apps_v1_Deployment_metadata_labels_KeyMap": "kiamol",
+                    "io_k8s_api_apps_v1_Deployment_metadata_labels_ValueMap": "ch16"
+                }
+            ]
+        },
+        "io_k8s_api_apps_v1_Deployment_spec": {
+            "io_k8s_api_apps_v1_Deployment_spec_selector": {
+                "io_k8s_api_apps_v1_Deployment_spec_selector_matchLabels": [
+                    {
+                        "io_k8s_api_apps_v1_Deployment_spec_selector_matchLabels_KeyMap": "app",
+                        "io_k8s_api_apps_v1_Deployment_spec_selector_matchLabels_ValueMap": "pi-web"
+                    }
+                ]
+            },
+            "io_k8s_api_apps_v1_Deployment_spec_template": {
+                "io_k8s_api_apps_v1_Deployment_spec_template_metadata": {
+                    "io_k8s_api_apps_v1_Deployment_spec_template_metadata_labels": [
+                        {
+                            "io_k8s_api_apps_v1_Deployment_spec_template_metadata_labels_KeyMap": "app",
+                            "io_k8s_api_apps_v1_Deployment_spec_template_metadata_labels_ValueMap": "pi-web"
+                        }
+                    ]
+                },
+                "io_k8s_api_apps_v1_Deployment_spec_template_spec": {
+                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_securityContext": {
+                        "io_k8s_api_apps_v1_Deployment_spec_template_spec_securityContext_runAsUser": 65534,
+                        "io_k8s_api_apps_v1_Deployment_spec_template_spec_securityContext_runAsGroup": 3000
+                    },
+                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers": [
+                        {
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_image": "kiamol/ch05-pi",
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_command": [
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_command_StringValue": "dotnet"
+                                },
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_command_StringValue": "Pi.Web.dll"
+                                },
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_command_StringValue": "-m"
+                                },
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_command_StringValue": "web"
+                                }
+                            ],
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_name": "web",
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_ports": [
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_ports_containerPort": 5001,
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_ports_name": "http"
+                                }
+                            ],
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_env": [
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_env_name": "ASPNETCORE_URLS",
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_env_value": "http://+:5001"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

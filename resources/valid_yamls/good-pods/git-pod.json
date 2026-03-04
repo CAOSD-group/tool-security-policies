@@ -1,0 +1,51 @@
+{
+    "filename": "git-pod.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "pod-git",
+            "io_k8s_api_core_v1_Pod_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "app",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "notes"
+                }
+            ]
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "php:apache",
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "container-git",
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/var/www/html",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "git-volume"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/data",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "data-volume"
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_volumes": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "git-volume",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_gitRepo": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_gitRepo_repository": "https://github.com/shekeriev/k8s-notes.git",
+                        "io_k8s_api_core_v1_Pod_spec_volumes_gitRepo_revision": "main",
+                        "io_k8s_api_core_v1_Pod_spec_volumes_gitRepo_directory": "."
+                    }
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "data-volume",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_emptyDir": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_emptyDir_isEmpty": true
+                    }
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,59 @@
+{
+    "filename": "flaskapp-pod.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "flaskapp-pod",
+            "io_k8s_api_core_v1_Pod_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "app",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "flaskapp"
+                }
+            ]
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "nginx:1.25.3-alpine",
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "proxy-container",
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "nginx-proxy-config",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/etc/nginx"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 80,
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_protocol": {
+                                "io_k8s_api_core_v1_Pod_spec_containers_ports_protocol_TCP": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "dbgurum/py_flask:2.0",
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "flaskapp-container",
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 9000,
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_protocol": {
+                                "io_k8s_api_core_v1_Pod_spec_containers_ports_protocol_TCP": true
+                            }
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_volumes": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "nginx-proxy-config",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_configMap": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_configMap_name": "nginx-conf"
+                    }
+                }
+            ]
+        }
+    }
+}

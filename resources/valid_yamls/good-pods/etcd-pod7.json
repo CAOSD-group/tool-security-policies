@@ -1,0 +1,118 @@
+{
+    "filename": "etcd-pod7.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_ReplicationController_kind": "ReplicationController",
+        "io_k8s_api_core_v1_ReplicationController_apiVersion": "v1",
+        "io_k8s_api_core_v1_ReplicationController_metadata": {
+            "io_k8s_api_core_v1_ReplicationController_metadata_name": "etcd",
+            "io_k8s_api_core_v1_ReplicationController_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_ReplicationController_metadata_labels_KeyMap": "etcd",
+                    "io_k8s_api_core_v1_ReplicationController_metadata_labels_ValueMap": "true"
+                }
+            ]
+        },
+        "io_k8s_api_core_v1_ReplicationController_spec": {
+            "io_k8s_api_core_v1_ReplicationController_spec_replicas": 1,
+            "io_k8s_api_core_v1_ReplicationController_spec_selector": [
+                {
+                    "io_k8s_api_core_v1_ReplicationController_spec_selector_StringValueAdditional": "etcd:true"
+                }
+            ],
+            "io_k8s_api_core_v1_ReplicationController_spec_template": {
+                "io_k8s_api_core_v1_ReplicationController_spec_template_metadata": {
+                    "io_k8s_api_core_v1_ReplicationController_spec_template_metadata_labels": [
+                        {
+                            "io_k8s_api_core_v1_ReplicationController_spec_template_metadata_labels_KeyMap": "etcd",
+                            "io_k8s_api_core_v1_ReplicationController_spec_template_metadata_labels_ValueMap": "true"
+                        }
+                    ]
+                },
+                "io_k8s_api_core_v1_ReplicationController_spec_template_spec": {
+                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers": [
+                        {
+                            "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_name": "etcd",
+                            "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_image": "gcr.io/etcd-development/etcd:v3.0.15",
+                            "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_command": [
+                                {
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_command_StringValue": "etcd"
+                                },
+                                {
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_command_StringValue": "--listen-client-urls=https://0.0.0.0:4001"
+                                },
+                                {
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_command_StringValue": "--advertise-client-urls=https://etcd.kube-public.svc:4001"
+                                },
+                                {
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_command_StringValue": "--trusted-ca-file=/var/run/serving-ca/ca.crt"
+                                },
+                                {
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_command_StringValue": "--cert-file=/var/run/serving-cert/tls.crt"
+                                },
+                                {
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_command_StringValue": "--key-file=/var/run/serving-cert/tls.key"
+                                },
+                                {
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_command_StringValue": "--client-cert-auth=true"
+                                },
+                                {
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_command_StringValue": "--listen-peer-urls=https://0.0.0.0:7001"
+                                },
+                                {
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_command_StringValue": "--initial-advertise-peer-urls=https://etcd.kube-public.svc:7001"
+                                },
+                                {
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_command_StringValue": "--peer-trusted-ca-file=/var/run/serving-ca/ca.crt"
+                                },
+                                {
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_command_StringValue": "--peer-cert-file=/var/run/serving-cert/tls.crt"
+                                },
+                                {
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_command_StringValue": "--peer-key-file=/var/run/serving-cert/tls.key"
+                                },
+                                {
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_command_StringValue": "--peer-client-cert-auth=true"
+                                },
+                                {
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_command_StringValue": "--initial-cluster=default=https://etcd.kube-public.svc:7001"
+                                }
+                            ],
+                            "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_ports": [
+                                {
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_ports_containerPort": 4001
+                                }
+                            ],
+                            "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_volumeMounts": [
+                                {
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_volumeMounts_mountPath": "/var/run/serving-cert",
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_volumeMounts_name": "volume-serving-cert"
+                                },
+                                {
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_volumeMounts_mountPath": "/var/run/serving-ca",
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_volumeMounts_name": "volume-etcd-ca"
+                                }
+                            ]
+                        }
+                    ],
+                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_volumes": [
+                        {
+                            "io_k8s_api_core_v1_ReplicationController_spec_template_spec_volumes_secret": {
+                                "io_k8s_api_core_v1_ReplicationController_spec_template_spec_volumes_secret_defaultMode": 420,
+                                "io_k8s_api_core_v1_ReplicationController_spec_template_spec_volumes_secret_secretName": "serving-etcd"
+                            },
+                            "io_k8s_api_core_v1_ReplicationController_spec_template_spec_volumes_name": "volume-serving-cert"
+                        },
+                        {
+                            "io_k8s_api_core_v1_ReplicationController_spec_template_spec_volumes_configMap": {
+                                "io_k8s_api_core_v1_ReplicationController_spec_template_spec_volumes_configMap_defaultMode": 420,
+                                "io_k8s_api_core_v1_ReplicationController_spec_template_spec_volumes_configMap_name": "etcd-ca"
+                            },
+                            "io_k8s_api_core_v1_ReplicationController_spec_template_spec_volumes_name": "volume-etcd-ca"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

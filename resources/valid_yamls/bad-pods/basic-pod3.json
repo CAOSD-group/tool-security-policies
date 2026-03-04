@@ -1,0 +1,47 @@
+{
+    "filename": "basic-pod3.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "configmap-demo-pod"
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "demo",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "alpine",
+                    "io_k8s_api_core_v1_Pod_spec_containers_command": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "sleep"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "3600"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_env": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "PLAYER_INITIAL_LIVES",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom": {
+                                "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef": {
+                                    "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef_name": "game-demo",
+                                    "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef_key": "player_initial_lives"
+                                }
+                            }
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "UI_PROPERTIES_FILE_NAME",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom": {
+                                "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef": {
+                                    "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef_name": "game-demo",
+                                    "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_configMapKeyRef_key": "ui_properties_file_name"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

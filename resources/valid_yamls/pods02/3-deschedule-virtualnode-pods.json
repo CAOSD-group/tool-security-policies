@@ -1,0 +1,17 @@
+{
+    "filename": "3-deschedule-virtualnode-pods.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_ConfigMap_apiVersion": "v1",
+        "io_k8s_api_core_v1_ConfigMap_kind": "ConfigMap",
+        "io_k8s_api_core_v1_ConfigMap_metadata": {
+            "io_k8s_api_core_v1_ConfigMap_metadata_name": "descheduler",
+            "io_k8s_api_core_v1_ConfigMap_metadata_namespace": "kube-system"
+        },
+        "io_k8s_api_core_v1_ConfigMap_data": [
+            {
+                "io_k8s_api_core_v1_ConfigMap_data_StringValueAdditional": "policy.yaml:apiVersion: \"descheduler/v1alpha2\"\nkind: \"DeschedulerPolicy\"\nprofiles:\n  - name: ProfileName\n    pluginConfig:\n    - name: \"RemovePodsViolatingNodeAffinity\"\n      args:\n        nodeAffinityType:\n        - \"preferredDuringSchedulingIgnoredDuringExecution\"\n    plugins:\n      deschedule:\n        enabled:\n          - \"RemovePodsViolatingNodeAffinity\""
+            }
+        ]
+    }
+}

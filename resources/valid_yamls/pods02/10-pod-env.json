@@ -1,0 +1,37 @@
+{
+    "filename": "10-pod-env.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "my-pod"
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_restartPolicy": {
+                "io_k8s_api_core_v1_Pod_spec_restartPolicy_Never": true
+            },
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "ubuntu",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "ubuntu",
+                    "io_k8s_api_core_v1_Pod_spec_containers_env": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "request.timeout",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "10ms"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "spring.profiles.active",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "dev"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_args": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_args_StringValue": "env"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

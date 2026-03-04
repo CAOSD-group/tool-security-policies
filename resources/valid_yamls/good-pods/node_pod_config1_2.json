@@ -1,0 +1,77 @@
+{
+    "filename": "node_pod_config1_2.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "poc-node-pod",
+            "io_k8s_api_core_v1_Pod_metadata_namespace": "v6-node"
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "dummy-node-server",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "docker.io/hectorcadavid/dummy_v6_node:latest",
+                    "io_k8s_api_core_v1_Pod_spec_containers_tty": true,
+                    "io_k8s_api_core_v1_Pod_spec_containers_env": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "HOST_IP",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom": {
+                                "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_fieldRef": {
+                                    "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_fieldRef_fieldPath": "status.hostIP"
+                                }
+                            }
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "PORT",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "5000"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_command": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "python"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_command_StringValue": "node.py"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "task-files-root",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/app/tasks"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "kube-config-file",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/app/.kube/config"
+                        },
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "v6-node-config-file",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/app/.v6node/node_config.yaml"
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_volumes": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "task-files-root",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_hostPath": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_hostPath_path": "/tmp/tasks"
+                    }
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "kube-config-file",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_hostPath": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_hostPath_path": "/home/hcadavid/.kube/config"
+                    }
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "v6-node-config-file",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_hostPath": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_hostPath_path": "/home/hcadavid/k8s/v6-on-kubernetes-PoC/node_poc/node_config.yaml"
+                    }
+                }
+            ]
+        }
+    }
+}

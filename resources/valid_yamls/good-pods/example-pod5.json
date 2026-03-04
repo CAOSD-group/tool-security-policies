@@ -1,0 +1,51 @@
+{
+    "filename": "example-pod5.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_ReplicationController_apiVersion": "v1",
+        "io_k8s_api_core_v1_ReplicationController_kind": "ReplicationController",
+        "io_k8s_api_core_v1_ReplicationController_metadata": {
+            "io_k8s_api_core_v1_ReplicationController_metadata_name": "server"
+        },
+        "io_k8s_api_core_v1_ReplicationController_spec": {
+            "io_k8s_api_core_v1_ReplicationController_spec_replicas": 1,
+            "io_k8s_api_core_v1_ReplicationController_spec_selector": [
+                {
+                    "io_k8s_api_core_v1_ReplicationController_spec_selector_StringValueAdditional": "role:server"
+                }
+            ],
+            "io_k8s_api_core_v1_ReplicationController_spec_template": {
+                "io_k8s_api_core_v1_ReplicationController_spec_template_metadata": {
+                    "io_k8s_api_core_v1_ReplicationController_spec_template_metadata_labels": [
+                        {
+                            "io_k8s_api_core_v1_ReplicationController_spec_template_metadata_labels_KeyMap": "role",
+                            "io_k8s_api_core_v1_ReplicationController_spec_template_metadata_labels_ValueMap": "server"
+                        }
+                    ]
+                },
+                "io_k8s_api_core_v1_ReplicationController_spec_template_spec": {
+                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers": [
+                        {
+                            "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_name": "server",
+                            "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_image": "nginx",
+                            "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_volumeMounts": [
+                                {
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_volumeMounts_mountPath": "/var/lib/www/html",
+                                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_volumeMounts_name": "cinderpvc"
+                                }
+                            ]
+                        }
+                    ],
+                    "io_k8s_api_core_v1_ReplicationController_spec_template_spec_volumes": [
+                        {
+                            "io_k8s_api_core_v1_ReplicationController_spec_template_spec_volumes_name": "cinderpvc",
+                            "io_k8s_api_core_v1_ReplicationController_spec_template_spec_volumes_persistentVolumeClaim": {
+                                "io_k8s_api_core_v1_ReplicationController_spec_template_spec_volumes_persistentVolumeClaim_claimName": "claim1"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

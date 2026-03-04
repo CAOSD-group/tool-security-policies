@@ -1,0 +1,80 @@
+{
+    "filename": "multi-pod21.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "name",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "redis"
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "redis-sentinel",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "true"
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_metadata_labels_KeyMap": "role",
+                    "io_k8s_api_core_v1_Pod_metadata_labels_ValueMap": "master"
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_metadata_name": "redis-master"
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "master",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "registry.k8s.io/e2e-test-images/redis:5.0.5-alpine",
+                    "io_k8s_api_core_v1_Pod_spec_containers_env": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "MASTER",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "true"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 6379
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_resources": {
+                        "io_k8s_api_core_v1_Pod_spec_containers_resources_limits": [
+                            {
+                                "io_k8s_api_core_v1_Pod_spec_containers_resources_limits_asString": "cpu:0.5"
+                            }
+                        ]
+                    },
+                    "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_mountPath": "/redis-master-data",
+                            "io_k8s_api_core_v1_Pod_spec_containers_volumeMounts_name": "data"
+                        }
+                    ]
+                },
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "sentinel",
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "registry.k8s.io/e2e-test-images/redis:5.0.5-alpine",
+                    "io_k8s_api_core_v1_Pod_spec_containers_env": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "SENTINEL",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "true"
+                        }
+                    ],
+                    "io_k8s_api_core_v1_Pod_spec_containers_ports": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_ports_containerPort": 26379
+                        }
+                    ]
+                }
+            ],
+            "io_k8s_api_core_v1_Pod_spec_volumes": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_volumes_name": "data",
+                    "io_k8s_api_core_v1_Pod_spec_volumes_emptyDir": {
+                        "io_k8s_api_core_v1_Pod_spec_volumes_emptyDir_isEmpty": true
+                    }
+                }
+            ]
+        }
+    }
+}

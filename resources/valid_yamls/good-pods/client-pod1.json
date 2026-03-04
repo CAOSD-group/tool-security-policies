@@ -1,0 +1,25 @@
+{
+    "filename": "client-pod1.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Pod_apiVersion": "v1",
+        "io_k8s_api_core_v1_Pod_kind": "Pod",
+        "io_k8s_api_core_v1_Pod_metadata": {
+            "io_k8s_api_core_v1_Pod_metadata_name": "pg-client"
+        },
+        "io_k8s_api_core_v1_Pod_spec": {
+            "io_k8s_api_core_v1_Pod_spec_containers": [
+                {
+                    "io_k8s_api_core_v1_Pod_spec_containers_image": "bitnami/postgresql:11.12.0-debian-10-r13",
+                    "io_k8s_api_core_v1_Pod_spec_containers_name": "postgresql",
+                    "io_k8s_api_core_v1_Pod_spec_containers_env": [
+                        {
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_name": "ALLOW_EMPTY_PASSWORD",
+                            "io_k8s_api_core_v1_Pod_spec_containers_env_value": "yes"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
