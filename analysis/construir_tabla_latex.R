@@ -15,8 +15,8 @@ lineas_tabla <- df_resumen %>%
     
     # Construcción de la fila
     fila = glue::glue(
-      "\\makecell[l]{{\\emph{{{Policy_Escaped}}} \\\\ $\\hookrightarrow$ [Descripción de la política]} & ",
-      "[Resource] & [Severity] & {Pct_Presencia_en_Infra}\\% & ",
+      "\\makecell[l]{{\\texttt{{{Policy_Escaped}}} \\\\ $\\hookrightarrow$ [Descripción de la política]} & ",
+      "[Proveedor] & [Resource] & [Severity] & {Pct_Presencia_en_Infra}\\% & ",
       "{Pct_Exito_Politica}\\% & [Features] & {Score_Medio_Configs} \\\\"
     )
   ) %>%
@@ -30,9 +30,9 @@ contenido_tex <- c(
   "  \\label{tab:Eval}",
   "  \\centering",
   "  \\scriptsize",
-  "  \\begin{tabular}{lccrrrr}",
+  "  \\begin{tabular}{lcccrrrr}",
   "    \\toprule",
-  "    \\textbf{Security policy} & \\textbf{K8s resource} & \\textbf{Sev.} & \\textbf{Presence} & \\textbf{Success} & \\textbf{Feat.} & \\textbf{Score Med.} \\\\ \\midrule",
+  "    \\textbf{Security policy} & \\textbf{Provider} & \\textbf{K8s resource} & \\textbf{Sev.} & \\textbf{Presence} & \\textbf{Success} & \\textbf{Feat.} & \\textbf{Score Med.} \\\\ \\midrule",
   lineas_tabla,
   "  \\end{tabular}",
   "\\end{table}"

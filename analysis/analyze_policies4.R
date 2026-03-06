@@ -3,7 +3,7 @@ if (!require("tidyverse")) install.packages("tidyverse")
 library(tidyverse)
 
 # 2. Leer el archivo
-ruta_archivo <- "validation_results_valid_jsons_model_policies02_Z3_1.csv"
+ruta_archivo <- "policies_10k.csv"
 df <- read.csv(ruta_archivo, stringsAsFactors = FALSE, na.strings = c("-", ""))
 
 # 3. Preparación de datos base
