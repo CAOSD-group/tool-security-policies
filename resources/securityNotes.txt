@@ -494,7 +494,8 @@ Pol key, value omitidas para la validacion global;
 **Cambios 02/03/26**
 
 Errores en flamapy new version with the polticy:
-	Deny_Secret_Service_Account_Token_Type => Secret.io_k8s_api_core_v1_Secret_type != 'kubernetesio/service-account-token'
+	Deny_Secret_Service_Account_Token_Type => Secret.io_k8s_api_core_v1_Secret_type != 'kubernetes.io/service-account-token'
+  
 2026-03-03 12:40:15,857 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesConfigMap 
 Traceback (most recent call last):
   File "<frozen runpy>", line 198, in _run_module_as_main
@@ -535,6 +536,36 @@ Traceback (most recent call last):
 flamapy.core.exceptions.FlamaException: Unsupported feature or attribute: kubernetes.io/service-account-token
 (envFlamapyZ3_newversion) PS C:\Users\CAOSD\projects\fm-security-rules>
 
+
+Block_Ephemeral_Containers {tool 'kyverno', severity 'medium', weight '0.7',
+
+line 71:75 token recognition error at: ''0.'
+2026-03-05 16:06:26,142 - root - ERROR - Syntax error at line 71, column 79: extraneous input '', name '' expecting {'}', ','}
+2026-03-05 16:06:26,142 - root - ERROR - Syntax error at line 71, column 93: mismatched input '-' expecting {'cardinality', '{', NEWLINE}
+2026-03-05 16:06:26,142 - root - ERROR - Syntax error at line 71, column 103: mismatched input '-' expecting {'cardinality', '{', NEWLINE}
+2026-03-05 16:06:26,143 - root - ERROR - Syntax error at line 71, column 115: mismatched input ',' expecting {'cardinality', '{', NEWLINE}
+2026-03-05 16:06:26,143 - root - ERROR - Syntax error at line 71, column 124: mismatched input ''spec_XephemeralContainers'' expecting {'cardinality', '{', NEWLINE}
+2026-03-05 16:06:26,143 - root - ERROR - Syntax error at line 71, column 159: mismatched input ''Pod'' expecting {'cardinality', '{', NEWLINE}
+2026-03-05 16:06:26,143 - root - ERROR - Syntax error at line 71, column 170: mismatched input ''Ephemeral containers, enabled by default in Kubernetes 123, allow users to use the kubectl debug functionality and attach a temporary container to an existing Pod This may potentially be used to gain access to unauthorized information executing inside one or more containers in that Pod This policy blocks the use of ephemeral containers'' expecting {'cardinality', '{', NEWLINE}
+2026-03-05 16:06:26,143 - root - ERROR - Syntax error at line 71, column 522: mismatched input ''YAML'' expecting {'cardinality', '{', NEWLINE}
+2026-03-05 16:06:26,143 - root - ERROR - Syntax error at line 73, column 5: mismatched input 'Disallow_all_Secrets' expecting {<EOF>, 'constraints'}
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\CAOSD\projects\fm-security-rules\scripts\valid_config02_simplified.py", line 256, in <module>     
+    fm_model = UVLReader(str(UVL_PATH)).transform()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\fm_metamodel\transformations\uvl_reader.py", line 591, in transform
+    self.set_parse_tree()
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\fm_metamodel\transformations\uvl_reader.py", line 76, in set_parse_tree
+    raise FlamaException("Parsing failed due to syntax errors.")
+flamapy.core.exceptions.FlamaException: Parsing failed due to syntax errors.
+(envFlamapyZ3) PS C:\Users\CAOSD\projects\fm-security-rules> 
+
+
+
+
+
 Se necesita la comprobacion previa de que el objeto exista en el contexto de la comprobacion; no controlado en Trivy todavia**
 no_root
 CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_containers_securityContext_runAsNonRoot & CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_initContainers_securityContext_runAsNonRoot & CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_ephemeralContainers_securityContext_runAsNonRoot & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_containers_securityContext_runAsNonRoot & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_initContainers_securityContext_runAsNonRoot & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_ephemeralContainers_securityContext_runAsNonRoot & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_securityContext_runAsNonRoot & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_initContainers_securityContext_runAsNonRoot & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_ephemeralContainers_securityContext_runAsNonRoot & Job.io_k8s_api_batch_v1_Job_spec_template_spec_containers_securityContext_runAsNonRoot & Job.io_k8s_api_batch_v1_Job_spec_template_spec_initContainers_securityContext_runAsNonRoot & Job.io_k8s_api_batch_v1_Job_spec_template_spec_ephemeralContainers_securityContext_runAsNonRoot & Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsNonRoot & Pod.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_runAsNonRoot & Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_runAsNonRoot & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_containers_securityContext_runAsNonRoot & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_initContainers_securityContext_runAsNonRoot & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_ephemeralContainers_securityContext_runAsNonRoot & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_securityContext_runAsNonRoot & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_initContainers_securityContext_runAsNonRoot & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_ephemeralContainers_securityContext_runAsNonRoot & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_containers_securityContext_runAsNonRoot & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_initContainers_securityContext_runAsNonRoot & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_ephemeralContainers_securityContext_runAsNonRoot
@@ -542,3 +573,15 @@ use_high_gid
 CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_containers_securityContext_runAsGroup_valueInt > 10000 & CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_initContainers_securityContext_runAsGroup_valueInt > 10000 & CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_ephemeralContainers_securityContext_runAsGroup_valueInt > 10000 & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_containers_securityContext_runAsGroup_valueInt > 10000 & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_initContainers_securityContext_runAsGroup_valueInt > 10000 & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_ephemeralContainers_securityContext_runAsGroup_valueInt > 10000 & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_securityContext_runAsGroup_valueInt > 10000 & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_initContainers_securityContext_runAsGroup_valueInt > 10000 & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_ephemeralContainers_securityContext_runAsGroup_valueInt > 10000 & Job.io_k8s_api_batch_v1_Job_spec_template_spec_containers_securityContext_runAsGroup_valueInt > 10000 & Job.io_k8s_api_batch_v1_Job_spec_template_spec_initContainers_securityContext_runAsGroup_valueInt > 10000 & Job.io_k8s_api_batch_v1_Job_spec_template_spec_ephemeralContainers_securityContext_runAsGroup_valueInt > 10000 & Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsGroup_valueInt > 10000 & Pod.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_runAsGroup_valueInt > 10000 & Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_runAsGroup_valueInt > 10000 & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_containers_securityContext_runAsGroup_valueInt > 10000 & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_initContainers_securityContext_runAsGroup_valueInt > 10000 & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_ephemeralContainers_securityContext_runAsGroup_valueInt > 10000 & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_securityContext_runAsGroup_valueInt > 10000 & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_initContainers_securityContext_runAsGroup_valueInt > 10000 & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_ephemeralContainers_securityContext_runAsGroup_valueInt > 10000 & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_containers_securityContext_runAsGroup_valueInt > 10000 & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_initContainers_securityContext_runAsGroup_valueInt > 10000 & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_ephemeralContainers_securityContext_runAsGroup_valueInt > 10000
 use_high_uid
 CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_containers_securityContext_runAsUser_valueInt > 10000 & CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_initContainers_securityContext_runAsUser_valueInt > 10000 & CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_containers_securityContext_runAsUser_valueInt > 10000 & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_initContainers_securityContext_runAsUser_valueInt > 10000 & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_securityContext_runAsUser_valueInt > 10000 & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_initContainers_securityContext_runAsUser_valueInt > 10000 & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & Job.io_k8s_api_batch_v1_Job_spec_template_spec_containers_securityContext_runAsUser_valueInt > 10000 & Job.io_k8s_api_batch_v1_Job_spec_template_spec_initContainers_securityContext_runAsUser_valueInt > 10000 & Job.io_k8s_api_batch_v1_Job_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser_valueInt > 10000 & Pod.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_runAsUser_valueInt > 10000 & Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_containers_securityContext_runAsUser_valueInt > 10000 & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_initContainers_securityContext_runAsUser_valueInt > 10000 & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_securityContext_runAsUser_valueInt > 10000 & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_initContainers_securityContext_runAsUser_valueInt > 10000 & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_containers_securityContext_runAsUser_valueInt > 10000 & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_initContainers_securityContext_runAsUser_valueInt > 10000 & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000
+
+
+	hostPortSet => Container.io_k8s_api_core_v1_Container_ports_hostPort == 0
+
+73 politicas en el modelo final HKTFM.uvl
+48 Kyverno
+24 otras
+Csv FINAL:
+8338 primer proceso del pc principal
+
+13 Polaris
+11 Trivy
