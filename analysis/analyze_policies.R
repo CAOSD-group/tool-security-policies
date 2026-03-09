@@ -1,39 +1,74 @@
-# 1. Cargar la librería
+# 1. Cargar librerías
 if (!require("tidyverse")) install.packages("tidyverse")
 library(tidyverse)
 
-# 2. Configurar la ruta del archivo
-# Cambia "mi_analisis.csv" por el nombre real de tu archivo
-ruta_archivo <- "validation_results_valid_jsons03_Z3.csv"
+# 2. Leer el archivo
+ruta_archivo <- "policies_30k.csv"
+df <- read.csv(ruta_archivo, stringsAsFactors = FALSE, na.strings = c("-", ""))
 
-# 3. Leer el CSV
-# na.strings = "-" convierte los guiones en valores nulos reales para poder operar matemáticamente
-df <- read.csv(ruta_archivo, stringsAsFactors = FALSE, na.strings = "-")
-
-# 4. Procesamiento de los datos
-resultado <- df %>%
-  # Limpiamos: Solo filas con True o False en la columna Secure
-  filter(Secure %in% c("True", "False")) %>%
-  # Aseguramos que Features sea un número
-  mutate(Features = as.numeric(Features)) %>%
-  # Extraemos los nombres de las políticas (las 'llaves' del diccionario)
-  mutate(PolicyName = str_extract_all(PoliciesApplied, "(?<=')[^']+(?=':)")) %>%
-  # Expandimos: Una fila por cada política encontrada
-  unnest(PolicyName) %>%
-  # Agrupamos por cada política de seguridad detectada
-  group_by(PolicyName) %>%
+# 3A. Resumen global de la columna Secure (True / False / Skip)
+resumen_secure <- df %>%
+  group_by(Secure) %>%
   summarise(
-    Total_Configuraciones = n(),
-    Es_Secure_True = sum(Secure == "True", na.rm = TRUE),
-    Es_Secure_False = sum(Secure == "False", na.rm = TRUE),
-    Media_Features = mean(Features, na.rm = TRUE),
-    Max_Features = max(Features, na.rm = TRUE)
+    Conteo = n()
   ) %>%
-  # Ordenamos por las políticas más frecuentes
-  arrange(desc(Total_Configuraciones))
+  mutate(
+    Porcentaje = round((Conteo / sum(Conteo)) * 100, 2)
+  )
 
-# 5. Ver el resultado en consola
-print(resultado)
+print("Resumen de valores en la columna Secure:")
+print(resumen_secure)
 
-# 6. (Opcional) Guardar este resumen en un nuevo CSV
-write.csv(resultado, "resumen_politicas.csv", row.names = FALSE)
+# 3. Preparación de datos base
+# Solo trabajamos con las que fueron evaluadas (no Skip)
+df_evaluados <- df %>% 
+  filter(Secure != "Skip") %>%
+  mutate(
+    SecurityScore = as.numeric(`SecurityScore.0.100.`),
+    Features = as.numeric(Features)
+  )
+
+total_configs_evaluadas <- nrow(df_evaluados)
+
+# 4. Procesamiento exhaustivo por Política
+resumen_detallado <- df_evaluados %>%
+  separate_rows(PoliciesApplied, sep = ";") %>%
+  rename(Policy = PoliciesApplied) %>%
+  mutate(
+    Cumple = ifelse(!is.na(FailedPolicies) & str_detect(FailedPolicies, fixed(Policy)), FALSE, TRUE)
+  ) %>%
+  group_by(Policy) %>%
+  summarise(
+    Apariciones = n(),
+    Cumplidas = sum(Cumple == TRUE),
+    Fallidas = sum(Cumple == FALSE),
+    Pct_Presencia_en_Infra = round((Apariciones / total_configs_evaluadas) * 100, 2),
+    Pct_Exito_Politica = round((Cumplidas / Apariciones) * 100, 2),
+    Features_Totales_Afectadas = sum(Features, na.rm = TRUE),
+    Media_Features_por_Config = round(mean(Features, na.rm = TRUE), 2),
+    Score_Medio_Configs = round(mean(SecurityScore, na.rm = TRUE), 2)
+  ) %>%
+  arrange(desc(Apariciones))
+
+# 5. Guardar CSV con toda la información
+write.csv(resumen_detallado, "resumen_exhaustivo_politicas.csv", row.names = FALSE)
+
+# 6. Gráfico Complementario
+chart_correlacion <- ggplot(df_evaluados, aes(x = Features, y = SecurityScore)) +
+  geom_point(aes(color = SecurityScore), size = 3) +
+  #geom_smooth(method = "lm", color = "gray", linetype = "dashed", se = FALSE) +
+  scale_color_gradient(
+    low = "red",
+    high = "green",
+    limits = c(0, 100),
+    name = "Security Score"
+  ) +
+  theme_minimal() +
+  labs(
+    x = "Number of features in configuration",
+    y = "Security Score (0-100)"
+  )
+
+print("Reporte exhaustivo generado en 'resumen_exhaustivo_politicas.csv'")
+print(resumen_detallado)
+print(chart_correlacion)

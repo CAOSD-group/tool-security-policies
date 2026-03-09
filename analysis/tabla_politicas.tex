@@ -4,72 +4,72 @@
   \label{tab:Eval}
   \centering
   \scriptsize
-  \begin{tabular}{lccrrrr}
+  \begin{tabular}{lcccrrrr}
     \toprule
-    \textbf{Security policy} & \textbf{K8s resource} & \textbf{Sev.} & \textbf{Presence} & \textbf{Success} & \textbf{Feat.} & \textbf{Score Med.} \\ \midrule
-\makecell[l]{\emph{no docker sock mount} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 50.69\% & 99.85\% & [Features] & 75.99 \\
-\makecell[l]{\emph{no privileged containers} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 50.69\% & 98.9\% & [Features] & 75.99 \\
-\makecell[l]{\emph{no root} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 50.69\% & 1.47\% & [Features] & 75.99 \\
-\makecell[l]{\emph{no sysadmin capability} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 50.69\% & 99.79\% & [Features] & 75.99 \\
-\makecell[l]{\emph{no sysmodule capability} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 50.69\% & 99.85\% & [Features] & 75.99 \\
-\makecell[l]{\emph{use high gid} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 50.69\% & 0.42\% & [Features] & 75.99 \\
-\makecell[l]{\emph{use high uid} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 50.69\% & 0.42\% & [Features] & 75.99 \\
-\makecell[l]{\emph{tagNotSpecified} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 49.36\% & 64.24\% & [Features] & 75.94 \\
-\makecell[l]{\emph{Disallow Default Namespace} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 48.26\% & 95.66\% & [Features] & 75.82 \\
-\makecell[l]{\emph{no host network} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 38.1\% & 99.02\% & [Features] & 77.71 \\
-\makecell[l]{\emph{no host pid} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 38.1\% & 99.38\% & [Features] & 77.71 \\
-\makecell[l]{\emph{no shared ipc namespace} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 38.1\% & 99.78\% & [Features] & 77.71 \\
-\makecell[l]{\emph{Require Multiple Replicas} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 32.08\% & 27.39\% & [Features] & 77.35 \\
-\makecell[l]{\emph{Disallow Localhost ExternalName Services} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 24.2\% & 1.15\% & [Features] & 51.32 \\
-\makecell[l]{\emph{Disallow NodePort} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 24.2\% & 76.05\% & [Features] & 51.32 \\
-\makecell[l]{\emph{Disallow Service Type LoadBalancer} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 24.2\% & 79.58\% & [Features] & 51.32 \\
-\makecell[l]{\emph{Restrict External IPs} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 24.2\% & 99.78\% & [Features] & 51.32 \\
-\makecell[l]{\emph{Restrict Service Port Range} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 24.2\% & 0.04\% & [Features] & 51.32 \\
-\makecell[l]{\emph{Block Ephemeral Containers} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 100\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Check Environment Variables} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 90.34\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Check supplementalGroups} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 0\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Disallow CRI socket mounts} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 100\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Disallow Host Namespaces} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 97.71\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Disallow Privilege Escalation} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 100\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Disallow Privileged Containers} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 98.56\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Disallow Secrets from Env Vars} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 97.8\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Disallow all Secrets} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 97.29\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Disallow hostPath} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 96.86\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Disallow hostPorts} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 98.98\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Disallow hostProcess} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 98.64\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Disallow procMount} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 100\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Prevent cr8escape CVE 2022 0811} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 100\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Require Container Port Names} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 6.19\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Require Non Root Groups} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 0\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Require Pod priorityClassName} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 100\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Require Read Only Root Filesystem} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 0.42\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Require Run As ContainerUser Windows} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 100\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Require Run As Non Root User} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 0\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Require imagePullPolicy Always} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 1.44\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Restrict Auto Mount of Service Account Tokens} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 100\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Restrict Node Affinity} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 99.24\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Restrict control plane scheduling} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 100\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Restrict node selection} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 95.93\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Restrict sysctls} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 100\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Validate User ID Group ID and FS Group} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 0\% & [Features] & 70.78 \\
-\makecell[l]{\emph{no auto mount service token} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 100\% & [Features] & 70.78 \\
-\makecell[l]{\emph{topologySpreadConstraint} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 12.6\% & 0\% & [Features] & 70.78 \\
-\makecell[l]{\emph{Require StorageClass} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 6.5\% & 99.34\% & [Features] & 65.22 \\
-\makecell[l]{\emph{Restrict Auto Mount of Service Account Tokens in Service Account} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 5.41\% & 97.44\% & [Features] & 97.44 \\
-\makecell[l]{\emph{Restrict Binding System Groups} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 5.22\% & 100\% & [Features] & 98.26 \\
-\makecell[l]{\emph{Restrict Binding to Cluster Admin} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 5.22\% & 96.52\% & [Features] & 98.26 \\
-\makecell[l]{\emph{Enforce ReadWriteOncePod} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 4.46\% & 0\% & [Features] & 58.33 \\
-\makecell[l]{\emph{Deny Secret Service Account Token Type} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 3.72\% & 100\% & [Features] & 100 \\
-\makecell[l]{\emph{Restrict Ingress defaultBackend} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 3.69\% & 66.47\% & [Features] & 45.05 \\
-\makecell[l]{\emph{tlsSettingsMissing} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 3.69\% & 14.45\% & [Features] & 45.05 \\
-\makecell[l]{\emph{Require aws node DaemonSet use IRSA} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 1.53\% & 100\% & [Features] & 79.14 \\
-\makecell[l]{\emph{Limit hostPath PersistentVolumes to Specific Directories} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 1.38\% & 0\% & [Features] & 0 \\
-\makecell[l]{\emph{Restrict StorageClass} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 0.67\% & 15.87\% & [Features] & 15.87 \\
-\makecell[l]{\emph{hpaMaxAvailability} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 0.47\% & 50\% & [Features] & 27.27 \\
-\makecell[l]{\emph{hpaMinAvailability} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 0.47\% & 4.55\% & [Features] & 27.27 \\
-\makecell[l]{\emph{Require Images Use Checksums} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 0.18\% & 0\% & [Features] & 69.64 \\
-\makecell[l]{\emph{Restrict Image Registries} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 0.18\% & 0\% & [Features] & 69.64 \\
-\makecell[l]{\emph{PodDisruptionBudget maxUnavailable Non Zero} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 0.07\% & 42.86\% & [Features] & 42.86 \\
-\makecell[l]{\emph{Restrict Jobs} \\ $\hookrightarrow$ [Descripción de la política]} & [Resource] & [Severity] & 0.01\% & 0\% & [Features] & 93.07 \\
+    \textbf{Security policy} & \textbf{Provider} & \textbf{K8s resource} & \textbf{Sev.} & \textbf{Presence} & \textbf{Success} & \textbf{Feat.} & \textbf{Score Med.} \\ \midrule
+\makecell[l]{\texttt{no docker sock mount} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 49.72\% & 99.83\% & [Features] & 74.5 \\
+\makecell[l]{\texttt{no privileged containers} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 49.72\% & 98.9\% & [Features] & 74.5 \\
+\makecell[l]{\texttt{no root} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 49.72\% & 1.83\% & [Features] & 74.5 \\
+\makecell[l]{\texttt{no sysadmin capability} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 49.72\% & 99.77\% & [Features] & 74.5 \\
+\makecell[l]{\texttt{no sysmodule capability} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 49.72\% & 99.83\% & [Features] & 74.5 \\
+\makecell[l]{\texttt{use high gid} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 49.72\% & 0.54\% & [Features] & 74.5 \\
+\makecell[l]{\texttt{use high uid} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 49.72\% & 0.54\% & [Features] & 74.5 \\
+\makecell[l]{\texttt{tagNotSpecified} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 48.73\% & 49.27\% & [Features] & 74.42 \\
+\makecell[l]{\texttt{Disallow Default Namespace} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 47.85\% & 96.6\% & [Features] & 74.35 \\
+\makecell[l]{\texttt{no host network} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 33.46\% & 98.16\% & [Features] & 76.72 \\
+\makecell[l]{\texttt{no host pid} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 33.46\% & 99.08\% & [Features] & 76.72 \\
+\makecell[l]{\texttt{no shared ipc namespace} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 33.46\% & 99.77\% & [Features] & 76.72 \\
+\makecell[l]{\texttt{Require Multiple Replicas} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 28.02\% & 27.63\% & [Features] & 76.33 \\
+\makecell[l]{\texttt{Disallow Localhost ExternalName Services} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 26.33\% & 0.69\% & [Features] & 52.4 \\
+\makecell[l]{\texttt{Disallow NodePort} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 26.33\% & 79.31\% & [Features] & 52.4 \\
+\makecell[l]{\texttt{Disallow Service Type LoadBalancer} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 26.33\% & 82.33\% & [Features] & 52.4 \\
+\makecell[l]{\texttt{Restrict External IPs} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 26.33\% & 99.66\% & [Features] & 52.4 \\
+\makecell[l]{\texttt{Restrict Service Port Range} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 26.33\% & 0.03\% & [Features] & 52.4 \\
+\makecell[l]{\texttt{Block Ephemeral Containers} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 99.87\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Check Environment Variables} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 92.41\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Check supplementalGroups} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 0\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Disallow CRI socket mounts} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 99.87\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Disallow Host Namespaces} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 98.96\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Disallow Privilege Escalation} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 83.79\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Disallow Privileged Containers} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 99.33\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Disallow Secrets from Env Vars} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 98.78\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Disallow all Secrets} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 98.16\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Disallow hostPath} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 98.11\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Disallow hostPorts} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 99.53\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Disallow hostProcess} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 99.46\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Disallow procMount} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 99.87\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Prevent cr8escape CVE 2022 0811} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 99.87\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Require Container Port Names} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 3.86\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Require Non Root Groups} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 0\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Require Pod priorityClassName} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 99.87\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Require Read Only Root Filesystem} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 0.18\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Require Run As ContainerUser Windows} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 99.87\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Require Run As Non Root User} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 0\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Require imagePullPolicy Always} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 1.61\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Restrict Auto Mount of Service Account Tokens} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 99.87\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Restrict Node Affinity} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 97.36\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Restrict control plane scheduling} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 99.87\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Restrict node selection} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 94.74\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Restrict sysctls} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 99.87\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Validate User ID Group ID and FS Group} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 0\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{no auto mount service token} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 99.87\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{topologySpreadConstraint} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 16.26\% & 0\% & [Features] & 69.94 \\
+\makecell[l]{\texttt{Require StorageClass} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 6.09\% & 99.72\% & [Features] & 65.47 \\
+\makecell[l]{\texttt{Restrict Binding System Groups} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 4.81\% & 100\% & [Features] & 96.59 \\
+\makecell[l]{\texttt{Restrict Binding to Cluster Admin} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 4.81\% & 93.18\% & [Features] & 96.59 \\
+\makecell[l]{\texttt{Deny Secret Service Account Token Type} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 4.56\% & 100\% & [Features] & 100 \\
+\makecell[l]{\texttt{Restrict Auto Mount of Service Account Tokens in Service Account} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 4.22\% & 94.22\% & [Features] & 94.22 \\
+\makecell[l]{\texttt{Enforce ReadWriteOncePod} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 4.16\% & 0\% & [Features] & 58.33 \\
+\makecell[l]{\texttt{Restrict Ingress defaultBackend} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 3.2\% & 83\% & [Features] & 55.93 \\
+\makecell[l]{\texttt{tlsSettingsMissing} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 3.2\% & 17.26\% & [Features] & 55.93 \\
+\makecell[l]{\texttt{Limit hostPath PersistentVolumes to Specific Directories} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 1.87\% & 0\% & [Features] & 0 \\
+\makecell[l]{\texttt{Require aws node DaemonSet use IRSA} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 1.64\% & 98.72\% & [Features] & 76.52 \\
+\makecell[l]{\texttt{Restrict StorageClass} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 0.51\% & 14.05\% & [Features] & 14.05 \\
+\makecell[l]{\texttt{hpaMaxAvailability} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 0.46\% & 40\% & [Features] & 23.18 \\
+\makecell[l]{\texttt{hpaMinAvailability} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 0.46\% & 6.36\% & [Features] & 23.18 \\
+\makecell[l]{\texttt{Require Images Use Checksums} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 0.2\% & 0\% & [Features] & 72.88 \\
+\makecell[l]{\texttt{Restrict Image Registries} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 0.2\% & 0\% & [Features] & 72.88 \\
+\makecell[l]{\texttt{PodDisruptionBudget maxUnavailable Non Zero} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 0.16\% & 56.76\% & [Features] & 56.76 \\
+\makecell[l]{\texttt{Restrict Jobs} \\ $\hookrightarrow$ [Descripción de la política]} & [Proveedor] & [Resource] & [Severity] & 0\% & 0\% & [Features] & 93.07 \\
   \end{tabular}
 \end{table}
