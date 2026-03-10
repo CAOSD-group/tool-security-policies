@@ -3,7 +3,7 @@ import io, contextlib
 
 class ContentPolicyValidator:
     """
-    Validador de políticas basado en Regex y recorrido recursivo del JSON.
+    Validator of policies based on Regex and recursive traversal of the JSON.
     """
 
     def __init__(self):
@@ -55,12 +55,7 @@ class ContentPolicyValidator:
         ]
 
     def validate(self, config_elements, active_policies):
-        """
-        Punto de entrada.
-        Args:
-            config_elements: El objeto JSON/Diccionario completo (configuration_json.elements).
-            active_policies: Lista de strings con los nombres de las políticas activas.
-        """
+
         for policy in active_policies:
             if policy in self.policy_map:
                 # Ejecutamos la validación específica
@@ -72,7 +67,7 @@ class ContentPolicyValidator:
     
     def validate_with_report(self, config_elements: dict, active_policies: list[str]):
         """
-        Devuelve una lista de policies que fallan por regex, con motivo si lo hay.
+        Get a list of policies that fail with reason if any.
         """
         report = []
         passed_all = True
@@ -106,9 +101,7 @@ class ContentPolicyValidator:
 
     def _find_image_values_recursive(self, data):
         """
-        Recorre recursivamente diccionarios y listas buscando claves que
-        terminen en alguno de los TARGET_IMAGE_SUFFIXES.
-        Retorna una lista de los valores (nombres de las imágenes) encontrados.
+        Search recursively through dicts and lists for keys that end with any of the TARGET_IMAGE_SUFFIXES.
         """
         found_values = []
 
@@ -138,8 +131,7 @@ class ContentPolicyValidator:
     # --- HELPER GENÉRICO RECURSIVO ---
     def _find_values_by_suffix_recursive(self, data, target_suffixes):
         """
-        Busca valores recursivamente para claves que terminen en ALGUNO de los sufijos.
-        target_suffixes puede ser un string único o una lista.
+        Searches recursively for values of keys that end with ANY of the target_suffixes.
         """
         if isinstance(target_suffixes, str):
             target_suffixes = [target_suffixes]
@@ -165,12 +157,9 @@ class ContentPolicyValidator:
                 
         return found_values
 
-
-    # HELPER: Extracción de Anotaciones
     def _find_all_annotations_recursive(self, data):
         """
-        Busca recursivamente todos los bloques 'annotations' y devuelve un 
-        diccionario unificado con todas las anotaciones encontradas en el archivo.
+        Searches recursively for all 'annotations' blocks and returns a unified dictionary with all annotations found in the file.
         """
         found_annotations = {}
 
@@ -193,7 +182,7 @@ class ContentPolicyValidator:
         return found_annotations
 
     def _find_all_labels_recursive(self, data):
-        """Igual que _find_all_annotations pero para 'labels'"""
+
         found_labels = {}
         if isinstance(data, dict):
             for k, v in data.items():
@@ -209,9 +198,9 @@ class ContentPolicyValidator:
 
     def _validate_tag_specified_and_not_latest(self, config_elements):
         """
-        Implementación de la política 'tagNotSpecified':
-        - Schema: pattern: ^.+:.+$ (Debe tener tag)
-        - Schema: not pattern: ^.+:latest$ (No debe ser latest)
+        Implementation of the 'tagNotSpecified' policy:
+        - Check A: Each image must have a tag (format: "name:tag").
+        - Check B: The tag cannot be "latest".
         """
         
         # 1. Extracción profunda de todas las imágenes en el JSON
@@ -248,8 +237,7 @@ class ContentPolicyValidator:
         return all_ok
     
     def _validate_run_as_container_user_windows(self, config):
-        # Sufijo clave: busca el campo runAsUserName dentro de bloque windowsOptions
-        # Ajusta "_windowsOptions_runAsUserName" según cómo aplane tu modelo las claves
+
         users = self._find_values_by_suffix_recursive(config, "windowsOptions_runAsUserName")
         
         if not users:
@@ -264,7 +252,7 @@ class ContentPolicyValidator:
     # POLÍTICA: Require Annotations (corp.org/department)
     def _validate_require_annotations(self, config_elements):
         """
-        Verifica que exista la clave 'corp.org/department' y que no esté vacía.
+        Verify that the key 'corp.org/department' exists and is not empty.
         """
         annotations = self._find_all_annotations_recursive(config_elements)
         target_key = "corp.org/department"
@@ -286,7 +274,7 @@ class ContentPolicyValidator:
     def _validate_require_labels(self, config_elements):
         """
         Policy: Require Labels
-        Regla: Debe existir la label 'app.kubernetes.io/name' con algún valor.
+        Rule: The label 'app.kubernetes.io/name' must exist with some value.
         """
         # Reutilizamos la lógica de anotaciones pero buscando 'labels'
         labels = self._find_all_labels_recursive(config_elements)
@@ -305,7 +293,7 @@ class ContentPolicyValidator:
     # POLÍTICA: Restrict AppArmor
     def _validate_restrict_apparmor(self, config_elements):
         """
-        Verifica que si hay anotaciones de AppArmor, sean 'runtime/default' o 'localhost/*'.
+        Verify that if there are AppArmor annotations, they must be 'runtime/default' or 'localhost/*'.
         """
         annotations = self._find_all_annotations_recursive(config_elements)
         prefix = "container.apparmor.security.beta.kubernetes.io/"
@@ -331,8 +319,7 @@ class ContentPolicyValidator:
     
     def _validate_restrict_ingress_classes(self, config_elements):
         """
-        Busca si existe la anotación. Si existe, valida el valor.
-        Si no existe, devuelve True (no fuerza a usar anotaciones legacy).
+        Search for the annotation 'kubernetes.io/ingress_class'. If it exists, validate that its value is either 'HAProxy' or 'nginx'.
         """
         target_key = "kubernetes_io/ingress_class"
         
@@ -352,32 +339,21 @@ class ContentPolicyValidator:
     def _validate_restrict_jobs(self, config_elements):
         """
         Policy: Restrict Jobs
-        Regla: Si es un Job, DEBE tener un ownerReference de tipo CronJob.
         """
-        # 1. Aquí SÍ es obligatorio comprobar el Kind.
-        # Si no comprobamos el Kind, obligaríamos a los 'Deployment' o 'Pod' a tener ownerReference,
-        # lo cual sería un error. La política solo aplica a Jobs.
+
         kinds = self._find_values_by_suffix_recursive(config_elements, "_Job_kind")
         
-        # Si no hay Jobs en este archivo, la política pasa.
         if "Job" not in kinds:
             return True
 
-        # 2. Buscar ownerReferences
         owners = self._find_owner_references_recursive(config_elements)
         
-        # CASO CRÍTICO: Si estamos validando un YAML estático de un desarrollador, lo normal es que NO tenga ownerReferences. 
-        # Por lo tanto, si es un Job y no tiene owners -> FALLO (Intento de creación manual).
         if not owners:
             print("[Fail] Restrict_Jobs: Detectado un 'Job' manual (sin ownerReferences). Los Jobs deben ser creados por CronJobs.")
             return False
 
-        # 3. Si tiene owners (ej: es un dump de un cluster), validamos que sea CronJob
         has_cronjob_owner = False
         for owner in owners:
-            # owner es un dict, buscamos la clave 'kind'
-            # Dependiendo de tu aplanado, puede ser 'kind' o 'metadata_ownerReferences_kind'
-            # Asumimos que _find_owner... devuelve el dict reconstruido o buscamos la clave
             if owner.get('kind') == 'CronJob' or 'CronJob' in str(owner.values()): 
                 has_cronjob_owner = True
                 break
@@ -392,9 +368,9 @@ class ContentPolicyValidator:
     def _validate_require_ingress_https(self, config_elements):
         """
         Kyverno require-ingress-https:
-        - Aplica SOLO a Ingress
-        - Requiere metadata.annotations['kubernetes.io/ingress.allow-http'] == "false"
-        - Requiere que exista spec.tls (clave tls presente)
+        - Apply ONLY to Ingress resources
+        - Require annotation 'kubernetes.io/ingress.allow-http' = "false"
+        - Require TLS (spec.tls must be defined and non-empty)
         """
         # 0) Si no hay Ingress en el YAML/config, la política NO aplica -> pasa
         if not self._has_kind(config_elements, "Ingress"):
@@ -474,7 +450,6 @@ class ContentPolicyValidator:
         if not images:
             return True
 
-        # Estricto: '@sha256:'; si prefieres laxo, usa solo '@'
         regex_digest = re.compile(r".+@sha256:[0-9a-fA-F]{64}$")
 
         for img in images:
@@ -485,8 +460,8 @@ class ContentPolicyValidator:
     
     def _validate_restrict_image_registries(self, config_elements):
         """
-        Valida que TODAS las imágenes (containers/init/ephemeral) provengan de registries permitidos.
-        Basado en Kyverno: "eu.foo.io/* | bar.io/*"
+        Validate that ALL images (containers/init/ephemeral) come from allowed registries.
+        Based in Kyverno: "eu.foo.io/* | bar.io/*"
         """
         allowed_prefixes = ["eu.foo.io/", "bar.io/"]
 
@@ -597,7 +572,7 @@ class ContentPolicyValidator:
     
 
     def _find_container_dicts_recursive(self, data):
-        """Devuelve todos los dicts que representan contenedores (items de spec.containers/init/ephemeral)."""
+        """Return all dicts that represent containers (items of spec.containers/init/ephemeral)."""
         containers = []
 
         if isinstance(data, dict):
@@ -623,8 +598,8 @@ class ContentPolicyValidator:
 
     def _validate_require_container_port_names(self, config_elements):
         """
-        Kyverno: para cada contenedor, si define ports[], cada item debe tener name: "*".
-        En tu modelo: io_k8s_api_core_v1_Pod_spec_containers_ports_name (string no vacío).
+        Kyverno: for each container port defined in spec.containers/init/ephemeral, the 'name' field must be present and non-empty.
+        io_k8s_api_core_v1_Pod_spec_containers_ports_name (string no vacío).
         """
         container_dicts = self._find_container_dicts_recursive(config_elements)
 
@@ -662,8 +637,7 @@ class ContentPolicyValidator:
 
 def _find_objects_in_lists_by_suffix(self, data, list_suffixes):
     """
-    Busca recursivamente listas cuya CLAVE termine en alguno de list_suffixes
-    y devuelve todos los dicts (items) dentro de esas listas.
+    Searches recursively for lists whose KEY ends with any of the list_suffixes and returns all dicts (items) inside those lists.
     """
     if isinstance(list_suffixes, str):
         list_suffixes = [list_suffixes]
@@ -689,93 +663,3 @@ def _find_objects_in_lists_by_suffix(self, data, list_suffixes):
             found.extend(self._find_objects_in_lists_by_suffix(item, list_suffixes))
 
     return found
-
-
-def _get_kinds_in_file(self, config_elements):
-    """
-    Devuelve un set con los kinds detectados en el JSON aplanado/reconstruido.
-    """
-    kinds = set(self._find_values_by_suffix_recursive(config_elements, "_kind"))
-    # Normalizamos
-    return set(str(k) for k in kinds if k is not None)
-
-
-    def _get_workload_containers(self, config_elements, include_ephemeral=True):
-        """
-        Devuelve dicts de containers:
-        - containers (siempre)
-        - ephemeralContainers (opcional)
-        Excluye initContainers (porque Polaris suele excluirlos en estos checks).
-        """
-        containers = self._find_objects_in_lists_by_suffix(
-            config_elements,
-            [
-                "_spec_containers",
-                # en algunos dumps/plantillas puede aparecer con prefijo distinto, añade si lo ves
-            ],
-        )
-
-        if include_ephemeral:
-            eph = self._find_objects_in_lists_by_suffix(config_elements, "_spec_ephemeralContainers")
-            containers.extend(eph)
-
-        # initContainers explícitamente excluidos en los checks que has pegado
-        return containers
-
-
-    """
-    def _validate_require_imagepullsecrets(self, config_elements):
-        #Kyverno require-imagepullsecrets:
-        #Si algún container image registry NO es ghcr.io ni quay.io => requiere spec.imagePullSecrets[0].name no vacío
-    
-
-        # 1) sacar todas las imágenes del manifest (ya tienes helper + sufijos)
-        images = self._find_image_values_recursive(config_elements)
-        if not images:
-            return True  # sin imágenes, no aplica
-
-        allowed = {"ghcr.io", "quay.io"}
-
-        def extract_registry(image: str) -> str | None:
-        
-            #Kubernetes image reference rules (simplificado):
-            #- Si no hay '/', suele ser Docker Hub library -> registry implícito (no es ghcr/quay)
-            #- Si hay '/', el primer segmento puede ser registry si contiene '.' o ':' o es 'localhost'
-         
-            if not isinstance(image, str) or not image:
-                return None
-            first = image.split("/")[0]
-            if "." in first or ":" in first or first == "localhost":
-                return first
-            return None  # registry implícito (docker hub)
-
-        # 2) chequear precondición: AnyNotIn -> si existe alguno fuera del allowlist
-        needs_secret = False
-        for img in images:
-            reg = extract_registry(img)
-            if reg is None:
-                # docker hub / registry implícito => NO está en allowlist, por tanto dispara
-                needs_secret = True
-                break
-            if reg not in allowed:
-                needs_secret = True
-                break
-
-        if not needs_secret:
-            return True  # todos en ghcr/quay
-
-        # 3) validar imagePullSecrets name ?*
-        # en YAML: spec.imagePullSecrets: - name: "...".
-        # En tu JSON aplanado puede salir como lista de dicts o claves con sufijo.
-        secret_names = self._find_values_by_suffix_recursive(config_elements, "imagePullSecrets_name")
-        # fallback común si tu flatten lo nombra distinto:
-        if not secret_names:
-            secret_names = self._find_values_by_suffix_recursive(config_elements, "_spec_imagePullSecrets_name")
-
-        # ?* => no vacío / no whitespace
-        for name in secret_names:
-            if isinstance(name, str) and name.strip():
-                return True
-
-        print("[Fail] Require_imagePullSecrets: se detectó registry no permitido y falta spec.imagePullSecrets[].name.")
-        return False """

@@ -1,0 +1,119 @@
+{
+    "filename": "0-cluster-autoscaler_5.yaml",
+    "apiVersion": "apps_v1",
+    "config": {
+        "io_k8s_api_apps_v1_Deployment_apiVersion": "apps/v1",
+        "io_k8s_api_apps_v1_Deployment_kind": "Deployment",
+        "io_k8s_api_apps_v1_Deployment_metadata": {
+            "io_k8s_api_apps_v1_Deployment_metadata_name": "cluster-autoscaler",
+            "io_k8s_api_apps_v1_Deployment_metadata_namespace": "kube-system",
+            "io_k8s_api_apps_v1_Deployment_metadata_labels": [
+                {
+                    "io_k8s_api_apps_v1_Deployment_metadata_labels_KeyMap": "app",
+                    "io_k8s_api_apps_v1_Deployment_metadata_labels_ValueMap": "cluster-autoscaler"
+                }
+            ]
+        },
+        "io_k8s_api_apps_v1_Deployment_spec": {
+            "io_k8s_api_apps_v1_Deployment_spec_replicas": 1,
+            "io_k8s_api_apps_v1_Deployment_spec_selector": {
+                "io_k8s_api_apps_v1_Deployment_spec_selector_matchLabels": [
+                    {
+                        "io_k8s_api_apps_v1_Deployment_spec_selector_matchLabels_KeyMap": "app",
+                        "io_k8s_api_apps_v1_Deployment_spec_selector_matchLabels_ValueMap": "cluster-autoscaler"
+                    }
+                ]
+            },
+            "io_k8s_api_apps_v1_Deployment_spec_template": {
+                "io_k8s_api_apps_v1_Deployment_spec_template_metadata": {
+                    "io_k8s_api_apps_v1_Deployment_spec_template_metadata_labels": [
+                        {
+                            "io_k8s_api_apps_v1_Deployment_spec_template_metadata_labels_KeyMap": "app",
+                            "io_k8s_api_apps_v1_Deployment_spec_template_metadata_labels_ValueMap": "cluster-autoscaler"
+                        }
+                    ],
+                    "io_k8s_api_apps_v1_Deployment_spec_template_metadata_annotations": [
+                        {
+                            "io_k8s_api_apps_v1_Deployment_spec_template_metadata_annotations_KeyMap": "cluster-autoscaler.kubernetes.io/safe-to-evict",
+                            "io_k8s_api_apps_v1_Deployment_spec_template_metadata_annotations_ValueMap": "false"
+                        }
+                    ]
+                },
+                "io_k8s_api_apps_v1_Deployment_spec_template_spec": {
+                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_serviceAccountName": "cluster-autoscaler",
+                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers": [
+                        {
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_image": "k8s.gcr.io/autoscaling/cluster-autoscaler:v1.20.0",
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_name": "cluster-autoscaler",
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_resources": {
+                                "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_resources_limits": [
+                                    {
+                                        "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_resources_limits_asString": "cpu:100m"
+                                    },
+                                    {
+                                        "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_resources_limits_asString": "memory:300Mi"
+                                    }
+                                ],
+                                "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_resources_requests": [
+                                    {
+                                        "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_resources_requests_asString": "cpu:100m"
+                                    },
+                                    {
+                                        "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_resources_requests_asString": "memory:300Mi"
+                                    }
+                                ]
+                            },
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_command": [
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_command_StringValue": "./cluster-autoscaler"
+                                },
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_command_StringValue": "--v=4"
+                                },
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_command_StringValue": "--stderrthreshold=info"
+                                },
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_command_StringValue": "--cloud-provider=aws"
+                                },
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_command_StringValue": "--skip-nodes-with-local-storage=false"
+                                },
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_command_StringValue": "--expander=least-waste"
+                                },
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_command_StringValue": "--node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/antonputra"
+                                },
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_command_StringValue": "--balance-similar-node-groups"
+                                },
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_command_StringValue": "--skip-nodes-with-system-pods=false"
+                                }
+                            ],
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_volumeMounts": [
+                                {
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_volumeMounts_name": "ssl-certs",
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_volumeMounts_mountPath": "/etc/ssl/certs/ca-certificates.crt",
+                                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_volumeMounts_readOnly": true
+                                }
+                            ],
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_imagePullPolicy": {
+                                "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_imagePullPolicy_Always": true
+                            }
+                        }
+                    ],
+                    "io_k8s_api_apps_v1_Deployment_spec_template_spec_volumes": [
+                        {
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_volumes_name": "ssl-certs",
+                            "io_k8s_api_apps_v1_Deployment_spec_template_spec_volumes_hostPath": {
+                                "io_k8s_api_apps_v1_Deployment_spec_template_spec_volumes_hostPath_path": "/etc/ssl/certs/ca-bundle.crt"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

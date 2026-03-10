@@ -1,0 +1,836 @@
+Traduccion de reglas y politicas de seguridad k8s a uvl::
+
+Politicas y reglas obtenidas de herramientas externas.
+
+
+Descripcion del objetivo:
+
+Este proyecto tiene como objetivo unificar las reglas de seguridad estática utilizadas en Kubernetes (provenientes de herramientas como Kyverno, Checkov, Trivy o las recomendaciones del CIS Benchmark) en un modelo declarativo común basado en UVL (Universal Validation Language).
+
+La validación se realiza de forma estática, sobre manifiestos YAML de Kubernetes antes del despliegue, utilizando los JSON Schemas oficiales de Kubernetes como referencia estructural:
+https://github.com/yannh/kubernetes-json-schema
+
+Objetivo principal:
+Establecer un catálogo de constraints en UVL que contengan comprobaciones de seguridad usados por las principales herramientas externas y de análisis estático.
+
+Traducir reglas existentes (Kyverno, CIS Benchmark, Checkov) a UVL para facilitar su evaluación unificada.
+
+
+Alcance actual:
+
+Modelado estático de objetos Kubernetes (Pod, Deployment, Role, etc.)
+
+Traducción manual y estructurada de reglas de seguridad a constraints en UVL
+
+Estructura organizada por dominio: seguridad de contenedores, RBAC, redes, volúmenes, etc.
+
+Herramienta	Formato	Ubicación	Comentario
+
+OPA / Gatekeeper	Rego (lógica declarativa)	GitHub: https://github.com/open-policy-agent/gatekeeper-library, organizadas por categoría
+Kyverno	YAML,	https://github.com/kyverno/policies	Muy legibles y reutilizables
+Kubescape	JSON Schema / Control Definitions,	https://github.com/kubescape/kubescape	Basadas en frameworks como NSA, MITRE
+Trivy	Parcial (para IaC)	JSON/YAML	Trivy misconfiguration policies	Muy útiles para YAML y Terraform
+Checkov	Python (reglas personalizadas) / JSON	Checkov policies	Bien documentadas, pero más técnicas
+Kube-bench	YAML por sección (CIS Benchmark), https://github.com/aquasecurity/kube-bench/tree/main/cfg	Basadas en estándares oficiales
+
+
+
+
+
+Enlaces relevantes de politicas de seguridad:
+https://kyverno.io/policies/?policytypes=validate
+https://cloud.google.com/kubernetes-engine/enterprise/policy-controller/docs/how-to/using-nsa-cisa-k8s-v1.2?hl=es-419
+https://media.defense.gov/2022/Aug/29/2003066362/-1/-1/0/CTR_KUBERNETES_HARDENING_GUIDANCE_1.2_20220829.PDF
+
+https://open-policy-agent.github.io/gatekeeper-library/website/pspintro
+https://open-policy-agent.github.io/gatekeeper-library/website/validation/privileged-containers/
+Concuerdan politicas:
+5.2.2 Minimize the admission of privileged containers (Manual)
+https://kyverno.io/policies/pod-security/restricted/require-run-as-nonroot/require-run-as-nonroot/
+
+  !io_k8s_api_core_v1_Pod_spec_containers_securityContext_privileged
+
+  io_k8s_api_core_v1_Pod_spec_containers_securityContext_privileged == false
+
+
+Politicas kyverno revisadas:
+https://kyverno.io/policies/?policytypes=validate
+https://kyverno.io/policies/pod-security/restricted/require-run-as-nonroot/require-run-as-nonroot/
+https://kyverno.io/policies/pod-security/restricted/require-run-as-non-root-user/require-run-as-non-root-user/
+https://kyverno.io/policies/pod-security-cel/restricted/require-run-as-non-root-user/require-run-as-non-root-user/
+https://kyverno.io/policies/pod-security/baseline/disallow-privileged-containers/disallow-privileged-containers/
+
+
+Fases:
+
+1º Buscar politicas y reglas estaticas definidias en herramientas externas...
+
+2º Traducir de manera manual(?) las politicas a uvl para agregar al conjunto de restricciones
+
+3º Realizar validaciones estaticas con estas politicas en los modelos "fragmentados"
+
+4º Comparar % de "admision"/validacion frente a las otras tools. Se supone que al completar seria mas restrictiva
+pero no se si se podrian traducir todas las reglas en completitud.
+
+5º Completar el analisis con la comprobacion del despligue con tools en tiempo de ejecucion?
+
+
+
+Re 2º:
+Se debe de realizar el modelado de las politicas como un fm para definir las politicas y poder traducir/usar las comprobaciones de las politicas en el modelo...
+
+
+https://github.com/kyverno/policies/tree/main/pod-security/baseline
+equivalente a 
+https://kyverno.io/policies/?policytypes=Pod%2520Security%2520Standards%2520%28Baseline%29
+
+
+Terminar la comparación entre modelos -- Restricciones
+
+
+
+**** Revision CRD-Politicas de los YAMLs
+En el index de la Api del CRD de la definicion de las politicas falta contenido? En el punto ded definir las condiciones de la politica solo se muestra como una lista
+y se puede comprobar que se definen varias propiedades mas dentro de esta condicion...
+
+
+Segun la defincion del CRD creo que no deberia de ser valida (en uvl) -- Creo que se usa Go para analizar y comprobar las condiciones insertadas en el Yaml pero no se
+definen las propiedades necesarias en el CRD. Para uvl seria invalida la config al usar propiedades que no se tienen en la version
+url del yaml de ejemplo:
+https://github.com/kyverno/policies/blob/main/pod-security/baseline/disallow-capabilities/disallow-capabilities.yaml
+        deny: (ref: https://htmlpreview.github.io/?https://github.com/kyverno/kyverno/blob/main/docs/user/crd/index.html#kyverno.io/v1.Deny)
+          conditions: (ref: https://htmlpreview.github.io/?https://github.com/kyverno/kyverno/blob/main/docs/user/crd/index.html#kyverno.io/v1.ConditionsWrapper)
+            all:
+            - key: "{{ request.object.spec.[ephemeralContainers, initContainers, containers][].securityContext.capabilities.add[] }}"
+              operator: AnyNotIn
+              value:
+              - AUDIT_WRITE
+              - CHOWN
+              - DAC_OVERRIDE
+              - FOWNER
+              - FSETID
+              - KILL
+              - MKNOD
+              - NET_BIND_SERVICE
+              - SETFCAP
+              - SETGID
+              - SETPCAP
+              - SETUID
+              - SYS_CHROOT
+
+
+CRDs de donde se obtendran el mapeo de los esquemas de la defincion de la variabilidad kyverno...
+https://github.com/kyverno/kyverno/tree/main/config/crds
+Se diferencia entre el CRD y las politicas de Kyverno.
+
+Primer YAML a probar:
+https://github.com/kyverno/kyverno/blob/main/config/crds/kyverno/kyverno.io_clusterpolicies.yaml
+
+Se tratara de desarrollar un script para mapear automaticamente la definicion de los YAML para obtener
+el fm de dichos schemas
+
+uvl papers:
+https://idus.us.es/server/api/core/bitstreams/6276afa7-89bf-4c80-9882-81905307e97d/content
+
+
+
+Continuando revision de politicas yamls- Policies yamls Security:
+folder other
+
+https://kyverno.io/policies/other/restrict-binding-clusteradmin/restrict-binding-clusteradmin/
+https://kyverno.io/policies/other/restrict-binding-system-groups/restrict-binding-system-groups/
+
+Checked but not sure if was valid:
+https://kyverno.io/policies/other/check-serviceaccount-secrets/check-serviceaccount-secrets/
+ohter string negative:
+https://kyverno.io/policies/other/deny-secret-service-account-token-type/deny-secret-service-account-token-type/
+
+windows:
+https://kyverno.io/policies/windows-security/require-run-as-containeruser/require-run-as-containeruser/
+
+?¿
+https://kyverno.io/policies/other/add-labels/add-labels/
+https://kyverno.io/policies/other/add-default-securitycontext/add-default-securitycontext/
+
+Pod Security: - Baseline Pod Security Standards
+https://kyverno.io/policies/pod-security/subrule/podsecurity-subrule-baseline/podsecurity-subrule-baseline/
+podsecurity-subrule-baseline: no tiene una propiedad YAML real del recurso Kubernetes sino un bloque propio de Kyverno llamado podSecurity. 
+podSecurity no existe en el recurso Pod; es un metacampo interno de Kyverno que agrupa decenas de reglas bajo un “perfil”
+Se omitiran las politicas de ese recurso
+
+
+PSP Migration:  
+
+https://kyverno.io/policies/other/apply-pss-restricted-profile/apply-pss-restricted-profile/
+https://kyverno.io/policies/psp-migration/check-supplemental-groups/check-supplemental-groups/
+https://kyverno.io/policies/best-practices/require-ro-rootfs/require-ro-rootfs/   En el repo pertenece a Best-practices:
+
+Pod/exec - omitidas porque usan una comprobacion que se tendria que realizar en tiempo de ejecucion. No tiene representacion con ningun feature o propiedad en el modelo/esquemas
+https://github.com/kyverno/policies/blob/main/other/block-pod-exec-by-pod-label/block-pod-exec-by-pod-label.yaml
+
+last check in the folder other
+check-hpa-exists
+
+
+
+La política mutates (patchStrategicMerge) — crea/modifica recursos en admisión para forzar valores.
+Si se busca una comprobación estática de configuraciones, las políticas mutate/generate se consideran fuera del alcance y se omiten.
+https://github.com/kyverno/policies/blob/main/other/apply-pss-restricted-profile/apply-pss-restricted-profile.yaml
+
+Una condicion: Prefiltro en definiciones YAML; != 
+
+
+Adding a new type of validationFailureAction
+Se necesita la deteccion automatica del prefijo
+io_k8s_api_core_v1_Job_metadata_ownerReferences_kind
+io_k8s_api_batch_v1_Job_metadata_ownerReferences_kind
+
+
+#### REGO Policies
+Trying to map policies in Rego to UVL
+
+io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_containers_securityContext_capabilities_add
+
+
+Otras rego omitidas: Se usan props como cpu o memory que no se definen en el fm, solo resources_limits
+Ese es el matiz clave por el cual esta política KSV011 (limit-cpu) no puede mapearse 1:1 a un feature real de Kubernetes,
+ al menos no con el modelo UVL actual generado.
+limit-cpu
+limit-memory == CPU_not_limited.rego
+Entonces, aunque no haya cpu, la equivalencia semántica sería: -- Pero no es valido ya que requereria de definir el limite como Int o String
+limit_cpu => Pod.io_k8s_api_core_v1_Pod_spec_containers_resources_limits
+
+
+Reports of security to check:
+https://www.dynatrace.com/resources/ebooks/kubernetes-in-the-wild/
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+
+
+
+Polaris JSON Checks
+Tests sobre las mejores practicas hechas
+https://github.com/FairwindsOps/polaris/tree/master/test/checks
+
+
+Error en def de politica polaris?
+
+FailureMessage ==> failureMessage
+
+
+
+Gatekeeper
+Se define en una tabla las politicas que implementan de pod-security-policies
+De entre ellas se puede desctacar template_host_network_ports ya que la segunda parte de las constraints
+integers ya se tiene defindo en nuetro modelo original de k8s.
+https://github.com/open-policy-agent/gatekeeper-library/blob/master/library/pod-security-policy/host-network-ports/template.yaml
+
+Aunque se detecta que hay diferencias entre los rangos de puertos permitidos entre la herramienta y el modelo;
+
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sPSPHostNetworkingPorts
+metadata:
+  name: psp-host-network-ports
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+  parameters:
+    hostNetwork: true
+    min: 80
+    max: 9000
+    exemptImages:
+    - "safeimages.com/*"
+
+
+Integer io_k8s_api_core_v1_Pod_spec_ephemeralContainers_ports_hostPort {doc 'Number of port to expose on the host If specified, this must be a valid port number, 0 < x < 65536 If HostNetwork is specified, this must match ContainerPort Most containers do not need this'}
+io_k8s_api_core_v1_Pod_spec_ephemeralContainers_ports_hostPort > 0 & io_k8s_api_core_v1_Pod_spec_ephemeralContainers_ports_hostPort < 65536
+
+
+Git Large File Storage para almacenar los archivos de prueba usados para la validacion de las herramientas o el modelo en este caso.
+git config --global http.postBuffer 524288000
+git config lfs.activitytimeout 60
+git config lfs.dialtimeout 60
+git config lfs.keepalive 60
+Hay varias politicas repetidas porque en las herramientas se implementan de una manera similar, de las que se diferencian:
+Se ha pensado dejar unicamente los features para que haya constancia del enfoque similar pero quitar las constraints repetidas para evitar duplicados:
+
+Concepto	Kyverno	OPA	Polaris
+HostPID	Disallow_Host_Namespaces	no_host_pid	hostPIDSet
+HostIPC	Disallow_Host_Namespaces	no_shared_ipc_namespace	hostIPCSet
+HostNetwork	Disallow_Host_Namespaces	no_host_network	hostNetworkSet
+Privileged	Disallow_Privileged_Containers	no_privileged_containers	runAsPrivileged
+ServiceAccount automount	Restrict_Auto_Mount_of_Service...	no_auto_mount_service_token	automountServiceAccountToken
+Root user	—	no_root	runAsRootAllowed
+ReadOnlyRootFS	Require_Read_Only_Root_Filesystem	—	notReadOnlyRootFilesystem
+Capabilities	Disallow_procMount / Restrict_Seccomp	no_sysadmin_capability	dangerousCapabilities / insecureCapabilities
+
+
+
+**Revisar porque son duplicadas exactamente iguales**
+no_privileged_containers
+no_sysmodule_capability
+
+**Ajuste insecureCapabilities en polaris**
+**Asignar un operador comun para los strings negados: != Preguntar**
+
+Realizar validaciones con el modelo "completo"
+
+
+Duplicada: io_k8s_api_core_v1_Pod_spec_automountServiceAccountToken
+no_auto_mount_service_token -- error en la definicion de las constraints, falta prefix {kind.}
+automountServiceAccountToken
+
+Ajustar las agrupaciones de los feautures de las politicas de Polaris y Trivy con mas espacios
+
+WARNING:root:Import k8s.PodDisruptionBudgetFeatures not found in path C:\Users\CAOSD\projects\fm-security-rules\variability_model\policies_template
+
+
+Agregar el submodulo: ReplicaSet
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFmSec\Lib\site-packages\flamapy\metamodels\pysat_metamodel\models\pysat_model.py", line 23, in get_variable
+    raise FlamaException(f'Feature {key} not found')
+flamapy.core.exceptions.FlamaException: Feature ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_hostIPC not found 
+
+
+ReplicaSet
+RepController
+Container
+
+no_auto_mount_service_token
+io_k8s_api_core_v1_PodTemplate_template_spec_automountServiceAccountToken
+Buscadas con PodTemplate, todas False desde la prevalidacion
+
+Logica de politicas no del todo correcta:
+	runAsRootAllowed => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser > 1 | Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsNonRoot
+Como se puso por defecto, con el & se da como true cuando ambas son False, si el primero no esta es False y si el segundo aparece y se contradice False pero al validarla se deja como True.
+
+
+Separar las constraints en individuales, al aplicarse a features diferentes se auto contradicen, 
+separarlas en const apartes para que se valide correctamente
+runAsRootAllowed
+
+Relacion con el uso del path en los volumenes
+Disallow_hostPath, dice que el uso de esta prop es mejor no usarla:
+!Pod.io_k8s_api_core_v1_Pod_spec_volumes_hostPath
+Por otro lado, en la politica de Trivy se especifican los paths que no se deberian de usar para evitar usar paths "reservados"
+no_docker_sock_mount
+Pod.io_k8s_api_core_v1_Pod_spec_volumes_hostPath_path != '/var/run/docker_sock'
+
+	runAsRootAllowed => Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsNonRoot
+  Al expandir las politicas en los demas objetos de container, initContainer se cubre
+
+
+no_auto_mount_service_token => !Pod.io_k8s_api_core_v1_Pod_spec_automountServiceAccountToken & !Pod.io_k8s_api_core_v1_PodList_items_spec_automountServiceAccountToken & !Pod.io_k8s_api_core_v1_PodTemplate_template_spec_automountServiceAccountToken & !Pod.io_k8s_api_core_v1_PodTemplateList_items_template_spec_automountServiceAccountToken & !Pod.io_k8s_api_core_v1_PodTemplateSpec_spec_automountServiceAccountToken
+Separar los objetos de la politica para no tener que "llamar" a los demas Objetos
+
+Igualmente se busca en cada objeto por separado...
+Quizas sea mejor borrar las politicas con diferente kind que salgan en la politica(?)
+
+Para un proceso global y de comparacion de miles de archivos me recomendarias omitir las constraints
+de tipo String e Integer? Dado que el comportamiento no se tiene en cuenta tal y como se declaran, creo que no seria conveniente por si altera el resultado de las comprobaciones?
+
+
+Requests and limits cpu, memory; partional mapping
+Traducir a bool selection ? => Aumentar el porcentaje de restriccion y subir los invalidos para ser mas "estricto"
+resources_limits 
+resources_requests
+
+
+Como definir las politicas que son String y requieren ser usadas pero sin algo especifico de String=?
+
+  required:
+  - priorityClassName
+
+successMessage: Priority class has been set
+failureMessage: Priority class should be set
+
+String io_k8s_api_batch_v1_CronJobSpec_jobTemplate_spec_template_spec_priorityClassName
+
+Para mapear el Controller :: se ha buscado el origen de la definicion de los kinds a los que se aplican:
+https://github.com/FairwindsOps/controller-utils/blob/master/pkg/controller/controller.go
+
+var knownKinds = []knownKind{{
+	"Deployment", "apps/v1",
+}, {
+	"ReplicaSet", "apps/v1",
+}, {
+	"CronJob", "batch/v1",
+}, {
+	"Job", "batch/v1",
+}, {
+	"DaemonSet", "apps/v1",
+}, {
+	"StatefulSet", "apps/v1",
+}}
+
+Se usaran todos como kinds objetivos para los checks de Polaris que usen el target Controller
+
+Kind RutaPodSpec (Donde validar containers/securityContext)
+CronJobspec.jobTemplate.spec.template.spec
+Deploymentspec.template.spec
+StatefulSetspec.template.spec
+DaemonSetspec.template.spec
+Jobspec.template.spec
+ReplicaSetspec.template.spec
+Podspec
+
+
+01-config-node-local-dns_3
+no_host_network: --> io_k8s_api_apps_v1_DaemonSet_spec_template_spec_hostNetwork
+
+01-elasticsearch
+no_privileged_containers: --> io_k8s_api_apps_v1_StatefulSet_spec_template_spec_initContainers_securityContext_privileged
+
+el % de invalidacion sigue siendo bajo, quizas seria apropiado ampliar el "margen" de aplicación de restricciones, completar y extender
+las restricciones a todos los grupos de objetos que compartan la propiedad en cuestion...
+
+
+Nuevas pruebas del modelo de politicas v4:
+
+PS C:\Users\CAOSD\proyectos\fm-security-policies\scripts> py .\AAtester.py
+Cantidad de filas con valid=True: 103423
+Cantidad de filas con valid=False: 82928
+Cantidad archivos en total: 186351
+
+Equivalente al 44,5 % de configuraciones con problemas de seguridad detectados
+
+
+Prevent_Linkerd_Port_Skipping
+Value con null => !key ?
+
+ check-serviceaccount: Check ServiceAccount eliminada por usar {{}} para detectar var dinamicas
+
+
+ imagepullpolicy-always:
+ El string de la imagen debe ser literalmente los caracteres exclamación-asterisco-dos puntos-asterisco
+ Se omite la primera parte y se deja la enum
+
+ 	Require_Pod_priorityClassName => Pod.io_k8s_api_core_v1_Pod_spec_priorityClassName == '?*'
+
+
+Z3_ Pruebas config simple:
+
+{
+    "Require_Multiple_Replicas": true,
+    "io_k8s_api_apps_v1_Deployment": true,
+    "io_k8s_api_apps_v1_Deployment_apiVersion": "apps/v1",
+    "io_k8s_api_apps_v1_Deployment_kind": "Deployment",
+    
+    "io_k8s_api_apps_v1_Deployment_metadata": true,
+    "io_k8s_api_apps_v1_Deployment_metadata_name": "baddeploy02",
+    "io_k8s_api_apps_v1_Deployment_metadata_labels": true,
+    "io_k8s_api_apps_v1_Deployment_metadata_labels_KeyMap": "app",
+    "io_k8s_api_apps_v1_Deployment_metadata_labels_ValueMap": "busybox",
+    "io_k8s_api_apps_v1_Deployment_spec": true,
+    "io_k8s_api_apps_v1_Deployment_spec_replicas": 1,
+    
+    "io_k8s_api_apps_v1_Deployment_spec_selector": true,
+    "io_k8s_api_apps_v1_Deployment_spec_selector_matchLabels": true,
+    "io_k8s_api_apps_v1_Deployment_spec_selector_matchLabels_KeyMap": "app",
+    "io_k8s_api_apps_v1_Deployment_spec_selector_matchLabels_ValueMap": "busybox",
+    
+    "io_k8s_api_apps_v1_Deployment_spec_template": true,
+    "io_k8s_api_apps_v1_Deployment_spec_template_metadata": true,
+    "io_k8s_api_apps_v1_Deployment_spec_template_metadata_labels": true,
+    "io_k8s_api_apps_v1_Deployment_spec_template_metadata_labels_KeyMap": "owner",
+    "io_k8s_api_apps_v1_Deployment_spec_template_metadata_labels_ValueMap": "foo",
+    
+    "io_k8s_api_apps_v1_Deployment_spec_template_spec": true,
+    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers": true,
+    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_name": "busybox",
+    "io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_image": "busybox:1.35"
+}
+
+
+
+validation_results_valid_jsons03_Z3:
+(envFlamapyZ3) PS C:\Users\CAOSD\projects\fm-security-rules\scripts> py .\AAtester.py
+Cantidad de filas con valid=True: 23422
+Cantidad de filas con valid=False: 152674
+Cantidad archivos en total: 176096
+86% tiene 1 o mas errores en las políticas definidas... demasiado restrictivas?
+
+Nueva prueba con policy_structure03_aux :: Sin quitar tagNotSpecified o labels que es lo que tenia el 03 con errores de ''
+Modelo simple sin cardinalidad compleja...
+
+
+
+
+Politicas omitidas interesantes:
+	Require_Annotations => (Pod.io_k8s_api_core_v1_Pod_metadata_annotations_KeyMap == 'corp_org/department' & Pod.io_k8s_api_core_v1_Pod_metadata_annotations_ValueMap == '?*')
+
+
+Restrict_Annotations
+Menciona varios tipos de mapas y puede generar conflictos a la hora de la validacion completa, tampoco se mantiene el string literal con puntos por lo que no refleja correctamente la politica
+	Restrict_Annotations => ((Deployment.io_k8s_api_apps_v1_Deployment_metadata_annotations_KeyMap == 'fluxcd_io' & Deployment.io_k8s_api_apps_v1_Deployment_metadata_annotations_ValueMap == '*?') & (Job.io_k8s_api_batch_v1_CronJob_metadata_annotations_KeyMap == 'fluxcd_io' & Job.io_k8s_api_batch_v1_CronJob_metadata_annotations_ValueMap == '*?')) | ((Job.io_k8s_api_batch_v1_Job_metadata_annotations_KeyMap == 'fluxcd_io' & Job.io_k8s_api_batch_v1_Job_metadata_annotations_ValueMap == '*?') & (StatefulSet.io_k8s_api_apps_v1_StatefulSet_metadata_annotations_KeyMap == 'fluxcd_io' & StatefulSet.io_k8s_api_apps_v1_StatefulSet_metadata_annotations_ValueMap == '*?')) | ((DaemonSet.io_k8s_api_apps_v1_DaemonSet_metadata_annotations_KeyMap == 'fluxcd_io' & DaemonSet.io_k8s_api_apps_v1_DaemonSet_metadata_annotations_ValueMap == '*?') & (Pod.io_k8s_api_core_v1_Pod_metadata_annotations_KeyMap == 'fluxcd_io' & Pod.io_k8s_api_core_v1_Pod_metadata_annotations_ValueMap == '*?'))
+
+
+
+
+Por complejidad y puede ser propensa a edge cases:
+	Disallow_SELinux => ((!Pod.io_k8s_api_core_v1_Pod_spec_securityContext_seLinuxOptions_type | (Pod.io_k8s_api_core_v1_Pod_spec_securityContext_seLinuxOptions_type == 'container_t' | Pod.io_k8s_api_core_v1_Pod_spec_securityContext_seLinuxOptions_type == 'container_init_t' | Pod.io_k8s_api_core_v1_Pod_spec_securityContext_seLinuxOptions_type == 'container_kvm_t')) & (!Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_seLinuxOptions_type | (Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_seLinuxOptions_type == 'container_t' | Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_seLinuxOptions_type == 'container_init_t' | Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_seLinuxOptions_type == 'container_kvm_t')) & (!Pod.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_seLinuxOptions_type | (Pod.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_seLinuxOptions_type == 'container_t' | Pod.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_seLinuxOptions_type == 'container_init_t' | Pod.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_seLinuxOptions_type == 'container_kvm_t')) & (!Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_seLinuxOptions_type | (Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_seLinuxOptions_type == 'container_t' | Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_seLinuxOptions_type == 'container_init_t' | Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_seLinuxOptions_type == 'container_kvm_t')) & !Pod.io_k8s_api_core_v1_Pod_spec_securityContext_seLinuxOptions_user & !Pod.io_k8s_api_core_v1_Pod_spec_securityContext_seLinuxOptions_role & !Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_seLinuxOptions_user & !Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_seLinuxOptions_role & !Pod.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_seLinuxOptions_user & !Pod.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_seLinuxOptions_role & !Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_seLinuxOptions_user & !Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_seLinuxOptions_role)
+
+No es necesario a no ser que tengamos que usar/validar los rangos de puertos especificos 5000-6000
+disallow-host-ports da mas estabilidad y es menos propenso a errores, Además Kyverno dice explícitamente que son mutuamente excluyentes.
+	Disallow_hostPorts_Range_Alternate => (((Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_ports_hostPort > 4999 & Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_ports_hostPort < 6001) | Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_ports_hostPort == 0 ) & ((Pod.io_k8s_api_core_v1_Pod_spec_initContainers_ports_hostPort > 4999 & Pod.io_k8s_api_core_v1_Pod_spec_initContainers_ports_hostPort < 6001) | Pod.io_k8s_api_core_v1_Pod_spec_initContainers_ports_hostPort == 0 ) & ((Pod.io_k8s_api_core_v1_Pod_spec_containers_ports_hostPort > 4999 & Pod.io_k8s_api_core_v1_Pod_spec_containers_ports_hostPort < 6001) | Pod.io_k8s_api_core_v1_Pod_spec_containers_ports_hostPort == 0 ))
+
+La politica require de una interaccion dinamica para obtener valores del cluster:
+	Prevent_Duplicate_HorizontalPodAutoscalers => (HorizontalPodAutoscaler.io_k8s_api_autoscaling_v2_HorizontalPodAutoscaler_spec_scaleTargetRef_kind == 'Deployment' | HorizontalPodAutoscaler.io_k8s_api_autoscaling_v2_HorizontalPodAutoscaler_spec_scaleTargetRef_kind == 'StatefulSet' | HorizontalPodAutoscaler.io_k8s_api_autoscaling_v2_HorizontalPodAutoscaler_spec_scaleTargetRef_kind == 'ReplicaSet' | HorizontalPodAutoscaler.io_k8s_api_autoscaling_v2_HorizontalPodAutoscaler_spec_scaleTargetRef_kind == 'DaemonSet')
+
+Tu traducción en UVL "cumple" con la policy, pero el problema no es técnico sino de estabilidad
+La policy original exige valores exactos, pero varia en base a la organización o requerimiento por lo que podria dar fallos si se usan cualquier otro puerto
+	Validate_User_ID_Group_ID_and_FS_Group => (Pod.io_k8s_api_core_v1_Pod_spec_securityContext_runAsUser_valueInt == 1000 & Pod.io_k8s_api_core_v1_Pod_spec_securityContext_runAsGroup_valueInt == 3000 & Pod.io_k8s_api_core_v1_Pod_spec_securityContext_fsGroup_valueInt == 2000)
+
+No se llega a detectar correctamente en el modelo actual pero si se agregase se deberia de aplicar en el validador interno. Código "preparado"
+Require imagePullSecrets
+
+Define erroneamente lo que se busca prohibir y generar posibles errores en la validacion. Ademas de que solo se tendria que aplicar a S.0 Linux
+	linuxHardening => (Container.io_k8s_api_core_v1_Container_securityContext_seccompProfile_type_Unconfined)
+
+
+
+Pol key, value omitidas para la validacion global;
+**Cambios 02/03/26**
+
+Errores en flamapy new version with the polticy:
+	Deny_Secret_Service_Account_Token_Type => Secret.io_k8s_api_core_v1_Secret_type != 'kubernetes.io/service-account-token'
+  
+2026-03-03 12:40:15,857 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesConfigMap 
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\CAOSD\projects\fm-security-rules\scripts\valid_config02_simplified.py", line 241, in <module>
+    z3_model = FmToZ3(flat_fm).transform()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 74, in transform
+    self._traverse_constraints()
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 122, in _traverse_constraints
+    self._add_constraint_formula(constraint)
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 261, in _add_constraint_formula
+    expr = self._get_expression(ctc.ast.root, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in _get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 344, in _get_binary_op_expression
+    right_expr = self._get_expression(node.right, node)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in _get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 344, in _get_binary_op_expression
+    right_expr = self._get_expression(node.right, node)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 266, in _get_expression
+    return self._get_term_expression(node, parent)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 283, in _get_term_expression
+    return self._get_str_term_expression(node, parent)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 307, in _get_str_term_expression
+    return self._get_attribute_term_expression(node.data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 326, in _get_attribute_term_expression
+    raise FlamaException(f'Unsupported feature or attribute: {identifier}')
+flamapy.core.exceptions.FlamaException: Unsupported feature or attribute: kubernetes.io/service-account-token
+(envFlamapyZ3_newversion) PS C:\Users\CAOSD\projects\fm-security-rules>
+
+
+Block_Ephemeral_Containers {tool 'kyverno', severity 'medium', weight '0.7',
+
+line 71:75 token recognition error at: ''0.'
+2026-03-05 16:06:26,142 - root - ERROR - Syntax error at line 71, column 79: extraneous input '', name '' expecting {'}', ','}
+2026-03-05 16:06:26,142 - root - ERROR - Syntax error at line 71, column 93: mismatched input '-' expecting {'cardinality', '{', NEWLINE}
+2026-03-05 16:06:26,142 - root - ERROR - Syntax error at line 71, column 103: mismatched input '-' expecting {'cardinality', '{', NEWLINE}
+2026-03-05 16:06:26,143 - root - ERROR - Syntax error at line 71, column 115: mismatched input ',' expecting {'cardinality', '{', NEWLINE}
+2026-03-05 16:06:26,143 - root - ERROR - Syntax error at line 71, column 124: mismatched input ''spec_XephemeralContainers'' expecting {'cardinality', '{', NEWLINE}
+2026-03-05 16:06:26,143 - root - ERROR - Syntax error at line 71, column 159: mismatched input ''Pod'' expecting {'cardinality', '{', NEWLINE}
+2026-03-05 16:06:26,143 - root - ERROR - Syntax error at line 71, column 170: mismatched input ''Ephemeral containers, enabled by default in Kubernetes 123, allow users to use the kubectl debug functionality and attach a temporary container to an existing Pod This may potentially be used to gain access to unauthorized information executing inside one or more containers in that Pod This policy blocks the use of ephemeral containers'' expecting {'cardinality', '{', NEWLINE}
+2026-03-05 16:06:26,143 - root - ERROR - Syntax error at line 71, column 522: mismatched input ''YAML'' expecting {'cardinality', '{', NEWLINE}
+2026-03-05 16:06:26,143 - root - ERROR - Syntax error at line 73, column 5: mismatched input 'Disallow_all_Secrets' expecting {<EOF>, 'constraints'}
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\CAOSD\projects\fm-security-rules\scripts\valid_config02_simplified.py", line 256, in <module>     
+    fm_model = UVLReader(str(UVL_PATH)).transform()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\fm_metamodel\transformations\uvl_reader.py", line 591, in transform
+    self.set_parse_tree()
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\fm_metamodel\transformations\uvl_reader.py", line 76, in set_parse_tree
+    raise FlamaException("Parsing failed due to syntax errors.")
+flamapy.core.exceptions.FlamaException: Parsing failed due to syntax errors.
+(envFlamapyZ3) PS C:\Users\CAOSD\projects\fm-security-rules> 
+
+
+
+
+
+Se necesita la comprobacion previa de que el objeto exista en el contexto de la comprobacion; no controlado en Trivy todavia**
+no_root
+CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_containers_securityContext_runAsNonRoot & CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_initContainers_securityContext_runAsNonRoot & CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_ephemeralContainers_securityContext_runAsNonRoot & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_containers_securityContext_runAsNonRoot & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_initContainers_securityContext_runAsNonRoot & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_ephemeralContainers_securityContext_runAsNonRoot & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_securityContext_runAsNonRoot & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_initContainers_securityContext_runAsNonRoot & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_ephemeralContainers_securityContext_runAsNonRoot & Job.io_k8s_api_batch_v1_Job_spec_template_spec_containers_securityContext_runAsNonRoot & Job.io_k8s_api_batch_v1_Job_spec_template_spec_initContainers_securityContext_runAsNonRoot & Job.io_k8s_api_batch_v1_Job_spec_template_spec_ephemeralContainers_securityContext_runAsNonRoot & Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsNonRoot & Pod.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_runAsNonRoot & Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_runAsNonRoot & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_containers_securityContext_runAsNonRoot & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_initContainers_securityContext_runAsNonRoot & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_ephemeralContainers_securityContext_runAsNonRoot & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_securityContext_runAsNonRoot & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_initContainers_securityContext_runAsNonRoot & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_ephemeralContainers_securityContext_runAsNonRoot & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_containers_securityContext_runAsNonRoot & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_initContainers_securityContext_runAsNonRoot & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_ephemeralContainers_securityContext_runAsNonRoot
+use_high_gid
+CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_containers_securityContext_runAsGroup_valueInt > 10000 & CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_initContainers_securityContext_runAsGroup_valueInt > 10000 & CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_ephemeralContainers_securityContext_runAsGroup_valueInt > 10000 & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_containers_securityContext_runAsGroup_valueInt > 10000 & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_initContainers_securityContext_runAsGroup_valueInt > 10000 & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_ephemeralContainers_securityContext_runAsGroup_valueInt > 10000 & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_securityContext_runAsGroup_valueInt > 10000 & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_initContainers_securityContext_runAsGroup_valueInt > 10000 & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_ephemeralContainers_securityContext_runAsGroup_valueInt > 10000 & Job.io_k8s_api_batch_v1_Job_spec_template_spec_containers_securityContext_runAsGroup_valueInt > 10000 & Job.io_k8s_api_batch_v1_Job_spec_template_spec_initContainers_securityContext_runAsGroup_valueInt > 10000 & Job.io_k8s_api_batch_v1_Job_spec_template_spec_ephemeralContainers_securityContext_runAsGroup_valueInt > 10000 & Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsGroup_valueInt > 10000 & Pod.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_runAsGroup_valueInt > 10000 & Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_runAsGroup_valueInt > 10000 & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_containers_securityContext_runAsGroup_valueInt > 10000 & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_initContainers_securityContext_runAsGroup_valueInt > 10000 & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_ephemeralContainers_securityContext_runAsGroup_valueInt > 10000 & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_securityContext_runAsGroup_valueInt > 10000 & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_initContainers_securityContext_runAsGroup_valueInt > 10000 & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_ephemeralContainers_securityContext_runAsGroup_valueInt > 10000 & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_containers_securityContext_runAsGroup_valueInt > 10000 & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_initContainers_securityContext_runAsGroup_valueInt > 10000 & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_ephemeralContainers_securityContext_runAsGroup_valueInt > 10000
+use_high_uid
+CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_containers_securityContext_runAsUser_valueInt > 10000 & CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_initContainers_securityContext_runAsUser_valueInt > 10000 & CronJob.io_k8s_api_batch_v1_CronJob_spec_jobTemplate_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_containers_securityContext_runAsUser_valueInt > 10000 & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_initContainers_securityContext_runAsUser_valueInt > 10000 & DaemonSet.io_k8s_api_apps_v1_DaemonSet_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_containers_securityContext_runAsUser_valueInt > 10000 & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_initContainers_securityContext_runAsUser_valueInt > 10000 & Deployment.io_k8s_api_apps_v1_Deployment_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & Job.io_k8s_api_batch_v1_Job_spec_template_spec_containers_securityContext_runAsUser_valueInt > 10000 & Job.io_k8s_api_batch_v1_Job_spec_template_spec_initContainers_securityContext_runAsUser_valueInt > 10000 & Job.io_k8s_api_batch_v1_Job_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & Pod.io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser_valueInt > 10000 & Pod.io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_runAsUser_valueInt > 10000 & Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_containers_securityContext_runAsUser_valueInt > 10000 & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_initContainers_securityContext_runAsUser_valueInt > 10000 & ReplicaSet.io_k8s_api_apps_v1_ReplicaSet_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_containers_securityContext_runAsUser_valueInt > 10000 & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_initContainers_securityContext_runAsUser_valueInt > 10000 & RepController.io_k8s_api_core_v1_ReplicationController_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000 & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_containers_securityContext_runAsUser_valueInt > 10000 & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_initContainers_securityContext_runAsUser_valueInt > 10000 & StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_template_spec_ephemeralContainers_securityContext_runAsUser_valueInt > 10000
+
+
+	hostPortSet => Container.io_k8s_api_core_v1_Container_ports_hostPort == 0
+
+
+Otro error:
+
+2026-03-09 15:30:07,952 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesConfigMap 
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\CAOSD\projects\fm-security-rules\scripts\valid_config02_simplified.py", line 257, in <module>
+    z3_model = FmToZ3(flat_fm).transform()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 74, in transform
+    self._traverse_constraints()
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 122, in 
+_traverse_constraints
+    self._add_constraint_formula(constraint)
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 261, in 
+_add_constraint_formula
+    expr = self._get_expression(ctc.ast.root, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in 
+_get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 344, in 
+_get_binary_op_expression
+    right_expr = self._get_expression(node.right, node)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in 
+_get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 343, in 
+_get_binary_op_expression
+    left_expr = self._get_expression(node.left, node)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in 
+_get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 343, in 
+_get_binary_op_expression
+    left_expr = self._get_expression(node.left, node)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in 
+_get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 344, in 
+_get_binary_op_expression
+    right_expr = self._get_expression(node.right, node)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in 
+_get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 343, in 
+_get_binary_op_expression
+    left_expr = self._get_expression(node.left, node)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in 
+_get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 344, in 
+_get_binary_op_expression
+    right_expr = self._get_expression(node.right, node)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 266, in 
+_get_expression
+    return self._get_term_expression(node, parent)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 283, in 
+_get_term_expression
+    return self._get_str_term_expression(node, parent)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 307, in 
+_get_str_term_expression
+    return self._get_attribute_term_expression(node.data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 326, in 
+_get_attribute_term_expression
+    raise FlamaException(f'Unsupported feature or attribute: {identifier}')
+flamapy.core.exceptions.FlamaException: Unsupported feature or attribute: eu.foo.io/*
+(envFlamapyZ3_newversion) PS C:\Users\CAOSD\projects\fm-security-rules> 
+
+
+
+
+2026-03-09 15:34:26,996 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesStorageClass 
+2026-03-09 15:34:27,154 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesConfigMap 
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\CAOSD\projects\fm-security-rules\scripts\valid_config02_simplified.py", line 257, in <module>
+    z3_model = FmToZ3(flat_fm).transform()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 74, in transform
+    self._traverse_constraints()
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 122, in 
+_traverse_constraints
+    self._add_constraint_formula(constraint)
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 261, in 
+_add_constraint_formula
+    expr = self._get_expression(ctc.ast.root, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in 
+_get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 344, in 
+_get_binary_op_expression
+    right_expr = self._get_expression(node.right, node)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in 
+_get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 343, in 
+_get_binary_op_expression
+    left_expr = self._get_expression(node.left, node)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in 
+_get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 343, in 
+_get_binary_op_expression
+    left_expr = self._get_expression(node.left, node)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in 
+_get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 343, in 
+_get_binary_op_expression
+    left_expr = self._get_expression(node.left, node)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in 
+_get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 344, in 
+_get_binary_op_expression
+    right_expr = self._get_expression(node.right, node)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 266, in 
+_get_expression
+    return self._get_term_expression(node, parent)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 283, in 
+_get_term_expression
+    return self._get_str_term_expression(node, parent)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 307, in 
+_get_str_term_expression
+    return self._get_attribute_term_expression(node.data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 326, in 
+_get_attribute_term_expression
+    raise FlamaException(f'Unsupported feature or attribute: {identifier}')
+flamapy.core.exceptions.FlamaException: Unsupported feature or attribute: /var/run/docker.sock
+(envFlamapyZ3_newversion) PS C:\Users\CAOSD\projects\fm-security-rules> 
+
+
+2026-03-09 15:37:52,593 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesConfigMap 
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\CAOSD\projects\fm-security-rules\scripts\valid_config02_simplified.py", line 257, in <module>
+    z3_model = FmToZ3(flat_fm).transform()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 74, in transform
+    self._traverse_constraints()
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 122, in 
+_traverse_constraints
+    self._add_constraint_formula(constraint)
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 261, in 
+_add_constraint_formula
+    expr = self._get_expression(ctc.ast.root, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in 
+_get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 344, in 
+_get_binary_op_expression
+    right_expr = self._get_expression(node.right, node)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in 
+_get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 343, in 
+_get_binary_op_expression
+    left_expr = self._get_expression(node.left, node)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in 
+_get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 343, in 
+_get_binary_op_expression
+    left_expr = self._get_expression(node.left, node)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in 
+_get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 344, in 
+_get_binary_op_expression
+    right_expr = self._get_expression(node.right, node)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in 
+_get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 344, in 
+_get_binary_op_expression
+    right_expr = self._get_expression(node.right, node)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in 
+_get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 344, in 
+_get_binary_op_expression
+    right_expr = self._get_expression(node.right, node)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 266, in 
+_get_expression
+    return self._get_term_expression(node, parent)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 283, in 
+_get_term_expression
+    return self._get_str_term_expression(node, parent)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 307, in 
+_get_str_term_expression
+    return self._get_attribute_term_expression(node.data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\fm-security-rules\envFlamapyZ3_newversion\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 326, in 
+_get_attribute_term_expression
+    raise FlamaException(f'Unsupported feature or attribute: {identifier}')
+flamapy.core.exceptions.FlamaException: Unsupported feature or attribute: bar.io/*
+(envFlamapyZ3_newversion) PS C:\Users\CAOSD\projects\fm-security-rules> 
+
+
+73 politicas en el modelo final HK.uvl
+48 Kyverno
+24 otras
+Csv FINAL:
+8338 primer proceso del pc principal
+
+13 Polaris
+11 Trivy
+
+
