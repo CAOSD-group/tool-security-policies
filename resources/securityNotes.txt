@@ -563,7 +563,111 @@ flamapy.core.exceptions.FlamaException: Parsing failed due to syntax errors.
 (envFlamapyZ3) PS C:\Users\CAOSD\projects\fm-security-rules> 
 
 
+(envFlamapyZ3) PS C:\Users\CAOSD\projects\tool-security-rules> py -m scripts.valid_config
+2026-03-10 13:04:00,594 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: Policies 
+2026-03-10 13:04:05,635 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesPod 
+2026-03-10 13:04:06,102 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesServiceAccount 
+2026-03-10 13:04:06,486 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesRoleBinding 
+2026-03-10 13:04:06,677 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesClusterRoleBinding 
+2026-03-10 13:04:07,056 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesService 
+2026-03-10 13:04:07,343 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesIngress 
+2026-03-10 13:04:12,285 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesJob 
+2026-03-10 13:04:17,154 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesDaemonSet 
+2026-03-10 13:04:21,984 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesDeployment 
+2026-03-10 13:04:27,268 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesStatefulSet 
+2026-03-10 13:04:27,538 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesSecret 
+2026-03-10 13:04:27,895 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesPersistentVolumeClaim 
+2026-03-10 13:04:28,163 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesPodDisruptionBudget 
+2026-03-10 13:04:33,289 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesCronJob 
+2026-03-10 13:04:37,997 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesReplicaSet 
+2026-03-10 13:04:42,762 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesReplicationController 
+2026-03-10 13:04:43,610 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesContainer 
+2026-03-10 13:04:48,643 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesPodList 
+2026-03-10 13:04:53,301 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesPodTemplate 
+2026-03-10 13:04:58,024 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesPodTemplateList 
+2026-03-10 13:05:02,647 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesPodTemplateSpec 
+2026-03-10 13:05:03,134 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesHorizontalPodAutoscaler 
+2026-03-10 13:05:03,321 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesNamespace 
+2026-03-10 13:05:04,354 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesPersistentVolume 
+2026-03-10 13:05:04,756 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesStorageClass 
+2026-03-10 13:05:04,921 - root - WARNING - Namespaces are not meningful for Flama.This model has the following namespaces: KubernetesConfigMap 
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\CAOSD\projects\tool-security-rules\scripts\valid_config.py", line 257, in <module>
+    z3_model = FmToZ3(flat_fm).transform()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\tool-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 74, in transform
+    self._traverse_constraints()
+  File "C:\Users\CAOSD\projects\tool-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 122, in _traverse_constraints
+    self._add_constraint_formula(constraint)
+  File "C:\Users\CAOSD\projects\tool-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 261, in _add_constraint_formula
+    expr = self._get_expression(ctc.ast.root, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\tool-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in _get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\tool-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 344, in _get_binary_op_expression
+    right_expr = self._get_expression(node.right, node)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\tool-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in _get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\tool-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 343, in _get_binary_op_expression
+    left_expr = self._get_expression(node.left, node)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\tool-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in _get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\tool-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 343, in _get_binary_op_expression
+    left_expr = self._get_expression(node.left, node)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\tool-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in _get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\tool-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 344, in _get_binary_op_expression
+    right_expr = self._get_expression(node.right, node)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\tool-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 268, in _get_expression
+    return self._get_binary_op_expression(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\tool-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 344, in _get_binary_op_expression
+    right_expr = self._get_expression(node.right, node)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\tool-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 266, in _get_expression
+    return self._get_term_expression(node, parent)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\tool-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 283, in _get_term_expression
+    return self._get_str_term_expression(node, parent)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\tool-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 307, in _get_str_term_expression
+    return self._get_attribute_term_expression(node.data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\tool-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\z3_metamodel\transformations\fm_to_z3.py", line 326, in _get_attribute_term_expression
+    raise FlamaException(f'Unsupported feature or attribute: {identifier}')
+flamapy.core.exceptions.FlamaException: Unsupported feature or attribute: /var/run/containerd/containerd.sock
 
+When add a dot in the string values...
+
+
+(envFlamapyZ3) PS C:\Users\CAOSD\projects\tool-security-rules> py -m scripts.valid_config
+line 245:87 token recognition error at: ''''
+2026-03-10 14:18:34,399 - root - ERROR - Syntax error at line 246, column 1: extraneous input '\n\t' expecting {'(', 'len', 'sum', 'avg', 'floor', 'ceil', FLOAT, INTEGER, ID_NOT_STRICT, ID_STRICT, STRING}
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\CAOSD\projects\tool-security-rules\scripts\valid_config.py", line 250, in <module>
+    fm_model = UVLReader(str(UVL_PATH)).transform()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CAOSD\projects\tool-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\fm_metamodel\transformations\uvl_reader.py", line 518, in transform
+    self.set_parse_tree()
+  File "C:\Users\CAOSD\projects\tool-security-rules\envFlamapyZ3\Lib\site-packages\flamapy\metamodels\fm_metamodel\transformations\uvl_reader.py", line 76, in set_parse_tree
+    raise FlamaException("Parsing failed due to syntax errors.")
+flamapy.core.exceptions.FlamaException: Parsing failed due to syntax errors.
+(envFlamapyZ3) PS C:\Users\CAOSD\projects\tool-security-rules> 
+
+Require_Pod_priorityClassName => Pod.io_k8s_api_core_v1_Pod_spec_priorityClassName != ''
+References to a non-string empty
 
 
 Se necesita la comprobacion previa de que el objeto exista en el contexto de la comprobacion; no controlado en Trivy todavia**
