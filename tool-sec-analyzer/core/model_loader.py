@@ -1,4 +1,6 @@
 import logging
+import os
+from pathlib import Path
 from flamapy.metamodels.fm_metamodel.transformations import UVLReader
 from flamapy.metamodels.fm_metamodel.transformations import FlatFM
 from flamapy.metamodels.z3_metamodel.transformations import FmToZ3
@@ -14,21 +16,29 @@ class ModelLoader:
 
   def _load_and_transform(self):
     """Loads UVL, flattens it, and transforms to Z3 once during initialization."""
+    
     logger.info(f"Loading Feature Model from {self.uvl_path}")
-    try:
-        # 1. Read UVL
-        self.fm = UVLReader(self.uvl_path).transform()
-        
-        # 2. Flatten FM (Assuming FlatFM is applied directly to the model)
-        # Depending on flamapy version, this might be a transformation or an operation
-        flat_transformer = FlatFM(self.fm)
-        self.fm = flat_transformer.transform()
+    # 1. Obtener la ruta absoluta y el directorio donde vive el modelo
+    abs_uvl_path = Path(self.uvl_path).resolve()
+    model_dir = abs_uvl_path.parent
+      
+    # Guardamos el directorio de trabajo actual (la raíz del proyecto)
+    original_cwd = os.getcwd()
 
-        # 3. Generate Z3 Representation
-        z3_transformer = FmToZ3(self.fm)
-        self.z3_model = z3_transformer.transform()
-        
-        logger.info("Successfully loaded and cached Z3 model.")
-    except Exception as e:
-        logger.error(f"Failed to load Feature Model: {e}")
-        raise
+    try:
+      os.chdir(model_dir)
+      self.fm = UVLReader(abs_uvl_path.name).transform()
+      logger.info(f"Loading Feature Model from {self.uvl_path}")
+      print(f"Path to UVL: {self.uvl_path}")
+      flat_fm_op = FlatFM(self.fm)
+      flat_fm_op.set_maintain_namespaces(False)
+      self.flat_fm = flat_fm_op.transform()
+
+      self.z3_model = FmToZ3(self.flat_fm).transform()
+      logger.info("Successfully loaded and cached Flat_FM and Z3 model.")
+    except Exception as e:  
+      logger.error(f"Failed to load Feature Model: {e}")
+      raise
+    finally:
+      os.chdir(original_cwd)
+      logger.info(f"Restored working directory to: {original_cwd}")

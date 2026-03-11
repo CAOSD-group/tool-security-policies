@@ -1,7 +1,7 @@
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
-- [fm-security-policies](#fm-security-policies)
+- [tool-security-policies](#tool-security-policies)
   - [Description](#description)
   - [How it works: Hybrid Validation](#how-it-works-hybrid-validation)
   - [Using the scripts](#using-the-scripts)
@@ -14,29 +14,15 @@
 
 ---
 
-# fm-security-policies
-
-Repository for the project **Hybrid Validation of Kubernetes Security Policies using Feature Models and Content Analysis**.
-
+# Kube-Sec Analyzer
 
 ## Description
 
-**fm-security-policies** is a validation framework that combines the formal rigor of Feature Models (SPL) with the flexibility of Python-based content analysis to audit Kubernetes configurations against security standards (e.g., Kyverno policies, Pod Security Standards).
+**tool-security-policies** is a research prototype for automated security analysis of Kubernetes manifests using Variability Models (UVL) and Constraint Solving (Z3).
 
 Unlike traditional approaches that rely solely on logic solvers (SAT/SMT) —which struggle with string pattern matching, dynamic lists, and complex content rules— this pipeline implements a **Hybrid Validation Engine**:
 
 1.  **Structural Validation (Z3 Solver):** Uses [Flamapy](https://www.flamapy.org/) to transform UVL constraints into logic formulas to validate boolean properties, field existence, and structural integrity.
-2.  **Content Validation (Python Heuristics):** A dedicated `ContentPolicyValidator` handles regex matching, deep recursive inspection, list iterations, and string semantics (e.g., Image Tags, AppArmor profiles, Ingress Classes).
-
-It is designed for research, analysis, and validation scenarios where formal modeling of complex system configurations is required but needs to be augmented with practical content checks.
-
-## How it works: Hybrid Validation
-
-The system processes Kubernetes configurations (JSON/YAML) through a multi-stage pipeline:
-
-1.  **Policy Inference:** Automatically detects which policies apply to the input file based on the Resource Kind (e.g., `Pod`, `Service`) and Content Heuristics (e.g., presence of images).
-2.  **Pre-Validation (Python):** Executes the `ContentPolicyValidator`. If a content rule fails (e.g., an image using `:latest`), the configuration is rejected immediately (Fail-Fast), avoiding expensive solver calls.
-3.  **Formal Validation (Z3):** If pre-validation passes, the configuration is mapped to feature logic and solved against the `Policies.uvl` model using the Z3 SMT solver.
 
 ---
 
@@ -45,7 +31,7 @@ The system processes Kubernetes configurations (JSON/YAML) through a multi-stage
 ### Requirements
 
 - [Python 3.9+](https://www.python.org/)
-- [Flamapy](https://www.flamapy.org/) (and `flamapy-sat` plugin)
+- [Flamapy](https://www.flamapy.org/) (and `flamapy-z3` plugin)
 - Git
 - Bash or PowerShell for script execution
 

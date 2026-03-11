@@ -1,0 +1,100 @@
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from contextlib import asynccontextmanager
+import yaml
+import logging
+import os
+
+from core.model_loader import ModelLoader
+from core.manifest_parser import ManifestParser
+from core.csv_mapper import CSVMapper
+from core.mapping_engine import MappingEngine
+from core.policy_inference import PolicyInference
+from core.validator import Validator
+from core.report_generator import ReportGenerator, AuditReport
+
+logger = logging.getLogger(__name__)
+
+app_state = {}
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    logger.info("Initializing Kube-Sec-Analyzer Engine...")
+    uvl_path = os.getenv("UVL_MODEL_PATH", "models/HKFM.uvl")
+    
+    # Rutas absolutas a los CSV (asumiendo que están en la carpeta resources)
+    base_dir = os.path.dirname(os.path.dirname(__file__))
+    csv_features = os.path.join(base_dir, "resources", "mapping_csv", "kubernetes_mapping_properties_features.csv")
+    csv_kinds = os.path.join(base_dir, "resources", "mapping_csv", "kubernetes_kinds_versions_detected.csv")
+    
+    try:
+        loader = ModelLoader(uvl_path)
+        
+        # Guardamos en memoria global
+        app_state['inference_engine'] = PolicyInference(loader.flat_fm)
+        app_state['validator'] = Validator(loader.flat_fm, loader.z3_model)
+        
+        # INICIALIZAMOS TU CSV MAPPER AQUÍ (Lee los CSV una sola vez)
+        app_state['csv_mapper'] = CSVMapper(csv_features, csv_kinds)
+        
+        logger.info("Engine ready to accept requests.")
+        yield
+    except Exception as e:
+        logger.error(f"Failed to start engine: {e}")
+        raise
+    finally:
+        app_state.clear()
+
+app = FastAPI(title="Kube-Sec-Analyzer API", lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"],
+)
+
+class ValidationRequest(BaseModel):
+    manifest_yaml: str
+
+@app.post("/validate", response_model=AuditReport)
+async def validate_manifest(request: ValidationRequest):
+    try:
+        documents = ManifestParser.parse(request.manifest_yaml)
+        all_violations = []
+        
+        inference_engine = app_state['inference_engine']
+        validator = app_state['validator']
+        csv_mapper = app_state['csv_mapper']
+
+        for doc in documents:
+            kind = doc.get('kind')
+            if not kind:
+                continue 
+                
+            active_policies = inference_engine.get_policies_for_kind(kind)
+            if not active_policies:
+                continue
+
+            try:
+                # 1. Tu CSVMapper transforma el YAML a tu estructura especial JSON
+                mapped_json_dict = csv_mapper.transform_manifest(doc)
+            except ValueError as ve:
+                logger.warning(f"Skipping document: {ve}")
+                continue # Salta si no es una versión/kind soportada por tu CSV
+
+            # 2. MappingEngine solo se encarga del producto cartesiano de FlamaPy
+            configurations = MappingEngine.manifest_to_configurations(mapped_json_dict)
+            
+            if configurations:
+                target_config = configurations[0]
+                print("\n=== FEATURES MAPEADAS LISTAS PARA Z3 ===")
+                print(target_config.elements)
+                violations = validator.validate_configuration(target_config, active_policies)
+                all_violations.extend(violations)
+
+        return ReportGenerator.generate(violations=all_violations, scanned_resources=len(documents))
+
+    except yaml.YAMLError as e:
+        raise HTTPException(status_code=400, detail=f"Invalid YAML provided: {str(e)}")
+    except Exception as e:
+        logger.error(f"Validation error: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error during analysis.")

@@ -42,11 +42,12 @@ class Validator:
         # 5. If UNSAT, record vulnerability
         if not is_sat:
           meta = self._get_policy_metadata(policy)
+          print(f"Error en la politica con el meta: {meta}")
           failed_policies_report.append({
             "policy": policy,
             "severity": meta.get("severity", "unknown"),
-            "description": meta.get("doc", "No description"),
-            "remediation": meta.get("remediation", "Review manifest")
+            "description": meta.get("description", "empty"),
+            "remediation": meta.get("remediation", "Check policy")
           })
 
       except Exception as e:
@@ -100,50 +101,45 @@ class Validator:
     return children
 
   def _get_policy_metadata(self, policy_name: str) -> dict:
-    """Extracts UVL attributes like doc, RecommendedAction, severity."""
-    feat = self.flat_fm.get_feature_by_name(policy_name)
-    info = {}
-    if feat:
+      """
+      Extracts metadata from UVL attributes defined in the Feature Model.
+      Maps the UVL attributes to standard JSON reporting fields.
+      """
+      feat = self.flat_fm.get_feature_by_name(policy_name)
+      
+      # Default fallback values
+      info = {
+        "tool": "unknown",
+        "severity": "unknown",
+        "description": "",
+        "remediation": "",
+        "category": "Security"
+      }
+      
+      if not feat:
+        return info
+      print(f"\n[DEBUG METADATA] Explorando atributos para política: {policy_name}")
       for attr in feat.get_attributes():
         val = attr.get_default_value()
-        if attr.name == 'RecommendedAction':
+        print(f"   -> Encontrado atributo: nombre='{attr.name}', valor='{val}', tipo_valor='{type(val)}'")
+        if attr.name == 'tool':
+          info['tool'] = val
+        elif attr.name == 'severity':
+          info['severity'] = val
+        elif attr.name == 'doc':
+          info["description"] = val
+        elif attr.name == 'RecommendedAction':
           info["remediation"] = val
-        else:
-          info[attr.name] = val
-    return info
-  
 
-def _get_policy_metadata(self, policy_name: str) -> dict:
-    """
-    Extracts metadata from UVL attributes defined in the Feature Model.
-    Maps the UVL attributes to standard JSON reporting fields.
-    """
-    feat = self.flat_fm.get_feature_by_name(policy_name)
-    
-    # Default fallback values
-    info = {
-      "tool": "unknown",
-      "severity": "unknown",
-      "description": "No description available in UVL.",
-      "remediation": "Review the manifest manually.",
-      "category": "Security"
-    }
-    
-    if not feat:
       return info
-
-    for attr in feat.get_attributes():
-      val = attr.get_default_value()
-      
-      if attr.name == 'tool':
-        info['tool'] = val
-      elif attr.name == 'severity':
-        info['severity'] = val
-      elif attr.name == 'doc':
-        info['description'] = val
-      elif attr.name == 'RecommendedAction':
-        info['remediation'] = val
-      elif attr.name == 'category':
-        info['category'] = val
-            
-    return info
+      """  def _get_policy_metadata(self, policy_name: str) -> dict:
+        feat = self.flat_fm.get_feature_by_name(policy_name)
+        info = {}
+        if feat:
+          for attr in feat.get_attributes():
+            val = attr.get_default_value()
+            if attr.name == 'RecommendedAction':
+              info["remediation"] = val
+            else:
+              info[attr.name] = val
+        return info"""
