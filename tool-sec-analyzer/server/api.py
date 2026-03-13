@@ -14,6 +14,10 @@ from core.policy_inference import PolicyInference
 from core.validator import Validator
 from core.report_generator import ReportGenerator, AuditReport
 
+from fastapi.responses import StreamingResponse
+import json
+import asyncio
+
 logger = logging.getLogger(__name__)
 
 app_state = {}
@@ -98,3 +102,78 @@ async def validate_manifest(request: ValidationRequest):
     except Exception as e:
         logger.error(f"Validation error: {e}")
         raise HTTPException(status_code=500, detail="Internal server error during analysis.")
+
+
+@app.post("/validate-stream")
+async def validate_manifest_stream(request: ValidationRequest):
+    """
+    Endpoint que evalúa las políticas de forma iterativa y devuelve los resultados 
+    en tiempo real (streaming) para que el Frontend no se quede congelado.
+    """
+    async def generate_results():
+        try:
+            # 1. Avisamos al frontend de que empezamos a parsear
+            yield json.dumps({"status": "info", "message": "Parseando manifiesto YAML..."}) + "\n"
+            await asyncio.sleep(0.1) # Pequeña pausa para que el stream fluya
+            
+            documents = ManifestParser.parse(request.manifest_yaml)
+            
+            inference_engine = app_state['inference_engine']
+            validator = app_state['validator']
+            csv_mapper = app_state['csv_mapper']
+
+            scanned_resources = 0
+            total_violations = 0
+
+            for doc in documents:
+                kind = doc.get('kind')
+                if not kind:
+                    continue 
+                    
+                active_policies = inference_engine.get_policies_for_kind(kind)
+                if not active_policies:
+                    continue
+
+                try:
+                    mapped_json_dict = csv_mapper.transform_manifest(doc)
+                except ValueError:
+                    continue 
+
+                configurations = MappingEngine.manifest_to_configurations(mapped_json_dict)
+                scanned_resources += 1
+
+                if configurations:
+                    target_config = configurations[0] 
+                    
+                    # Avisamos al frontend del recurso que estamos analizando
+                    yield json.dumps({"status": "info", "message": f"Analizando {kind}: {doc.get('metadata', {}).get('name', 'unknown')}..."}) + "\n"
+                    
+                    # Aquí viene la magia: Iteramos sobre las políticas una a una
+                    for policy in active_policies:
+                        # Evaluamos SOLO UNA política
+                        violation_list = validator.validate_configuration(target_config, [policy])
+                        
+                        if violation_list:
+                            # Si hay vulnerabilidad, se la mandamos inmediatamente al frontend
+                            for v in violation_list:
+                                total_violations += 1
+                                yield json.dumps({"status": "violation", "data": v}) + "\n"
+                        
+                        # Cedemos el control al event loop para asegurar que el chunk se envía
+                        await asyncio.sleep(0.01) 
+
+            # Al terminar todo, enviamos el resumen final
+            yield json.dumps({
+                "status": "done", 
+                "secure": total_violations == 0,
+                "scanned_resources": scanned_resources
+            }) + "\n"
+
+        except yaml.YAMLError as e:
+            yield json.dumps({"status": "error", "message": f"YAML Inválido: {str(e)}"}) + "\n"
+        except Exception as e:
+            logger.error(f"Validation error: {e}")
+            yield json.dumps({"status": "error", "message": "Error interno del servidor."}) + "\n"
+
+    # Devolvemos el generador como un Stream NDJSON (Newline Delimited JSON)
+    return StreamingResponse(generate_results(), media_type="application/x-ndjson")

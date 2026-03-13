@@ -20,23 +20,67 @@ function App() {
   const [error, setError] = useState(null);
   const fileInputRef = useRef(null);
 
-  // Maneja el botón de Validar enviando el texto como JSON al backend
   const handleValidate = async () => {
     setLoading(true);
     setError(null);
-    setResults(null);
+    setResults({ secure: true, scanned_resources: 0, violations: [] }); // Inicializamos vacío
 
     try {
-      const response = await fetch('http://localhost:8080/validate', {
+      const response = await fetch('http://127.0.0.1:8080/validate-stream', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ manifest_yaml: code }),
       });
 
       if (!response.ok) throw new Error('Error en el servidor de validación');
-      
-      const data = await response.json();
-      setResults(data);
+
+      // Leemos el stream de datos
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let done = false;
+      let buffer = ""; // Para guardar trozos de JSON incompletos
+
+      while (!done) {
+        const { value, done: readerDone } = await reader.read();
+        done = readerDone;
+        if (value) {
+          buffer += decoder.decode(value, { stream: true });
+          
+          // Procesamos el buffer línea por línea (\n)
+          let lines = buffer.split('\n');
+          // El último elemento puede estar incompleto, lo dejamos en el buffer
+          buffer = lines.pop(); 
+
+          for (let line of lines) {
+            if (line.trim() === '') continue;
+            
+            const chunk = JSON.parse(line);
+            
+            // Lógica según el tipo de mensaje que nos mande Python
+            if (chunk.status === 'info') {
+              console.log("Progreso:", chunk.message);
+              // Aquí podrías actualizar un estado para mostrar un mensajito de "Analizando Pod..."
+            } 
+            else if (chunk.status === 'violation') {
+              // Añadimos la vulnerabilidad a la lista EN TIEMPO REAL
+              setResults(prev => ({
+                ...prev,
+                secure: false, // En cuanto hay una, ya no es seguro
+                violations: [...prev.violations, chunk.data]
+              }));
+            } 
+            else if (chunk.status === 'done') {
+              setResults(prev => ({
+                ...prev,
+                scanned_resources: chunk.scanned_resources
+              }));
+            }
+            else if (chunk.status === 'error') {
+              setError(chunk.message);
+            }
+          }
+        }
+      }
     } catch (err) {
       setError(err.message);
     } finally {
