@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import Editor from '@monaco-editor/react';
-import { ShieldAlert, ShieldCheck, Upload, Play, Loader2 } from 'lucide-react';
+import { ShieldAlert, ShieldCheck, Upload, Play, Loader2, Info, AlertCircle } from 'lucide-react';
 
 const DEFAULT_YAML = `apiVersion: v1
 kind: Pod
@@ -18,11 +18,13 @@ function App() {
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const fileInputRef = useRef(null);
+  const [systemMessages, setSystemMessages] = useState([]); 
+  const fileInputRef = useRef(null);  
 
   const handleValidate = async () => {
     setLoading(true);
     setError(null);
+    setSystemMessages([]);
     setResults({ secure: true, scanned_resources: 0, violations: [] }); // Inicializamos vacío
 
     try {
@@ -59,6 +61,7 @@ function App() {
             // Lógica según el tipo de mensaje que nos mande Python
             if (chunk.status === 'info') {
               console.log("Progreso:", chunk.message);
+              setSystemMessages(prev => [...prev, { type: 'info', text: chunk.message }]);
               // Aquí podrías actualizar un estado para mostrar un mensajito de "Analizando Pod..."
             } 
             else if (chunk.status === 'violation') {
@@ -76,7 +79,8 @@ function App() {
               }));
             }
             else if (chunk.status === 'error') {
-              setError(chunk.message);
+              // setError(chunk.message);
+              setSystemMessages(prev => [...prev, { type: 'error', text: chunk.message }]);
             }
           }
         }
@@ -98,6 +102,35 @@ function App() {
       setCode(e.target.result);
     };
     reader.readAsText(file);
+  };
+
+// Llama al backend para corregir automáticamente el YAML
+  const handleRemediate = async (featureToFix, safeValue) => {
+    try {
+      const response = await fetch('http://127.0.0.1:8080/remediate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          manifest_yaml: code,
+          feature_to_fix: featureToFix,
+          safe_value: safeValue
+        }),
+      });
+
+      if (!response.ok) throw new Error('Error al parchear el archivo');
+      
+      const data = await response.json();
+      
+      // Actualizamos el editor de Monaco con el nuevo código corregido
+      if (data.status === 'success') {
+        setCode(data.remediated_yaml);
+        
+        // Opcional: Mostrar un mensaje verde de éxito en el sistema
+        setSystemMessages(prev => [...prev, { type: 'info', text: ' YAML auto-corregido con éxito. Vuelve a Analizar.' }]);
+      }
+    } catch (err) {
+      setSystemMessages(prev => [...prev, { type: 'error', text: err.message }]);
+    }
   };
 
   return (
@@ -162,35 +195,57 @@ function App() {
           <h2 className="text-xl font-bold text-gray-800 mb-4 border-b border-gray-200 pb-2">Resultados de Auditoría</h2>
           
           {/* Estado Inicial */}
-          {!results && !loading && !error && (
+          {!results && !loading && !error && systemMessages.length === 0 && (
             <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
               <ShieldCheck className="w-16 h-16 mb-2 opacity-20" />
               <p>Pega tu YAML o importa un archivo y haz clic en "Analizar Seguridad"</p>
             </div>
           )}
 
-          {/* Manejo de Errores (Ej. Backend apagado) */}
+          {/* Manejo de Errores Críticos(Ej. Backend apagado) */}
           {error && (
             <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg">
               <strong>Error de conexión:</strong> {error}
             </div>
           )}
-
-          {/* Resultados de la Evaluación */}
+          {/* Mensajes del Sistema (Info y Errores de Parseo) */}
+          {systemMessages.length > 0 && (
+            <div className="flex flex-col gap-2 mb-6">
+              {systemMessages.map((msg, idx) => (
+                <div key={idx} className={`p-3 text-sm rounded-lg flex items-start gap-2 border ${
+                  msg.type === 'error' ? 'bg-orange-50 text-orange-800 border-orange-200' : 'bg-blue-50 text-blue-800 border-blue-200'
+                }`}>
+                  {msg.type === 'error' ? <AlertCircle className="w-5 h-5 shrink-0" /> : <Info className="w-5 h-5 shrink-0" />}
+                  <span>{msg.text}</span>
+                </div>
+              ))}
+            </div>
+          )}
+{/* Resultados de la Evaluación */}
           {results && (
             <div>
               {/* Resumen Global */}
-              <div className={`p-4 rounded-lg mb-6 flex items-center gap-3 ${results.secure ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'}`}>
-                {results.secure ? <ShieldCheck className="w-8 h-8" /> : <ShieldAlert className="w-8 h-8" />}
-                <div>
-                  <h3 className="text-lg font-bold">
-                    {results.secure ? "¡Manifiesto Seguro!" : "Vulnerabilidades Detectadas"}
-                  </h3>
-                  <p className="text-sm opacity-80">Recursos procesados: {results.scanned_resources}</p>
+              {results.scanned_resources === 0 && !loading && results.violations.length === 0 ? (
+                <div className="p-4 rounded-lg mb-6 flex items-center gap-3 bg-gray-100 text-gray-500 border border-gray-200">
+                  <Info className="w-8 h-8" />
+                  <div>
+                    <h3 className="text-lg font-bold">Sin recursos analizados</h3>
+                    <p className="text-sm">El manifiesto no contiene recursos válidos para evaluar.</p>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className={`p-4 rounded-lg mb-6 flex items-center gap-3 ${results.secure ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'}`}>
+                  {results.secure ? <ShieldCheck className="w-8 h-8" /> : <ShieldAlert className="w-8 h-8" />}
+                  <div>
+                    <h3 className="text-lg font-bold">
+                      {results.secure ? "¡Manifiesto Seguro!" : "Vulnerabilidades Detectadas"}
+                    </h3>
+                    <p className="text-sm opacity-80">Recursos procesados válidos: {results.scanned_resources}</p>
+                  </div>
+                </div>
+              )}
 
-              {/* Lista de Vulnerabilidades */}
+              {/* Lista de Vulnerabilidades EN TIEMPO REAL */}
               {!results.secure && (
                 <div className="flex flex-col gap-4">
                   {results.violations.map((violation, index) => (
@@ -204,9 +259,19 @@ function App() {
                       <p className="text-gray-600 text-sm mb-3">{violation.description}</p>
                       
                       {violation.remediation && (
-                        <div className="bg-blue-50 text-blue-800 p-3 rounded text-sm border border-blue-100">
+                        <div className="bg-blue-50 text-blue-800 p-3 rounded text-sm border border-blue-100 mb-3">
                           <strong>💡 Recomendación:</strong> {violation.remediation}
                         </div>
+                      )}
+
+                      {/* ¡NUEVO BOTÓN DE AUTOCORRECCIÓN! */}
+                      {violation.feature_to_fix && (
+                        <button 
+                          onClick={() => handleRemediate(violation.feature_to_fix, violation.safe_value)}
+                          className="mt-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-1.5 px-3 rounded shadow-sm transition"
+                        >
+                          ✨ Auto-Corregir Problema
+                        </button>
                       )}
                     </div>
                   ))}

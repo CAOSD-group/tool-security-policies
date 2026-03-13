@@ -14,6 +14,9 @@ from core.policy_inference import PolicyInference
 from core.validator import Validator
 from core.report_generator import ReportGenerator, AuditReport
 
+from core.reverse_mapper import ReverseMapper
+from core.remediator import Remediator
+
 from fastapi.responses import StreamingResponse
 import json
 import asyncio
@@ -38,9 +41,10 @@ async def lifespan(app: FastAPI):
         # Guardamos en memoria global
         app_state['inference_engine'] = PolicyInference(loader.flat_fm)
         app_state['validator'] = Validator(loader.flat_fm, loader.z3_model)
-        
         # INICIALIZAMOS TU CSV MAPPER AQUÍ (Lee los CSV una sola vez)
         app_state['csv_mapper'] = CSVMapper(csv_features, csv_kinds)
+        app_state['reverse_mapper'] = ReverseMapper(csv_kinds)
+        app_state['remediator'] = Remediator()        
         
         logger.info("Engine ready to accept requests.")
         yield
@@ -58,6 +62,12 @@ app.add_middleware(
 
 class ValidationRequest(BaseModel):
     manifest_yaml: str
+
+class RemediateRequest(BaseModel):
+    manifest_yaml: str
+    feature_to_fix: str   # Ej: "io_k8s_api_core_v1_Pod_spec_hostNetwork"
+    safe_value: bool
+
 
 @app.post("/validate", response_model=AuditReport)
 async def validate_manifest(request: ValidationRequest):
@@ -126,18 +136,27 @@ async def validate_manifest_stream(request: ValidationRequest):
             total_violations = 0
 
             for doc in documents:
-                kind = doc.get('kind')
-                if not kind:
+                kind = doc.get('kind', 'Desconocido')
+                api_version = doc.get('apiVersion', 'Desconocida')
+                
+                if not doc.get('kind'):
+                    yield json.dumps({"status": "error", "message": "El documento no tiene propiedad 'kind'."}) + "\n"
                     continue 
-                    
+                if not doc.get('apiVersion'):
+                    yield json.dumps({"status": "error", "message": "El documento no tiene propiedad 'apiVersion'."}) + "\n"
+                    continue                     
                 active_policies = inference_engine.get_policies_for_kind(kind)
                 if not active_policies:
+                    yield json.dumps({"status": "info", "message": f"[{kind}] No hay políticas de seguridad aplicables a este recurso."}) + "\n"
                     continue
 
                 try:
+                    # Aquí es donde falla si el kind/version no está en tu CSV
                     mapped_json_dict = csv_mapper.transform_manifest(doc)
-                except ValueError:
-                    continue 
+                except ValueError as ve:
+                    # ¡NUEVO! Le enviamos el error exacto al frontend
+                    yield json.dumps({"status": "error", "message": f"[{api_version}/{kind}] Recurso no soportado por el modelo: {str(ve)}"}) + "\n"
+                    continue
 
                 configurations = MappingEngine.manifest_to_configurations(mapped_json_dict)
                 scanned_resources += 1
@@ -177,3 +196,29 @@ async def validate_manifest_stream(request: ValidationRequest):
 
     # Devolvemos el generador como un Stream NDJSON (Newline Delimited JSON)
     return StreamingResponse(generate_results(), media_type="application/x-ndjson")
+
+@app.post("/remediate")
+async def remediate_manifest(request: RemediateRequest):
+    """
+    Toma un manifiesto YAML, la feature que viola la seguridad, y el valor seguro.
+    Devuelve el YAML parcheado conservando comentarios y formato.
+    """
+    try:
+        reverse_mapper = app_state['reverse_mapper']
+        remediator = app_state['remediator']
+
+        # 1. Traducir la feature de FlamaPy a ruta estructural YAML
+        yaml_path = reverse_mapper.get_yaml_path(request.feature_to_fix)
+        
+        # 2. Aplicar el parche físico en el texto
+        fixed_yaml = remediator.apply_patch(
+            yaml_content=request.manifest_yaml, 
+            yaml_path=yaml_path, 
+            new_value=request.safe_value
+        )
+        
+        return {"status": "success", "remediated_yaml": fixed_yaml}
+
+    except Exception as e:
+        logger.error(f"Remediation error: {e}")
+        raise HTTPException(status_code=500, detail=f"Error al parchear el YAML: {str(e)}")

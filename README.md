@@ -74,6 +74,16 @@ Unlike traditional approaches that rely solely on logic solvers (SAT/SMT) —whi
   ```bash
   pip install -r requirements.txt
   ```
+6. Execute the server and the frontend
+
+  - **In the folder backend-tool-analyzer:**
+    ```powershell
+    uvicorn server.api:app --reload --port 8080
+      ```
+  - **In the folder frontend-kube-tool:**  
+    ```powershell
+      npm run dev
+    ```
 
 
 ## Architecture and repository structure
