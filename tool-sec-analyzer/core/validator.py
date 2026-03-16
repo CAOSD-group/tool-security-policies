@@ -68,7 +68,8 @@ class Validator:
     for element in configuration.get_selected_elements():
       feature = self.flat_fm.get_feature_by_name(element)
       if feature is None:
-        continue # Skip unknown features mapping silently or log a warning
+        raise Exception(f'Error: the element "{element}" is not present in the FM model.')
+        #continue # Skip unknown features mapping silently or log a warning
       
       children_names = self._get_all_mandatory_children(feature)
       parent_names = self._get_all_parents(feature)

@@ -19,8 +19,8 @@ class MappingEngine:
         base_config = {}
         blocks = []
 
-        # Extraemos directamente el nodo 'config' que tu CSVMapper generó
-        config_node = mapped_json_dict.get('config', {})
+        # Extraemos de forma segura el nodo 'config'
+        config_node = mapped_json_dict.get('config', mapped_json_dict)
 
         # Extrae features y combinaciones para FlamaPy
         cls._extract_features(config_node, base_config, blocks, namespace)
@@ -45,10 +45,12 @@ class MappingEngine:
                     
                     combined_block = []
                     for item in value:
-                        if isinstance(item, dict):
+                        # Ampliado para atrapar tanto diccionarios como listas anidadas
+                        if isinstance(item, (dict, list)):
                             flat_item = cls._flatten_primitive_kv(item, namespace)
                             combined_block.append(flat_item)
                         elif isinstance(item, (str, int, float, bool)):
+                            # Mantenemos el soporte combinatorio pero no perdemos la pista
                             combined_block.append({cls.qualify(str(item), namespace): True})
                     
                     if combined_block:
@@ -56,15 +58,28 @@ class MappingEngine:
                     base_config[qkey] = True
 
     @classmethod
-    def _flatten_primitive_kv(cls, d: dict, namespace: str = "") -> dict:
+    def _flatten_primitive_kv(cls, d: Any, namespace: str = "") -> dict:
+        """
+        Versión mejorada: Extrae recursivamente los valores primitivos 
+        incluso si están enterrados dentro de listas de diccionarios.
+        """
         flat = {}
-        for k, v in d.items():
-            qk = cls.qualify(k, namespace)
-            if isinstance(v, (str, int, float, bool)):
-                flat[qk] = v
-            elif isinstance(v, dict):
-                flat[qk] = True
-                flat.update(cls._flatten_primitive_kv(v, namespace))
+        if isinstance(d, dict):
+            for k, v in d.items():
+                qk = cls.qualify(k, namespace)
+                if isinstance(v, (str, int, float, bool)):
+                    flat[qk] = v
+                elif isinstance(v, dict):
+                    flat[qk] = True
+                    flat.update(cls._flatten_primitive_kv(v, namespace))
+                elif isinstance(v, list):
+                    # ESTA ES LA CLAVE QUE FALTABA: Navegar dentro de las listas
+                    flat[qk] = True
+                    for item in v:
+                        flat.update(cls._flatten_primitive_kv(item, namespace))
+        elif isinstance(d, list):
+            for item in d:
+                flat.update(cls._flatten_primitive_kv(item, namespace))
         return flat
 
     @classmethod

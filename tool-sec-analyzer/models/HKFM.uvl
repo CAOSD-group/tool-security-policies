@@ -231,7 +231,7 @@ constraints
 	Check_Environment_Variables => ((!Pod.io_k8s_api_core_v1_Pod_spec_containers_env_name | Pod.io_k8s_api_core_v1_Pod_spec_containers_env_name == 'DISABLE_OPA') & Pod.io_k8s_api_core_v1_Pod_spec_containers_env_value != 'true')
 	Deny_Secret_Service_Account_Token_Type => Secret.io_k8s_api_core_v1_Secret_type != 'kubernetes_io/service-account-token'
 	Disallow_all_Secrets => (!Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_env_valueFrom_secretKeyRef & !Pod.io_k8s_api_core_v1_Pod_spec_initContainers_env_valueFrom_secretKeyRef & !Pod.io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_secretKeyRef & !Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_envFrom_secretRef & !Pod.io_k8s_api_core_v1_Pod_spec_initContainers_envFrom_secretRef & !Pod.io_k8s_api_core_v1_Pod_spec_containers_envFrom_secretRef & !Pod.io_k8s_api_core_v1_Pod_spec_volumes_secret)
-	Disallow_Localhost_ExternalName_Services => (Serv.io_k8s_api_core_v1_Service_spec_type_ExternalName & Serv.io_k8s_api_core_v1_Service_spec_externalName != 'localhost')
+	Disallow_Localhost_ExternalName_Services => (!Serv.io_k8s_api_core_v1_Service_spec_type_ExternalName | Serv.io_k8s_api_core_v1_Service_spec_externalName != 'localhost')
 	Disallow_Secrets_from_Env_Vars => (!Pod.io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_secretKeyRef & !Pod.io_k8s_api_core_v1_Pod_spec_containers_envFrom_secretRef)
 	Enforce_ReadWriteOncePod => PersistVolumeClaim.io_k8s_api_core_v1_PersistentVolumeClaim_spec_accessModes_StringValue == 'ReadWriteOncePod'
 	Require_imagePullPolicy_Always => Pod.io_k8s_api_core_v1_Pod_spec_containers_imagePullPolicy_Always

@@ -42,7 +42,7 @@ RES    = ROOT / "resources"
 
 UVL_PATH = MODELS / "HKFM.uvl"
 # usar str(UVL_PATH) si la librería lo exige
-path_json = RES / "examples" / "08-Pod_DNS_1.json" ## To check a simply file add a example to do it
+path_json = RES / "examples" / "019-securityContext1_1.json" ## To check a simply file add a example to do it
 VALIDATE_ONLY_FIRST_CONFIG = True ## Use unit or total validation version
 
 def get_all_parents(feature: Feature) -> list[str]:

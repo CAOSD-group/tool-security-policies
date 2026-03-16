@@ -105,15 +105,14 @@ function App() {
   };
 
 // Llama al backend para corregir automáticamente el YAML
-  const handleRemediate = async (featureToFix, safeValue) => {
+  const handleRemediate = async (actionsList) => {
     try {
       const response = await fetch('http://127.0.0.1:8080/remediate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           manifest_yaml: code,
-          feature_to_fix: featureToFix,
-          safe_value: safeValue
+          actions: actionsList // Se envia la lista al backend para que sepa qué corregir
         }),
       });
 
@@ -265,13 +264,13 @@ function App() {
                       )}
 
                       {/* ¡NUEVO BOTÓN DE AUTOCORRECCIÓN! */}
-                      {violation.feature_to_fix && (
-                        <button 
-                          onClick={() => handleRemediate(violation.feature_to_fix, violation.safe_value)}
-                          className="mt-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-1.5 px-3 rounded shadow-sm transition"
-                        >
-                          ✨ Auto-Corregir Problema
-                        </button>
+                      {violation.remediation_actions && violation.remediation_actions.length > 0 && (
+                      <button 
+                        onClick={() => handleRemediate(violation.remediation_actions)}
+                        className="mt-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-1.5 px-3 rounded shadow-sm transition cursor-pointer"
+                      >
+                        Auto-Corregir Problema
+                      </button>
                       )}
                     </div>
                   ))}

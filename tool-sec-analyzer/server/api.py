@@ -13,11 +13,13 @@ from core.mapping_engine import MappingEngine
 from core.policy_inference import PolicyInference
 from core.validator import Validator
 from core.report_generator import ReportGenerator, AuditReport
-
 from core.reverse_mapper import ReverseMapper
 from core.remediator import Remediator
+from core.remediator_registry import RemediationRegistry
+from core.regex_validator import ContentPolicyValidator
 
 from fastapi.responses import StreamingResponse
+from typing import List, Any
 import json
 import asyncio
 
@@ -42,10 +44,13 @@ async def lifespan(app: FastAPI):
         app_state['inference_engine'] = PolicyInference(loader.flat_fm)
         app_state['validator'] = Validator(loader.flat_fm, loader.z3_model)
         # INICIALIZAMOS TU CSV MAPPER AQUÍ (Lee los CSV una sola vez)
+        
         app_state['csv_mapper'] = CSVMapper(csv_features, csv_kinds)
         app_state['reverse_mapper'] = ReverseMapper(csv_kinds)
+        app_state['remediator_registry'] = RemediationRegistry(uvl_path)
         app_state['remediator'] = Remediator()        
-        
+        # Motor Regex
+        app_state['regex_validator'] = ContentPolicyValidator()
         logger.info("Engine ready to accept requests.")
         yield
     except Exception as e:
@@ -63,11 +68,22 @@ app.add_middleware(
 class ValidationRequest(BaseModel):
     manifest_yaml: str
 
-class RemediateRequest(BaseModel):
+"""class RemediateRequest(BaseModel):
     manifest_yaml: str
     feature_to_fix: str   # Ej: "io_k8s_api_core_v1_Pod_spec_hostNetwork"
-    safe_value: bool
+    safe_value: bool"""
 
+class RemediateAction(BaseModel):
+    feature_to_fix: str
+    safe_value: Any
+
+class RemediateRequest(BaseModel):
+    manifest_yaml: str
+    actions: List[RemediateAction]
+
+@app.get("/")
+async def root():
+    return {"status": "Kube-Sec Analyzer API is running!", "docs": "/docs"}
 
 @app.post("/validate", response_model=AuditReport)
 async def validate_manifest(request: ValidationRequest):
@@ -101,6 +117,12 @@ async def validate_manifest(request: ValidationRequest):
             if configurations:
                 target_config = configurations[0]
                 print("\n=== FEATURES MAPEADAS LISTAS PARA Z3 ===")
+
+                for element in target_config.elements:
+                    if "port" in str(element).lower():
+                        print(f"Feature: {element}")
+                print("--------------------------------\n")
+
                 print(target_config.elements)
                 violations = validator.validate_configuration(target_config, active_policies)
                 all_violations.extend(violations)
@@ -131,7 +153,9 @@ async def validate_manifest_stream(request: ValidationRequest):
             inference_engine = app_state['inference_engine']
             validator = app_state['validator']
             csv_mapper = app_state['csv_mapper']
-
+            regex_val = app_state['regex_validator']
+            registry = app_state['remediator_registry']
+            
             scanned_resources = 0
             total_violations = 0
 
@@ -154,7 +178,7 @@ async def validate_manifest_stream(request: ValidationRequest):
                     # Aquí es donde falla si el kind/version no está en tu CSV
                     mapped_json_dict = csv_mapper.transform_manifest(doc)
                 except ValueError as ve:
-                    # ¡NUEVO! Le enviamos el error exacto al frontend
+                    # Le enviamos el error exacto al frontend
                     yield json.dumps({"status": "error", "message": f"[{api_version}/{kind}] Recurso no soportado por el modelo: {str(ve)}"}) + "\n"
                     continue
 
@@ -163,24 +187,41 @@ async def validate_manifest_stream(request: ValidationRequest):
 
                 if configurations:
                     target_config = configurations[0] 
-                    
+                    resource_name = doc.get('metadata', {}).get('name', 'unknown')
                     # Avisamos al frontend del recurso que estamos analizando
-                    yield json.dumps({"status": "info", "message": f"Analizando {kind}: {doc.get('metadata', {}).get('name', 'unknown')}..."}) + "\n"
-                    
-                    # Aquí viene la magia: Iteramos sobre las políticas una a una
+                    #yield json.dumps({"status": "info", "message": f"Analizando {kind}: {doc.get('metadata', {}).get('name', 'unknown')}..."}) + "\n"
+                    yield json.dumps({"status": "info", "message": f"Analizando {kind}: {resource_name}..."}) + "\n"  
+                    # Iteramos sobre las políticas una a una
                     for policy in active_policies:
-                        # Evaluamos SOLO UNA política
                         violation_list = validator.validate_configuration(target_config, [policy])
-                        
                         if violation_list:
-                            # Si hay vulnerabilidad, se la mandamos inmediatamente al frontend
                             for v in violation_list:
                                 total_violations += 1
+                                # Obtenemos lista de acciones para reparar esta política
+                                actions = registry.get_remediation_actions(v["policy"])
+                                if actions:
+                                    v["remediation_actions"] = actions
                                 yield json.dumps({"status": "violation", "data": v}) + "\n"
-                        
-                        # Cedemos el control al event loop para asegurar que el chunk se envía
-                        await asyncio.sleep(0.01) 
-
+                        await asyncio.sleep(0.01)
+                    # 2. VALIDACIÓN DE CONTENIDO (REGEX)
+                    # El regex validator analiza el YAML puro (doc) contra las políticas activas
+                    passed_regex, regex_report = regex_val.validate_with_report(doc, active_policies)
+                    if not passed_regex:
+                        for rep in regex_report:
+                            total_violations += 1
+                            v_obj = {
+                                "policy": rep["policy"],
+                                "severity": rep["severity"],
+                                "description": rep["reason"],
+                                "remediation": "Revisión de contenido mediante Regex fallida."
+                            }
+                            # Si definiste una solución manual en el Registry para esta Regex, la inyectamos
+                            actions = registry.get_remediation_actions(rep["policy"])
+                            if actions:
+                                v_obj["remediation_actions"] = actions
+                                
+                            yield json.dumps({"status": "violation", "data": v_obj}) + "\n"
+                            await asyncio.sleep(0.01)
             # Al terminar todo, enviamos el resumen final
             yield json.dumps({
                 "status": "done", 
@@ -207,17 +248,18 @@ async def remediate_manifest(request: RemediateRequest):
         reverse_mapper = app_state['reverse_mapper']
         remediator = app_state['remediator']
 
-        # 1. Traducir la feature de FlamaPy a ruta estructural YAML
-        yaml_path = reverse_mapper.get_yaml_path(request.feature_to_fix)
+        current_yaml = request.manifest_yaml
         
-        # 2. Aplicar el parche físico en el texto
-        fixed_yaml = remediator.apply_patch(
-            yaml_content=request.manifest_yaml, 
-            yaml_path=yaml_path, 
-            new_value=request.safe_value
-        )
+        # Iteramos sobre todas las correcciones de la lista
+        for action in request.actions:
+            yaml_path = reverse_mapper.get_yaml_path(action.feature_to_fix)
+            current_yaml = remediator.apply_patch(
+                yaml_content=current_yaml, 
+                yaml_path=yaml_path, 
+                new_value=action.safe_value
+            )
         
-        return {"status": "success", "remediated_yaml": fixed_yaml}
+        return {"status": "success", "remediated_yaml": current_yaml}
 
     except Exception as e:
         logger.error(f"Remediation error: {e}")
