@@ -457,7 +457,7 @@ class CSVMapper:
             ## Condition to omit the props without feature mapping
             if isinstance(key, str) and key not in feature_map and '_io_' not in key: ## all(not k.startswith(key + "_") for k in feature_map)
                 #print(f"PROPS QUE NO SE MAPEAN: {key}    {value}")
-                return True
+                continue
         return new_data
 
     elif isinstance(yaml_data, list):

@@ -116,14 +116,7 @@ async def validate_manifest(request: ValidationRequest):
             
             if configurations:
                 target_config = configurations[0]
-                print("\n=== FEATURES MAPEADAS LISTAS PARA Z3 ===")
 
-                for element in target_config.elements:
-                    if "port" in str(element).lower():
-                        print(f"Feature: {element}")
-                print("--------------------------------\n")
-
-                print(target_config.elements)
                 violations = validator.validate_configuration(target_config, active_policies)
                 all_violations.extend(violations)
 
@@ -187,6 +180,19 @@ async def validate_manifest_stream(request: ValidationRequest):
 
                 if configurations:
                     target_config = configurations[0] 
+                    print("\n=== FEATURES MAPEADAS LISTAS PARA Z3 ===")
+
+                    print("\n" + "="*50)
+                    print("1. DICCIONARIO EXTRAÍDO DEL CSV MAPPER (mapped_json_dict):")
+                    print(json.dumps(mapped_json_dict, indent=2))
+                    
+                    print("\n2. ELEMENTOS FINALES ENVIADOS A Z3 (target_config.elements):")
+                    print(f"{target_config.elements}")
+                    # Filtramos solo lo relevante al puerto para que sea fácil de leer
+                    for k, v in target_config.elements.items():
+                        if "port" in str(k).lower():
+                            print(f"   -> {k}: {v} (Tipo: {type(v).__name__})")
+                    print("="*50 + "\n")
                     resource_name = doc.get('metadata', {}).get('name', 'unknown')
                     # Avisamos al frontend del recurso que estamos analizando
                     #yield json.dumps({"status": "info", "message": f"Analizando {kind}: {doc.get('metadata', {}).get('name', 'unknown')}..."}) + "\n"
@@ -206,14 +212,21 @@ async def validate_manifest_stream(request: ValidationRequest):
                     # 2. VALIDACIÓN DE CONTENIDO (REGEX)
                     # El regex validator analiza el YAML puro (doc) contra las políticas activas
                     passed_regex, regex_report = regex_val.validate_with_report(doc, active_policies)
+                    
                     if not passed_regex:
                         for rep in regex_report:
                             total_violations += 1
+                            policy_name = rep.get("policy", "unknown")
+                            # Le preguntamos al validador (que conoce el UVL) por la metadata de esta política Regex
+                            meta = validator.get_policy_metadata(policy_name)
+                            
+                            # Obtenemos acciones de remediación si las hay
+                            actions = registry.get_remediation_actions(policy_name)                            
                             v_obj = {
-                                "policy": rep["policy"],
-                                "severity": rep["severity"],
-                                "description": rep["reason"],
-                                "remediation": "Revisión de contenido mediante Regex fallida."
+                                "policy": policy_name,
+                                "severity": meta.get("severity", "medium"), # Usamos .get() de forma segura
+                                "description": rep.get("reason", meta.get("description", "Revisión Regex fallida.")),
+                                "remediation": meta.get("remediation", "Revisar configuración.")
                             }
                             # Si definiste una solución manual en el Registry para esta Regex, la inyectamos
                             actions = registry.get_remediation_actions(rep["policy"])

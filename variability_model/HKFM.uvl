@@ -240,7 +240,6 @@ constraints
 	Prevent_cr8escape_CVE_2022_0811 => Pod.io_k8s_api_core_v1_Pod_spec_securityContext_sysctls_value != '*+* & *=*'
 	Require_Container_Port_Names => Pod.io_k8s_api_core_v1_Pod_spec_containers_ports_name
 	Require_Multiple_Replicas => Deployment.io_k8s_api_apps_v1_Deployment_spec_replicas > 1
-	Require_Images_Use_Checksums => (Pod.io_k8s_api_core_v1_Pod_spec_containers_image == '*@*' & (!Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_image | Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_image == '*@*') & (!Pod.io_k8s_api_core_v1_Pod_spec_initContainers_image | Pod.io_k8s_api_core_v1_Pod_spec_initContainers_image == '*@*'))
 	Require_Non_Root_Groups => (Pod.io_k8s_api_core_v1_Pod_spec_securityContext_supplementalGroups_IntegerValue > 0 & Pod.io_k8s_api_core_v1_Pod_spec_securityContext_fsGroup_valueInt > 0)
 	Require_Pod_priorityClassName => Pod.io_k8s_api_core_v1_Pod_spec_priorityClassName != ' '
 	Require_StorageClass => (PersistVolumeClaim.io_k8s_api_core_v1_PersistentVolumeClaim_spec_storageClassName != ' ' & (!StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_volumeClaimTemplates_spec_storageClassName | StatefulSet.io_k8s_api_apps_v1_StatefulSet_spec_volumeClaimTemplates_spec_storageClassName != ' '))

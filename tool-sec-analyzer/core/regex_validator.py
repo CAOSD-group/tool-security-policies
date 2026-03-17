@@ -10,14 +10,14 @@ class ContentPolicyValidator:
         self.policy_map = {
             'tagNotSpecified': self._validate_tag_specified_and_not_latest,
             'Require_Run_As_ContainerUser_Windows': self._validate_run_as_container_user_windows,
-            'Require_Annotations': self._validate_require_annotations,
+            #'Require_Annotations': self._validate_require_annotations,
             'Restrict_AppArmor': self._validate_restrict_apparmor,
-            'Require_Labels': self._validate_require_labels,
+            #'Require_Labels': self._validate_require_labels,
             'Restrict_Ingress_Classes': self._validate_restrict_ingress_classes,
             'Restrict_Jobs': self._validate_restrict_jobs,
             ## New policies can be added here with their corresponding validation methods.
             'Restrict_Image_Registries': self._validate_restrict_image_registries,
-            'Require_Images_Use_Checksums': self._validate_require_images_use_checksums,
+            #'Require_Images_Use_Checksums': self._validate_require_images_use_checksums,
             'Require_Ingress_HTTPS': self._validate_require_ingress_https,
             'Limit_hostPath_PersistentVolumes_to_Specific_Directories': self._validate_limit_pv_hostpath_specific_dirs,
             ## Added more policies here as needed...

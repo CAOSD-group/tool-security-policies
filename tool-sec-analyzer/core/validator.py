@@ -41,7 +41,7 @@ class Validator:
         
         # 5. If UNSAT, record vulnerability
         if not is_sat:
-          meta = self._get_policy_metadata(policy)
+          meta = self.get_policy_metadata(policy)
           print(f"Error en la politica con el meta: {meta}")
           failed_policies_report.append({
             "policy": policy,
@@ -101,7 +101,7 @@ class Validator:
         children.extend(self._get_all_mandatory_children(child))
     return children
 
-  def _get_policy_metadata(self, policy_name: str) -> dict:
+  def get_policy_metadata(self, policy_name: str) -> dict:
       """
       Extracts metadata from UVL attributes defined in the Feature Model.
       Maps the UVL attributes to standard JSON reporting fields.
