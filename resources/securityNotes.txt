@@ -840,3 +840,7 @@ Csv FINAL:
             "io_k8s_api_core_v1_Service_spec_type": {
                 "io_k8s_api_core_v1_Service_spec_type_ExternalName": true
             },
+
+Quitadas de la tool:
+
+Require_Images_Use_Checksums => (Pod.io_k8s_api_core_v1_Pod_spec_containers_image == '*@*' & (!Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_image | Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_image == '*@*') & (!Pod.io_k8s_api_core_v1_Pod_spec_initContainers_image | Pod.io_k8s_api_core_v1_Pod_spec_initContainers_image == '*@*'))

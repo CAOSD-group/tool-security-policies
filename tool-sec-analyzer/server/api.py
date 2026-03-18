@@ -17,7 +17,7 @@ from core.reverse_mapper import ReverseMapper
 from core.remediator import Remediator
 from core.remediator_registry import RemediationRegistry
 from core.regex_validator import ContentPolicyValidator
-
+from core.utils.context_filter import filter_context_aware_actions
 from fastapi.responses import StreamingResponse
 from typing import List, Any
 import json
@@ -206,7 +206,9 @@ async def validate_manifest_stream(request: ValidationRequest):
                                 # Obtenemos lista de acciones para reparar esta política
                                 actions = registry.get_remediation_actions(v["policy"])
                                 if actions:
-                                    v["remediation_actions"] = actions
+                                    smart_actions = filter_context_aware_actions(target_config.elements, actions, strip_suffixes=True)
+                                    if smart_actions:
+                                        v["remediation_actions"] = smart_actions
                                 yield json.dumps({"status": "violation", "data": v}) + "\n"
                         await asyncio.sleep(0.01)
                     # 2. VALIDACIÓN DE CONTENIDO (REGEX)
