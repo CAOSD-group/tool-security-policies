@@ -114,8 +114,9 @@ class CSVMapper:
                     feature_map[aux_hierchical_arr_integer] = feature
                 ## Modified for valueInt
                 elif middle.strip() and turned == "valueInt" and feature not in feature_map and aux_hierchical_maps.endswith(hierarchical_prop): ## New addition to add StringValues appearing in the feature list
-                    aux_hierchical_arr_integer = f"{hierarchical_prop}_valueInt" ## The _StringValue is created manually because it is a custom feature of the model. It is used to refer to arrays of strings.
-                    feature_map[aux_hierchical_arr_integer] = feature
+                    aux_hierchical_value_integer = f"{hierarchical_prop}_valueInt" ## The _StringValue is created manually because it is a custom feature of the model. It is used to refer to arrays of strings.
+                    print(f"Deteccion / ejecucion  value int {feature}   {hierarchical_prop} {aux_hierchical_maps}")
+                    feature_map[aux_hierchical_value_integer] = feature
                 ## StringValueAdditional: Array of Strings that is added differently in the main script of the model.
                 elif middle.strip() and turned == "StringValueAdditional" and feature not in feature_map and aux_hierchical_maps.endswith(hierarchical_prop): ## New addition to add StringValues appearing in the feature list
                     aux_hierchical_arr_string_additional = f"{hierarchical_prop}_StringValueAdditional" ## The _StringValue is created manually because it is a custom feature of the model. It is used to refer to arrays of strings.
@@ -164,6 +165,7 @@ class CSVMapper:
             aux_array = False ## boolean to determine if a property contains an array or is an array of features
             aux_maps = False ## marking to determine the maps
             aux_str_values = False
+            aux_int_value = False
             aux_value_type = False
             aux_value_type_array = False
             aux_feat_empty = False
@@ -301,20 +303,19 @@ class CSVMapper:
                             aux_hierchical_prop.append(key_features)
                         feature_str_value = values_arr_int
                         aux_str_values = True
-                ## Seguir un tratamiento similar que con los mapas. Parte final del feature
-                elif isinstance(value, list) and key_features.endswith("valueInt") and isinstance(value_features, str) and "valueInt" == value_features.split("_")[-1]:
+                        ## Seguir un tratamiento similar que con los mapas. Parte final del feature
+                elif isinstance(value, int) and key_features.endswith("valueInt") and isinstance(value_features, str) and "valueInt" == value_features.split("_")[-1]:
                     aux_key_last_before_map = value_features.split("_")[-2]
                     aux_feature_before_insertion = value_features.rsplit("_", 1)[0] ## you get the value feature minus the last insert
-                    values_arr_int = []
+                    #values_arr_int = []
+                    print(f"Deteccion / ejecucion integration  {value}  {key}  {key_features}   {aux_key_last_before_map} {aux_feature_before_insertion}")
                     if value and key == aux_feature_before_insertion and key_features.endswith(f"{aux_key_last_before_map}_valueInt"):
-                        for int_value in value:
-                            values_arr_int.append({
-                                value_features: int_value
-                            })
-                            auxFeaturesAddedList.add(value_features)
-                            aux_hierchical_prop.append(key_features)
-                        feature_str_value = values_arr_int
-                        aux_str_values = True                        
+                        print("ENTRA CONDICIONAL valueInt")
+                        auxFeaturesAddedList.add(value_features)
+                        aux_hierchical_prop.append(key_features)
+                        feature_int_value = {value_features: value}
+                        aux_int_value = True
+                        print(f"Dont passed conditionals {key_features}   {aux_key_last_before_map} {aux_feature_before_insertion}")
                 elif isinstance(value, dict) and key_features.endswith("StringValueAdditional") and isinstance(value_features, str) and "StringValueAdditional" == value_features.split("_")[-1]: ## and value_features not in auxFeaturesAddedList
                     aux_key_last_before_map = value_features.split("_")[-2]
                     aux_feature_before_insertion = value_features.rsplit("_", 1)[0] ## you get the value feature minus the last insert
@@ -446,6 +447,8 @@ class CSVMapper:
                 new_data[mapped_key] = feature_null
             elif aux_str_values:
                 new_data[mapped_key] = feature_str_value
+            elif aux_int_value:
+                new_data[mapped_key] = feature_int_value
             elif aux_value_type : 
                 new_data[mapped_key] = feature_type_value
             elif aux_value_type_array:
