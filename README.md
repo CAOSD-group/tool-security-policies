@@ -49,8 +49,8 @@ Unlike traditional approaches that rely solely on logic solvers (SAT/SMT) —whi
 
 2. Clone this repository and enter the project folder:
   ```bash
-  git clone https://github.com/CAOSD-group/fm-security-policies.git
-  cd fm-json-kubernetes
+  git clone https://github.com/CAOSD-group/tool-security-policies.git
+  cd tool-json-kubernetes
   ```
 3. Create a virtual environment:
 

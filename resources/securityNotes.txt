@@ -844,3 +844,5 @@ Csv FINAL:
 Quitadas de la tool:
 
 Require_Images_Use_Checksums => (Pod.io_k8s_api_core_v1_Pod_spec_containers_image == '*@*' & (!Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_image | Pod.io_k8s_api_core_v1_Pod_spec_ephemeralContainers_image == '*@*') & (!Pod.io_k8s_api_core_v1_Pod_spec_initContainers_image | Pod.io_k8s_api_core_v1_Pod_spec_initContainers_image == '*@*'))
+
+io_k8s_api_apps_v1_Deployment_spec_template_spec_securityContext_runAsGroup
