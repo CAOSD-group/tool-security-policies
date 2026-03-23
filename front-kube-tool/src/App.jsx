@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
-import { ShieldAlert, ShieldCheck, Upload, Play, Loader2, Info, AlertCircle } from 'lucide-react';
+import { ShieldAlert, ShieldCheck, Upload, Play, Loader2, Info, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react';
 
 const DEFAULT_YAML = `apiVersion: v1
 kind: Pod
@@ -25,15 +25,26 @@ function App() {
   const editorRef = useRef(null);
   const monacoRef = useRef(null);
   const decorationsRef = useRef(null);
-
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
     monacoRef.current = monaco;
     decorationsRef.current = editor.createDecorationsCollection([]);
   };
+
+  // Estado para las políticas expandidas
+  const [expandedPassed, setExpandedPassed] = useState({});
+  
+  const togglePassedPolicy = (policyName) => {
+    setExpandedPassed(prev => ({
+      ...prev,
+      [policyName]: !prev[policyName]
+    }));
+  };
+
   const handleValidate = async () => {
     setLoading(true);
     setError(null);
+    setExpandedPassed({});
     setSystemMessages([]);
     setResults({ secure: true, scanned_resources: 0, violations: [] }); // Inicializamos vacío
 
@@ -337,32 +348,128 @@ function App() {
                 </div>
               )}
 
+              {/* NUEVO: GRÁFICO VISUAL (Balance de Seguridad) */}
+              {(() => {
+                const passedCount = results.passed_policies ? results.passed_policies.length : 0;
+                const failedCount = results.violations ? results.violations.length : 0;
+                const totalPolicies = passedCount + failedCount;
+                
+                if (totalPolicies === 0) return null;
+
+                const passedPercentage = Math.round((passedCount / totalPolicies) * 100);
+                const failedPercentage = 100 - passedPercentage;
+
+                return (
+                  <div className="mb-6 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+                    <h3 className="text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
+                      Balance de Seguridad ({totalPolicies} políticas evaluadas)
+                    </h3>
+                  
+                    {/* Barra de progreso apilada */}
+                    <div className="flex h-4 w-full rounded-full overflow-hidden bg-gray-100">
+                      <div 
+                        style={{ width: `${passedPercentage}%` }} 
+                        className="bg-green-500 hover:bg-green-400 transition-all duration-500"
+                        title={`${passedCount} Superadas`}
+                      ></div>
+                      <div 
+                        style={{ width: `${failedPercentage}%` }} 
+                        className="bg-red-500 hover:bg-red-400 transition-all duration-500"
+                        title={`${failedCount} Violadas`}
+                      ></div>
+                    </div>
+                    
+                    {/* Leyendas con porcentajes */}
+                    <div className="flex justify-between mt-2 text-xs font-semibold">
+                      <span className="text-green-700">
+                        {passedCount} Superadas ({passedPercentage}%)
+                      </span>
+                      <span className="text-red-700">
+                        {failedCount} Violadas ({failedPercentage}%)
+                      </span>
+                    </div>
+                  </div>
+                );
+              })()}
+
               {/* NUEVO: Mostrar Políticas Aprobadas debajo del escudo general */}
               {results.passed_policies && results.passed_policies.length > 0 && (
-                <div className="mt-4 mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-                  <h4 className="text-sm font-semibold text-green-800 mb-2 flex items-center gap-1">
-                    <ShieldCheck className="w-4 h-4" /> Políticas superadas con éxito ({results.passed_policies.length})
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {results.passed_policies.map(policy => (
-                      <span key={policy} className="px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-md border border-green-300">
-                        {policy}
-                      </span>
+                <div className="mt-4 mb-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <ShieldCheck className="w-5 h-5 text-green-600" />
+                    <h3 className="text-md font-bold text-gray-800">
+                      Políticas superadas con éxito ({results.passed_policies.length})
+                    </h3>
+                  </div>
+                  
+                  <div className="flex flex-col gap-2">
+                    {results.passed_policies.map((policyObj, idx) => (
+                      <div key={idx} className="bg-green-50 border border-green-200 rounded-lg overflow-hidden transition-all">
+                        
+                        {/* Cabecera Clicable */}
+                        <div 
+                          onClick={() => togglePassedPolicy(policyObj.policy)}
+                          className="flex justify-between items-center p-3 cursor-pointer hover:bg-green-100 transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="font-semibold text-sm text-green-900">
+                              {policyObj.policy}
+                            </span>
+                            <span className="px-2 py-0.5 bg-green-200 text-green-800 text-[10px] font-bold rounded uppercase">
+                              {policyObj.severity || 'OK'}
+                            </span>
+                            <span className="px-2 py-0.5 bg-yellow-200 text-green-800 text-[10px] font-bold rounded uppercase">
+                              {policyObj.tool || 'Desconocida'}
+                            </span>
+                          </div>
+                          {expandedPassed[policyObj.policy] ? (
+                            <ChevronUp className="w-4 h-4 text-green-700" />
+                          ) : (
+                            <ChevronDown className="w-4 h-4 text-green-700" />
+                          )}
+                        </div>
+                        
+                        {/* Contenido Expandible (Descripción) */}
+                        {expandedPassed[policyObj.policy] && (
+                          <div className="px-4 pb-3 pt-1 text-sm text-green-800 border-t border-green-200/50 bg-green-50/50">
+                            <p className="mt-2 text-gray-700 font-medium">
+                              {policyObj.description}
+                            </p>
+                          </div>
+                        )}
+
+                      </div>
                     ))}
                   </div>
                 </div>
               )}
-
               {/* Lista de Vulnerabilidades EN TIEMPO REAL */}
               {!results.secure && (
                 <div className="flex flex-col gap-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <ShieldAlert className="w-5 h-5 text-red-600" />
+                    <h3 className="text-md font-bold text-gray-800">
+                      Políticas incumplidas ({results.violations.length})
+                    </h3>
+                  </div>
                   {results.violations.map((violation, index) => (
                     <div key={index} className="bg-white p-4 rounded-lg border border-red-100 shadow-sm border-l-4 border-l-red-500">
+                      
                       <div className="flex justify-between items-start mb-2">
                         <h4 className="font-bold text-gray-900">{violation.policy}</h4>
-                        <span className="px-2 py-1 bg-red-100 text-red-800 text-xs font-bold rounded uppercase">
-                          {violation.severity || "ALTA"}
-                        </span>
+                        {/* Contenedor flexible para alinear las etiquetas juntas */}
+                        <div className="flex items-center gap-2">
+                          <span className="px-2 py-1 bg-red-200 text-red-800 text-[10px] font-bold rounded uppercase">
+                            {violation.severity || "ALTA"}
+                          </span>
+                          
+                          {/* NUEVO: Etiqueta de la herramienta */}
+                          {violation.tool && (
+                            <span className="px-2 py-1 bg-yellow-200 text-red-800 text-[10px] font-bold rounded uppercase">
+                              {violation.tool}
+                            </span>
+                          )}
+                        </div>
                       </div>
                       <p className="text-gray-600 text-sm mb-3">{violation.description}</p>
                       

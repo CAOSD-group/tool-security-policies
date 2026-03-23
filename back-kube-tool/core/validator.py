@@ -119,10 +119,10 @@ class Validator:
       
       if not feat:
         return info
-      print(f"\n[DEBUG METADATA] Explorando atributos para política: {policy_name}")
+      #print(f"\n[DEBUG METADATA] Explorando atributos para política: {policy_name}")
       for attr in feat.get_attributes():
         val = attr.get_default_value()
-        print(f"   -> Encontrado atributo: nombre='{attr.name}', valor='{val}', tipo_valor='{type(val)}'")
+        #print(f"   -> Encontrado atributo: nombre='{attr.name}', valor='{val}', tipo_valor='{type(val)}'")
         if attr.name == 'tool':
           info['tool'] = val
         elif attr.name == 'severity':

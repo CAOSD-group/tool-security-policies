@@ -197,6 +197,9 @@ async def validate_manifest_stream(request: ValidationRequest):
                             for v in violation_list:
                                 total_violations += 1
                                 failed_policies.add(v["policy"])
+                                ## Extract policy tool from UVL metadata
+                                meta = validator.get_policy_metadata(v["policy"])
+                                v["tool"] = meta.get("tool", "Desconocida")
                                 # Obtenemos lista de acciones para reparar esta política
                                 actions = registry.get_remediation_actions(v["policy"])
                                 if actions:
@@ -220,6 +223,7 @@ async def validate_manifest_stream(request: ValidationRequest):
                             actions = registry.get_remediation_actions(policy_name)                            
                             v_obj = {
                                 "policy": policy_name,
+                                "tool": meta.get("tool", "Desconocida"),
                                 "severity": meta.get("severity", "medium"), # Usamos .get() de forma segura
                                 "description": rep.get("reason", meta.get("description", "Revisión Regex fallida.")),
                                 "remediation": meta.get("remediation", "Revisar configuración.")
@@ -232,12 +236,29 @@ async def validate_manifest_stream(request: ValidationRequest):
                             yield json.dumps({"status": "violation", "data": v_obj}) + "\n"
                             await asyncio.sleep(0.01)
             # Al terminar todo, enviamos el resumen final
-            passed_policies = list(all_active_policies - failed_policies)
+            passed_policies_names = list(all_active_policies - failed_policies)
+            passed_policies_details = []
+            for p_name in passed_policies_names:
+                # Obtenemos la metadata del modelo UVL
+                meta = validator.get_policy_metadata(p_name)
+                
+                # La descripción puede estar en 'doc' o 'description' según el modelo
+                desc = meta.get("doc", meta.get("description", ""))
+                if not desc or str(desc).strip() == "":
+                    desc = "Política evaluada y superada con éxito. El manifiesto cumple con este requisito de seguridad."
+
+                passed_policies_details.append({
+                    "policy": p_name,
+                    "tool": meta.get("tool", "Desconocida"),
+                    "severity": meta.get("severity", "INFO"), # Nivel por defecto si no tiene
+                    "description": desc
+                })
+            
             yield json.dumps({
                 "status": "done", 
                 "secure": total_violations == 0,
                 "scanned_resources": scanned_resources,
-                "passed_policies": passed_policies
+                "passed_policies": passed_policies_details
             }) + "\n"
 
         except yaml.YAMLError as e:
