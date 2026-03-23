@@ -152,6 +152,9 @@ async def validate_manifest_stream(request: ValidationRequest):
             scanned_resources = 0
             total_violations = 0
 
+            all_active_policies = set()
+            failed_policies = set()
+            
             for doc in documents:
                 kind = doc.get('kind', 'Desconocido')
                 api_version = doc.get('apiVersion', 'Desconocida')
@@ -166,7 +169,8 @@ async def validate_manifest_stream(request: ValidationRequest):
                 if not active_policies:
                     yield json.dumps({"status": "info", "message": f"[{kind}] No hay políticas de seguridad aplicables a este recurso."}) + "\n"
                     continue
-
+                # --- NUEVO: Añadimos las políticas activas de este recurso ---
+                all_active_policies.update(active_policies)
                 try:
                     # Aquí es donde falla si el kind/version no está en tu CSV
                     mapped_json_dict = csv_mapper.transform_manifest(doc)
@@ -181,18 +185,7 @@ async def validate_manifest_stream(request: ValidationRequest):
                 if configurations:
                     target_config = configurations[0] 
                     #print("\n=== FEATURES MAPEADAS LISTAS PARA Z3 ===")
-
-                    #print("\n" + "="*50)
-                    #print("1. DICCIONARIO EXTRAÍDO DEL CSV MAPPER (mapped_json_dict):")
-                    #print(json.dumps(mapped_json_dict, indent=2))
                     
-                    #print("\n2. ELEMENTOS FINALES ENVIADOS A Z3 (target_config.elements):")
-                    #print(f"{target_config.elements}")
-                    # Filtramos solo lo relevante al puerto para que sea fácil de leer
-                    """for k, v in target_config.elements.items():
-                        if "port" in str(k).lower():
-                            print(f"   -> {k}: {v} (Tipo: {type(v).__name__})")
-                    print("="*50 + "\n")"""
                     resource_name = doc.get('metadata', {}).get('name', 'unknown')
                     # Avisamos al frontend del recurso que estamos analizando
                     #yield json.dumps({"status": "info", "message": f"Analizando {kind}: {doc.get('metadata', {}).get('name', 'unknown')}..."}) + "\n"
@@ -203,6 +196,7 @@ async def validate_manifest_stream(request: ValidationRequest):
                         if violation_list:
                             for v in violation_list:
                                 total_violations += 1
+                                failed_policies.add(v["policy"])
                                 # Obtenemos lista de acciones para reparar esta política
                                 actions = registry.get_remediation_actions(v["policy"])
                                 if actions:
@@ -221,7 +215,7 @@ async def validate_manifest_stream(request: ValidationRequest):
                             policy_name = rep.get("policy", "unknown")
                             # Le preguntamos al validador (que conoce el UVL) por la metadata de esta política Regex
                             meta = validator.get_policy_metadata(policy_name)
-                            
+                            failed_policies.add(policy_name)
                             # Obtenemos acciones de remediación si las hay
                             actions = registry.get_remediation_actions(policy_name)                            
                             v_obj = {
@@ -238,10 +232,12 @@ async def validate_manifest_stream(request: ValidationRequest):
                             yield json.dumps({"status": "violation", "data": v_obj}) + "\n"
                             await asyncio.sleep(0.01)
             # Al terminar todo, enviamos el resumen final
+            passed_policies = list(all_active_policies - failed_policies)
             yield json.dumps({
                 "status": "done", 
                 "secure": total_violations == 0,
-                "scanned_resources": scanned_resources
+                "scanned_resources": scanned_resources,
+                "passed_policies": passed_policies
             }) + "\n"
 
         except yaml.YAMLError as e:

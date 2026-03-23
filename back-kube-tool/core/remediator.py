@@ -10,7 +10,7 @@ class Remediator:
     def __init__(self):
         self.yaml = YAML()
         self.yaml.preserve_quotes = True
-        self.yaml.indent(mapping=2, sequence=4, offset=2)
+        self.yaml.indent(mapping=2, sequence=2, offset=0) ## sequence=4, offset=2 para alinear con el estilo de Kubernetes  
 
     def apply_patch(self, yaml_content: str, yaml_path: list, new_value) -> str:
         """Aplica la corrección, manejando correctamente las listas de Kubernetes."""

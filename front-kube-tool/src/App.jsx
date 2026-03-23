@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import { ShieldAlert, ShieldCheck, Upload, Play, Loader2, Info, AlertCircle } from 'lucide-react';
 
@@ -21,6 +21,16 @@ function App() {
   const [systemMessages, setSystemMessages] = useState([]); 
   const fileInputRef = useRef(null);  
 
+  // Referencias para controlar Monaco Editor ---
+  const editorRef = useRef(null);
+  const monacoRef = useRef(null);
+  const decorationsRef = useRef(null);
+
+  const handleEditorDidMount = (editor, monaco) => {
+    editorRef.current = editor;
+    monacoRef.current = monaco;
+    decorationsRef.current = editor.createDecorationsCollection([]);
+  };
   const handleValidate = async () => {
     setLoading(true);
     setError(null);
@@ -75,7 +85,8 @@ function App() {
             else if (chunk.status === 'done') {
               setResults(prev => ({
                 ...prev,
-                scanned_resources: chunk.scanned_resources
+                scanned_resources: chunk.scanned_resources,
+                passed_policies: chunk.passed_policies || []
               }));
             }
             else if (chunk.status === 'error') {
@@ -91,6 +102,70 @@ function App() {
       setLoading(false);
     }
   };
+  // Función para inyectar y resaltar el texto cambiado---
+  const applyChangesAndHighlight = (oldYaml, newYaml) => {
+    setCode(newYaml);
+    
+    // Delay para que Monaco reciba el nuevo 'code'
+    setTimeout(() => {
+      if (!editorRef.current || !monacoRef.current) return;
+
+      const oldLines = oldYaml.split('\n');
+      const newLines = newYaml.split('\n');
+      const newDecorations = [];
+
+      newLines.forEach((line, index) => {
+        // Si la línea es diferente y no es un simple espacio vacío
+        if (line !== oldLines[index] && line.trim() !== '') {
+          newDecorations.push({
+            range: new monacoRef.current.Range(index + 1, 1, index + 1, 1),
+            options: {
+              isWholeLine: true,
+              className: 'monaco-highlight-line', // Clase CSS que inyectaremos abajo
+            }
+          });
+        }
+      });
+
+      // Aplicar decoración
+      if (decorationsRef.current) {
+        decorationsRef.current.set(newDecorations);
+        // Quitar el color amarillo a los 3 segundos
+        setTimeout(() => decorationsRef.current.set([]), 3000);
+      }
+    }, 100);
+  };
+
+  // Botón para reparar todas las vulnerabilidades ---
+  const handleFixAll = async () => {
+    let allActions = [];
+    results.violations.forEach(vuln => {
+      if (vuln.remediation_actions) {
+        allActions = [...allActions, ...vuln.remediation_actions];
+      }
+    });
+
+    if (allActions.length === 0) return;
+
+    try {
+      const response = await fetch('http://127.0.0.1:8080/remediate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ manifest_yaml: code, actions: allActions }),
+      });
+
+      if (!response.ok) throw new Error('Error al parchear');
+      const data = await response.json();
+
+      if (data.status === 'success') {
+        applyChangesAndHighlight(code, data.remediated_yaml);
+        setSystemMessages(prev => [...prev, { type: 'info', text: 'Todas las políticas auto-corregidas con éxito.' }]);
+      }
+    } catch (err) {
+      setSystemMessages(prev => [...prev, { type: 'error', text: err.message }]);
+    }
+  };
+
 
   // Maneja la subida de un archivo .yaml
   const handleFileUpload = (event) => {
@@ -122,8 +197,8 @@ function App() {
       
       // Actualizamos el editor de Monaco con el nuevo código corregido
       if (data.status === 'success') {
-        setCode(data.remediated_yaml);
-        
+        //setCode(data.remediated_yaml);
+        applyChangesAndHighlight(code, data.remediated_yaml);
         // Opcional: Mostrar un mensaje verde de éxito en el sistema
         setSystemMessages(prev => [...prev, { type: 'info', text: ' YAML auto-corregido con éxito. Vuelve a Analizar.' }]);
       }
@@ -135,6 +210,12 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
       {/* Cabecera */}
+      <style>{`
+        .monaco-highlight-line {
+          background-color: #76ec80 !important;
+        }
+      `}</style>
+
       <header className="bg-slate-900 text-white p-4 shadow-md flex justify-between items-center">
         <div className="flex items-center gap-2">
           <ShieldCheck className="w-8 h-8 text-green-400" />
@@ -180,6 +261,7 @@ function App() {
               theme="vs-light"
               value={code}
               onChange={(value) => setCode(value)}
+              onMount={handleEditorDidMount}
               options={{
                 minimap: { enabled: false },
                 fontSize: 14,
@@ -191,8 +273,19 @@ function App() {
 
         {/* Panel de Resultados (Derecha) */}
         <div className="w-1/2 flex flex-col bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden overflow-y-auto p-6 bg-gray-50">
-          <h2 className="text-xl font-bold text-gray-800 mb-4 border-b border-gray-200 pb-2">Resultados de Auditoría</h2>
-          
+        {/* Título y Botón de Reparar Todo */}
+          <div className="flex justify-between items-center mb-4 border-b border-gray-200 pb-2">
+            <h2 className="text-xl font-bold text-gray-800">Resultados de Auditoría</h2>
+            {results && !results.secure && results.violations.some(v => v.remediation_actions?.length > 0) && (
+              <button 
+                onClick={handleFixAll}
+                className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded shadow text-sm font-semibold transition flex items-center gap-1 cursor-pointer"
+              >
+                Reparar Todo
+              </button>
+            )}
+          </div>
+            
           {/* Estado Inicial */}
           {!results && !loading && !error && systemMessages.length === 0 && (
             <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
@@ -220,7 +313,7 @@ function App() {
               ))}
             </div>
           )}
-{/* Resultados de la Evaluación */}
+          {/* Resultados de la Evaluación */}
           {results && (
             <div>
               {/* Resumen Global */}
@@ -240,6 +333,22 @@ function App() {
                       {results.secure ? "¡Manifiesto Seguro!" : "Vulnerabilidades Detectadas"}
                     </h3>
                     <p className="text-sm opacity-80">Recursos procesados válidos: {results.scanned_resources}</p>
+                  </div>
+                </div>
+              )}
+
+              {/* NUEVO: Mostrar Políticas Aprobadas debajo del escudo general */}
+              {results.passed_policies && results.passed_policies.length > 0 && (
+                <div className="mt-4 mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <h4 className="text-sm font-semibold text-green-800 mb-2 flex items-center gap-1">
+                    <ShieldCheck className="w-4 h-4" /> Políticas superadas con éxito ({results.passed_policies.length})
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {results.passed_policies.map(policy => (
+                      <span key={policy} className="px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-md border border-green-300">
+                        {policy}
+                      </span>
+                    ))}
                   </div>
                 </div>
               )}
