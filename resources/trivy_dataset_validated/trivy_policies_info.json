@@ -1,0 +1,894 @@
+[
+    {
+        "name": "access_to_host_ports",
+        "trivy_id": "KSV-0024",
+        "title": "Access to host ports",
+        "description": "According to pod security standard 'Host Ports', hostPorts should be disallowed, or at minimum restricted to a known list.",
+        "severity": "HIGH",
+        "recommended_action": "Do not set spec.containers[*].ports[*].hostPort and spec.initContainers[*].ports[*].hostPort.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\access_to_host_ports.rego"
+    },
+    {
+        "name": "allowing_to_update_a_malicious_pod",
+        "trivy_id": "KSV-0048",
+        "title": "Manage Kubernetes workloads and pods",
+        "description": "Depending on the policies enforced by the admission controller, this permission ranges from the ability to steal compute (crypto) by running workloads or allowing for creating workloads that escape to the node as root and escalation to cluster-admin.",
+        "severity": "MEDIUM",
+        "recommended_action": "Kubernetes workloads resources are only allowed for verbs 'list', 'watch', 'get'",
+        "kinds": [
+            "clusterrole",
+            "role"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\allowing_to_update_a_malicious_pod.rego"
+    },
+    {
+        "name": "anonymous_user_bind",
+        "trivy_id": "KSV-0122",
+        "title": "Anonymous user access binding",
+        "description": "Binding to anonymous user to any clusterrole or role is a security risk.",
+        "severity": "CRITICAL",
+        "recommended_action": "Remove anonymous user binding from clusterrolebinding or rolebinding.",
+        "kinds": [
+            "rolebinding",
+            "clusterrolebinding"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\anonymous_user_bind.rego"
+    },
+    {
+        "name": "apparmor_policy_disabled",
+        "trivy_id": "KSV-0002",
+        "title": "Runtime/Default AppArmor profile not set",
+        "description": "According to pod security standard 'AppArmor', the AppArmor key must be set to the runtime/default profile or to be undefined.",
+        "severity": "LOW",
+        "recommended_action": "set the 'runtime/default' value from 'container.apparmor.security.beta.kubernetes.io'.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\apparmor_policy_disabled.rego"
+    },
+    {
+        "name": "can_elevate_its_own_privileges",
+        "trivy_id": "KSV-0001",
+        "title": "Can elevate its own privileges",
+        "description": "A program inside the container can elevate its own privileges and run as root, which might give the program control over the container and node.",
+        "severity": "MEDIUM",
+        "recommended_action": "Set 'set containers[].securityContext.allowPrivilegeEscalation' to 'false'.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\can_elevate_its_own_privileges.rego"
+    },
+    {
+        "name": "capabilities_no_drop_all",
+        "trivy_id": "KSV-0003",
+        "title": "Default capabilities: some containers do not drop all",
+        "description": "The container should drop all default capabilities and add only those that are needed for its execution.",
+        "severity": "LOW",
+        "recommended_action": "Add 'ALL' to containers[].securityContext.capabilities.drop.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\capabilities_no_drop_all.rego"
+    },
+    {
+        "name": "capabilities_no_drop_at_least_one",
+        "trivy_id": "KSV-0004",
+        "title": "Default capabilities: some containers do not drop any",
+        "description": "Security best practices require containers to run with minimal required capabilities.",
+        "severity": "LOW",
+        "recommended_action": "Specify at least one unneeded capability in 'containers[].securityContext.capabilities.drop'",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\capabilities_no_drop_at_least_one.rego"
+    },
+    {
+        "name": "cluster_admin_role_is_only_used_where_required",
+        "trivy_id": "KSV-0111",
+        "title": "User with admin access",
+        "description": "Either cluster-admin or those granted powerful permissions.",
+        "severity": "MEDIUM",
+        "recommended_action": "Remove binding for clusterrole 'cluster-admin', 'admin' or 'edit'",
+        "kinds": [
+            "rolebinding",
+            "clusterrolebinding"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\cluster_admin_role_is_only_used_where_required.rego"
+    },
+    {
+        "name": "CPU_not_limited",
+        "trivy_id": "KSV-0011",
+        "title": "CPU not limited",
+        "description": "Enforcing CPU limits prevents DoS via resource exhaustion.",
+        "severity": "LOW",
+        "recommended_action": "Set a limit value under 'containers[].resources.limits.cpu'.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\CPU_not_limited.rego"
+    },
+    {
+        "name": "CPU_requests_not_specified",
+        "trivy_id": "KSV-0015",
+        "title": "CPU requests not specified",
+        "description": "When containers have resource requests specified, the scheduler can make better decisions about which nodes to place pods on, and how to deal with resource contention.",
+        "severity": "LOW",
+        "recommended_action": "Set 'containers[].resources.requests.cpu'.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\CPU_requests_not_specified.rego"
+    },
+    {
+        "name": "default_namespace_should_not_be_used",
+        "trivy_id": "KSV-0110",
+        "title": "Workloads in the default namespace",
+        "description": "Checks whether a workload is running in the default namespace.",
+        "severity": "LOW",
+        "recommended_action": "Set 'metadata.namespace' to a non-default namespace.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\default_namespace_should_not_be_used.rego"
+    },
+    {
+        "name": "default_security_context",
+        "trivy_id": "KSV-0118",
+        "title": "Default security context configured",
+        "description": "Security context controls the allocation of security parameters for the pod/container/volume, ensuring the appropriate level of protection. Relying on default security context may expose vulnerabilities to potential attacks that rely on privileged access.",
+        "severity": "HIGH",
+        "recommended_action": "To enhance security, it is strongly recommended not to rely on the default security context. Instead, it is advisable to explicitly define the required security parameters (such as runAsNonRoot, capabilities, readOnlyRootFilesystem, etc.) within the security context.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\default_security_context.rego"
+    },
+    {
+        "name": "delete_pod_logs",
+        "trivy_id": "KSV-0042",
+        "title": "Delete pod logs",
+        "description": "Used to cover attacker’s tracks, but most clusters ship logs quickly off-cluster.",
+        "severity": "MEDIUM",
+        "recommended_action": "Remove verbs 'delete' and 'deletecollection' for resource 'pods/log' for Role and ClusterRole",
+        "kinds": [
+            "clusterrole",
+            "role"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\delete_pod_logs.rego"
+    },
+    {
+        "name": "file_system_not_read_only",
+        "trivy_id": "KSV-0014",
+        "title": "Root file system is not read-only",
+        "description": "An immutable root file system prevents applications from writing to their local disk. This can limit intrusions, as attackers will not be able to tamper with the file system or write foreign executables to disk.",
+        "severity": "HIGH",
+        "recommended_action": "Change 'containers[].securityContext.readOnlyRootFilesystem' to 'true'.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\file_system_not_read_only.rego"
+    },
+    {
+        "name": "get_shell_on_pod",
+        "trivy_id": "KSV-0053",
+        "title": "Exec into Pods",
+        "description": "The ability to exec into a container with privileged access to the host or with an attached SA with higher RBAC permissions is a common escalation path to cluster-admin.",
+        "severity": "HIGH",
+        "recommended_action": "Remove write permission verbs for resource 'pods/exec'",
+        "kinds": [
+            "clusterrole",
+            "role"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\get_shell_on_pod.rego"
+    },
+    {
+        "name": "hostpath_volumes_mounted",
+        "trivy_id": "KSV-0023",
+        "title": "hostPath volumes mounted",
+        "description": "According to pod security standard 'HostPath Volumes', HostPath volumes must be forbidden.",
+        "severity": "MEDIUM",
+        "recommended_action": "Do not set 'spec.volumes[*].hostPath'.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\hostpath_volumes_mounted.rego"
+    },
+    {
+        "name": "host_ipc",
+        "trivy_id": "KSV-0008",
+        "title": "Access to host IPC namespace",
+        "description": "Sharing the host’s IPC namespace allows container processes to communicate with processes on the host.",
+        "severity": "HIGH",
+        "recommended_action": "Do not set 'spec.template.spec.hostIPC' to true.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\host_ipc.rego"
+    },
+    {
+        "name": "host_network",
+        "trivy_id": "KSV-0009",
+        "title": "Access to host network",
+        "description": "Sharing the host’s network namespace permits processes in the pod to communicate with processes bound to the host’s loopback adapter.",
+        "severity": "HIGH",
+        "recommended_action": "Do not set 'spec.template.spec.hostNetwork' to true.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\host_network.rego"
+    },
+    {
+        "name": "host_pid",
+        "trivy_id": "KSV-0010",
+        "title": "Access to host PID",
+        "description": "Sharing the host’s PID namespace allows visibility on host processes, potentially leaking information such as environment variables and configuration.",
+        "severity": "HIGH",
+        "recommended_action": "Do not set 'spec.template.spec.hostPID' to true.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\host_pid.rego"
+    },
+    {
+        "name": "Kubernetes_resource_with_disallowed_volumes_mounted",
+        "trivy_id": "KSV-0121",
+        "title": "Kubernetes resource with disallowed volumes mounted",
+        "description": "HostPath present many security risks and as a security practice it is better to avoid critical host paths mounts.",
+        "severity": "HIGH",
+        "recommended_action": "Do not Set 'spec.volumes[*].hostPath.path' to any of the disallowed volumes.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\Kubernetes_resource_with_disallowed_volumes_mounted.rego"
+    },
+    {
+        "name": "manages_etc_hosts",
+        "trivy_id": "KSV-0007",
+        "title": "Manages /etc/hosts",
+        "description": "Managing /etc/hosts aliases can prevent the container engine from modifying the file after a pod’s containers have already been started.",
+        "severity": "LOW",
+        "recommended_action": "Do not set 'spec.template.spec.hostAliases'.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\manages_etc_hosts.rego"
+    },
+    {
+        "name": "manage_all_resources",
+        "trivy_id": "KSV-0046",
+        "title": "Manage all resources",
+        "description": "Full control of the cluster resources, and therefore also root on all nodes where workloads can run and has access to all pods, secrets, and data.",
+        "severity": "CRITICAL",
+        "recommended_action": "",
+        "kinds": [
+            "clusterrole"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\manage_all_resources.rego"
+    },
+    {
+        "name": "manage_all_resources_at_namespace",
+        "trivy_id": "KSV-0112",
+        "title": "Manage all resources at the namespace",
+        "description": "Full control of the resources within a namespace.  In some cluster configurations, this is excessive. In others, this is normal (a gitops deployment operator like flux)",
+        "severity": "CRITICAL",
+        "recommended_action": "",
+        "kinds": [
+            "role"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\manage_all_resources_at_namespace.rego"
+    },
+    {
+        "name": "manage_configmaps",
+        "trivy_id": "KSV-0049",
+        "title": "Manage configmaps",
+        "description": "Some workloads leverage configmaps to store sensitive data or configuration parameters that affect runtime behavior that can be modified by an attacker or combined with another issue to potentially lead to compromise.",
+        "severity": "MEDIUM",
+        "recommended_action": "Remove write permission verbs for resource 'configmaps'",
+        "kinds": [
+            "clusterrole",
+            "role"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\manage_configmaps.rego"
+    },
+    {
+        "name": "manage_eks_iam_auth_configmap",
+        "trivy_id": "KSV-0115",
+        "title": "Manage EKS IAM Auth ConfigMap",
+        "description": "Ability to add AWS IAM to RBAC bindings via special EKS configmap.",
+        "severity": "CRITICAL",
+        "recommended_action": "",
+        "kinds": [
+            "clusterrole",
+            "role"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\manage_eks_iam_auth_configmap.rego"
+    },
+    {
+        "name": "manage_kubernetes_networking",
+        "trivy_id": "KSV-0056",
+        "title": "Manage Kubernetes networking",
+        "description": "The ability to control which pods get service traffic directed to them allows for interception attacks. Controlling network policy allows for bypassing lateral movement restrictions.",
+        "severity": "HIGH",
+        "recommended_action": "Networking resources are only allowed for verbs 'list', 'watch', 'get'",
+        "kinds": [
+            "clusterrole",
+            "role"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\manage_kubernetes_networking.rego"
+    },
+    {
+        "name": "manage_kubernetes_rbac_resources",
+        "trivy_id": "KSV-0050",
+        "title": "Do not allow privilege escalation via RBAC resources",
+        "description": "Check whether role permits escalate, bind, or impersonate on roles/rolebindings, which can lead to privilege escalation.",
+        "severity": "CRITICAL",
+        "recommended_action": "Remove permissions for escalate, bind, and impersonate verbs on roles and rolebindings",
+        "kinds": [
+            "clusterrole",
+            "role"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\manage_kubernetes_rbac_resources.rego"
+    },
+    {
+        "name": "manage_namespace_secrets",
+        "trivy_id": "KSV-0113",
+        "title": "Manage namespace secrets",
+        "description": "Viewing secrets at the namespace scope can lead to escalation if another service account in that namespace has a higher privileged rolebinding or clusterrolebinding bound.",
+        "severity": "MEDIUM",
+        "recommended_action": "",
+        "kinds": [
+            "role"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\manage_namespace_secrets.rego"
+    },
+    {
+        "name": "manage_secrets",
+        "trivy_id": "KSV-0041",
+        "title": "Manage secrets",
+        "description": "Viewing secrets at the cluster-scope is akin to cluster-admin in most clusters as there are typically at least one service accounts (their token stored in a secret) bound to cluster-admin directly or a role/clusterrole that gives similar permissions.",
+        "severity": "CRITICAL",
+        "recommended_action": "",
+        "kinds": [
+            "clusterrole"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\manage_secrets.rego"
+    },
+    {
+        "name": "manage_webhook_configurations",
+        "trivy_id": "KSV-0114",
+        "title": "Manage webhookconfigurations",
+        "description": "Webhooks can silently intercept or actively mutate/block resources as they are being created or updated. This includes secrets and pod specs.",
+        "severity": "CRITICAL",
+        "recommended_action": "",
+        "kinds": [
+            "clusterrole",
+            "role"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\manage_webhook_configurations.rego"
+    },
+    {
+        "name": "masters_group_bind",
+        "trivy_id": "KSV-0123",
+        "title": "system:masters group access binding",
+        "description": "Binding to system:masters group to any clusterrole or role is a security risk.",
+        "severity": "CRITICAL",
+        "recommended_action": "Remove system:masters group binding from clusterrolebinding or rolebinding.",
+        "kinds": [
+            "rolebinding",
+            "clusterrolebinding"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\masters_group_bind.rego"
+    },
+    {
+        "name": "memory_not_limited",
+        "trivy_id": "KSV-0018",
+        "title": "Memory not limited",
+        "description": "Enforcing memory limits prevents DoS via resource exhaustion.",
+        "severity": "LOW",
+        "recommended_action": "Set a limit value under 'containers[].resources.limits.memory'.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\memory_not_limited.rego"
+    },
+    {
+        "name": "memory_requests_not_specified",
+        "trivy_id": "KSV-0016",
+        "title": "Memory requests not specified",
+        "description": "When containers have memory requests specified, the scheduler can make better decisions about which nodes to place pods on, and how to deal with resource contention.",
+        "severity": "LOW",
+        "recommended_action": "Set 'containers[].resources.requests.memory'.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\memory_requests_not_specified.rego"
+    },
+    {
+        "name": "mounts_docker_socket",
+        "trivy_id": "KSV-0006",
+        "title": "hostPath volume mounted with docker.sock",
+        "description": "Mounting docker.sock from the host can give the container full root access to the host.",
+        "severity": "HIGH",
+        "recommended_action": "Do not specify /var/run/docker.socket in 'spec.template.volumes.hostPath.path'.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\mounts_docker_socket.rego"
+    },
+    {
+        "name": "net_raw_capability",
+        "trivy_id": "KSV-0119",
+        "title": "NET_RAW capability added",
+        "description": "The NET_RAW capability grants attackers the ability to eavesdrop on network traffic or generate IP traffic with falsified source addresses, posing serious security risks.",
+        "severity": "HIGH",
+        "recommended_action": "To mitigate potential security risks, it is strongly recommended to remove the NET_RAW capability from 'containers[].securityContext.capabilities.add'. It is advisable to follow the practice of dropping all capabilities and only adding the necessary ones.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\net_raw_capability.rego"
+    },
+    {
+        "name": "non_core_volume_types",
+        "trivy_id": "KSV-0028",
+        "title": "Non-core volume types used.",
+        "description": "According to pod security standard 'Volume types', non-core volume types must not be used.",
+        "severity": "LOW",
+        "recommended_action": "Do not Set 'spec.volumes[*]' to any of the disallowed volume types.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\non_core_volume_types.rego"
+    },
+    {
+        "name": "non_default_proc_masks_set",
+        "trivy_id": "KSV-0027",
+        "title": "Non-default /proc masks set",
+        "description": "According to pod security standard '/proc Mount Type', the default /proc masks are set up to reduce attack surface, and should be required.",
+        "severity": "MEDIUM",
+        "recommended_action": "Do not set spec.containers[*].securityContext.procMount and spec.initContainers[*].securityContext.procMount.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\non_default_proc_masks_set.rego"
+    },
+    {
+        "name": "privileged",
+        "trivy_id": "KSV-0017",
+        "title": "Privileged",
+        "description": "Privileged containers share namespaces with the host system and do not offer any security. They should be used exclusively for system containers that require high privileges.",
+        "severity": "HIGH",
+        "recommended_action": "Change 'containers[].securityContext.privileged' to 'false'.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\privileged.rego"
+    },
+    {
+        "name": "privileged_ports_binding",
+        "trivy_id": "KSV-0117",
+        "title": "Prevent binding to privileged ports",
+        "description": "The ports which are lower than 1024 receive and transmit various sensitive and privileged data. Allowing containers to use them can bring serious implications.",
+        "severity": "MEDIUM",
+        "recommended_action": "Do not map the container ports to privileged host ports when starting a container.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\privileged_ports_binding.rego"
+    },
+    {
+        "name": "runs_as_root",
+        "trivy_id": "KSV-0012",
+        "title": "Runs as root user",
+        "description": "Force the running image to run as a non-root user to ensure least privileges.",
+        "severity": "MEDIUM",
+        "recommended_action": "Set 'containers[].securityContext.runAsNonRoot' to true.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\runs_as_root.rego"
+    },
+    {
+        "name": "runs_with_a_root_primary_or_supplementary_GID",
+        "trivy_id": "KSV-0116",
+        "title": "Runs with a root primary or supplementary GID",
+        "description": "According to pod security standard 'Non-root groups', containers should be forbidden from running with a root primary or supplementary GID.",
+        "severity": "LOW",
+        "recommended_action": "",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\runs_with_a_root_primary_or_supplementary_GID.rego"
+    },
+    {
+        "name": "runs_with_GID_le_10000",
+        "trivy_id": "KSV-0021",
+        "title": "Runs with GID <= 10000",
+        "description": "Force the container to run with group ID > 10000 to avoid conflicts with the host’s user table.",
+        "severity": "LOW",
+        "recommended_action": "Set 'containers[].securityContext.runAsGroup' to an integer > 10000.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\runs_with_GID_le_10000.rego"
+    },
+    {
+        "name": "runs_with_UID_le_10000",
+        "trivy_id": "KSV-0020",
+        "title": "Runs with UID <= 10000",
+        "description": "Force the container to run with user ID > 10000 to avoid conflicts with the host’s user table.",
+        "severity": "LOW",
+        "recommended_action": "Set 'containers[].securityContext.runAsUser' to an integer > 10000.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\runs_with_UID_le_10000.rego"
+    },
+    {
+        "name": "runtime_default_seccomp_profile_not_set",
+        "trivy_id": "KSV-0030",
+        "title": "Runtime/Default Seccomp profile not set",
+        "description": "According to pod security standard 'Seccomp', the RuntimeDefault seccomp profile must be required, or allow specific additional profiles.",
+        "severity": "LOW",
+        "recommended_action": "Set 'spec.securityContext.seccompProfile.type', 'spec.containers[*].securityContext.seccompProfile' and 'spec.initContainers[*].securityContext.seccompProfile' to 'RuntimeDefault' or undefined.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\runtime_default_seccomp_profile_not_set.rego"
+    },
+    {
+        "name": "seccomp_profile_unconfined",
+        "trivy_id": "KSV-0104",
+        "title": "Seccomp policies disabled",
+        "description": "A program inside the container can bypass Seccomp protection policies.",
+        "severity": "MEDIUM",
+        "recommended_action": "Specify seccomp either by annotation or by seccomp profile type having allowed values as per pod security standards",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\seccomp_profile_unconfined.rego"
+    },
+    {
+        "name": "selinux_custom_options_set",
+        "trivy_id": "KSV-0025",
+        "title": "SELinux custom options set",
+        "description": "According to pod security standard 'SElinux', setting custom SELinux options should be disallowed.",
+        "severity": "MEDIUM",
+        "recommended_action": "Do not set 'spec.securityContext.seLinuxOptions', spec.containers[*].securityContext.seLinuxOptions and spec.initContainers[*].securityContext.seLinuxOptions.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\selinux_custom_options_set.rego"
+    },
+    {
+        "name": "service_with_externalip",
+        "trivy_id": "KSV-0108",
+        "title": "Service with External IP",
+        "description": "Services with external IP addresses allows direct access from the internet and might expose risk for CVE-2020-8554",
+        "severity": "HIGH",
+        "recommended_action": "Do not set spec.externalIPs",
+        "kinds": [
+            "service"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\service_with_externalip.rego"
+    },
+    {
+        "name": "specific_capabilities_added",
+        "trivy_id": "KSV-0022",
+        "title": "Specific capabilities added",
+        "description": "According to pod security standard 'Capabilities', capabilities beyond the default set must not be added.",
+        "severity": "MEDIUM",
+        "recommended_action": "Do not set spec.containers[*].securityContext.capabilities.add and spec.initContainers[*].securityContext.capabilities.add.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\specific_capabilities_added.rego"
+    },
+    {
+        "name": "SYS_ADMIN_capability",
+        "trivy_id": "KSV-0005",
+        "title": "SYS_ADMIN capability added",
+        "description": "SYS_ADMIN gives the processes running inside the container privileges that are equivalent to root.",
+        "severity": "HIGH",
+        "recommended_action": "Remove the SYS_ADMIN capability from 'containers[].securityContext.capabilities.add'.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\SYS_ADMIN_capability.rego"
+    },
+    {
+        "name": "SYS_MODULE_capability",
+        "trivy_id": "KSV-0120",
+        "title": "SYS_MODULE capability added",
+        "description": "The SYS_MODULE capability grants attackers the ability to install and remove kernel modules, posing serious security risks.",
+        "severity": "HIGH",
+        "recommended_action": "To mitigate potential security risks, it is strongly recommended to remove the SYS_MODULE capability from 'containers[].securityContext.capabilities.add'. It is advisable to follow the practice of dropping all capabilities and only adding the necessary ones.",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\SYS_MODULE_capability.rego"
+    },
+    {
+        "name": "use_limit_range",
+        "trivy_id": "KSV-0039",
+        "title": "limit range usage",
+        "description": "Ensure that a LimitRange policy is configured to limit resource usage for namespaces or nodes",
+        "severity": "LOW",
+        "recommended_action": "Create a LimitRange policy with default requests and limits for each container",
+        "kinds": [
+            "limitrange"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\use_limit_range.rego"
+    },
+    {
+        "name": "use_resource_quota",
+        "trivy_id": "KSV-0040",
+        "title": "resource quota usage",
+        "description": "Ensure that a ResourceQuota policy is configured to limit aggregate resource usage within a namespace",
+        "severity": "LOW",
+        "recommended_action": "Create a ResourceQuota policy with memory and CPU quotas for each namespace",
+        "kinds": [
+            "resourcequota"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\use_resource_quota.rego"
+    },
+    {
+        "name": "windows_host_process",
+        "trivy_id": "KSV-0103",
+        "title": "Access to host process",
+        "description": "Windows pods offer the ability to run HostProcess containers which enable privileged access to the Windows node.",
+        "severity": "MEDIUM",
+        "recommended_action": "Do not enable 'hostProcess' on any securityContext",
+        "kinds": [
+            "pod",
+            "replicaset",
+            "replicationcontroller",
+            "deployment",
+            "statefulset",
+            "daemonset",
+            "cronjob",
+            "job"
+        ],
+        "filepath": "C:\\Users\\CAOSD\\projects\\folder_repos_information\\trivy-checks\\checks\\kubernetes\\windows_host_process.rego"
+    }
+]

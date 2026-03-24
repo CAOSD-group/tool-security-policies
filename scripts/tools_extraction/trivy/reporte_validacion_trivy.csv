@@ -1,0 +1,170 @@
+Archivo;ID_Trivy;Resultado;Razon
+access_to_host_ports.rego;KSV-0024;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+allowing_create_role_binding_and_associate_privileged_clusterrole.rego;KSV-0051;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+allowing_create_role_clusterrolebinding_and_associate_privileged_clusterrole.rego;KSV-0052;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+allowing_to_update_a_malicious_pod.rego;KSV-0048;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (input\.rules\[)
+allowing_users_rolebinding_add_other_users_rolebindings.rego;KSV-0055;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+anonymous_user_bind.rego;KSV-0122;ACEPTADA;Semántica OK. Kinds Soportados: ['rolebinding', 'clusterrolebinding']
+any_any.rego;KSV-0044;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+any_verb.rego;KSV-0045;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_admin_conf_ownership.rego;KCV-0061;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+apiserver_admin_conf_permission.rego;KCV-0060;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+apiserver_always_admit_plugin.rego;KCV-0011;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_always_pull_images_plugin.rego;KCV-0012;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_anonymous_auth.rego;KCV-0001;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_audit_log_maxage.rego;KCV-0020;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_audit_log_maxbackup.rego;KCV-0021;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_audit_log_maxsize.rego;KCV-0022;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_audit_log_path.rego;KCV-0019;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_authorization_mode.rego;KCV-0007;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_authorization_mode_includes_node.rego;KCV-0008;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_authorization_mode_includes_rbac.rego;KCV-0009;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_client_ca_file.rego;KCV-0028;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_deny_service_external_ips_plugin.rego;KCV-0003;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_encryption_provider_config.rego;KCV-0030;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_etcd_cafile.rego;KCV-0029;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_etcd_certfile_and_keyfile.rego;KCV-0026;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_event_rate_limit_plugin.rego;KCV-0010;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_kubelet_certificate_authority.rego;KCV-0006;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_kubelet_client_certificate_and_key.rego;KCV-0005;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_kubelet_https.rego;KCV-0004;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_kubernetes_pki_cert_permission.rego;KCV-0068;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+apiserver_kubernetes_pki_directory_ownership.rego;KCV-0066;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+apiserver_kubernetes_pki_key_permission.rego;KCV-0067;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+apiserver_namespace_lifecycle_plugin.rego;KCV-0015;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_node_restriction_plugin.rego;KCV-0016;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_pod_spec_ownership.rego;KCV-0049;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+apiserver_pod_spec_permission.rego;KCV-0048;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+apiserver_profiling.rego;KCV-0018;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_secure_port.rego;KCV-0017;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_security_context_deny_plugin.rego;KCV-0013;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_service_account_key_file.rego;KCV-0025;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_service_account_lookup.rego;KCV-0024;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_service_account_plugin.rego;KCV-0014;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_tls_cert_file_and_private_key_file.rego;KCV-0027;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apiserver_token_auth_file.rego;KCV-0002;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+apparmor_policy_disabled.rego;KSV-0002;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+attaching_pod_view_logs_realtime.rego;KSV-0054;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+authenticate_group_bind.rego;KSV-01011;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (k8s\.version)
+can_elevate_its_own_privileges.rego;KSV-0001;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+capabilities_no_drop_all.rego;KSV-0003;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+capabilities_no_drop_at_least_one.rego;KSV-0004;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+cluster_admin_role_is_only_used_where_required.rego;KSV-0111;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (== [a-zA-Z0-9_]+\[_\])
+cni_pod_spec_ownership.rego;KCV-0057;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+cni_pod_spec_permission.rego;KCV-0056;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+configMap_with_secrets.rego;KSV-0109;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (regex\.match)
+configmap_with_sensitive.rego;KSV-01010;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (regex\.match)
+controllermamager_bind_address.rego;KCV-0039;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+controllermamager_controller_manager_conf_ownership.rego;KCV-0065;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+controllermamager_controller_manager_conf_permission.rego;KCV-0064;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+controllermamager_pod_spec_permission.rego;KCV-0050;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+controllermamager_profiling.rego;KCV-0034;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+controllermamager_root_ca_file.rego;KCV-0037;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+controllermamager_rotate_kubelet_server_certificate.rego;KCV-0038;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+controllermamager_service_account_private_key_file.rego;KCV-0036;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+controllermamager_terminated_pod_gc_threshold.rego;KCV-0033;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+controllermanager_pod_spec_ownership.rego;KCV-0051;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+controllermanager_use_service_account_credentials.rego;KCV-0035;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+CPU_not_limited.rego;KSV-0011;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+CPU_requests_not_specified.rego;KSV-0015;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+default_namespace_should_not_be_used.rego;KSV-0110;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (== [a-zA-Z0-9_]+\[_\])
+default_security_context.rego;KSV-0118;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (object\.get\()
+delete_pod_logs.rego;KSV-0042;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (input\.rules\[)
+drop_all_capabilities_only_add_net_bind_service.rego;KSV-0106;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+etcd_auto_tls.rego;KCV-0044;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+etcd_cert_file_and_key_file.rego;KCV-0042;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+etcd_client_cert_auth.rego;KCV-0043;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+etcd_data_directory_ownership.rego;KCV-0059;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+etcd_data_directory_permission.rego;KCV-0058;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+etcd_peer_auto_tls.rego;KCV-0047;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+etcd_peer_cert_file_and_key_file.rego;KCV-0045;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+etcd_peer_client_cert_auth.rego;KCV-0046;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+etcd_pod_spec_ownership.rego;KCV-0055;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+etcd_pod_spec_permission.rego;KCV-0054;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+file_system_not_read_only.rego;KSV-0014;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+get_shell_on_pod.rego;KSV-0053;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (input\.rules\[)
+hostpath_volumes_mounted.rego;KSV-0023;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+host_ipc.rego;KSV-0008;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (\[_\] ==)
+host_network.rego;KSV-0009;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (\[_\] ==)
+host_pid.rego;KSV-0010;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (\[_\] ==)
+impersonate_privileged_groups.rego;KSV-0043;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+insecure_ingress_nginx.rego;KCV-0093;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+kubelet_anonymous_auth_argument.rego;KCV-0079;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_authorization_mode_argument.rego;KCV-0080;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_certificate_authorities_file_ownership.rego;KCV-0076;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_certificate_authorities_file_permission.rego;KCV-0075;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_client_ca_file_argument.rego;KCV-0081;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_config_file_ownership.rego;KCV-0074;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_config_file_permission.rego;KCV-0073;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_config_yaml_ownership.rego;KCV-0078;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_config_yaml_permission.rego;KCV-0077;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_event_qps.rego;KCV-0087;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_hostname_override.rego;KCV-0086;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_kublet_service_file_ownership.rego;KCV-0070;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_kublet_service_file_permission.rego;KCV-0069;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_make_iptables_util_chains.rego;KCV-0084;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_only_use_strong_cryptographic.rego;KCV-0092;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_protect_kernel_defaults.rego;KCV-0083;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_proxy_kube_config_file_ownership.rego;KCV-0072;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_proxy_kube_config_file_permission.rego;KCV-0071;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_read_only_port_argument.rego;KCV-0082;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_rotate_certificates.rego;KCV-0090;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_rotate_kubelet_server_certificate.rego;KCV-0091;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_streaming_connection_argument.rego;KCV-0085;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_tls_cert_file.rego;KCV-0088;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+kubelet_tls_key_file.rego;KCV-0089;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+Kubernetes_resource_with_disallowed_volumes_mounted.rego;KSV-0121;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+manages_etc_hosts.rego;KSV-0007;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+manage_all_resources.rego;KSV-0046;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (input\.rules\[)
+manage_all_resources_at_namespace.rego;KSV-0112;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (input\.rules\[)
+manage_configmaps.rego;KSV-0049;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (input\.rules\[)
+manage_eks_iam_auth_configmap.rego;KSV-0115;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (input\.rules\[)
+manage_kubernetes_networking.rego;KSV-0056;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (input\.rules\[)
+manage_kubernetes_rbac_resources.rego;KSV-0050;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (input\.rules\[)
+manage_namespace_secrets.rego;KSV-0113;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (input\.rules\[)
+manage_secrets.rego;KSV-0041;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (input\.rules\[)
+manage_webhook_configurations.rego;KSV-0114;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (input\.rules\[)
+masters_group_bind.rego;KSV-0123;ACEPTADA;Semántica OK. Kinds Soportados: ['rolebinding', 'clusterrolebinding']
+memory_not_limited.rego;KSV-0018;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+memory_requests_not_specified.rego;KSV-0016;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+mounts_docker_socket.rego;KSV-0006;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+net_raw_capability.rego;KSV-0119;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (\[_\] ==)
+non_core_volume_types.rego;KSV-0028;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+non_default_proc_masks_set.rego;KSV-0027;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+outdated_api.rego;KSV-0107;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+privileged.rego;KSV-0017;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+privileged_ports_binding.rego;KSV-0117;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+privilege_escalation_from_node_proxy.rego;KSV-0047;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+protecting_pod_service_account_tokens.rego;KSV-0036;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+protect_core_components_namespace.rego;KSV-0037;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+repo_ambiguous_prefix.rego;KSV-0124;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+runs_as_root.rego;KSV-0012;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+runs_with_a_root_primary_or_supplementary_GID.rego;KSV-0116;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+runs_with_a_root_uid.rego;KSV-0105;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+runs_with_GID_le_10000.rego;KSV-0021;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+runs_with_UID_le_10000.rego;KSV-0020;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+runtime_default_seccomp_profile_not_set.rego;KSV-0030;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (object\.get\()
+scheduler_bind_address.rego;KCV-0041;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+scheduler_conf_ownership.rego;KCV-0063;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+scheduler_conf_permission.rego;KCV-0062;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+scheduler_pod_spec_ownership.rego;KCV-0053;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+scheduler_pod_spec_permission.rego;KCV-0052;DESCARTADA;Kinds no soportados por el CSV: ['nodeinfo']
+scheduler_profiling.rego;KCV-0040;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+seccomp_profile_unconfined.rego;KSV-0104;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (object\.get\()
+selector_usage_in_network_policies.rego;KSV-0038;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+selinux_custom_options_set.rego;KSV-0025;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (\[_\] ==)
+service_with_externalip.rego;KSV-0108;ACEPTADA;Semántica OK. Kinds Soportados: ['service']
+specific_capabilities_added.rego;KSV-0022;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
+SYS_ADMIN_capability.rego;KSV-0005;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (\[_\] ==)
+SYS_MODULE_capability.rego;KSV-0120;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (\[_\] ==)
+tiller_is_deployed.rego;KSV-0102;DESCARTADA;Sin Kinds definidos explícitamente en subtypes
+unsafe_sysctl_options_set.rego;KSV-0026;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (k8s\.version)
+uses_image_tag_latest.rego;KSV-0013;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (split\()
+uses_untrusted_azure_registry.rego;KSV-0032;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (split\()
+uses_untrusted_ecr_registry.rego;KSV-0035;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (split\()
+uses_untrusted_gcr_registry.rego;KSV-0033;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (split\()
+uses_untrusted_public_registries.rego;KSV-0034;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (split\()
+uses_untrusted_registry.rego;KSV-0125;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (split\()
+use_limit_range.rego;KSV-0039;ACEPTADA;Semántica OK. Kinds Soportados: ['limitrange']
+use_resource_quota.rego;KSV-0040;DESCARTADA;Contiene lógica dinámica/compleja no mapeable a UVL (object\.get\()
+windows_host_process.rego;KSV-0103;ACEPTADA;Semántica OK. Kinds Soportados: ['pod', 'replicaset', 'replicationcontroller', 'deployment', 'statefulset', 'daemonset', 'cronjob', 'job']
