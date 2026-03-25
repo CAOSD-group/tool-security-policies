@@ -81,7 +81,7 @@ def generate_uvl_from_policies(directory, output_path):
     lines.append("\t\t\t\toptional")
 
     ##ll_resources = parse_all_sources("../resources/OPA_Policies", "../resources/Polaris-checks")
-    opa_results = parse_opa_directory("../resources/OPA_Policies")
+    opa_results = parse_opa_directory("../resources/trivy_OPA_Policies")
     for opa in opa_results: ## Read OPA Policies
         feature_str = opa["feature"] ## .replace("\n", "\n\t\t\t")
         print(f"Feature str:    {feature_str}")
@@ -256,6 +256,6 @@ def generate_uvl_from_policies(directory, output_path):
 # Ejemplo de uso
 if __name__ == "__main__":
     generate_uvl_from_policies(
-        directory="../resources/dataset_final", ## dataset_filtered kyverno_policies_yamls
-        output_path="../variability_model/policies_template/model_policies02.uvl"
+        directory="../resources/kyverno_filtered_policies", ## dataset_filtered kyverno_policies_yamls
+        output_path="../variability_model/policies_template/model_policies03.uvl"
     )

@@ -26,9 +26,14 @@ def build_field_map(csv_path):
     return field_map
 
 def normalize_rego_path(rego_path):
-    # Eliminamos el prefijo 'container.' para que no interfiera con la búsqueda
-    if rego_path.startswith("container."):
-        return rego_path.replace("container.", "")
+    # Eliminamos prefijos comunes en Trivy y Kyverno
+    prefixes = ["container.", "allContainers.", "kubernetes.containers.", "kubernetes."]
+    for p in prefixes:
+        if rego_path.startswith(p):
+            rego_path = rego_path.replace(p, "")
+            
+    # También limpiamos el índice [_] si llega hasta aquí
+    rego_path = rego_path.replace("[_]", "")
     return rego_path
 
 def severity_to_weight(sev: str) -> float:
@@ -86,8 +91,28 @@ def find_uvl_path_for_rego(kind, rego_path, feature_dict, kind_map): ## feature_
 
     results = []
 
+    ### New aux function to select the best candidate within a bucket based on specificity
+    def select_best_candidate(candidates_list, key):
+        """
+        Selecciona el mejor candidato priorizando:
+        1. Coincidencia exacta.
+        2. Hojas de tipos primitivos (valueInt, StringValue, etc.).
+        3. El nodo más corto (nodo padre).
+        """
+        
+        type_suffixes = [f"{key}_valueInt", f"{key}_StringValue", f"{key}_BooleanValue"]
+        type_matches = [c for c in candidates_list if any(c["Midle"].endswith(suffix) for suffix in type_suffixes)]
+        if type_matches:
+            return min(type_matches, key=lambda r: len(r["Midle"]))
+
+        exact_matches = [c for c in candidates_list if c["Midle"].endswith(key) or c["Midle"].endswith(f"_{key}")]
+        if exact_matches:
+            return min(exact_matches, key=lambda r: len(r["Midle"]))
+        
+        return min(candidates_list, key=lambda r: len(r["Midle"]))
+    # ----------------------------------------------------
+
     # 3. Selección de Ganadores (Fan-Out)
-    
     # Verificamos si encontramos propiedades de contenedores
     container_matches = any(scope_buckets[k] for k in markers)
 
@@ -98,7 +123,8 @@ def find_uvl_path_for_rego(kind, rego_path, feature_dict, kind_map): ## feature_
             candidates = scope_buckets[scope]
             if candidates:
                 # Elegimos la más específica (path más largo) dentro de su categoría
-                best = max(candidates, key=lambda r: len(r["Midle"]))
+                #best = max(candidates, key=lambda r: len(r["Midle"]))
+                best = select_best_candidate(candidates, rego_key)
                 is_list = (best["Value"] == "-")
                 results.append((best["Feature"], is_list, best["Value"]))
     else:
@@ -106,7 +132,8 @@ def find_uvl_path_for_rego(kind, rego_path, feature_dict, kind_map): ## feature_
         # Solo miramos el bucket default
         candidates = scope_buckets["default"]
         if candidates:
-            best = max(candidates, key=lambda r: len(r["Midle"]))
+            #best = max(candidates, key=lambda r: len(r["Midle"]))
+            best = select_best_candidate(candidates, rego_key)
             is_list = (best["Value"] == "-")
             results.append((best["Feature"], is_list, best["Value"]))
 
@@ -177,28 +204,41 @@ def extract_metadata_from_rego(rego_text):
         "description": meta_yaml.get("description", ""),
         "severity": custom.get("severity", ""),
         "id": custom.get("id", ""),
-        "short_code": custom.get("short_code", ""),
+        "short_code": custom.get("short_code", custom.get("long_id", "no_short_code")),
         "recommended_action": custom.get("recommended_action", ""),
         "kinds": sorted(set(kinds)),
     }
 
 
 def extract_conditions_from_rego(rego_text, recommended_action=""):
-    # Example match: container.securityContext.capabilities.add[_] == "SYS_MODULE"
-    pat_str = re.compile(r'(\S+?)\s*(==|!=)\s*"([^"]+)"')
-    matches_str = pat_str.findall(rego_text)
     #print(f"MATCHES NONE {matches_str}")
     conditions = []
     cond_text = recommended_action.replace('"', "'")
-    
-    for field, op, value in matches_str:
-        # normalize container.securityContext.capabilities.add[_]
+
+    # Regex 1: Cadenas de texto con comillas (ej: == "SYS_MODULE")
+    pat_str = re.compile(r'(\S+?)\s*(==|!=)\s*"([^"]+)"')
+    for field, op, value in pat_str.findall(rego_text):
         field = field.replace("[_]", "")
-        conditions.append({
-            "field": field,
-            "operator": op,
-            "value": value
-        })
+        conditions.append({"field": field, "operator": op, "value": value})
+        
+    # Regex 2: Booleanos y null sin comillas (ej: == false, == true)
+    pat_bool = re.compile(r'(\S+?)\s*(==|!=)\s*(true|false|null)\b')
+    for field, op, value in pat_bool.findall(rego_text):
+        field = field.replace("[_]", "")
+        conditions.append({"field": field, "operator": op, "value": value})
+    
+    # Regex 3: Números (enteros) directamente en el código Rego (ej: runAsGroup == 0)
+    pat_num = re.compile(r'([a-zA-Z0-9_\.\[\]]+)\s*(==|!=|<=|>=|<|>)\s*(\d+)') 
+    for field, op, value in pat_num.findall(rego_text):
+        # Filtramos variables locales aisladas (ej. 'gid'). Las rutas reales de K8s suelen tener puntos.
+        if "." in field:
+            field = field.replace("[_]", "").replace("[*]", "")
+            print(f"Numeric condition found - Field: {field}, Operator: {op}, Value: {value}")
+            if value.isdigit() and op == "==": ## to a non-zero integer or leave undefined.
+                # Interpretamos "field == 0" como "field > 0" para evitar falsos positivos de igualdad a cero
+                op = ">"
+            conditions.append({"field": field, "operator": op, "value": value})
+            print(f"Added numeric condition: {conditions[-1]}")
     
     # Extraer propiedades desde texto si no hay condiciones detectadas
     if not conditions and recommended_action:
@@ -273,13 +313,13 @@ def detect_intent(recommended_action, value):
     """
     #text = (meta.get("recommended_action", "") + " " + meta.get("short_code", "")).lower()
     
-    # Palabras clave de Prohibición
-    if any(x in recommended_action.lower() for x in ["do not set", "false", "disallow", "no-", "drop", "to 'false'"]):
-        return "PROHIBITION" # Esperamos !Feature
+    text = recommended_action.lower()
+
+    if any(x in text for x in ["do not set", "false", "disallow", "no-", "drop", "to 'false'"]):
+        return "PROHIBITION" # !Feature
     
-    # Palabras clave de Requerimiento
-    if any(x in recommended_action.lower() for x in ["to true", "require", "must be", "enable"]):
-        return "REQUIREMENT" # Esperamos Feature
+    if any(x in text for x in ["to true", "to 'true'", "require", "must be", "enable"]):
+        return "REQUIREMENT" # Feature
     
     return "UNKNOWN"
 
@@ -287,8 +327,14 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
 
     # Campos que queremos extraer
     meta = policy["metadata"]
+    
+    if not policy["conditions"]:
+        print(f"[ERROR] No se pudieron extraer condiciones para la política: {meta.get('short_code')}")
+        return None, None
+    
     cond = policy["conditions"][0]  # Asumimos 1 condición base por ahora
     recommended_action = meta['recommended_action']
+    
     # --- tool ---
     tool = "trivy"
     # --- feature name ---
@@ -298,7 +344,7 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
     # --- severity weight ---
     severity_weight = severity_to_weight(severity)
     # --- nombre original ---
-    name = meta.get("short_code", "")
+    name = meta.get("short_code", meta.get("id", "no_short_code")) # Original name from the policy, can be used for traceability. Could use id if short_code is missing. (Ex id: KSV-0001)
     # --- Descripcion ---
     doc = clean_description(meta.get("description", "")).replace("'", "")
     # --- Kinds de la politica ---
@@ -369,20 +415,48 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
             # Operador UVL traducido
             #print(f"operator    {operator}  {value}")
             for feature, is_list, value_field in found_features:
-                if operator == "==" and not value.lower() == "true" and not value.lower() == "false":
-                    expr = f"{kind_cap}.{feature} != '{value}'"
-                elif operator == "!=" and not value.lower() == "true":
-                    expr = f"{kind_cap}.{feature} == '{value}'"
-                elif intent == "PROHIBITION":
+                value_str = str(value).lower()
+                
+                # Prioridad 1: Tenemos claro el intent (por el texto de recomendación)
+                if intent == "PROHIBITION":
                     expr = f"!{kind_cap}.{feature}"
                 elif intent == "REQUIREMENT":
                     expr = f"{kind_cap}.{feature}"
-                elif operator == ">": ## Case runs_with_UID_le_10000
-                    expr = f"{kind_cap}.{feature} > {value}"            
+                # Prioridad 2: Operadores de comparación estándar contra Strings
+                elif operator == "==" and value_str not in ["true", "false"]:
+                    #if value is not None and value.isdigit():  # Si no es un número, tratamos como string: 
+                    #    expr = f"{kind_cap}.{feature} > {value}"
+                    expr = f"{kind_cap}.{feature} != '{value}'"
+                elif operator == "!=" and value_str not in ["true", "false"]:
+                    expr = f"{kind_cap}.{feature} == '{value}'"
+                elif operator == ">":
+                    expr = f"{kind_cap}.{feature} > {value}"
+                elif operator == "<=": ## Case runs_with_UID_le_10000
+                    expr = f"{kind_cap}.{feature} > {value}"                              
+                # Prioridad 3: Fallback explícito para Booleanos si el intent falló
                 else:
-                    expr = f"UNSUPPORTED_OPERATOR({operator})"
+                    if value_str == "true":
+                        expr = f"{kind_cap}.{feature}" if operator == "==" else f"!{kind_cap}.{feature}"
+                    elif value_str == "false":
+                        expr = f"!{kind_cap}.{feature}" if operator == "==" else f"{kind_cap}.{feature}"
+                    else:
+                        expr = f"UNSUPPORTED_OPERATOR({operator})"
+                # --- Lógica de Dependencia del Padre (!Padre | Hijo) --- Para constraints con operadores de comparación numéricos o booleanos, asumimos que la condición solo tiene sentido si el nodo padre existe. Por ejemplo, "containers.securityContext.capabilities.add == 'SYS_MODULE'"
+                #  solo es relevante si "containers.securityContext.capabilities.add" existe. En UVL, esto se puede modelar como una implicación: "(!containers.securityContext.capabilities.add | containers.securityContext.capabilities.add == 'SYS_MODULE')". Esto evita falsos positivos en casos donde el nodo no existe.
+                if expr and "UNSUPPORTED" not in expr and intent == "REQUIREMENT" and not expr.startswith('!') or value.isdigit():
+                    parent_feature = None
+                    # Buscamos el nodo padre (hasta containers, initContainers, o ephemeralContainers)
+                    match = re.search(r'(.*(?:containers|initContainers|ephemeralContainers))', feature, re.IGNORECASE)
+                    
+                    if match:
+                        parent_feature = f"{kind_cap}.{match.group(1)}"
+                        # Convertimos la expresión simple en una implicación
+                        expr = f"(!{parent_feature} | {expr})"
+                        
                 if expr:
-                    constraint_parts.append(expr)
+                    constraint_parts.append(expr)                        
+                #if expr:
+                #    constraint_parts.append(expr)
     # --- Case 2: No kinds → buscar por feature global --- Se asigna Pod por defecto
     else:
         print("[INFO] Policy without explicit kinds. Searching by property only...")
@@ -412,6 +486,7 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
                 expr = f"{kind}.{feature} > {value}"
             else:
                 expr = f"UNSUPPORTED_OPERATOR({operator})"
+
             constraint_parts.append(expr)
 
     #print(f"Const parts {constraint_parts}")
@@ -431,7 +506,7 @@ if __name__ == "__main__":
     ## ../resources/kyverno_policies_yamls
     field_map = load_feature_dict("../resources/mapping_csv/kubernetes_mapping_properties_features.csv")
     #data = parse_rego_policy("../resources/kyverno_policies_yamls/OPA_Policies/SYS_ADMIN_capability.rego")
-    data = parse_rego_policy("../resources/trivy_OPA_Policies/runs_with_a_root_primary_or_supplementary_GID.rego")
+    data = parse_rego_policy("../resources/trivy_OPA_Policies/manages_etc_hosts.rego")
 
     kind_map = load_kinds_prefix_mapping("../resources/mapping_csv/kubernetes_kinds_versions_detected.csv")
 
