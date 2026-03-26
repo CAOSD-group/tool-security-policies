@@ -39,8 +39,8 @@ def clean_description(description: str) -> str:
                     .replace('}', '') \
                     .replace('"', '') \
                     .replace("\\", "_") \
-                    .replace(".", "") \
                     .replace("//", "_").replace('\u2019', '_').replace('\u2018', '_') ## ??''' ¡¡¡ ´´ççç`+++`
+                    #.replace(".", "") \
 
 def get_base_prefix(kind_prefix): ## Used by the generate_uvl_policies
     if kind_prefix == "Pod":

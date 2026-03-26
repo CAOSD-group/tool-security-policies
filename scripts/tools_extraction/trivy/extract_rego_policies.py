@@ -45,7 +45,7 @@ def severity_to_weight(sev: str) -> float:
         return 0.7
     return 0.5  # default o cualquier otro valor
 
-def find_uvl_path_for_rego(kind, rego_path, feature_dict, kind_map): ## feature_dictç
+def find_uvl_path_for_rego(kind, rego_path, feature_dict, kind_map, operator=None, expected_value=None): ## feature_dictç
     #print(f"Features dictss {feature_dict}")
     #kind_cap = kind.capitalize()
     real_kind = normalize_kind_name(kind, kind_map)
@@ -92,23 +92,42 @@ def find_uvl_path_for_rego(kind, rego_path, feature_dict, kind_map): ## feature_
     results = []
 
     ### New aux function to select the best candidate within a bucket based on specificity
-    def select_best_candidate(candidates_list, key):
+    def select_best_candidate(candidates_list, key, op, val):
         """
-        Selecciona el mejor candidato priorizando:
-        1. Coincidencia exacta.
-        2. Hojas de tipos primitivos (valueInt, StringValue, etc.).
-        3. El nodo más corto (nodo padre).
+        Selecciona el mejor candidato basándose en el valor esperado:
+        - Si es existencia o booleano -> Prioriza el nodo exacto (Padre).
+        - Si es un número -> Prioriza _valueInt.
+        - Si es un string específico -> Prioriza _StringValue.
         """
-        
-        type_suffixes = [f"{key}_valueInt", f"{key}_StringValue", f"{key}_BooleanValue"]
-        type_matches = [c for c in candidates_list if any(c["Midle"].endswith(suffix) for suffix in type_suffixes)]
+        val_str = str(val).strip().lower()
+
+        # ESTRATEGIA 1: Comprobación de existencia (EXISTS) o booleanos puros.
+        # Queremos prohibir/requerir el bloque completo, no sus hojas.
+        if op == "EXISTS" or val_str in ["true", "false", "null", ""]:
+            exact_matches = [c for c in candidates_list if c["Midle"].endswith(key) or c["Midle"].endswith(f"_{key}")]
+            if exact_matches:
+                return min(exact_matches, key=lambda r: len(r["Midle"]))
+            return min(candidates_list, key=lambda r: len(r["Midle"]))
+
+        # ESTRATEGIA 2: Comparación contra un valor específico.
+        # Determinamos qué sufijo primitivo buscar.
+        target_suffixes = []
+        if val_str.isdigit():
+            target_suffixes.append(f"{key}_valueInt")
+        else:
+            target_suffixes.append(f"{key}_StringValue")
+
+        # Prioridad 2A: Buscar la hoja del tipo específico
+        type_matches = [c for c in candidates_list if any(c["Midle"].endswith(suffix) for suffix in target_suffixes)]
         if type_matches:
             return min(type_matches, key=lambda r: len(r["Midle"]))
 
+        # Prioridad 2B: Fallback a la coincidencia exacta si no existe la hoja tipada
         exact_matches = [c for c in candidates_list if c["Midle"].endswith(key) or c["Midle"].endswith(f"_{key}")]
         if exact_matches:
             return min(exact_matches, key=lambda r: len(r["Midle"]))
-        
+
+        # Prioridad 2C: Fallback de seguridad al más corto
         return min(candidates_list, key=lambda r: len(r["Midle"]))
     # ----------------------------------------------------
 
@@ -124,7 +143,7 @@ def find_uvl_path_for_rego(kind, rego_path, feature_dict, kind_map): ## feature_
             if candidates:
                 # Elegimos la más específica (path más largo) dentro de su categoría
                 #best = max(candidates, key=lambda r: len(r["Midle"]))
-                best = select_best_candidate(candidates, rego_key)
+                best = select_best_candidate(candidates, rego_key, operator, expected_value)
                 is_list = (best["Value"] == "-")
                 results.append((best["Feature"], is_list, best["Value"]))
     else:
@@ -133,7 +152,7 @@ def find_uvl_path_for_rego(kind, rego_path, feature_dict, kind_map): ## feature_
         candidates = scope_buckets["default"]
         if candidates:
             #best = max(candidates, key=lambda r: len(r["Midle"]))
-            best = select_best_candidate(candidates, rego_key)
+            best = select_best_candidate(candidates, rego_key , operator, expected_value)
             is_list = (best["Value"] == "-")
             results.append((best["Feature"], is_list, best["Value"]))
 
@@ -187,6 +206,8 @@ def extract_metadata_from_rego(rego_text):
 
     # extract types
     kinds = []
+    has_kubernetes_type = False
+
     selectors = (
         custom.get("input", {}).get("selector", [])
         if "input" in custom
@@ -194,11 +215,19 @@ def extract_metadata_from_rego(rego_text):
     )
 
     for sel in selectors:
+        # Detectamos si es una regla genérica de Kubernetes
+        if sel.get("type") == "kubernetes":
+            has_kubernetes_type = True
+
         subtypes = sel.get("subtypes", [])
         for item in subtypes:
             if isinstance(item, dict) and "kind" in item:
                 kinds.append(item["kind"].lower())
-
+    # Si es de tipo kubernetes pero no definió kinds explícitos se asume el subconjunto de Workloads estándar
+    if has_kubernetes_type and not kinds:
+        kinds = [ "pod", "replicaset", "replicationcontroller", 
+            "deployment", "deploymentconfig", "statefulset", 
+            "daemonset", "cronjob", "job"]
     return {
         "title": meta_yaml.get("title", ""),
         "description": meta_yaml.get("description", ""),
@@ -216,15 +245,23 @@ def extract_conditions_from_rego(rego_text, recommended_action=""):
     cond_text = recommended_action.replace('"', "'")
 
     # Regex 1: Cadenas de texto con comillas (ej: == "SYS_MODULE")
+    #pat_str = re.compile(r'(\S+?)\s*(==|!=)\s*"([^"]+)"')
     pat_str = re.compile(r'(\S+?)\s*(==|!=)\s*"([^"]+)"')
     for field, op, value in pat_str.findall(rego_text):
-        field = field.replace("[_]", "")
+        #field = field.replace("[_]", "")
+        field = re.sub(r'\[.*?\]', '', field) # Limpiamos cualquier índice [_], [*], []
+        # IGNORAR campos de metadatos que no son features de la arquitectura
+        if "kubernetes.kind" in field or "kubernetes.api_version" in field:
+            continue
         conditions.append({"field": field, "operator": op, "value": value})
         
     # Regex 2: Booleanos y null sin comillas (ej: == false, == true)
+    #pat_bool = re.compile(r'(\S+?)\s*(==|!=)\s*(true|false|null)\b')
     pat_bool = re.compile(r'(\S+?)\s*(==|!=)\s*(true|false|null)\b')
     for field, op, value in pat_bool.findall(rego_text):
-        field = field.replace("[_]", "")
+        field = re.sub(r'\[.*?\]', '', field) #field = field.replace("[_]", "")
+        if "kubernetes.kind" in field:
+            continue
         conditions.append({"field": field, "operator": op, "value": value})
     
     # Regex 3: Números (enteros) directamente en el código Rego (ej: runAsGroup == 0)
@@ -240,19 +277,41 @@ def extract_conditions_from_rego(rego_text, recommended_action=""):
             conditions.append({"field": field, "operator": op, "value": value})
             print(f"Added numeric condition: {conditions[-1]}")
     
+    # NUEVO Regex 4: Detección semántica de 'utils.has_key'
+    # Trivy lo usa muchísimo para ver si una propiedad existe (ej: volumes, hostPath)
+    has_key_pat = re.findall(r'has_key\(([^,]+),\s*"([^"]+)"\)', rego_text)
+    for obj, prop in has_key_pat:
+        obj_clean = re.sub(r'\[.*?\]', '', obj).split('.')[-1]
+        # Solo consideramos objetos raíz conocidos para evitar ruido de variables locales
+        if obj_clean in ["container", "containers", "spec", "volumes", "securityContext", "template"]:
+            conditions.append({"field": f"{obj_clean}.{prop}", "operator": "EXISTS", "value": "true"})
+
+
     # Extraer propiedades desde texto si no hay condiciones detectadas
     if not conditions and recommended_action:
         #print(f"reccomended {recommended_action}")
-        cond_text = recommended_action.replace('"', "'")
-        prop_pat = re.findall(r"'(spec[.\w\[\]]+)'", cond_text)
-        for prop in prop_pat:
-            # Si el texto dice "to true" => interpretamos que queremos != true
-            val = "true" if "true" in cond_text.lower() else "false"
-            conditions.append({"field": prop, "operator": "==", "value": val})
-
+        # Esta regex atrapa rutas completas anidadas, permitiendo puntos, asteriscos y corchetes.
+        # Capturará perfectamente: "spec.containers[*].ports[*].hostPort"
+        prop_pat = re.findall(r'\b(?:spec|containers|initContainers|ephemeralContainers|volumes)(?:\.[a-zA-Z0-9_\[\]\*]+)+\b', cond_text)
+        
+        rego_prop_pat = re.findall(r'kubernetes\.object\.(spec(?:\.[a-zA-Z0-9_\[\]\*]+)+)', rego_text)
+        
+        all_props = set(prop_pat + rego_prop_pat)
+        
+        for prop in all_props:
+            # Limpiamos todos los [*] y [_] para que quede un path limpio: 'spec.containers.ports.hostPort'
+            prop_clean = re.sub(r'\[.*?\]', '', prop)
+            
+            # Lo marcamos con EXISTS y "true" para que el 'intent' detecte la prohibición
+            conditions.append({"field": prop_clean, "operator": "EXISTS", "value": "true"})
+    
+    # Salvavidas de seguridad específico para puertos host si todo lo demás falla
+    if not any("hostPort" in c["field"] for c in conditions):
+        if re.search(r'\bports\[.*?\]\.hostPort\b', rego_text):
+            conditions.append({"field": "ports.hostPort", "operator": "EXISTS", "value": "true"})
+        
         prop_pat_container = re.findall(r"'(containers[.\w\[\]]+)'", cond_text)
         #prop_pat_container = re.findall(r"['\"](containers(?:\[\]\.|[\w\.\[\]]+)*)['\"]", cond_text)
-
         #print(f"Prop pat  DUPLICADO EN RECCOMENDED  {prop_pat_container}")
         if prop_pat_container and ('>' not in cond_text and '<' not in cond_text):
             for prop01 in prop_pat_container:
@@ -405,7 +464,7 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
     if kinds:
         for kind in meta["kinds"]:
             #print(f"Kind    {kind}")
-            found_features = find_uvl_path_for_rego(kind, field_key, field_map, kind_map)
+            found_features = find_uvl_path_for_rego(kind, field_key, field_map, kind_map, operator, value) ## Added operator and value for better matching and intent detection
     
             if not found_features:
                 print(f"[WARNING] No UVL mapping for field '{field_key}' in kind '{kind}'")
@@ -506,7 +565,7 @@ if __name__ == "__main__":
     ## ../resources/kyverno_policies_yamls
     field_map = load_feature_dict("../resources/mapping_csv/kubernetes_mapping_properties_features.csv")
     #data = parse_rego_policy("../resources/kyverno_policies_yamls/OPA_Policies/SYS_ADMIN_capability.rego")
-    data = parse_rego_policy("../resources/trivy_OPA_Policies/manages_etc_hosts.rego")
+    data = parse_rego_policy("../resources/trivy_OPA_Policies/access_to_host_ports.rego")
 
     kind_map = load_kinds_prefix_mapping("../resources/mapping_csv/kubernetes_kinds_versions_detected.csv")
 
