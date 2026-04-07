@@ -80,10 +80,12 @@ Unlike traditional approaches that rely solely on logic solvers (SAT/SMT) —whi
     ```powershell
     uvicorn server.api:app --reload --port 8080
       ```
-  - **In the folder frontend-kube-tool:**  
+  - **In the folder frontend-kube-tool:**
     ```powershell
+      npm install
       npm run dev
     ```
+    For start the first time the front is necessary the first command.
 
 
 ## Architecture and repository structure

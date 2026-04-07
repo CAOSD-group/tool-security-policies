@@ -146,7 +146,7 @@ class RemediationRegistry:
                 {"feature_to_fix": "io_k8s_api_core_v1_Container_image", "safe_value": "nginx:v1.28.0"}
             ],
             "Require_imagePullPolicy_Always": [
-                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_containers_imagePullPolicy_Always", "safe_value": True}
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_containers_imagePullPolicy_Always", "safe_value": "Always"},
             ],
             "pullPolicyNotAlways": [
                 {"feature_to_fix": "io_k8s_api_core_v1_Container_imagePullPolicy_Always", "safe_value": True}

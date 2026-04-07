@@ -439,6 +439,10 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
 
     feature_block = f"{feature_name} {{" + ", ".join(attrs) + "}"
     #feature_block = f"""{feature_name} {{doc '{clean_description_rego}', severity '{meta['severity'].lower()}', tool 'OPA', recommended '{clean_recommended_action_rego}'}}"""
+    constraint_parts = [] ## Added only candidate crossed
+    kinds = meta.get("kinds", [])
+    #for cond in policy["conditions"]:
+    #print(f"Processing condition: {cond}")
 
     field = cond["field"]
     operator = cond["operator"]
@@ -446,19 +450,8 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
     if '.' in value:
         value = value.replace('.', '_') 
     # Convert Rego container path to canonical lookup key
-    
-    #print(f"field key   {field}")
+
     field_key = normalize_rego_path(field)
-    
-    """# Feature name sanitized
-    feature_name = meta["short_code"].replace("-", "_") # meta["id"] + "_" + 
-    ## To Do: clean the descriptions
-    clean_description_rego = clean_description(meta['description'])
-    clean_recommended_action_rego = clean_description(meta['recommended_action'])"""
-    #feature_block = f"""{feature_name} {{doc '{clean_description_rego}', severity '{meta['severity'].lower()}', tool 'OPA', recommended '{clean_recommended_action_rego}'}}"""
-    
-    constraint_parts = [] ## Added only candidate crossed
-    kinds = meta.get("kinds", [])
     intent = detect_intent(recommended_action, value)
 
     if kinds:
@@ -475,10 +468,11 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
             #print(f"operator    {operator}  {value}")
             for feature, is_list, value_field in found_features:
                 value_str = str(value).lower()
-                
+                expr = ""
                 # Prioridad 1: Tenemos claro el intent (por el texto de recomendación)
                 if intent == "PROHIBITION":
                     expr = f"!{kind_cap}.{feature}"
+                    print(f"Intent detected as PROHIBITION based on recommended action text. Generated expression: {expr}")
                 elif intent == "REQUIREMENT":
                     expr = f"{kind_cap}.{feature}"
                 # Prioridad 2: Operadores de comparación estándar contra Strings
@@ -506,7 +500,8 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
                     parent_feature = None
                     # Buscamos el nodo padre (hasta containers, initContainers, o ephemeralContainers)
                     match = re.search(r'(.*(?:containers|initContainers|ephemeralContainers))', feature, re.IGNORECASE)
-                    
+                    #print(f"Intent detected as PROHIBITION based on recommended action text. Generated expression: {expr}")
+
                     if match:
                         parent_feature = f"{kind_cap}.{match.group(1)}"
                         # Convertimos la expresión simple en una implicación
@@ -514,8 +509,9 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
                         
                 if expr:
                     constraint_parts.append(expr)                        
-                #if expr:
-                #    constraint_parts.append(expr)
+                    #if intent == "PROHIBITION":
+                        #sorted(list(set(constraint_parts)))
+                        
     # --- Case 2: No kinds → buscar por feature global --- Se asigna Pod por defecto
     else:
         print("[INFO] Policy without explicit kinds. Searching by property only...")
@@ -553,11 +549,12 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
         print("[ERROR] No constraints generated, skipping policy")
         return None
 
-    # Join con AND ya que todos los kinds deben cumplir la policy
+    # Delete duplicates using a set list and order the list
+    #unique_constraints = sorted(list(set(constraint_parts)))
+    
     constraint = f"{feature_name} => " + " & ".join(constraint_parts)
     #print(f"CONSTRAINT: {constraint}")
     return feature_block, constraint
-
 
 
 # DEMO USAGE
