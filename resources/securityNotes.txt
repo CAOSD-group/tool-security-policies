@@ -865,3 +865,30 @@ kubernetes-no-net-raw
 kubernetes-no-host-port-access
 kubernetes_no_hostprocess_containers 
 kubernetes_no_custom_proc_mask 
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+spec:
+  hostNetwork: true
+  containers:
+  - name: nginx
+    image: eu_foo_io/secure-image:v1
+    securityContext:
+      runAsUser: 10001
+      runAsGroup: 10001
+      runAsNonRoot: true
+    imagePullPolicy: Always
+  securityContext:
+    supplementalGroups: 100
+    fsGroup: 2000
+    runAsUser: 1000
+    runAsGroup: 3000
+
+supplementalGroups: [100]
+
+
+
+Check_supplementalGroups::
+Porque define el mismo feature varias veces?

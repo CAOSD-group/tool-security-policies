@@ -20,7 +20,7 @@ function App() {
   const [error, setError] = useState(null);
   const [systemMessages, setSystemMessages] = useState([]); 
   const fileInputRef = useRef(null);  
-
+  const [showPassedPolicies, setShowPassedPolicies] = useState(false);
   // Referencias para controlar Monaco Editor ---
   const editorRef = useRef(null);
   const monacoRef = useRef(null);
@@ -392,55 +392,71 @@ function App() {
                 );
               })()}
 
-              {/* NUEVO: Mostrar Políticas Aprobadas debajo del escudo general */}
+              {/* Show the policies approved under the icon vulnerabilities */}
               {results.passed_policies && results.passed_policies.length > 0 && (
                 <div className="mt-4 mb-6">
-                  <div className="flex items-center gap-2 mb-3">
-                    <ShieldCheck className="w-5 h-5 text-green-600" />
-                    <h3 className="text-md font-bold text-gray-800">
-                      Políticas superadas con éxito ({results.passed_policies.length})
-                    </h3>
+                  
+                  {/* Cabecera Principal Colapsable (El Acordeón Maestro) */}
+                  <div 
+                    onClick={() => setShowPassedPolicies(!showPassedPolicies)}
+                    className="flex items-center justify-between p-3 bg-green-50/80 border border-green-200 rounded-lg cursor-pointer hover:bg-green-100 transition-colors mb-3"
+                  >
+                    <div className="flex items-center gap-2">
+                      <ShieldCheck className="w-5 h-5 text-green-600" />
+                      <h3 className="text-md font-bold text-green-800">
+                        Ver políticas superadas con éxito ({results.passed_policies.length})
+                      </h3>
+                    </div>
+                    {/* Flecha indicadora principal */}
+                    {showPassedPolicies ? (
+                      <ChevronUp className="w-5 h-5 text-green-700" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5 text-green-700" />
+                    )}
                   </div>
                   
-                  <div className="flex flex-col gap-2">
-                    {results.passed_policies.map((policyObj, idx) => (
-                      <div key={idx} className="bg-green-50 border border-green-200 rounded-lg overflow-hidden transition-all">
-                        
-                        {/* Cabecera Clicable */}
-                        <div 
-                          onClick={() => togglePassedPolicy(policyObj.policy)}
-                          className="flex justify-between items-center p-3 cursor-pointer hover:bg-green-100 transition-colors"
-                        >
-                          <div className="flex items-center gap-2">
-                            <span className="font-semibold text-sm text-green-900">
-                              {policyObj.policy}
-                            </span>
-                            <span className="px-2 py-0.5 bg-green-200 text-green-800 text-[10px] font-bold rounded uppercase">
-                              {policyObj.severity || 'OK'}
-                            </span>
-                            <span className="px-2 py-0.5 bg-yellow-200 text-green-800 text-[10px] font-bold rounded uppercase">
-                              {policyObj.tool || 'Desconocida'}
-                            </span>
+                  {/* Lista de Políticas (Solo se renderiza si el acordeón maestro está abierto) */}
+                  {showPassedPolicies && (
+                    <div className="flex flex-col gap-2 mt-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                      {results.passed_policies.map((policyObj, idx) => (
+                        <div key={idx} className="bg-green-50 border border-green-200 rounded-lg overflow-hidden transition-all">
+                          
+                          {/* Cabecera Clicable Individual */}
+                          <div 
+                            onClick={() => togglePassedPolicy(policyObj.policy)}
+                            className="flex justify-between items-center p-3 cursor-pointer hover:bg-green-100 transition-colors"
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold text-sm text-green-900">
+                                {policyObj.policy}
+                              </span>
+                              <span className="px-2 py-0.5 bg-green-200 text-green-800 text-[10px] font-bold rounded uppercase">
+                                {policyObj.severity || 'OK'}
+                              </span>
+                              <span className="px-2 py-0.5 bg-yellow-200 text-green-800 text-[10px] font-bold rounded uppercase">
+                                {policyObj.tool || 'Desconocida'}
+                              </span>
+                            </div>
+                            {expandedPassed[policyObj.policy] ? (
+                              <ChevronUp className="w-4 h-4 text-green-700" />
+                            ) : (
+                              <ChevronDown className="w-4 h-4 text-green-700" />
+                            )}
                           </div>
-                          {expandedPassed[policyObj.policy] ? (
-                            <ChevronUp className="w-4 h-4 text-green-700" />
-                          ) : (
-                            <ChevronDown className="w-4 h-4 text-green-700" />
+                          
+                          {/* Contenido Expandible (Descripción) */}
+                          {expandedPassed[policyObj.policy] && (
+                            <div className="px-4 pb-3 pt-1 text-sm text-green-800 border-t border-green-200/50 bg-green-50/50">
+                              <p className="mt-2 text-gray-700 font-medium">
+                                {policyObj.description}
+                              </p>
+                            </div>
                           )}
-                        </div>
-                        
-                        {/* Contenido Expandible (Descripción) */}
-                        {expandedPassed[policyObj.policy] && (
-                          <div className="px-4 pb-3 pt-1 text-sm text-green-800 border-t border-green-200/50 bg-green-50/50">
-                            <p className="mt-2 text-gray-700 font-medium">
-                              {policyObj.description}
-                            </p>
-                          </div>
-                        )}
 
-                      </div>
-                    ))}
-                  </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
               {/* Lista de Vulnerabilidades EN TIEMPO REAL */}

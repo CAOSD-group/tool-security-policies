@@ -5,7 +5,7 @@ class RemediationRegistry:
         # DOMAIN BOUNDING STRATEGY: Mapeo exacto 1:1 a los nodos hoja del UVL.
         # Esto garantiza el "Minimal Change" en el AST sin sobrescribir listas/padres.
         self.registry = {
-            
+
             # --- Network & Services ---
             "Restrict_Service_Port_Range": [
                 {"feature_to_fix": "io_k8s_api_core_v1_Service_spec_ports_port", "safe_value": 32000}
@@ -49,16 +49,17 @@ class RemediationRegistry:
             
             # --- Security Context, Privileges & Capabilities ---
             "Require_Run_As_Non_Root_User": [
-                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_securityContext_runAsUser_valueInt", "safe_value": 10000},
-                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_runAsUser_valueInt", "safe_value": 10000},
-                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_runAsUser_valueInt", "safe_value": 10000},
-                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser_valueInt", "safe_value": 10000}
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_securityContext_runAsUser_valueInt", "safe_value": 1000},
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_ephemeralContainers_securityContext_runAsUser_valueInt", "safe_value": 10001},
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_initContainers_securityContext_runAsUser_valueInt", "safe_value": 10001},
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_containers_securityContext_runAsUser_valueInt", "safe_value": 10001}
             ],
             "Check_supplementalGroups": [
-                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_securityContext_supplementalGroups_IntegerValue", "safe_value": 100}
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_securityContext_supplementalGroups_IntegerValue", "safe_value": [100]}
+            
             ],
             "Require_Non_Root_Groups": [ 
-                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_securityContext_supplementalGroups_IntegerValue", "safe_value": 100}, 
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_securityContext_supplementalGroups_IntegerValue", "safe_value": [100]}, 
                 {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_securityContext_fsGroup_valueInt", "safe_value": 2000}
             ],
             "Validate_User_ID_Group_ID_and_FS_Group": [ 
@@ -148,6 +149,10 @@ class RemediationRegistry:
             "Require_imagePullPolicy_Always": [
                 {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_containers_imagePullPolicy_Always", "safe_value": "Always"},
             ],
+                # DEFINICIÓN DIRECTA DEL ENUM (SIN EL '_Always' EN EL NODO HOJA)
+                # Al cambiar la feature_to_fix a ...imagePullPolicy, el AST lo procesa perfecto.
+                #{"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_containers_imagePullPolicy", "safe_value": "Always"},
+            
             "pullPolicyNotAlways": [
                 {"feature_to_fix": "io_k8s_api_core_v1_Container_imagePullPolicy_Always", "safe_value": True}
             ],
@@ -158,6 +163,20 @@ class RemediationRegistry:
                 {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_ephemeralContainers_ports_hostPort", "safe_value": 0},
                 {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_initContainers_ports_hostPort", "safe_value": 0},
                 {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_containers_ports_hostPort", "safe_value": 0}
+            ],
+            #### HOST NAMESPACES AND PRIVILAGES
+
+            # =========================================================
+            "Disallow_Host_Namespaces": [
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_hostPID", "safe_value": False},
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_hostIPC", "safe_value": False},
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_hostNetwork", "safe_value": False}
+            ],
+            "Require_Read_Only_Root_Filesystem": [
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_containers_securityContext_readOnlyRootFilesystem", "safe_value": True}
+            ],
+            "Require_Container_Port_Names": [
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_containers_ports_name", "safe_value": "secure-port"}
             ],
 
             # =========================================================
