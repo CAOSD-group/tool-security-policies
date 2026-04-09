@@ -1,5 +1,6 @@
 from ruamel.yaml import YAML
 import io
+from core.utils.context_filter import enforce_k8s_object_arrays
 
 class Remediator:
     """
@@ -58,3 +59,24 @@ class Remediator:
                 if key not in current_node:
                     current_node[key] = {}
                 self._apply_recursive(current_node[key], path[1:], value)
+                
+    def post_process_arrays(self, yaml_content: str) -> str:
+            """
+            Lee el YAML final, envuelve los diccionarios en arrays según 
+            el Feature Model (Oráculo), y devuelve el YAML corregido.
+            """
+            try:
+                data = self.yaml.load(yaml_content)
+                if not data:
+                    return yaml_content
+                
+                # Pasamos los datos por nuestra función del Oráculo
+                data = enforce_k8s_object_arrays(data)
+                
+                output = io.StringIO()
+                self.yaml.dump(data, output)
+                return output.getvalue()
+                
+            except Exception as e:
+                print(f"Error en Remediator al post-procesar arrays: {e}")
+                return yaml_content

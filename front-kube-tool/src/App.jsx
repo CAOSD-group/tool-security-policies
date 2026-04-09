@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
-import { ShieldAlert, ShieldCheck, Upload, Play, Loader2, Info, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { ShieldAlert, ShieldCheck, Upload, Play, Loader2, Info, AlertCircle, ChevronDown, ChevronUp, FileSearch, CheckCircle, XCircle } from 'lucide-react';
 
 const DEFAULT_YAML = `apiVersion: v1
 kind: Pod
@@ -18,8 +18,8 @@ function App() {
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [systemMessages, setSystemMessages] = useState([]); 
-  const fileInputRef = useRef(null);  
+  const [systemMessages, setSystemMessages] = useState([]);
+  const fileInputRef = useRef(null);
   const [showPassedPolicies, setShowPassedPolicies] = useState(false);
   // Referencias para controlar Monaco Editor ---
   const editorRef = useRef(null);
@@ -33,7 +33,14 @@ function App() {
 
   // Estado para las políticas expandidas
   const [expandedPassed, setExpandedPassed] = useState({});
-  
+
+  // 2. NUEVOS ESTADOS PARA LA VISTA DUAL (AUDITORÍA VS ESTRUCTURA SAT)
+  // =========================================================================
+  const [activeTab, setActiveTab] = useState('audit'); // 'audit' | 'structure'
+  const [structuralData, setStructuralData] = useState(null);
+  const [loadingStructure, setLoadingStructure] = useState(false);
+  // =========================================================================
+
   const togglePassedPolicy = (policyName) => {
     setExpandedPassed(prev => ({
       ...prev,
@@ -111,6 +118,25 @@ function App() {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+  // FUNCIÓN PARA ATACAR AL ENDPOINT SAT
+  const checkStructure = async () => {
+    setLoadingStructure(true);
+    setStructuralData(null);
+    try {
+      const res = await fetch('http://127.0.0.1:8080/validate-structure', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ manifest_yaml: code })
+      });
+      const data = await res.json();
+      setStructuralData(data);
+    } catch (error) {
+      console.error(error);
+      setStructuralData({ status: 'error', message: 'Error de red al conectar con el servidor SAT.' });
+    } finally {
+      setLoadingStructure(false);
     }
   };
   // Función para inyectar y resaltar el texto cambiado---
@@ -367,15 +393,15 @@ function App() {
                   
                     {/* Barra de progreso apilada */}
                     <div className="flex h-4 w-full rounded-full overflow-hidden bg-gray-100">
-                      <div 
-                        style={{ width: `${passedPercentage}%` }} 
+                      <div
+                        style={{ width: `${passedPercentage}%` }}
                         className="bg-green-500 hover:bg-green-400 transition-all duration-500"
                         title={`${passedCount} Superadas`}
                       ></div>
-                      <div 
-                        style={{ width: `${failedPercentage}%` }} 
+                      <div
+                        style={{ width: `${failedPercentage}%` }}
                         className="bg-red-500 hover:bg-red-400 transition-all duration-500"
-                        title={`${failedCount} Violadas`}
+                        title={`${failedCount} Incumplidas`}
                       ></div>
                     </div>
                     
@@ -385,7 +411,7 @@ function App() {
                         {passedCount} Superadas ({passedPercentage}%)
                       </span>
                       <span className="text-red-700">
-                        {failedCount} Violadas ({failedPercentage}%)
+                        {failedCount} Incumplidas ({failedPercentage}%)
                       </span>
                     </div>
                   </div>
@@ -397,7 +423,7 @@ function App() {
                 <div className="mt-4 mb-6">
                   
                   {/* Cabecera Principal Colapsable (El Acordeón Maestro) */}
-                  <div 
+                  <div
                     onClick={() => setShowPassedPolicies(!showPassedPolicies)}
                     className="flex items-center justify-between p-3 bg-green-50/80 border border-green-200 rounded-lg cursor-pointer hover:bg-green-100 transition-colors mb-3"
                   >

@@ -22,6 +22,8 @@ from fastapi.responses import StreamingResponse
 from typing import List, Any
 import json
 import asyncio
+from core.structural_validator import StructuralValidator
+
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +33,8 @@ app_state = {}
 async def lifespan(app: FastAPI):
     logger.info("Initializing Kube-Sec-Analyzer Engine...")
     uvl_path = os.getenv("UVL_MODEL_PATH", "models/HKFM.uvl")
-    
+    # Ruta absoluta al UVL completo para el validador estructural
+    full_uvl_path = os.getenv("FULL_UVL_PATH", "models/kubernetes_combined.uvl")
     # Rutas absolutas a los CSV (asumiendo que están en la carpeta resources)
     base_dir = os.path.dirname(os.path.dirname(__file__))
     csv_features = os.path.join(base_dir, "resources", "mapping_csv", "kubernetes_mapping_properties_features.csv")
@@ -43,12 +46,13 @@ async def lifespan(app: FastAPI):
         # Guardamos en memoria global
         app_state['inference_engine'] = PolicyInference(loader.flat_fm)
         app_state['validator'] = Validator(loader.flat_fm, loader.z3_model)
+        # Inicializamos el motor SAT estructural
+        app_state['structural_validator'] = StructuralValidator(full_uvl_path)
         # INICIALIZAMOS TU CSV MAPPER AQUÍ (Lee los CSV una sola vez)
-        
         app_state['csv_mapper'] = CSVMapper(csv_features, csv_kinds)
         app_state['reverse_mapper'] = ReverseMapper(csv_kinds)
         app_state['remediator_registry'] = RemediationRegistry(uvl_path)
-        app_state['remediator'] = Remediator()        
+        app_state['remediator'] = Remediator()
         # Motor Regex
         app_state['regex_validator'] = ContentPolicyValidator()
         logger.info("Engine ready to accept requests.")
@@ -98,7 +102,7 @@ async def validate_manifest(request: ValidationRequest):
         for doc in documents:
             kind = doc.get('kind')
             if not kind:
-                continue 
+                continue
                 
             active_policies = inference_engine.get_policies_for_kind(kind)
             if not active_policies:
@@ -161,10 +165,10 @@ async def validate_manifest_stream(request: ValidationRequest):
                 
                 if not doc.get('kind'):
                     yield json.dumps({"status": "error", "message": "El documento no tiene propiedad 'kind'."}) + "\n"
-                    continue 
+                    continue
                 if not doc.get('apiVersion'):
                     yield json.dumps({"status": "error", "message": "El documento no tiene propiedad 'apiVersion'."}) + "\n"
-                    continue                     
+                    continue
                 active_policies = inference_engine.get_policies_for_kind(kind)
                 if not active_policies:
                     yield json.dumps({"status": "info", "message": f"[{kind}] No hay políticas de seguridad aplicables a este recurso."}) + "\n"
@@ -290,9 +294,69 @@ async def remediate_manifest(request: RemediateRequest):
                 yaml_path=yaml_path, 
                 new_value=action.safe_value
             )
+        # Garantiza que propiedades como 'ports' se formateen como arrays (-)
+        current_yaml = remediator.post_process_arrays(current_yaml)
         
         return {"status": "success", "remediated_yaml": current_yaml}
 
     except Exception as e:
         logger.error(f"Remediation error: {e}")
         raise HTTPException(status_code=500, detail=f"Error al parchear el YAML: {str(e)}")
+
+
+
+@app.post("/validate-structure")
+async def validate_structure_endpoint(request: ValidationRequest):
+    """
+    Endpoint dedicado a la validación estructural pura del esquema de K8s.
+    Usa el Feature Model completo y un solver SAT (PySAT).
+    """
+    try:
+        documents = ManifestParser.parse(request.manifest_yaml)
+        if not documents:
+            return {"status": "error", "message": "YAML vacío o inválido."}
+            
+        csv_mapper = app_state['csv_mapper']
+        sat_validator = app_state['structural_validator']
+        
+        doc = documents[0] # Validamos el primer YAML (puedes iterar si hay varios)
+        api_version = doc.get('apiVersion', 'Desconocida')
+        kind = doc.get('kind', 'Desconocido')
+        
+        # 1. Filtro 1: ¿Existe en el CSV? (Sintaxis Base)
+        try:
+            mapped_json_dict = csv_mapper.transform_manifest(doc)
+        except ValueError as ve:
+            return {
+                "status": "invalid",
+                "source": "Mapper",
+                "message": f"[{api_version}/{kind}] Recurso no soportado por el modelo estructural: {str(ve)}"
+            }
+
+        # 2. Generación de Configuración FlamaPy
+        configurations = MappingEngine.manifest_to_configurations(mapped_json_dict)
+        if not configurations:
+            return {"status": "error", "message": "No se pudo generar la configuración para el solver."}
+            
+        target_config = configurations[0]
+        
+        # 3. Filtro 2: Validación Formal SAT
+        structural_report = sat_validator.validate_structure(target_config.elements)
+        
+        if structural_report["valid"]:
+            return {
+                "status": "valid",
+                "message": structural_report["message"],
+                "time": structural_report["time"]
+            }
+        else:
+            return {
+                "status": "invalid",
+                "source": "SAT Solver",
+                "message": structural_report["message"],
+                "time": structural_report["time"]
+            }
+
+    except Exception as e:
+        logger.error(f"Structural Validation error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))

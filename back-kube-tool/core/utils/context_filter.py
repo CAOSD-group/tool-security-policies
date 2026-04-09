@@ -1,14 +1,19 @@
 import json
 import os
 
-# 1. Cargamos el Oráculo en memoria (fuera de la función para no leer el disco cada vez)
+# 1. Cargamos el Oráculo en memoria
 ORACLE_PATH = os.path.join(os.path.dirname(__file__), '..', '..', 'resources', 'structural_oracle.json')
 try:
     with open(ORACLE_PATH, 'r', encoding='utf-8') as f:
-        STRUCTURAL_ORACLE = json.load(f)
+        oracle_data = json.load(f)
+        # Separamos las dos secciones
+        STRUCTURAL_DEPENDENCIES = oracle_data.get("dependencies", {})
+        K8S_DYNAMIC_ARRAYS = set(oracle_data.get("arrays", []))
 except FileNotFoundError:
-    print("[WARNING] structural_oracle.json no encontrado. El andamiaje automático estará desactivado.")
-    STRUCTURAL_ORACLE = {}
+    print("[WARNING] structural_oracle.json no encontrado.")
+    STRUCTURAL_DEPENDENCIES = {}
+    K8S_DYNAMIC_ARRAYS = set()
+
 
 def filter_context_aware_actions(original_config_elements: dict, actions_list: list, strip_suffixes: bool = False) -> list:
     """
@@ -38,7 +43,7 @@ def filter_context_aware_actions(original_config_elements: dict, actions_list: l
         
         # --- REGLA 1: Coincidencia de Workload ---
         if workload_root and "io_k8s" in feat and not feat.startswith(workload_root):
-            continue  
+            continue
         # --- REGLA 2: Evitar Recursos Fantasma ---
         if "initContainers" in feat and "initContainers" not in existing_keys_str:
             continue
@@ -50,24 +55,19 @@ def filter_context_aware_actions(original_config_elements: dict, actions_list: l
         parts = feat.split('_')
         for i in range(len(parts), 0, -1):
             possible_parent = "_".join(parts[:i])
-            if possible_parent in STRUCTURAL_ORACLE:
-                mandatory_siblings = STRUCTURAL_ORACLE[possible_parent]
+            
+            # USAMOS STRUCTURAL_DEPENDENCIES en lugar de STRUCTURAL_ORACLE
+            if possible_parent in STRUCTURAL_DEPENDENCIES:
+                mandatory_siblings = STRUCTURAL_DEPENDENCIES[possible_parent]
                 
                 for sibling_feat, default_val in mandatory_siblings.items():
-                    # Solo inyectamos el andamiaje si esa propiedad NO existe ya en el YAML
                     if sibling_feat not in original_config_elements:
-                        
                         clean_sibling = sibling_feat
                         if strip_suffixes:
                             clean_sibling = clean_sibling.replace("_valueInt", "").replace("_StringValue", "").replace("_IntegerValue", "").replace("_Always", "")
                         
-                        # Añadimos la acción estructural a la lista
-                        # Evitamos duplicados por si 2 reglas piden el mismo andamiaje
                         if not any(a["feature_to_fix"] == clean_sibling for a in valid_actions):
-                            valid_actions.append({
-                                "feature_to_fix": clean_sibling,
-                                "safe_value": default_val
-                            })
+                            valid_actions.append({"feature_to_fix": clean_sibling, "safe_value": default_val})
 
         # --- REGLA 4: Limpieza de Sufijos y Traducción para la feature principal (Solo para inyección en AST/YAML)---
         
@@ -85,9 +85,9 @@ def filter_context_aware_actions(original_config_elements: dict, actions_list: l
                 
             # D) Limpieza final de sufijos
             feat = feat.replace("_valueInt", "") \
-                       .replace("_StringValue", "") \
-                       .replace("_IntegerValue", "") \
-                       .replace("_Always", "")
+                    .replace("_StringValue", "") \
+                    .replace("_IntegerValue", "") \
+                    .replace("_Always", "")
         # --- RESOLUCIÓN DE CONFLICTOS (Merge con Prioridad) ---
         # Si el andamiaje estructural acaba de meter un valor por defecto para esta misma feature,
         # la regla de seguridad (safe_val) lo SOBREESCRIBE porque tiene prioridad.
@@ -102,3 +102,25 @@ def filter_context_aware_actions(original_config_elements: dict, actions_list: l
             })
         
     return valid_actions
+
+def enforce_k8s_object_arrays(data, current_path=""):
+    """
+    Post-procesador recursivo que envuelve diccionarios en listas.
+    AHORA ES 100% DINÁMICO LEYENDO DE `K8S_DYNAMIC_ARRAYS`.
+    """
+    if isinstance(data, dict):
+        for key, value in data.items():
+            new_path = f"{current_path}_{key}" if current_path else key
+            
+            # Comprobación Dinámica Universal (sirve para Mandatory y Optional)
+            is_array = any(arr.endswith(new_path) for arr in K8S_DYNAMIC_ARRAYS)
+            
+            if is_array and isinstance(value, dict):
+                data[key] = [enforce_k8s_object_arrays(value, new_path)]
+            else:
+                data[key] = enforce_k8s_object_arrays(value, new_path)
+                
+    elif isinstance(data, list):
+        return [enforce_k8s_object_arrays(item, current_path) for item in data]
+        
+    return data
