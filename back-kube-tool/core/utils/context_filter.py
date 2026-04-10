@@ -14,6 +14,14 @@ except FileNotFoundError:
     STRUCTURAL_DEPENDENCIES = {}
     K8S_DYNAMIC_ARRAYS = set()
 
+# INFERENCIA DINÁMICA DE MAPAS
+
+K8S_DYNAMIC_MAPS = set()
+for parent, children in STRUCTURAL_DEPENDENCIES.items():
+    # Si alguna de las propiedades hijas contiene "KeyMap" o "ValueMap", 
+    # inferimos automáticamente que el padre es un Mapa (Diccionario), no una Lista.
+    if any("KeyMap" in child_feat or "ValueMap" in child_feat for child_feat in children.keys()):
+        K8S_DYNAMIC_MAPS.add(parent)
 
 def filter_context_aware_actions(original_config_elements: dict, actions_list: list, strip_suffixes: bool = False) -> list:
     """
@@ -115,6 +123,11 @@ def enforce_k8s_object_arrays(data, current_path=""):
             # Comprobación Dinámica Universal (sirve para Mandatory y Optional)
             is_array = any(arr.endswith(new_path) for arr in K8S_DYNAMIC_ARRAYS)
             
+            is_map = any(m.endswith(new_path) for m in K8S_DYNAMIC_MAPS)
+            # Si el modelo dictó que es un Mapa, anulamos la conversión a Array
+            if is_map:
+                is_array = False
+                
             if is_array and isinstance(value, dict):
                 data[key] = [enforce_k8s_object_arrays(value, new_path)]
             else:

@@ -309,234 +309,346 @@ function App() {
         </div>
 
         {/* Panel de Resultados (Derecha) */}
+        
         <div className="w-1/2 flex flex-col bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden overflow-y-auto p-6 bg-gray-50">
-        {/* Título y Botón de Reparar Todo */}
-          <div className="flex justify-between items-center mb-4 border-b border-gray-200 pb-2">
-            <h2 className="text-xl font-bold text-gray-800">Resultados de Auditoría</h2>
-            {results && !results.secure && results.violations.some(v => v.remediation_actions?.length > 0) && (
-              <button 
-                onClick={handleFixAll}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded shadow text-sm font-semibold transition flex items-center gap-1 cursor-pointer"
-              >
-                Reparar Todo
-              </button>
-            )}
-          </div>
+          {/* 4. SELECTOR DE PESTAÑAS DUAL */}
+          {/* ================================================================= */}
+          <div className="flex space-x-2 mb-4 bg-gray-200 p-1 rounded-lg w-fit shrink-0">
+            <button 
+              onClick={() => setActiveTab('audit')}
+              className={`px-4 py-2 text-sm font-semibold flex items-center gap-2 rounded-md transition-all ${
+                activeTab === 'audit' ? 'bg-white shadow-sm text-blue-700' : 'text-gray-600 hover:bg-gray-300'
+              }`}
+            >
+              <ShieldCheck className="w-4 h-4" /> Auditoría de Seguridad (Z3)
+            </button>
             
-          {/* Estado Inicial */}
-          {!results && !loading && !error && systemMessages.length === 0 && (
-            <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
-              <ShieldCheck className="w-16 h-16 mb-2 opacity-20" />
-              <p>Pega tu YAML o importa un archivo y haz clic en "Analizar Seguridad"</p>
-            </div>
-          )}
+            <button 
+              onClick={() => {
+                setActiveTab('structure');
+                checkStructure(); // Llama a PySAT inmediatamente al cambiar de pestaña
+              }}
+              className={`px-4 py-2 text-sm font-semibold flex items-center gap-2 rounded-md transition-all ${
+                activeTab === 'structure' ? 'bg-white shadow-sm text-purple-700' : 'text-gray-600 hover:bg-gray-300'
+              }`}
+            >
+              <FileSearch className="w-4 h-4" /> Esquema K8s (SAT)
+            </button>
+          </div>
 
-          {/* Manejo de Errores Críticos(Ej. Backend apagado) */}
-          {error && (
-            <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg">
-              <strong>Error de conexión:</strong> {error}
-            </div>
-          )}
-          {/* Mensajes del Sistema (Info y Errores de Parseo) */}
-          {systemMessages.length > 0 && (
-            <div className="flex flex-col gap-2 mb-6">
-              {systemMessages.map((msg, idx) => (
-                <div key={idx} className={`p-3 text-sm rounded-lg flex items-start gap-2 border ${
-                  msg.type === 'error' ? 'bg-orange-50 text-orange-800 border-orange-200' : 'bg-blue-50 text-blue-800 border-blue-200'
-                }`}>
-                  {msg.type === 'error' ? <AlertCircle className="w-5 h-5 shrink-0" /> : <Info className="w-5 h-5 shrink-0" />}
-                  <span>{msg.text}</span>
-                </div>
-              ))}
-            </div>
-          )}
-          {/* Resultados de la Evaluación */}
-          {results && (
-            <div>
-              {/* Resumen Global */}
-              {results.scanned_resources === 0 && !loading && results.violations.length === 0 ? (
-                <div className="p-4 rounded-lg mb-6 flex items-center gap-3 bg-gray-100 text-gray-500 border border-gray-200">
-                  <Info className="w-8 h-8" />
-                  <div>
-                    <h3 className="text-lg font-bold">Sin recursos analizados</h3>
-                    <p className="text-sm">El manifiesto no contiene recursos válidos para evaluar.</p>
-                  </div>
-                </div>
-              ) : (
-                <div className={`p-4 rounded-lg mb-6 flex items-center gap-3 ${results.secure ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'}`}>
-                  {results.secure ? <ShieldCheck className="w-8 h-8" /> : <ShieldAlert className="w-8 h-8" />}
-                  <div>
-                    <h3 className="text-lg font-bold">
-                      {results.secure ? "¡Manifiesto Seguro!" : "Vulnerabilidades Detectadas"}
-                    </h3>
-                    <p className="text-sm opacity-80">Recursos procesados válidos: {results.scanned_resources}</p>
-                  </div>
-                </div>
-              )}
-
-              {/* NUEVO: GRÁFICO VISUAL (Balance de Seguridad) */}
-              {(() => {
-                const passedCount = results.passed_policies ? results.passed_policies.length : 0;
-                const failedCount = results.violations ? results.violations.length : 0;
-                const totalPolicies = passedCount + failedCount;
-                
-                if (totalPolicies === 0) return null;
-
-                const passedPercentage = Math.round((passedCount / totalPolicies) * 100);
-                const failedPercentage = 100 - passedPercentage;
-
-                return (
-                  <div className="mb-6 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
-                    <h3 className="text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
-                      Balance de Seguridad ({totalPolicies} políticas evaluadas)
-                    </h3>
-                  
-                    {/* Barra de progreso apilada */}
-                    <div className="flex h-4 w-full rounded-full overflow-hidden bg-gray-100">
-                      <div
-                        style={{ width: `${passedPercentage}%` }}
-                        className="bg-green-500 hover:bg-green-400 transition-all duration-500"
-                        title={`${passedCount} Superadas`}
-                      ></div>
-                      <div
-                        style={{ width: `${failedPercentage}%` }}
-                        className="bg-red-500 hover:bg-red-400 transition-all duration-500"
-                        title={`${failedCount} Incumplidas`}
-                      ></div>
-                    </div>
-                    
-                    {/* Leyendas con porcentajes */}
-                    <div className="flex justify-between mt-2 text-xs font-semibold">
-                      <span className="text-green-700">
-                        {passedCount} Superadas ({passedPercentage}%)
-                      </span>
-                      <span className="text-red-700">
-                        {failedCount} Incumplidas ({failedPercentage}%)
-                      </span>
-                    </div>
-                  </div>
-                );
-              })()}
-
-              {/* Show the policies approved under the icon vulnerabilities */}
-              {results.passed_policies && results.passed_policies.length > 0 && (
-                <div className="mt-4 mb-6">
-                  
-                  {/* Cabecera Principal Colapsable (El Acordeón Maestro) */}
-                  <div
-                    onClick={() => setShowPassedPolicies(!showPassedPolicies)}
-                    className="flex items-center justify-between p-3 bg-green-50/80 border border-green-200 rounded-lg cursor-pointer hover:bg-green-100 transition-colors mb-3"
-                  >
-                    <div className="flex items-center gap-2">
-                      <ShieldCheck className="w-5 h-5 text-green-600" />
-                      <h3 className="text-md font-bold text-green-800">
-                        Ver políticas superadas con éxito ({results.passed_policies.length})
-                      </h3>
-                    </div>
-                    {/* Flecha indicadora principal */}
-                    {showPassedPolicies ? (
-                      <ChevronUp className="w-5 h-5 text-green-700" />
-                    ) : (
-                      <ChevronDown className="w-5 h-5 text-green-700" />
+          <div className="flex-1 overflow-y-auto pr-2">
+            {/* PESTAÑA 1: AUDITORÍA DE SEGURIDAD (Tu código original intacto) */}        
+            {activeTab === 'audit' && (
+              <>
+                {/* Título y Botón de Reparar Todo */}
+                  <div className="flex justify-between items-center mb-4 border-b border-gray-200 pb-2">
+                    <h2 className="text-xl font-bold text-gray-800">Resultados de Auditoría</h2>
+                    {results && !results.secure && results.violations.some(v => v.remediation_actions?.length > 0) && (
+                      <button 
+                        onClick={handleFixAll}
+                        className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded shadow text-sm font-semibold transition flex items-center gap-1 cursor-pointer"
+                      >
+                        Reparar Todo
+                      </button>
                     )}
                   </div>
-                  
-                  {/* Lista de Políticas (Solo se renderiza si el acordeón maestro está abierto) */}
-                  {showPassedPolicies && (
-                    <div className="flex flex-col gap-2 mt-2 animate-in fade-in slide-in-from-top-2 duration-200">
-                      {results.passed_policies.map((policyObj, idx) => (
-                        <div key={idx} className="bg-green-50 border border-green-200 rounded-lg overflow-hidden transition-all">
-                          
-                          {/* Cabecera Clicable Individual */}
-                          <div 
-                            onClick={() => togglePassedPolicy(policyObj.policy)}
-                            className="flex justify-between items-center p-3 cursor-pointer hover:bg-green-100 transition-colors"
-                          >
-                            <div className="flex items-center gap-2">
-                              <span className="font-semibold text-sm text-green-900">
-                                {policyObj.policy}
-                              </span>
-                              <span className="px-2 py-0.5 bg-green-200 text-green-800 text-[10px] font-bold rounded uppercase">
-                                {policyObj.severity || 'OK'}
-                              </span>
-                              <span className="px-2 py-0.5 bg-yellow-200 text-green-800 text-[10px] font-bold rounded uppercase">
-                                {policyObj.tool || 'Desconocida'}
-                              </span>
-                            </div>
-                            {expandedPassed[policyObj.policy] ? (
-                              <ChevronUp className="w-4 h-4 text-green-700" />
-                            ) : (
-                              <ChevronDown className="w-4 h-4 text-green-700" />
-                            )}
-                          </div>
-                          
-                          {/* Contenido Expandible (Descripción) */}
-                          {expandedPassed[policyObj.policy] && (
-                            <div className="px-4 pb-3 pt-1 text-sm text-green-800 border-t border-green-200/50 bg-green-50/50">
-                              <p className="mt-2 text-gray-700 font-medium">
-                                {policyObj.description}
-                              </p>
-                            </div>
-                          )}
+                    
+                  {/* Estado Inicial */}
+                  {!results && !loading && !error && systemMessages.length === 0 && (
+                    <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
+                      <ShieldCheck className="w-16 h-16 mb-2 opacity-20" />
+                      <p>Pega tu YAML o importa un archivo y haz clic en "Analizar Seguridad"</p>
+                    </div>
+                  )}
 
+                  {/* Manejo de Errores Críticos(Ej. Backend apagado) */}
+                  {error && (
+                    <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg">
+                      <strong>Error de conexión:</strong> {error}
+                    </div>
+                  )}
+                  {/* Mensajes del Sistema (Info y Errores de Parseo) */}
+                  {systemMessages.length > 0 && (
+                    <div className="flex flex-col gap-2 mb-6">
+                      {systemMessages.map((msg, idx) => (
+                        <div key={idx} className={`p-3 text-sm rounded-lg flex items-start gap-2 border ${
+                          msg.type === 'error' ? 'bg-orange-50 text-orange-800 border-orange-200' : 'bg-blue-50 text-blue-800 border-blue-200'
+                        }`}>
+                          {msg.type === 'error' ? <AlertCircle className="w-5 h-5 shrink-0" /> : <Info className="w-5 h-5 shrink-0" />}
+                          <span>{msg.text}</span>
                         </div>
                       ))}
                     </div>
                   )}
-                </div>
-              )}
-              {/* Lista de Vulnerabilidades EN TIEMPO REAL */}
-              {!results.secure && (
-                <div className="flex flex-col gap-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <ShieldAlert className="w-5 h-5 text-red-600" />
-                    <h3 className="text-md font-bold text-gray-800">
-                      Políticas incumplidas ({results.violations.length})
-                    </h3>
-                  </div>
-                  {results.violations.map((violation, index) => (
-                    <div key={index} className="bg-white p-4 rounded-lg border border-red-100 shadow-sm border-l-4 border-l-red-500">
-                      
-                      <div className="flex justify-between items-start mb-2">
-                        <h4 className="font-bold text-gray-900">{violation.policy}</h4>
-                        {/* Contenedor flexible para alinear las etiquetas juntas */}
-                        <div className="flex items-center gap-2">
-                          <span className="px-2 py-1 bg-red-200 text-red-800 text-[10px] font-bold rounded uppercase">
-                            {violation.severity || "ALTA"}
-                          </span>
-                          
-                          {/* NUEVO: Etiqueta de la herramienta */}
-                          {violation.tool && (
-                            <span className="px-2 py-1 bg-yellow-200 text-red-800 text-[10px] font-bold rounded uppercase">
-                              {violation.tool}
-                            </span>
-                          )}
+                  {/* Resultados de la Evaluación */}
+                  {results && (
+                    <div>
+                      {/* Resumen Global */}
+                      {results.scanned_resources === 0 && !loading && results.violations.length === 0 ? (
+                        <div className="p-4 rounded-lg mb-6 flex items-center gap-3 bg-gray-100 text-gray-500 border border-gray-200">
+                          <Info className="w-8 h-8" />
+                          <div>
+                            <h3 className="text-lg font-bold">Sin recursos analizados</h3>
+                            <p className="text-sm">El manifiesto no contiene recursos válidos para evaluar.</p>
+                          </div>
                         </div>
-                      </div>
-                      <p className="text-gray-600 text-sm mb-3">{violation.description}</p>
-                      
-                      {violation.remediation && (
-                        <div className="bg-blue-50 text-blue-800 p-3 rounded text-sm border border-blue-100 mb-3">
-                          <strong>💡 Recomendación:</strong> {violation.remediation}
+                      ) : (
+                        <div className={`p-4 rounded-lg mb-6 flex items-center gap-3 ${results.secure ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'}`}>
+                          {results.secure ? <ShieldCheck className="w-8 h-8" /> : <ShieldAlert className="w-8 h-8" />}
+                          <div>
+                            <h3 className="text-lg font-bold">
+                              {results.secure ? "¡Manifiesto Seguro!" : "Vulnerabilidades Detectadas"}
+                            </h3>
+                            <p className="text-sm opacity-80">Recursos procesados válidos: {results.scanned_resources}</p>
+                          </div>
                         </div>
                       )}
 
-                      {/* ¡NUEVO BOTÓN DE AUTOCORRECCIÓN! */}
-                      {violation.remediation_actions && violation.remediation_actions.length > 0 && (
-                      <button 
-                        onClick={() => handleRemediate(violation.remediation_actions)}
-                        className="mt-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-1.5 px-3 rounded shadow-sm transition cursor-pointer"
-                      >
-                        Auto-Corregir Problema
-                      </button>
+                      {/* GRÁFICO VISUAL (Balance de Seguridad) */}
+                      {(() => {
+                        const passedCount = results.passed_policies ? results.passed_policies.length : 0;
+                        const failedCount = results.violations ? results.violations.length : 0;
+                        const totalPolicies = passedCount + failedCount;
+                        
+                        if (totalPolicies === 0) return null;
+
+                        const passedPercentage = Math.round((passedCount / totalPolicies) * 100);
+                        const failedPercentage = 100 - passedPercentage;
+
+                        return (
+                          <div className="mb-6 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+                            <h3 className="text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
+                              Balance de Seguridad ({totalPolicies} políticas evaluadas)
+                            </h3>
+                          
+                            {/* Barra de progreso apilada */}
+                            <div className="flex h-4 w-full rounded-full overflow-hidden bg-gray-100">
+                              <div
+                                style={{ width: `${passedPercentage}%` }}
+                                className="bg-green-500 hover:bg-green-400 transition-all duration-500"
+                                title={`${passedCount} Superadas`}
+                              ></div>
+                              <div
+                                style={{ width: `${failedPercentage}%` }}
+                                className="bg-red-500 hover:bg-red-400 transition-all duration-500"
+                                title={`${failedCount} Incumplidas`}
+                              ></div>
+                            </div>
+                            
+                            {/* Leyendas con porcentajes */}
+                            <div className="flex justify-between mt-2 text-xs font-semibold">
+                              <span className="text-green-700">
+                                {passedCount} Superadas ({passedPercentage}%)
+                              </span>
+                              <span className="text-red-700">
+                                {failedCount} Incumplidas ({failedPercentage}%)
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })()}
+
+                      {/* Show the policies approved under the icon vulnerabilities */}
+                      {results.passed_policies && results.passed_policies.length > 0 && (
+                        <div className="mt-4 mb-6">
+                          
+                          {/* Cabecera Principal Colapsable (El Acordeón Maestro) */}
+                          <div
+                            onClick={() => setShowPassedPolicies(!showPassedPolicies)}
+                            className="flex items-center justify-between p-3 bg-green-50/80 border border-green-200 rounded-lg cursor-pointer hover:bg-green-100 transition-colors mb-3"
+                          >
+                            <div className="flex items-center gap-2">
+                              <ShieldCheck className="w-5 h-5 text-green-600" />
+                              <h3 className="text-md font-bold text-green-800">
+                                Ver políticas superadas con éxito ({results.passed_policies.length})
+                              </h3>
+                            </div>
+                            {/* Flecha indicadora principal */}
+                            {showPassedPolicies ? (
+                              <ChevronUp className="w-5 h-5 text-green-700" />
+                            ) : (
+                              <ChevronDown className="w-5 h-5 text-green-700" />
+                            )}
+                          </div>
+                          
+                          {/* Lista de Políticas (Solo se renderiza si el acordeón maestro está abierto) */}
+                          {showPassedPolicies && (
+                            <div className="flex flex-col gap-2 mt-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                              {results.passed_policies.map((policyObj, idx) => (
+                                <div key={idx} className="bg-green-50 border border-green-200 rounded-lg overflow-hidden transition-all">
+                                  
+                                  {/* Cabecera Clicable Individual */}
+                                  <div 
+                                    onClick={() => togglePassedPolicy(policyObj.policy)}
+                                    className="flex justify-between items-center p-3 cursor-pointer hover:bg-green-100 transition-colors"
+                                  >
+                                    <div className="flex items-center gap-2">
+                                      <span className="font-semibold text-sm text-green-900">
+                                        {policyObj.policy}
+                                      </span>
+                                      <span className="px-2 py-0.5 bg-green-200 text-green-800 text-[10px] font-bold rounded uppercase">
+                                        {policyObj.severity || 'OK'}
+                                      </span>
+                                      <span className="px-2 py-0.5 bg-yellow-200 text-green-800 text-[10px] font-bold rounded uppercase">
+                                        {policyObj.tool || 'Desconocida'}
+                                      </span>
+                                    </div>
+                                    {expandedPassed[policyObj.policy] ? (
+                                      <ChevronUp className="w-4 h-4 text-green-700" />
+                                    ) : (
+                                      <ChevronDown className="w-4 h-4 text-green-700" />
+                                    )}
+                                  </div>
+                                  
+                                  {/* Contenido Expandible (Descripción) */}
+                                  {expandedPassed[policyObj.policy] && (
+                                    <div className="px-4 pb-3 pt-1 text-sm text-green-800 border-t border-green-200/50 bg-green-50/50">
+                                      <p className="mt-2 text-gray-700 font-medium">
+                                        {policyObj.description}
+                                      </p>
+                                    </div>
+                                  )}
+
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       )}
-                    </div>
-                  ))}
-                </div>
-              )}
+                      {/* Lista de Vulnerabilidades EN TIEMPO REAL */}
+                      {!results.secure && (
+                        <div className="flex flex-col gap-4">
+                          <div className="flex items-center gap-2 mb-3">
+                            <ShieldAlert className="w-5 h-5 text-red-600" />
+                            <h3 className="text-md font-bold text-gray-800">
+                              Políticas incumplidas ({results.violations.length})
+                            </h3>
+                          </div>
+                          {results.violations.map((violation, index) => (
+                            <div key={index} className="bg-white p-4 rounded-lg border border-red-100 shadow-sm border-l-4 border-l-red-500">
+                              
+                              <div className="flex justify-between items-start mb-2">
+                                <h4 className="font-bold text-gray-900">{violation.policy}</h4>
+                                {/* Contenedor flexible para alinear las etiquetas juntas */}
+                                <div className="flex items-center gap-2">
+                                  <span className="px-2 py-1 bg-red-200 text-red-800 text-[10px] font-bold rounded uppercase">
+                                    {violation.severity || "ALTA"}
+                                  </span>
+                                  
+                                  {/* NUEVO: Etiqueta de la herramienta */}
+                                  {violation.tool && (
+                                    <span className="px-2 py-1 bg-yellow-200 text-red-800 text-[10px] font-bold rounded uppercase">
+                                      {violation.tool}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                              <p className="text-gray-600 text-sm mb-3">{violation.description}</p>
+                              
+                              {violation.remediation && (
+                                <div className="bg-blue-50 text-blue-800 p-3 rounded text-sm border border-blue-100 mb-3">
+                                  <strong>💡 Recomendación:</strong> {violation.remediation}
+                                </div>
+                              )}
+
+                              {/* BOTÓN DE AUTOCORRECCIÓN */}
+                              {violation.remediation_actions && violation.remediation_actions.length > 0 && (
+                              <button 
+                                onClick={() => handleRemediate(violation.remediation_actions)}
+                                className="mt-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-1.5 px-3 rounded shadow-sm transition cursor-pointer"
+                              >
+                                Auto-Corregir Problema
+                              </button>
+                              )}    
+                        </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
             </div>
-          )}
-        </div>
+            {/* PESTAÑA 2: VALIDACIÓN ESTRUCTURAL (SAT SOLVER) */}
+            {/* ================================================================= */}
+            {activeTab === 'structure' && (
+              <div className="flex flex-col h-full">
+                <div className="bg-white p-6 rounded-xl border shadow-sm flex-1">
+                  <div className="border-b border-gray-200 pb-3 mb-6">
+                    <h2 className="text-xl font-bold text-gray-800">Validación del Esquema K8s</h2>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Comprueba restricciones obligatorias (Mandatory) y relaciones estructurales (Cross-Tree Constraints) usando el solver SAT.
+                    </p>
+                  </div>
+                  
+                  {loadingStructure ? (
+                    <div className="flex flex-col items-center justify-center h-40 space-y-4">
+                      <Loader2 className="w-10 h-10 animate-spin text-purple-600" />
+                      <p className="text-gray-500 font-medium animate-pulse">Compilando características y resolviendo SAT...</p>
+                    </div>
+                  ) : (
+                    <>
+                      {/* Estado inicial / Si no hay datos por un error en la carga */}
+                      {!structuralData && (
+                        <div className="flex flex-col items-center justify-center h-40 text-gray-400">
+                          <FileSearch className="w-12 h-12 mb-2 opacity-20" />
+                          <p>Ocurrió un error o no se inició la validación.</p>
+                        </div>
+                      )}
+
+                      {/* RESULTADO: VÁLIDO */}
+                      {structuralData?.status === 'valid' && (
+                        <div className="bg-green-50 border border-green-200 p-6 rounded-lg shadow-sm">
+                          <div className="flex items-start gap-4">
+                            <CheckCircle className="w-10 h-10 text-green-600 flex-shrink-0" />
+                            <div>
+                              <h3 className="text-xl font-bold text-green-800">Manifiesto Estructuralmente Válido</h3>
+                              <p className="text-green-700 mt-2 text-md leading-relaxed">
+                                {structuralData.message}
+                              </p>
+                              {structuralData.time !== undefined && (
+                                <p className="text-xs text-green-600 mt-4 font-mono bg-green-100 w-fit px-2 py-1 rounded">
+                                  ✓ Resuelto en {structuralData.time}s via Glucose3 (SAT)
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* RESULTADO: INVÁLIDO O ERROR */}
+                      {(structuralData?.status === 'invalid' || structuralData?.status === 'error') && (
+                        <div className="bg-red-50 border border-red-200 p-6 rounded-lg shadow-sm">
+                          <div className="flex items-start gap-4">
+                            <XCircle className="w-10 h-10 text-red-600 flex-shrink-0" />
+                            <div className="w-full">
+                              <h3 className="text-xl font-bold text-red-800">Error Estructural Detectado</h3>
+                              
+                              {structuralData.source && (
+                                <div className="mt-2 inline-block px-2 py-1 bg-red-100 text-red-800 text-xs font-bold rounded uppercase">
+                                  Fuente: {structuralData.source}
+                                </div>
+                              )}
+                              
+                              <p className="text-red-700 mt-3 font-medium bg-white/50 p-3 rounded border border-red-100">
+                                {structuralData.message}
+                              </p>
+
+                              {structuralData.time !== undefined && (
+                                <p className="text-xs text-red-500 mt-4 font-mono bg-red-100 w-fit px-2 py-1 rounded">
+                                  Rechazado en {structuralData.time}s via Glucose3 (SAT)
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
       </main>
     </div>
   );

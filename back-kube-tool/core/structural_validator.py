@@ -2,7 +2,8 @@ import logging
 import time
 from flamapy.metamodels.fm_metamodel.transformations import UVLReader
 from flamapy.metamodels.pysat_metamodel.transformations import FmToPysat
-from flamapy.metamodels.pysat_metamodel.operations import Glucose3ValidConfiguration
+#from flamapy.metamodels.pysat_metamodel.operations import Glucose3ValidConfiguration
+from flamapy.metamodels.pysat_metamodel.operations import PySATSatisfiableConfiguration
 from flamapy.metamodels.configuration_metamodel.models import Configuration
 
 logger = logging.getLogger(__name__)
@@ -43,7 +44,7 @@ class StructuralValidator:
             config = Configuration(selected_features)
             
             # 3. Operación de validación SAT
-            valid_op = Glucose3ValidConfiguration()
+            valid_op = PySATSatisfiableConfiguration()
             valid_op.set_configuration(config)
             valid_op.execute(self.sat_model)
             
