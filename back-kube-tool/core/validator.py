@@ -11,6 +11,9 @@ class Validator:
     self.flat_fm = flat_fm
     self.z3_model = z3_model
 
+    self._parent_cache: dict[str, list[str]] = {}
+    self._mand_desc_cache: dict[str, list[str]] = {}
+        
   def validate_configuration(self, config: Configuration, active_policies: list[str]) -> list[dict]:
     """
     Iteratively tests policies against the configuration using Z3.
@@ -18,25 +21,29 @@ class Validator:
     """
     failed_policies_report = []
     
-    # Note: I omitted the ContentPolicyValidator (regex) here for brevity, 
-    # but you would call it here before the Z3 loop just like in your script.
+    base_completed_elements = self._complete_full_configuration(config.elements)
 
     for policy in active_policies:
       try:
-        # 1. Clean copy of the manifest elements
-        temp_elements = config.elements.copy()
-        
-        # 2. Activate ONLY the current policy we want to audit
+        temp_elements = base_completed_elements.copy()
         temp_elements[policy] = True
+        # 1. Clean copy of the manifest elements
+        #temp_elements = config.elements.copy()
+        # 2. Activate ONLY the current policy we want to audit
+        #temp_elements[policy] = True
         
         # 3. Complete the configuration (inject parents/mandatory children)
+        temp_elements = self._add_single_feature_closure(temp_elements, policy)
         temp_config = Configuration(temp_elements)
-        temp_config_completed = self._complete_configuration(temp_config)
-        temp_config_completed.set_full(True)
         
+        #temp_config = Configuration(temp_elements)
+        #temp_config_completed = self._complete_configuration(temp_config)
+        #temp_config_completed.set_full(True)
+        
+        temp_config.set_full(True) # Mark as full to avoid Z3 warnings about missing features
         # 4. Validate with Z3
         sat_op = Z3SatisfiableConfiguration()
-        sat_op.set_configuration(temp_config_completed)
+        sat_op.set_configuration(temp_config) # temp_config_completed
         is_sat = sat_op.execute(self.z3_model).get_result()
         
         # 5. If UNSAT, record vulnerability
@@ -46,6 +53,7 @@ class Validator:
           failed_policies_report.append({
             "policy": policy,
             "severity": meta.get("severity", "unknown"),
+            "tool": meta.get("tool", "unknown"),
             "description": meta.get("description", "empty"),
             "remediation": meta.get("remediation", "Check policy")
           })
@@ -60,6 +68,49 @@ class Validator:
         })
 
     return failed_policies_report
+
+  # --- MÉTODOS DE CACHÉ Y AUTOCOMPLETADO OPTIMIZADOS ---
+  def _parents_of(self, feature_name: str) -> list[str]:
+      if feature_name in self._parent_cache:
+          return self._parent_cache[feature_name]
+      feat = self.flat_fm.get_feature_by_name(feature_name)
+      if not feat or feat.get_parent() is None:
+          res = []
+      else:
+          p = feat.get_parent()
+          res = [p.name] + self._parents_of(p.name)
+      self._parent_cache[feature_name] = res
+      return res
+
+  def _mandatory_descendants(self, feature_name: str) -> list[str]:
+      if feature_name in self._mand_desc_cache:
+          return self._mand_desc_cache[feature_name]
+      feat = self.flat_fm.get_feature_by_name(feature_name)
+      res = []
+      if feat:
+          for child in feat.get_children():
+              if child.is_mandatory():
+                  res.append(child.name)
+                  res.extend(self._mandatory_descendants(child.name))
+      self._mand_desc_cache[feature_name] = res
+      return res
+
+  def _add_single_feature_closure(self, elements: dict, feature_name: str) -> dict:
+      for ch in self._mandatory_descendants(feature_name):
+          if ch not in elements: elements[ch] = True
+      for parent_name in self._parents_of(feature_name):
+          if parent_name not in elements: elements[parent_name] = True
+          for ch in self._mandatory_descendants(parent_name):
+              if ch not in elements: elements[ch] = True
+      return elements
+
+  def _complete_full_configuration(self, original_elements: dict) -> dict:
+      elems = original_elements.copy()
+      for selected in list(elems.keys()):
+          if elems[selected]:  
+              elems = self._add_single_feature_closure(elems, selected)
+      return elems
+
 
   def _complete_configuration(self, configuration: Configuration) -> Configuration:
     """Injects mandatory parents and children based on the FM tree."""
@@ -117,8 +168,7 @@ class Validator:
         "category": "Security"
       }
       
-      if not feat:
-        return info
+      if not feat: return info
       #print(f"\n[DEBUG METADATA] Explorando atributos para política: {policy_name}")
       for attr in feat.get_attributes():
         val = attr.get_default_value()
