@@ -44,7 +44,11 @@ async def lifespan(app: FastAPI):
         loader = ModelLoader(uvl_path)
         
         # Guardamos en memoria global
-        app_state['inference_engine'] = PolicyInference(loader.flat_fm)
+        # Motor Regex
+        app_state['regex_validator'] = ContentPolicyValidator()
+        regex_policy_names = set(app_state['regex_validator'].policy_map.keys())
+        #app_state['inference_engine'] = PolicyInference(loader.flat_fm)
+        app_state['inference_engine'] = PolicyInference(loader.flat_fm, regex_policy_names)
         app_state['validator'] = Validator(loader.flat_fm, loader.z3_model)
         # Inicializamos el motor SAT estructural
         app_state['structural_validator'] = StructuralValidator(full_uvl_path)
@@ -53,8 +57,7 @@ async def lifespan(app: FastAPI):
         app_state['reverse_mapper'] = ReverseMapper(csv_kinds)
         app_state['remediator_registry'] = RemediationRegistry(uvl_path)
         app_state['remediator'] = Remediator()
-        # Motor Regex
-        app_state['regex_validator'] = ContentPolicyValidator()
+
         logger.info("Engine ready to accept requests.")
         yield
     except Exception as e:
@@ -166,15 +169,13 @@ async def validate_manifest_stream(request: ValidationRequest):
                 if not doc.get('kind'):
                     yield json.dumps({"status": "error", "message": "El documento no tiene propiedad 'kind'."}) + "\n"
                     continue
-                if not doc.get('apiVersion'):
+                if not doc.get('apiVersion'): ## Solo se comprueba si no existe la prop, si existe pero no está en el CSV, el error lo lanzará el CSVMapper y se lo enviaremos al frontend
                     yield json.dumps({"status": "error", "message": "El documento no tiene propiedad 'apiVersion'."}) + "\n"
                     continue
-                active_policies = inference_engine.get_policies_for_kind(kind)
-                if not active_policies:
-                    yield json.dumps({"status": "info", "message": f"[{kind}] No hay políticas de seguridad aplicables a este recurso."}) + "\n"
-                    continue
-                # --- NUEVO: Añadimos las políticas activas de este recurso ---
-                all_active_policies.update(active_policies)
+                
+                # CORRECCIÓN BUG: INTENTAMOS MAPEAR PRIMERO (Filtro de sintaxis base)
+                # Si esto falla (ej. v133), nunca sumamos políticas "fantasma" al recuento.
+                # =========================================================================
                 try:
                     # Aquí es donde falla si el kind/version no está en tu CSV
                     mapped_json_dict = csv_mapper.transform_manifest(doc)
@@ -183,19 +184,30 @@ async def validate_manifest_stream(request: ValidationRequest):
                     yield json.dumps({"status": "error", "message": f"[{api_version}/{kind}] Recurso no soportado por el modelo: {str(ve)}"}) + "\n"
                     continue
 
+                active_policies = inference_engine.get_policies_for_kind(kind)
+                if not active_policies:
+                    yield json.dumps({"status": "info", "message": f"[{kind}] No hay políticas de seguridad aplicables a este recurso."}) + "\n"
+                    continue
+                # --- NUEVO: Añadimos las políticas activas de este recurso ---
+                all_active_policies.update(active_policies)
+
                 configurations = MappingEngine.manifest_to_configurations(mapped_json_dict)
                 scanned_resources += 1
 
                 if configurations:
                     target_config = configurations[0] 
                     #print("\n=== FEATURES MAPEADAS LISTAS PARA Z3 ===")
-                    
                     resource_name = doc.get('metadata', {}).get('name', 'unknown')
                     # Avisamos al frontend del recurso que estamos analizando
                     #yield json.dumps({"status": "info", "message": f"Analizando {kind}: {doc.get('metadata', {}).get('name', 'unknown')}..."}) + "\n"
                     yield json.dumps({"status": "info", "message": f"Analizando {kind}: {resource_name}..."}) + "\n"  
+                    
+                    regex_policy_names = set(regex_val.policy_map.keys())
+
                     # Iteramos sobre las políticas una a una
                     for policy in active_policies:
+                        if policy in regex_policy_names:
+                            continue # Saltamos las políticas Regex en esta fase, las evaluaremos al final contra el YAML puro
                         violation_list = validator.validate_configuration(target_config, [policy])
                         if violation_list:
                             for v in violation_list:
@@ -214,7 +226,7 @@ async def validate_manifest_stream(request: ValidationRequest):
                         await asyncio.sleep(0.01)
                     # 2. VALIDACIÓN DE CONTENIDO (REGEX)
                     # El regex validator analiza el YAML puro (doc) contra las políticas activas
-                    passed_regex, regex_report = regex_val.validate_with_report(doc, active_policies)
+                    passed_regex, regex_report = regex_val.validate_with_report(target_config.elements, active_policies)
                     
                     if not passed_regex:
                         for rep in regex_report:
@@ -223,6 +235,7 @@ async def validate_manifest_stream(request: ValidationRequest):
                             # Le preguntamos al validador (que conoce el UVL) por la metadata de esta política Regex
                             meta = validator.get_policy_metadata(policy_name)
                             failed_policies.add(policy_name)
+                            print(f"Error en la politica con el meta {policy_name}: {meta}")
                             # Obtenemos acciones de remediación si las hay
                             actions = registry.get_remediation_actions(policy_name)                            
                             v_obj = {
