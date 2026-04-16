@@ -54,6 +54,14 @@ class PolicyInference:
             # Clean strings, make them lowercase for case-insensitive matching
             target_kinds = [k.strip().lower() for k in kinds_attr.split(',')]
             
+            # =======================================================
+            #if 'container' in target_kinds:
+            if feature.name == 'tagNotSpecified':
+                workloads = ['pod', 'deployment', 'daemonset', 'statefulset', 'job', 'cronjob', 'replicaset']
+                for w in workloads:
+                    if w not in target_kinds:
+                        target_kinds.append(w)
+
             for kind in target_kinds:
                 if kind not in self.kind_to_policies_map:
                     self.kind_to_policies_map[kind] = set()
