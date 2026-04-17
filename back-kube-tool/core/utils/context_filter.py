@@ -118,6 +118,41 @@ def filter_context_aware_actions(original_config_elements: dict, actions_list: l
             safe_val = f"eu.foo.io/{image_clean}:secure-tag@sha256:0000000000000000000000000000000000000000000000000000000000000000"
         
 
+        # AUTOMATIZACIÓN DINÁMICA: RECURSOS POLARIS (CPU / MEMORY)
+        # =====================================================================
+        if feat in ["DYNAMIC_CPU_LIMITS", "DYNAMIC_MEMORY_LIMITS", "DYNAMIC_CPU_REQUESTS", "DYNAMIC_MEMORY_REQUESTS"]:
+            
+            # 1. Determinamos si es limit o request, y si es cpu o memory
+            req_type = "limits" if "LIMITS" in feat else "requests"
+            res_type = "cpu" if "CPU" in feat else "memory"
+            
+            # 2. Buscamos el ancla del contenedor de forma infalible
+            container_base_paths = set()
+            for k in original_config_elements.keys():
+                k_str = str(k)
+                # Cualquier clave que esté dentro de un contenedor nos vale para sacar la ruta base
+                for c_type in ["_containers", "_ephemeralContainers"]: # exclude initContainers
+                    if c_type in k_str:
+                        # Cortamos todo lo que haya después del contenedor
+                        # Ej: pod_spec_containers_image -> pod_spec_containers
+                        base_path = k_str.split(c_type)[0] + c_type
+                        container_base_paths.add(base_path)
+
+            # 3. Construimos la ruta de recursos estándar de Kubernetes
+            for base_path in container_base_paths:
+                # Construimos la clave exacta para el AST: ej. ..._spec_containers_resources_limits_cpu
+                dynamic_resource_key = f"{base_path}_resources_{req_type}_{res_type}"
+                if strip_suffixes: # Opcional si tu motor limpia sufijos
+                    dynamic_resource_key = dynamic_resource_key.replace("_IntegerValue", "").replace("_StringValue", "")
+                # Añadimos la acción. Como safe_val es "100m" o "512Mi",
+                # el Reverse Mapper construirá un YAML perfecto.
+                valid_actions.append({
+                    "feature_to_fix": dynamic_resource_key, 
+                    "safe_value": safe_val
+                })
+            
+            continue # Saltamos el resto del bucle normal
+
         # --- RESOLUCIÓN DE CONFLICTOS (Merge con Prioridad) ---
         # Si el andamiaje estructural acaba de meter un valor por defecto para esta misma feature,
         # la regla de seguridad (safe_val) lo SOBREESCRIBE porque tiene prioridad.
@@ -144,9 +179,12 @@ def enforce_k8s_object_arrays(data, current_path=""):
             
             # Comprobación Dinámica Universal (sirve para Mandatory y Optional)
             is_array = any(arr.endswith(new_path) for arr in K8S_DYNAMIC_ARRAYS)
-            
             is_map = any(m.endswith(new_path) for m in K8S_DYNAMIC_MAPS)
             # Si el modelo dictó que es un Mapa, anulamos la conversión a Array
+            # Evita que limits y requests se conviertan en listas (guiones)
+            if new_path.endswith("_resources_limits") or new_path.endswith("_resources_requests"):
+                is_map = True
+
             if is_map:
                 is_array = False
                 

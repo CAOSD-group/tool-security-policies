@@ -203,7 +203,8 @@ async def validate_manifest_stream(request: ValidationRequest):
                     yield json.dumps({"status": "info", "message": f"Analizando {kind}: {resource_name}..."}) + "\n"  
                     
                     regex_policy_names = set(regex_val.policy_map.keys())
-
+                    # Filtramos las políticas activas de Regex
+                    print(f"Políticas Regex a evaluar: {regex_policy_names}")
                     # Iteramos sobre las políticas una a una
                     for policy in active_policies:
                         if policy in regex_policy_names:
@@ -226,7 +227,8 @@ async def validate_manifest_stream(request: ValidationRequest):
                         await asyncio.sleep(0.01)
                     # 2. VALIDACIÓN DE CONTENIDO (REGEX)
                     # El regex validator analiza el YAML puro (doc) contra las políticas activas
-                    passed_regex, regex_report = regex_val.validate_with_report(target_config.elements, active_policies)
+                    active_regex_policies = list(set(active_policies) & regex_policy_names)
+                    passed_regex, regex_report = regex_val.validate_with_report(doc, target_config.elements, active_regex_policies)
                     
                     if not passed_regex:
                         for rep in regex_report:
@@ -236,8 +238,6 @@ async def validate_manifest_stream(request: ValidationRequest):
                             meta = validator.get_policy_metadata(policy_name)
                             failed_policies.add(policy_name)
                             print(f"Error en la politica con el meta {policy_name}: {meta}")
-                            # Obtenemos acciones de remediación si las hay
-                            actions = registry.get_remediation_actions(policy_name)                            
                             v_obj = {
                                 "policy": policy_name,
                                 "tool": meta.get("tool", "Desconocida"),
@@ -245,11 +245,14 @@ async def validate_manifest_stream(request: ValidationRequest):
                                 "description": rep.get("reason", meta.get("description", "Revisión Regex fallida.")),
                                 "remediation": meta.get("remediation", "Revisar configuración.")
                             }
+                            # Obtenemos acciones de remediación si las hay
+                            actions = registry.get_remediation_actions(policy_name)                            
                             # Si definiste una solución manual en el Registry para esta Regex, la inyectamos
-                            actions = registry.get_remediation_actions(rep["policy"])
+                            #actions = registry.get_remediation_actions(rep["policy"])
                             if actions:
-                                v_obj["remediation_actions"] = actions
-                                
+                                smart_actions = filter_context_aware_actions(target_config.elements, actions, strip_suffixes=True)
+                                v_obj["remediation_actions"] = smart_actions
+
                             yield json.dumps({"status": "violation", "data": v_obj}) + "\n"
                             await asyncio.sleep(0.01)
             # Al terminar todo, enviamos el resumen final

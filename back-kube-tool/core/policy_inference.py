@@ -56,7 +56,9 @@ class PolicyInference:
             
             # =======================================================
             #if 'container' in target_kinds:
-            if feature.name == 'tagNotSpecified':
+            container_policies = ['tagNotSpecified', 'cpuLimitsMissing', 'cpuRequestsMissing', 'memoryLimitsMissing', 'memoryRequestsMissing']
+            
+            if feature.name in container_policies :
                 workloads = ['pod', 'deployment', 'daemonset', 'statefulset', 'job', 'cronjob', 'replicaset']
                 for w in workloads:
                     if w not in target_kinds:

@@ -183,6 +183,21 @@ class RemediationRegistry:
             "Require_Container_Port_Names": [
                 {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_containers_ports_name", "safe_value": "secure-port"}
             ],
+            
+            ##### Memory and CPU Limits/Requests (Polaris)
+            
+            "cpuLimitsMissing": [
+                {"feature_to_fix": "DYNAMIC_CPU_LIMITS", "safe_value": "100m"}
+            ],
+            "cpuRequestsMissing": [
+                {"feature_to_fix": "DYNAMIC_CPU_REQUESTS", "safe_value": "100m"}
+            ],
+            "memoryLimitsMissing": [
+                {"feature_to_fix": "DYNAMIC_MEMORY_LIMITS", "safe_value": "512Mi"}
+            ],
+            "memoryRequestsMissing": [
+                {"feature_to_fix": "DYNAMIC_MEMORY_REQUESTS", "safe_value": "512Mi"}
+            ],
 
             # =========================================================
             # MACRO-WORKLOADS (Políticas expandidas) - NODOS HOJA EXACTOS

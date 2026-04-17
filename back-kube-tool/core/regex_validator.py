@@ -15,9 +15,9 @@ class ContentPolicyValidator:
             #'Require_Labels': self._validate_require_labels,
             'Restrict_Ingress_Classes': self._validate_restrict_ingress_classes,
             'Restrict_Jobs': self._validate_restrict_jobs,
-            ## New policies can be added here with their corresponding validation methods.
+            ## New policies can  be added here with their corresponding validation methods.
             'Restrict_Image_Registries': self._validate_restrict_image_registries,
-            #'Require_Images_Use_Checksums': self._validate_require_images_use_checksums,
+            'Require_Images_Use_Checksums': self._validate_require_images_use_checksums,
             'Require_Ingress_HTTPS': self._validate_require_ingress_https,
             'Limit_hostPath_PersistentVolumes_to_Specific_Directories': self._validate_limit_pv_hostpath_specific_dirs,
             ## Added more policies here as needed...
@@ -25,8 +25,11 @@ class ContentPolicyValidator:
             'Prevent_cr8escape_CVE_2022_0811': self._validate_prevent_cr8escape_sysctl_values,
             'Require_Container_Port_Names': self._validate_require_container_port_names,
             #'Require_imagePullSecrets': self._validate_require_imagepullsecrets, ## no detected at the moment
-            #'cpuLimitsMissing': self._validate_cpu_limits_set, ## pendente to add the function
-            #'cpuRequestsMissing': self._validate_cpu_requests_set,
+            'cpuLimitsMissing': self._validate_cpu_limits_set, ## pendente to add the function
+            'cpuRequestsMissing': self._validate_cpu_requests_set,
+            'memoryLimitsMissing': self._validate_memory_limits_set,
+            'memoryRequestsMissing': self._validate_memory_requests_set,
+
             #'livenessProbeMissing': self._validate_liveness_probe_configured,
             #'readinessProbeMissing': self._validate_readiness_probe_configured,
         }
@@ -65,7 +68,7 @@ class ContentPolicyValidator:
         return True
     
     
-    def validate_with_report(self, config_elements: dict, active_policies: list[str]):
+    def validate_with_report(self, doc: dict, config_elements: dict, active_policies: list[str]):
         """
         Get a list of policies that fail with reason if any.
         """
@@ -80,7 +83,7 @@ class ContentPolicyValidator:
             try:
                 buf = io.StringIO()
                 with contextlib.redirect_stdout(buf):
-                    ok = fn(config_elements)
+                    ok = fn(doc, config_elements)
                 reason = buf.getvalue().strip()
 
                 if not ok:
@@ -196,7 +199,7 @@ class ContentPolicyValidator:
         return found_labels
     
 
-    def _validate_tag_specified_and_not_latest(self, config_elements):
+    def _validate_tag_specified_and_not_latest(self, doc, config_elements):
         """
         Implementation of the 'tagNotSpecified' policy:
         - Check A: Each image must have a tag (format: "name:tag").
@@ -215,28 +218,33 @@ class ContentPolicyValidator:
             print("[ALERTA] No se encontraron imágenes. ¿Es esto correcto o falló la búsqueda?")
             return True
 
-        # 2. Compilación de Regex
-        regex_has_tag = re.compile(r'^.+:.+$')       # Debe tener "algo:algo"
+        #regex_has_tag = re.compile(r'^.+:.+$')       # Debe tener "algo:algo"
         regex_is_latest = re.compile(r'^.+:latest$') # No debe terminar en ":latest"
 
         # 3. Validación
         all_ok = True
         for img in images:
-            # Check A: ¿Tiene tag?
-            if not regex_has_tag.match(img):
-                print(f"[Regex Failure] tagNotSpecified: La imagen '{img}' no especifica una versión/tag.")
-                all_ok = False
-                break # Fallo inmediato (o quitar break para reportar todos)
+            img_str = str(img).strip()
+            
+            if "@sha256:" in img_str: ## If the image already has a checksum, we ignore the tag
+                continue
 
-            # Check B: ¿Es latest?
-            if regex_is_latest.match(img):
-                print(f"[Regex Failure] tagNotSpecified: La imagen '{img}' usa el tag prohibido 'latest'.")
+            # Separamos la imagen para ignorar el registro (ej: docker.io/nginx -> nginx)
+            image_name_part = img_str.split("/")[-1]
+            
+            if ":" not in image_name_part:
+                print(f"[Regex Failure] tagNotSpecified: La imagen '{img_str}' no especifica una versión/tag.")
+                all_ok = False
+                break 
+
+            if regex_is_latest.match(image_name_part):
+                print(f"[Regex Failure] tagNotSpecified: La imagen '{img_str}' usa el tag prohibido 'latest'.")
                 all_ok = False
                 break
         
         return all_ok
     
-    def _validate_run_as_container_user_windows(self, config):
+    def _validate_run_as_container_user_windows(self, doc, config):
 
         users = self._find_values_by_suffix_recursive(config, "windowsOptions_runAsUserName")
         
@@ -291,7 +299,7 @@ class ContentPolicyValidator:
         return True
     
     # POLÍTICA: Restrict AppArmor
-    def _validate_restrict_apparmor(self, config_elements):
+    def _validate_restrict_apparmor(self, doc, config_elements):
         """
         Verify that if there are AppArmor annotations, they must be 'runtime/default' or 'localhost/*'.
         """
@@ -317,7 +325,7 @@ class ContentPolicyValidator:
 
         return True
     
-    def _validate_restrict_ingress_classes(self, config_elements):
+    def _validate_restrict_ingress_classes(self, doc, config_elements):
         """
         Search for the annotation 'kubernetes.io/ingress_class'. If it exists, validate that its value is either 'HAProxy' or 'nginx'.
         """
@@ -336,7 +344,7 @@ class ContentPolicyValidator:
         return True
     
 
-    def _validate_restrict_jobs(self, config_elements):
+    def _validate_restrict_jobs(self, doc, config_elements):
         """
         Policy: Restrict Jobs
         """
@@ -365,7 +373,7 @@ class ContentPolicyValidator:
         return True
     
 
-    def _validate_require_ingress_https(self, config_elements):
+    def _validate_require_ingress_https(self, doc, config_elements):
         """
         Kyverno require-ingress-https:
         - Apply ONLY to Ingress resources
@@ -440,25 +448,31 @@ class ContentPolicyValidator:
         return True
 
     
-    def _validate_require_images_use_checksums(self, config_elements):
+    def _validate_require_images_use_checksums(self, doc, config_elements):
         """
         Require_Images_Use_Checksums:
-        - Exigir que las imágenes incluyan digest '@sha256:...' (o al menos '@').
-        - Mejor que '*@*' en UVL.
+        - Exigir que las imágenes incluyan digest '@sha256:...'
         """
         images = self._find_image_values_recursive(config_elements)
         if not images:
             return True
 
-        regex_digest = re.compile(r".+@sha256:[0-9a-fA-F]{64}$")
+        regex_digest = re.compile(r"^.+@sha256:[0-9a-fA-F]{64}$")
 
         for img in images:
-            if not regex_digest.match(img):
-                print(f"[Fail] Require_Images_Use_Checksums: imagen '{img}' no usa digest '@sha256:...'.")
+            # 1. Convertimos a string y quitamos espacios/saltos en los extremos
+            img_str = str(img).strip()
+            
+            # 2. Si el parser YAML inyectó saltos de línea/espacios en medio del string, los limpiamos
+            img_str = img_str.replace('\n', '').replace(' ', '')
+
+            if not regex_digest.match(img_str):
+                print(f"[Fail] Require_Images_Use_Checksums: imagen '{img_str}' no usa digest válido '@sha256:...'.")
                 return False
+                
         return True
     
-    def _validate_restrict_image_registries(self, config_elements):
+    def _validate_restrict_image_registries(self, doc, config_elements):
         """
         Validate that ALL images (containers/init/ephemeral) come from allowed registries.
         Based in Kyverno: "eu.foo.io/* | bar.io/*"
@@ -478,7 +492,7 @@ class ContentPolicyValidator:
 
         return True
     
-    def _validate_limit_pv_hostpath_specific_dirs(self, config_elements):
+    def _validate_limit_pv_hostpath_specific_dirs(self, doc, config_elements):
         """
         Kyverno: si PV.spec.hostPath existe -> spec.hostPath.path debe empezar por '/data'
         """
@@ -528,7 +542,7 @@ class ContentPolicyValidator:
                 found.extend(self._find_dict_list_under_key_suffix_recursive(it, key_suffix))
         return found
     
-    def _validate_restrict_sysctls_allowlist(self, config_elements):
+    def _validate_restrict_sysctls_allowlist(self, doc, config_elements):
         # sysctls es una lista de dicts
         sysctl_items = self._find_dict_list_under_key_suffix_recursive(config_elements, "sysctls")
 
@@ -549,7 +563,7 @@ class ContentPolicyValidator:
 
         return True
     
-    def _validate_prevent_cr8escape_sysctl_values(self, config_elements):
+    def _validate_prevent_cr8escape_sysctl_values(self, doc, config_elements):
         sysctl_items = self._find_dict_list_under_key_suffix_recursive(config_elements, "sysctls")
 
         if not sysctl_items:
@@ -596,7 +610,7 @@ class ContentPolicyValidator:
         return containers
 
 
-    def _validate_require_container_port_names(self, config_elements):
+    def _validate_require_container_port_names(self, doc,config_elements):
         """
         Kyverno: for each container port defined in spec.containers/init/ephemeral, the 'name' field must be present and non-empty.
         io_k8s_api_core_v1_Pod_spec_containers_ports_name (string no vacío).
@@ -632,8 +646,94 @@ class ContentPolicyValidator:
 
         return True
     
-    # Polaris: New recursive helper to check if any resources cpu or memory limits/requests are defined (for future policies)
+    # POLARIS RESOURCES VALIDATION (CPU / MEMORY)
+    def _check_resource_in_container_mapped(self, container_dict, req_type, res_type):
+        """
+        Busca el recurso específico (cpu o memory) dentro de los límites o requests
+        basándose en el formato de string aplanado (ej: "cpu:200m").
+        
+        req_type: "limits" o "requests"
+        res_type: "cpu" o "memory"
+        """
+        # El sufijo objetivo a buscar en las claves del JSON
+        target_suffix = f"resources_{req_type}_asString"
+        
+        # Extraemos todos los valores string (ej: ["cpu:200m", "memory:200Mi"])
+        vals = self._find_values_by_suffix_recursive(container_dict, target_suffix)
+        
+        if not vals:
+            return False
 
+        # Comprobamos si alguno de los strings comienza por "cpu:" o "memory:"
+        search_prefix = f"{res_type}:"
+        
+        for v in vals:
+            if isinstance(v, str):
+                # Limpiamos espacios y pasamos a minúsculas por si el parser mete espacios (ej: "cpu : 200m")
+                val_clean = v.replace(" ", "").lower()
+                if val_clean.startswith(search_prefix.lower()):
+                    return True
+                    
+        return False
+
+    # POLARIS RESOURCES VALIDATION (CPU / MEMORY) - RAW + RECURSIVE
+    def _find_containers_in_raw(self, data):
+        """
+        Busca recursivamente cualquier lista llamada 'containers' en el YAML crudo.
+        Esto es 100% adaptable: funciona para Pods, CronJobs, Deployments, etc.
+        """
+        containers = []
+        if isinstance(data, dict):
+            for k, v in data.items():
+                # Encontramos la clave estándar de K8s y evitamos 'initContainers' o 'ephemeralContainers'
+                if k == "containers" and isinstance(v, list):
+                    for item in v:
+                        if isinstance(item, dict):
+                            containers.append(item)
+                # Seguimos buscando recursivamente
+                elif isinstance(v, (dict, list)):
+                    containers.extend(self._find_containers_in_raw(v))
+        elif isinstance(data, list):
+            for item in data:
+                containers.extend(self._find_containers_in_raw(item))
+                
+        return containers
+
+    def _validate_resource_presence_raw(self, doc, req_type, res_type, policy_name):
+        """
+        Validador genérico para Polaris usando recursividad sobre el YAML original.
+        """
+        # 1. Buscamos contenedores recursivamente en el YAML crudo (Adiós a los gets por Kind)
+        containers = self._find_containers_in_raw(doc)
+        
+        if not containers:
+            return True # Si no hay contenedores estándar, pasa.
+
+        all_ok = True
+        for c in containers:
+            c_name = c.get("name", "<unknown>")
+            
+            # 2. Navegamos la estructura estándar y natural de Kubernetes
+            resources = c.get("resources", {})
+            block = resources.get(req_type, {})
+
+            if res_type not in block:
+                print(f"[Fail] {policy_name}: El contenedor '{c_name}' no define {req_type} para {res_type}.")
+                all_ok = False
+
+        return all_ok
+
+    def _validate_cpu_limits_set(self, doc, config_elements):
+        return self._validate_resource_presence_raw(doc, "limits", "cpu", "cpuLimitsMissing")
+
+    def _validate_cpu_requests_set(self, doc, config_elements):
+        return self._validate_resource_presence_raw(doc, "requests", "cpu", "cpuRequestsMissing")
+
+    def _validate_memory_limits_set(self, doc, config_elements):
+        return self._validate_resource_presence_raw(doc, "limits", "memory", "memoryLimitsMissing")
+
+    def _validate_memory_requests_set(self, doc, config_elements):
+        return self._validate_resource_presence_raw(doc, "requests", "memory", "memoryRequestsMissing")
 
 def _find_objects_in_lists_by_suffix(self, data, list_suffixes):
     """

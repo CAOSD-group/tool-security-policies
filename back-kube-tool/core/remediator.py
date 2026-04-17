@@ -10,6 +10,7 @@ class Remediator:
     
     def __init__(self):
         self.yaml = YAML()
+        self.yaml.width = 1000 ## Evite the line break for long lines, common in Kubernetes manifests
         self.yaml.preserve_quotes = True
         self.yaml.indent(mapping=2, sequence=2, offset=0) ## sequence=4, offset=2 para alinear con el estilo de Kubernetes  
 
