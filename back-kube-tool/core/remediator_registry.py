@@ -140,16 +140,18 @@ class RemediationRegistry:
             ],
 
             "Restrict_Image_Registries": [
-                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_ephemeralContainers_image", "safe_value": "eu_foo_io/secure-image:v1"},
-                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_initContainers_image", "safe_value": "eu_foo_io/secure-image:v1"},
-                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_containers_image", "safe_value": "eu_foo_io/secure-image:v1"}
+                {"feature_to_fix": "DYNAMIC_IMAGE_FEATURES", "safe_value": "__MAKE_IMAGE_SECURE__"},
+                #{"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_ephemeralContainers_image", "safe_value": "eu_foo_io/secure-image:v1"},
+                #{"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_initContainers_image", "safe_value": "eu_foo_io/secure-image:v1"},
+                #{"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_containers_image", "safe_value": "eu_foo_io/secure-image:v1"}
             ],
             
             "Require_Images_Use_Checksums": [
-                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_containers_image", "safe_value": "__MAKE_IMAGE_SECURE__"}
+                {"feature_to_fix": "DYNAMIC_IMAGE_FEATURES", "safe_value": "__MAKE_IMAGE_SECURE__"}
             ],
             "tagNotSpecified": [
-                {"feature_to_fix": "io_k8s_api_core_v1_Container_image", "safe_value": "nginx:v1.28.0"}
+                {"feature_to_fix": "DYNAMIC_IMAGE_FEATURES", "safe_value": "__MAKE_IMAGE_SECURE__"},
+                #{"feature_to_fix": "io_k8s_api_core_v1_Container_image", "safe_value": "nginx:v1.28.0"}
             ],
             "Require_imagePullPolicy_Always": [
                 {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_containers_imagePullPolicy_Always", "safe_value": "Always"},

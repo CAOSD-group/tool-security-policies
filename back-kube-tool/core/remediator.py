@@ -1,5 +1,6 @@
-from ruamel.yaml import YAML
 import io
+import math
+from ruamel.yaml import YAML
 from core.utils.context_filter import enforce_k8s_object_arrays
 
 class Remediator:
@@ -10,26 +11,42 @@ class Remediator:
     
     def __init__(self):
         self.yaml = YAML()
-        self.yaml.width = 1000 ## Evite the line break for long lines, common in Kubernetes manifests
         self.yaml.preserve_quotes = True
-        self.yaml.indent(mapping=2, sequence=2, offset=0) ## sequence=4, offset=2 para alinear con el estilo de Kubernetes  
+        # FORZAR EL ESTILO KUBERNETES:
+        # mapping=2: Los diccionarios se indentan 2 espacios.
+        # sequence=4: Las listas se indentan 4 espacios desde la raíz.
+        # offset=2: El guion (-) se desplaza 2 espacios a la derecha.
+        self.yaml.width = math.inf 
+        self.yaml.indent(mapping=2, sequence=4, offset=2)
+        # PUNTO 2: Evita saltos de línea automáticos en cadenas largas
+        
+        # NOTA: Se elimina self.yaml.indent para que ruamel infiera el estilo original
 
-    def apply_patch(self, yaml_content: str, yaml_path: list, new_value) -> str:
-        """Aplica la corrección, manejando correctamente las listas de Kubernetes."""
+    def apply_batch_remediation(self, yaml_content: str, patches: list) -> str:
+        """
+        PUNTO 3: Unifica todo el proceso en una sola lectura y escritura.
+        'patches' es una lista de: {'path': list, 'value': any}
+        """
         try:
+            # 1. Cargar el documento una sola vez
             data = self.yaml.load(yaml_content)
-            if not data: 
+            if not data:
                 return yaml_content
 
-            # Usamos un algoritmo recursivo para navegar y modificar
-            self._apply_recursive(data, yaml_path, new_value)
+            # 2. Aplicar todos los cambios recursivos en memoria
+            for patch in patches:
+                self._apply_recursive(data, patch['path'], patch['value'])
             
+            # 3. Aplicar post-procesamiento de arrays del oráculo en el mismo objeto
+            data = enforce_k8s_object_arrays(data)
+            
+            # 4. Volcar a string una sola vez al final
             output = io.StringIO()
             self.yaml.dump(data, output)
             return output.getvalue()
             
         except Exception as e:
-            print(f"Error en Remediator al aplicar parche en {yaml_path}: {e}")
+            print(f"Error crítico en apply_batch_remediation: {e}")
             return yaml_content
 
     def _apply_recursive(self, current_node, path: list, value):
@@ -39,45 +56,20 @@ class Remediator:
         key = path[0]
         is_last = (len(path) == 1)
 
-        # 1. SI ES UNA LISTA: Iteramos sobre cada elemento
-        # (Ideal para Kubernetes: si hay 3 'containers', le aplica el parche a los 3)
+        # Manejo de listas (Containers en K8s)
         if isinstance(current_node, list):
             for item in current_node:
                 self._apply_recursive(item, path, value)
             return
 
-        # 2. SI ES UN DICCIONARIO: Navegamos de forma normal
         if isinstance(current_node, dict):
-            # Limpiamos si hay algún índice en formato string
+            # Limpieza de índices numéricos en strings
             if isinstance(key, str) and key.isdigit():
                 key = int(key)
 
             if is_last:
-                # Llegamos al destino, inyectamos el valor seguro
                 current_node[key] = value
             else:
-                # Bajamos un nivel. Si la clave no existe, la creamos (Auto-completado)
                 if key not in current_node:
                     current_node[key] = {}
                 self._apply_recursive(current_node[key], path[1:], value)
-                
-    def post_process_arrays(self, yaml_content: str) -> str:
-            """
-            Lee el YAML final, envuelve los diccionarios en arrays según 
-            el Feature Model (Oráculo), y devuelve el YAML corregido.
-            """
-            try:
-                data = self.yaml.load(yaml_content)
-                if not data:
-                    return yaml_content
-                
-                # Pasamos los datos por nuestra función del Oráculo
-                data = enforce_k8s_object_arrays(data)
-                
-                output = io.StringIO()
-                self.yaml.dump(data, output)
-                return output.getvalue()
-                
-            except Exception as e:
-                print(f"Error en Remediator al post-procesar arrays: {e}")
-                return yaml_content

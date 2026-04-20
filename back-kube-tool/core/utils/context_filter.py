@@ -97,27 +97,41 @@ def filter_context_aware_actions(original_config_elements: dict, actions_list: l
                     .replace("_IntegerValue", "") \
                     .replace("_Always", "")
 
-        # REMEDIACIÓN DINÁMICA DE IMÁGENES
-        # ==========================================
-        if safe_val == "__MAKE_IMAGE_SECURE__":
-            # 1. Buscamos qué imagen había puesto el usuario originalmente
-            original_image = original_config_elements.get(feat, "unknown-image")
-            if original_image is True or original_image == "unknown-image":
-                original_image = "app-image"
+        # AUTOMATIZACIÓN DINÁMICA: REMEDIACIÓN DE IMÁGENES (Context-Aware)
+        if feat == "DYNAMIC_IMAGE_FEATURES" and safe_val == "__MAKE_IMAGE_SECURE__":
+            # Escaneamos TODAS las claves del manifiesto buscando imágenes
+            for k, v in original_config_elements.items():
+                k_str = str(k)
                 
-            original_image_str = str(original_image).strip()
+                # Si la clave termina en _image o _image_StringValue (dependiendo de tu aplanador)
+                if k_str.endswith(("_image", "_image_StringValue")):
+                    
+                    original_image = str(v).strip()
+                    # Fallback por si la imagen venía vacía o corrupta
+                    if original_image in ["True", "None", "", "unknown-image"]:
+                        original_image = "app-image"
+                        
+                    # 1. Quitamos el registro viejo si lo tenía (ej: docker.io/nginx -> nginx)
+                    image_basename = original_image.split("/")[-1]
+                    
+                    # 2. Quitamos el tag o checksum viejo para aislar el nombre de la app
+                    image_clean = image_basename.split(":")[0].split("@")[0]
+                    
+                    # 3. Construimos la imagen 100% segura (Registro OK + Tag OK + Checksum OK)
+                    secure_image = f"eu.foo.io/{image_clean}:secure-tag@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+                    
+                    # 4. Limpiamos sufijos si es necesario para el Reverse Mapper
+                    clean_feat = k_str
+                    if strip_suffixes:
+                        clean_feat = clean_feat.replace("_StringValue", "")
+                        
+                    # 5. Añadimos la acción específica para ESTE contenedor
+                    valid_actions.append({
+                        "feature_to_fix": clean_feat,
+                        "safe_value": secure_image
+                    })
             
-            # 2. Le quitamos el registro viejo si lo tenía (ej: docker.io/nginx -> nginx)
-            image_basename = original_image_str.split("/")[-1]
-            
-            # 3. Le quitamos el tag viejo o checksum viejo para dejarla limpia
-            image_clean = image_basename.split(":")[0].split("@")[0]
-            
-            # 4. Construimos la imagen 100% segura manteniendo el nombre de la app
-            # Le ponemos el registro obligatorio, un tag genérico seguro, y un checksum dummy válido
-            safe_val = f"eu.foo.io/{image_clean}:secure-tag@sha256:0000000000000000000000000000000000000000000000000000000000000000"
-        
-
+            continue # Saltamos el resto del bucle normal para este token
         # AUTOMATIZACIÓN DINÁMICA: RECURSOS POLARIS (CPU / MEMORY)
         # =====================================================================
         if feat in ["DYNAMIC_CPU_LIMITS", "DYNAMIC_MEMORY_LIMITS", "DYNAMIC_CPU_REQUESTS", "DYNAMIC_MEMORY_REQUESTS"]:

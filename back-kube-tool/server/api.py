@@ -209,7 +209,14 @@ async def validate_manifest_stream(request: ValidationRequest):
                     for policy in active_policies:
                         if policy in regex_policy_names:
                             continue # Saltamos las políticas Regex en esta fase, las evaluaremos al final contra el YAML puro
-                        violation_list = validator.validate_configuration(target_config, [policy])
+                        
+                        try: 
+                            violation_list = validator.validate_configuration(target_config, [policy])
+                        except Exception as e:
+                            error_msg = str(e)
+                            print(f"Error al validar política {policy}: {error_msg}")
+                            continue
+
                         if violation_list:
                             for v in violation_list:
                                 total_violations += 1
@@ -300,26 +307,34 @@ async def remediate_manifest(request: RemediateRequest):
         reverse_mapper = app_state['reverse_mapper']
         remediator = app_state['remediator']
 
-        current_yaml = request.manifest_yaml
+        yaml_content = request.manifest_yaml
+        all_patches = []
         
-        # Iteramos sobre todas las correcciones de la lista
+        # 1. Iteramos sobre todas las correcciones ya calculadas que vienen del frontend
         for action in request.actions:
+            # Mapeo inverso: de la feature plana (UVL) a ruta de lista para ruamel
             yaml_path = reverse_mapper.get_yaml_path(action.feature_to_fix)
-            current_yaml = remediator.apply_patch(
-                yaml_content=current_yaml, 
-                yaml_path=yaml_path, 
-                new_value=action.safe_value
-            )
-        # Garantiza que propiedades como 'ports' se formateen como arrays (-)
-        current_yaml = remediator.post_process_arrays(current_yaml)
-        
-        return {"status": "success", "remediated_yaml": current_yaml}
+            
+            # Acumulamos el parche en lugar de aplicarlo uno a uno
+            all_patches.append({
+                "path": yaml_path,
+                "value": action.safe_value
+            })
 
+        # 2. Ejecución del lote de remediación (Mínimo Cambio y 1 sola operación de E/S)
+        if all_patches:
+            final_yaml = remediator.apply_batch_remediation(yaml_content, all_patches)
+        else:
+            final_yaml = yaml_content
+
+        return {"status": "success", "remediated_yaml": final_yaml}
+
+    except KeyError as ke:
+        logger.error(f"Remediation error (Dependency missing in app_state): {ke}")
+        raise HTTPException(status_code=500, detail=f"Error interno: Dependencia {str(ke)} no encontrada.")
     except Exception as e:
         logger.error(f"Remediation error: {e}")
         raise HTTPException(status_code=500, detail=f"Error al parchear el YAML: {str(e)}")
-
-
 
 @app.post("/validate-structure")
 async def validate_structure_endpoint(request: ValidationRequest):
