@@ -184,7 +184,7 @@ features
 					procMount {tool 'polaris', severity 'warning', weight '0.7', name 'procMount', kinds 'PodSpec', doc 'Proc mount must not be changed from the default', category 'Security', raw_source 'YAML with dinamic JSON'}
 					runAsPrivileged {tool 'polaris', severity 'danger', weight '1.0', name 'runAsPrivileged', kinds 'PodSpec', doc 'Should not be running as privileged', category 'Security', raw_source 'YAML with dinamic JSON'}
 					runAsRootAllowed {tool 'polaris', severity 'danger', weight '1.0', name 'runAsRootAllowed', kinds 'PodSpec', doc 'Should not be allowed to run as root', category 'Security', raw_source 'YAML with dinamic JSON'}
-					tlsSettingsMissing {tool 'polaris', severity 'warning', weight '0.7', name 'tlsSettingsMissing', kinds 'networking_k8s_io/Ingress', doc 'Ingress does not have TLS configured', category 'Security', raw_source 'YAML with dinamic JSON'}
+					tlsSettingsMissing {tool 'polaris', severity 'warning', weight '0.7', name 'tlsSettingsMissing', kinds 'Ingress', doc 'Ingress does not have TLS configured', category 'Security', raw_source 'YAML with dinamic JSON'}
 			GatekeeeperConstraints {abstract}
 				optional
 					k8spsphostfilesystem {tool 'Gatekeeper', severity 'undefined', category 'Host_Filesystem', kinds 'Pod', doc 'Controls usage of the host filesystem Corresponds to the allowedHostPaths field in a PodSecurityPolicy For more information, see https:_kubernetesio/docs/concepts/policy/pod-security-policy/#volumes-and-file-systems'}

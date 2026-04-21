@@ -1,5 +1,6 @@
 import json
 import os
+from ruamel.yaml.comments import CommentedSeq
 
 # 1. Cargamos el Oráculo en memoria
 ORACLE_PATH = os.path.join(os.path.dirname(__file__), '..', '..', 'resources', 'structural_oracle.json')
@@ -203,11 +204,18 @@ def enforce_k8s_object_arrays(data, current_path=""):
                 is_array = False
                 
             if is_array and isinstance(value, dict):
-                data[key] = [enforce_k8s_object_arrays(value, new_path)]
-            else:
+                # Usar CommentedSeq en lugar de una lista estándar de Python []
+                # para mantener viva la estructura de metadatos de ruamel
+                data[key] = CommentedSeq([enforce_k8s_object_arrays(value, new_path)])
+                
+            elif isinstance(value, (dict, list)):
                 data[key] = enforce_k8s_object_arrays(value, new_path)
                 
     elif isinstance(data, list):
-        return [enforce_k8s_object_arrays(item, current_path) for item in data]
-        
+        for i in range(len(data)):
+            # CRÍTICO: Solo aplicamos recursión y reasignamos si el hijo es complejo (dict/list).
+            # Evitamos reasignar strings (data[i] = data[i]) para no destruir sus comentarios.
+            if isinstance(data[i], (dict, list)):
+                data[i] = enforce_k8s_object_arrays(data[i], current_path)
+                        
     return data

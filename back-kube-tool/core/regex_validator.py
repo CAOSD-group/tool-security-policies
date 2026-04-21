@@ -18,7 +18,7 @@ class ContentPolicyValidator:
             ## New policies can  be added here with their corresponding validation methods.
             'Restrict_Image_Registries': self._validate_restrict_image_registries,
             'Require_Images_Use_Checksums': self._validate_require_images_use_checksums,
-            'Require_Ingress_HTTPS': self._validate_require_ingress_https,
+            #'Require_Ingress_HTTPS': self._validate_require_ingress_https,
             'Limit_hostPath_PersistentVolumes_to_Specific_Directories': self._validate_limit_pv_hostpath_specific_dirs,
             ## Added more policies here as needed...
             'Restrict_sysctls': self._validate_restrict_sysctls_allowlist,

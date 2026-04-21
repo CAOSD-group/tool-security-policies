@@ -2,6 +2,7 @@ import io
 import math
 from ruamel.yaml import YAML
 from core.utils.context_filter import enforce_k8s_object_arrays
+from ruamel.yaml.comments import CommentedMap
 
 class Remediator:
     """
@@ -16,7 +17,7 @@ class Remediator:
         # mapping=2: Los diccionarios se indentan 2 espacios.
         # sequence=4: Las listas se indentan 4 espacios desde la raíz.
         # offset=2: El guion (-) se desplaza 2 espacios a la derecha.
-        self.yaml.width = math.inf 
+        self.yaml.width = math.inf
         self.yaml.indent(mapping=2, sequence=4, offset=2)
         # PUNTO 2: Evita saltos de línea automáticos en cadenas largas
         
@@ -71,5 +72,5 @@ class Remediator:
                 current_node[key] = value
             else:
                 if key not in current_node:
-                    current_node[key] = {}
+                    current_node[key] = CommentedMap() ##{} # Inject a native object to preserve comments
                 self._apply_recursive(current_node[key], path[1:], value)
