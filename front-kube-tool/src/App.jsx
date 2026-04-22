@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import Editor from '@monaco-editor/react';
+import Editor, { DiffEditor } from '@monaco-editor/react';
 import { ShieldAlert, ShieldCheck, Upload, Play, Loader2, Info, AlertCircle, ChevronDown, ChevronUp, FileSearch, CheckCircle, XCircle } from 'lucide-react';
+//import YamlDiffViewer from './components/YamlDiffViewer';
 
 const DEFAULT_YAML = `apiVersion: v1
 kind: Pod
@@ -39,7 +40,9 @@ function App() {
   const [activeTab, setActiveTab] = useState('audit'); // 'audit' | 'structure'
   const [structuralData, setStructuralData] = useState(null);
   const [loadingStructure, setLoadingStructure] = useState(false);
-  // =========================================================================
+  // === ESTADOS PARA EL VISOR DIFF ===
+  const [showDiff, setShowDiff] = useState(false);
+  const [proposedYaml, setProposedYaml] = useState("");
 
   const togglePassedPolicy = (policyName) => {
     setExpandedPassed(prev => ({
@@ -158,7 +161,7 @@ function App() {
             range: new monacoRef.current.Range(index + 1, 1, index + 1, 1),
             options: {
               isWholeLine: true,
-              className: 'monaco-highlight-line', // Clase CSS que inyectaremos abajo
+              className: 'monaco-highlight-line',
             }
           });
         }
@@ -195,8 +198,9 @@ function App() {
       const data = await response.json();
 
       if (data.status === 'success') {
-        applyChangesAndHighlight(code, data.remediated_yaml);
-        setSystemMessages(prev => [...prev, { type: 'info', text: 'Todas las políticas auto-corregidas con éxito.' }]);
+        setProposedYaml(data.remediated_yaml); 
+        setShowDiff(true); 
+        setSystemMessages(prev => [...prev, { type: 'info', text: 'Revisa los cambios propuestos en el panel (Diff).' }]);
       }
     } catch (err) {
       setSystemMessages(prev => [...prev, { type: 'error', text: err.message }]);
@@ -232,12 +236,10 @@ function App() {
       
       const data = await response.json();
       
-      // Actualizamos el editor de Monaco con el nuevo código corregido
       if (data.status === 'success') {
-        //setCode(data.remediated_yaml);
-        applyChangesAndHighlight(code, data.remediated_yaml);
-        // Opcional: Mostrar un mensaje verde de éxito en el sistema
-        setSystemMessages(prev => [...prev, { type: 'info', text: ' YAML auto-corregido con éxito. Vuelve a Analizar.' }]);
+        setProposedYaml(data.remediated_yaml); 
+        setShowDiff(true); 
+        setSystemMessages(prev => [...prev, { type: 'info', text: 'Revisa los cambios propuestos en el panel (Diff).' }]);
       }
     } catch (err) {
       setSystemMessages(prev => [...prev, { type: 'error', text: err.message }]);
@@ -263,48 +265,102 @@ function App() {
 
       {/* Contenido Principal: Pantalla dividida */}
       <main className="flex-1 flex overflow-hidden p-4 gap-4">
-        
+
         {/* Panel del Editor (Izquierda) */}
         <div className="w-1/2 flex flex-col bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
           <div className="bg-gray-100 p-3 border-b border-gray-200 flex justify-between items-center">
-            <h2 className="font-semibold text-gray-700">Manifiesto YAML</h2>
+            <h2 className="font-semibold text-gray-700">
+              {showDiff ? "Revisión de Cambios (Change View)" : "Manifiesto YAML"}
+            </h2>
             <div className="flex gap-2">
-              {/* Botón Oculto de Subida */}
-              <input 
-                type="file" accept=".yaml,.yml" ref={fileInputRef}
-                onChange={handleFileUpload} className="hidden" 
-              />
-              <button 
-                onClick={() => fileInputRef.current.click()}
-                className="flex items-center gap-1 px-3 py-1.5 bg-white border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50 cursor-pointer transition"
-              >
-                <Upload className="w-4 h-4" /> Importar
-              </button>
-              <button 
-                onClick={handleValidate}
-                disabled={loading}
-                className="flex items-center gap-1 px-4 py-1.5 bg-blue-600 rounded text-sm text-white font-medium hover:bg-blue-700 cursor-pointer transition disabled:opacity-50"
-              >
-                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
-                Analizar Seguridad
-              </button>
+              
+              {showDiff ? (
+                /* MODO REVISIÓN: Aceptar o Descartar */
+                
+                <>
+                  <button 
+                    onClick={() => {
+                      setShowDiff(false);
+                      setSystemMessages(prev => [...prev, { type: 'info', text: 'Cambios descartados. Se mantiene el YAML original.' }]);
+                    }}
+                    className="flex items-center gap-1 px-3 py-1.5 bg-red-100 border border-red-300 rounded text-sm text-red-700 font-medium hover:bg-red-200 cursor-pointer transition"
+                  >
+                    <XCircle className="w-4 h-4" /> Descartar
+                  </button>
+                  
+                  <button 
+                    onClick={() => {
+                      setCode(proposedYaml); // APLICAMOS LOS CAMBIOS AQUÍ
+                      setShowDiff(false);
+                      setSystemMessages(prev => [...prev, { type: 'info', text: '✅ Cambios de seguridad aplicados al manifiesto.' }]);
+                    }}
+                    className="flex items-center gap-1 px-4 py-1.5 bg-green-600 rounded text-sm text-white font-medium hover:bg-green-700 cursor-pointer transition"
+                  >
+                    <CheckCircle className="w-4 h-4" /> Aceptar Cambios
+                  </button>
+                </>
+              ) : (
+                /* MODO NORMAL: Importar y Analizar */
+                <>
+                  <input 
+                    type="file" accept=".yaml,.yml" ref={fileInputRef}
+                    onChange={handleFileUpload} className="hidden" 
+                  />
+                  <button 
+                    onClick={() => fileInputRef.current.click()}
+                    className="flex items-center gap-1 px-3 py-1.5 bg-white border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50 cursor-pointer transition"
+                  >
+                    <Upload className="w-4 h-4" /> Importar
+                  </button>
+                  <button 
+                    onClick={handleValidate}
+                    disabled={loading || showDiff}
+                    className="flex items-center gap-1 px-4 py-1.5 bg-blue-600 rounded text-sm text-white font-medium hover:bg-blue-700 cursor-pointer transition disabled:opacity-50"
+                  >
+                    {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
+                    Analizar Seguridad
+                  </button>
+                </>
+              )}
             </div>
           </div>
-          
-          <div className="flex-1">
-            <Editor
-              height="100%"
-              defaultLanguage="yaml"
-              theme="vs-light"
-              value={code}
-              onChange={(value) => setCode(value)}
-              onMount={handleEditorDidMount}
-              options={{
-                minimap: { enabled: false },
-                fontSize: 14,
-                wordWrap: 'on',
-              }}
-            />
+
+          <div className="flex-1 relative h-full">
+            {/* 1. VISOR DIFF */}
+            <div className={showDiff ? "block h-full" : "hidden"}>
+              <DiffEditor
+                height="100%"
+                language="yaml"
+                theme="vs-light"
+                original={code ? code.replace(/\r\n/g, '\n') : ''}
+                modified={proposedYaml ? proposedYaml.replace(/\r\n/g, '\n') : ''}
+                options={{
+                  renderSideBySide: true,
+                  readOnly: true,
+                  minimap: { enabled: false },
+                  wordWrap: 'on',
+                  scrollBeyondLastLine: false,
+                  fontSize: 14,
+                }}
+              />
+            </div>
+
+            {/* 2. EDITOR NORMAL */}
+            <div className={!showDiff ? "block h-full" : "hidden"}>
+              <Editor
+                height="100%"
+                defaultLanguage="yaml"
+                theme="vs-light"
+                value={code}
+                onChange={(value) => setCode(value)}
+                onMount={handleEditorDidMount}
+                options={{
+                  minimap: { enabled: false },
+                  fontSize: 14,
+                  wordWrap: 'on',
+                }}
+              />
+            </div>
           </div>
         </div>
 
