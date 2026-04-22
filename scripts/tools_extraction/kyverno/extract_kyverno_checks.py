@@ -263,7 +263,7 @@ def handle_annotation_with_wildcard(key: str, value: str, prefix: str):
     clean_key = key.strip("=() ").replace("/*", "").replace(".", "_").replace("X(", "").replace(")", "")
     key_feature = f"{prefix}_KeyMap"
     value_feature = f"{prefix}_ValueMap"
-    print(f"key feature and value feature   {key_feature}   {value_feature}")
+    #print(f"key feature and value feature   {key_feature}   {value_feature}")
     # Dividir valores del patrón tipo "runtime/default | localhost/*"
     values = [v.strip().replace("/*", "").replace(".", "_") for v in value.split("|")]
 
@@ -275,7 +275,7 @@ def handle_annotation_with_wildcard(key: str, value: str, prefix: str):
         branch.append((value_feature, f"{v}"))
         pairs.append(branch)
 
-    print(f"[Wildcard] Generados {len(pairs)} pares para {clean_key}: {pairs}")
+    #print(f"[Wildcard] Generados {len(pairs)} pares para {clean_key}: {pairs}")
     return pairs
 
 
@@ -690,7 +690,7 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None, paren
             ## Specific case for the personality modification of the representation of the Integer Arrays:: Build the two cases
             elif "supplementalGroups" in new_prefix: 
                 new_prefix = f"{new_prefix}_IntegerValue"
-                print(f"New Prefix for Integer Arrays: {new_prefix} {v} {k}")
+                #print(f"New Prefix for Integer Arrays: {new_prefix} {v} {k}")
             elif "fsGroup" in new_prefix or "runAsGroup" in new_prefix or new_prefix.endswith('runAsUser'):
                 new_prefix = f"{new_prefix}_valueInt"
             if isinstance(v, dict):
@@ -701,7 +701,7 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None, paren
                 optional_clauses.extend(child_optional_clauses)                
             elif isinstance(v, list) and len(v) > 0 and isinstance(v[0], dict):
                 #conditions.extend(extract_conditions_from_spec(v[0], new_prefix))
-                print(f"V list elif   {v}   {new_prefix}")
+                #print(f"V list elif   {v}   {new_prefix}")
                 child_conditions, child_optional_clauses, child_complex_constraints = extract_conditions_from_spec(v[0], new_prefix, kind_prefixes, is_current_branch_optional) ## Prevent
                 conditions.extend(child_conditions)
                 optional_clauses.extend(child_optional_clauses)             
@@ -763,12 +763,12 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None, paren
                         val_str = str(v).strip()
                         #print(f"Valores STR   {val_str}   {new_prefix}")
                         if isinstance(v, str) and (' | ' in val_str or re.search(r'\d+-\d+', val_str)): ## and 'supplementalGroups' in new_prefix
-                            print(f"Valores Rango detectado   {val_str}   {new_prefix}") ### Detectado de rangos en arrays de enteros
+                            #print(f"Valores Rango detectado   {val_str}   {new_prefix}") ### Detectado de rangos en arrays de enteros
                             #val_str = str(v).strip()
                             #v = v.replace('-', '_')
                             # Dividir opciones por '|' y parsear rangos
                             options = [opt.strip() for opt in val_str.split('|')]
-                            print(f"Options detected for ranges:  {options}")
+                            #print(f"Options detected for ranges:  {options}")
                             or_expressions = []
 
                             for opt in options:
@@ -800,7 +800,7 @@ def extract_conditions_from_spec(obj, prefix="spec", kind_prefixes = None, paren
                                 conditions.append((child_feature, "true", is_current_branch_optional))
                                 continue
                             v = str(v)  #v = f"'{str(v)}'"
-                            print(f"Else final {v} {new_prefix}")
+                            ##print(f"Else final {v} {new_prefix}")
                 elif isinstance(v, (int, float)):
                     #print(f"Valores Caso INT   {v}")
                     v = str(v)

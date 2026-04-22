@@ -956,3 +956,9 @@ KSV014 - kubernetes-use-readonly-filesystem
 insecureCapabilities
 Al ser Container se deberia de aplicar a todos los Recursos?
 O usar KSV003, kubernetes-drop-default-capabilities para esta "expansion"
+
+
+kubernetes.containers[_]
+Es una función helper (ayudante) interna de la librería de Trivy que coge el Pod,
+ extrae los containers, extrae los initContainers, extrae los ephemeralContainers, 
+ los mete todos en una única lista plana y los evalúa a la vez.

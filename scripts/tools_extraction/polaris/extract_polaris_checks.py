@@ -281,7 +281,7 @@ def extract_conditions_from_schema(schema, controllers=None, prefix="", root_sch
                 if isinstance(contains, dict) and "pattern" in contains:
                     literal = clean_cap_pattern(contains["pattern"])
                     conds.append((prop_path, "contains", literal))
-                    print(f"Condition with oneOf    {prop_path} {literal}")
+                    ##print(f"Condition with oneOf    {prop_path} {literal}")
 
                 # Opción compuesta: allOf con varios contains
                 """if "allOf" in option and isinstance(option["allOf"], list): ## Uncomment if want to use the full insecureCapabilities Strs
@@ -356,9 +356,9 @@ def extract_conditions_from_schema(schema, controllers=None, prefix="", root_sch
                 extract_conditions_from_schema(rule, prefix=prop_path, root_schema=root_schema)
             )
         if "metadata" in name:
-            print(f"Metadata detectado {rule}   {prop_path}")
+            ##print(f"Metadata detectado {rule}   {prop_path}")
             aux_value_key = rule.get("required")
-            print(f"Aux value   {aux_value_key}")
+            ##print(f"Aux value   {aux_value_key}")
             if aux_value_key:
                 for prop in aux_value_key:
                     if prop == "labels":
@@ -366,7 +366,7 @@ def extract_conditions_from_schema(schema, controllers=None, prefix="", root_sch
                         aux_properties = rule.get("properties")
                         aux_rule = aux_properties.get("labels").get("properties")
                         if aux_rule:
-                            print(f"Prop path aux   {prop_path} aux_properties:  {aux_properties}   get {aux_rule}")   
+                            ##print(f"Prop path aux   {prop_path} aux_properties:  {aux_properties}   get {aux_rule}")   
                             conds.append((prop_path, "Map", aux_rule))
                         else: ## preparar caso minProperties
                             print(f"No aux rule for labels   {prop_path} ")
@@ -442,7 +442,7 @@ def extract_semantic_conditions_from_ast(ast, prefix="", result=None, root_ast=N
         result.append((prefix, "==", ast["const"]))
 
     if "minimum" in ast:
-        print(f"AST schme   {ast}  {prefix}")
+        ##print(f"AST schme   {ast}  {prefix}")
         result.append((prefix, ">=", ast["minimum"]))
 
     # contains (ej. array contains elementos que matchean un patrón)
@@ -609,7 +609,7 @@ def parse_polaris_check(path):
 
 def build_uvl_expr(kind_name: str, feature: str, op: str, val):
     full_feature = f"{kind_name}.{feature}"
-    print(f"Full feature build {full_feature}")
+    #print(f"Full feature build {full_feature}")
     if op == "==":
         #print(f"full feature ===    {full_feature}  op  {op}    {kind_name}")
         if isinstance(val, bool) or val == "true" or val == "false":
@@ -628,13 +628,13 @@ def build_uvl_expr(kind_name: str, feature: str, op: str, val):
         return f"{full_feature} == '{val}'"
 
     if op == "!=":
-        print(f"full feature    {full_feature}  op  {op}    {kind_name} {val}")
+        ##print(f"full feature    {full_feature}  op  {op}    {kind_name} {val}")
         if isinstance(val, bool):
             return f"!{full_feature}" ## {str(val).lower()}
         elif isinstance(val, str) and val == 'null':
             return f"{full_feature} != null"
         elif val == '': ## Case Efficiency empty string
-            print("Empty string detected")
+            ##print("Empty string detected")
             return f"{full_feature}"
         if val is None:
             return f"{full_feature}"
@@ -680,7 +680,7 @@ def build_uvl_expr(kind_name: str, feature: str, op: str, val):
             const_value = value.get('const')
             key = key.replace(".", "_")
         ##.replace("{", "","}", "", ".", "")
-        print(f"Full feauture   {full_feature}  {val}   {const_value}  {value}")
+        ##print(f"Full feauture   {full_feature}  {val}   {const_value}  {value}")
         const_value = const_value.replace("{", "").replace("}", "").replace(".", "_").replace(" ","")
         return f"{feature_map_key} == '{key}' & {feature_map_value} == '{const_value}'"
         
@@ -717,7 +717,7 @@ def map_semantic_conds_to_uvl(check, semantic_conds, feature_dict, kind_map):
     paths = {cond[0] for cond in semantic_conds}
     
     if "spec.minReplicas" in paths and "spec.maxReplicas" in paths:
-        print(f"Check minMaxReplicas detectado {check['id']}    {paths}")
+        ##print(f"Check minMaxReplicas detectado {check['id']}    {paths}")
         interval_max_min = []
         for path, op, val in semantic_conds:
             row = find_feature(context_kind, path, feature_dict)
@@ -757,7 +757,7 @@ def map_semantic_conds_to_uvl(check, semantic_conds, feature_dict, kind_map):
 
         # Condición simple: (path, op, val)
         if isinstance(cond, tuple) and len(cond) == 3:
-            print(f"Semantic conditions to map continue {cond}")
+            ##print(f"Semantic conditions to map continue {cond}")
             path, op, val = cond
             #print(f"Simple condition cond   {path}  {op}  {val}")
             row = find_feature(context_kind, path, feature_dict)
@@ -837,7 +837,7 @@ def polaris_to_uvl(check, feature_dict, kind_map):
     if not conds:
         id_check = check["id"]
         print(f"Sin condiciones mapeables → skip    {id_check}")
-        print(check)
+        ##print(check)
         return None
 
     feature_name = check["id"].replace("-", "_")
@@ -850,14 +850,14 @@ def polaris_to_uvl(check, feature_dict, kind_map):
         for prop_path, op, val in conds:
             #if "metadata" in prop_path:
             #    print(f"Condition:  {prop_path} {op}    {val}")
-            print(f"  Prop path   {prop_path}  {op} {val}   real_kind={real_kind}")
+            ##print(f"  Prop path   {prop_path}  {op} {val}   real_kind={real_kind}")
             context_kind = context_kind_for(real_kind, check, prop_path)
 
             ## Check for excluded kinds in controllers property if target is PodSpec
             kinds_excluded = controllers.get("exclude", [])
             if kinds_excluded:
                 for kind_excluded in kinds_excluded:
-                        print(f"Kind excluded  {kind_excluded}")
+                        ##print(f"Kind excluded  {kind_excluded}")
                         if kind_excluded == real_kind: ## if kind is excluded, we skip the required conditions
                             continue
             if prop_path.endswith(suffixes_to_strip):
@@ -880,7 +880,7 @@ def polaris_to_uvl(check, feature_dict, kind_map):
             if expr.endswith("_Removed"): ## Cases that we need Remove
                 continue
 
-            print(f"Expresiones add {expr}  {val}")
+            #print(f"Expresiones add {expr}  {val}")
             all_parts.append(expr)
 
     if not all_parts:
@@ -902,7 +902,7 @@ def polaris_to_uvl(check, feature_dict, kind_map):
 
     constraint = f"{feature_name} => {joined_parts}"
     #constraint = f"{feature_name} => " + " & ".join(all_parts)
-    print(f"Constraint  {constraint}")
+    ##print(f"Constraint  {constraint}")
 
     return feature_block, constraint
 

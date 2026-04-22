@@ -40,7 +40,7 @@ def parse_opa_directory(rego_dir):
         continue
       
       path = os.path.join(root, file)
-      policy = parse_rego_policy(path)
+      policy = parse_rego_policy(path, feature_dict)
 
       if not policy["conditions"]:
         print(f"[SKIP] No simple conditions found in {file}")

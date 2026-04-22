@@ -247,7 +247,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
+    <div className="h-screen bg-gray-50 flex flex-col font-sans">
       {/* Cabecera */}
       <style>{`
         .monaco-highlight-line {
@@ -268,39 +268,22 @@ function App() {
 
         {/* Panel del Editor (Izquierda) */}
         <div className="w-1/2 flex flex-col bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          {/* CABECERA SUPERIOR (Solo para importar y analizar) */}
           <div className="bg-gray-100 p-3 border-b border-gray-200 flex justify-between items-center">
-            <h2 className="font-semibold text-gray-700">
-              {showDiff ? "Revisión de Cambios (Change View)" : "Manifiesto YAML"}
-            </h2>
-            <div className="flex gap-2">
-              
+            <h2 className="font-semibold text-gray-700 flex items-center gap-2">
               {showDiff ? (
-                /* MODO REVISIÓN: Aceptar o Descartar */
-                
                 <>
-                  <button 
-                    onClick={() => {
-                      setShowDiff(false);
-                      setSystemMessages(prev => [...prev, { type: 'info', text: 'Cambios descartados. Se mantiene el YAML original.' }]);
-                    }}
-                    className="flex items-center gap-1 px-3 py-1.5 bg-red-100 border border-red-300 rounded text-sm text-red-700 font-medium hover:bg-red-200 cursor-pointer transition"
-                  >
-                    <XCircle className="w-4 h-4" /> Descartar
-                  </button>
-                  
-                  <button 
-                    onClick={() => {
-                      setCode(proposedYaml); // APLICAMOS LOS CAMBIOS AQUÍ
-                      setShowDiff(false);
-                      setSystemMessages(prev => [...prev, { type: 'info', text: '✅ Cambios de seguridad aplicados al manifiesto.' }]);
-                    }}
-                    className="flex items-center gap-1 px-4 py-1.5 bg-green-600 rounded text-sm text-white font-medium hover:bg-green-700 cursor-pointer transition"
-                  >
-                    <CheckCircle className="w-4 h-4" /> Aceptar Cambios
-                  </button>
+                  <FileSearch className="w-5 h-5 text-indigo-600" />
+                  Revisión de Cambios (Changes View)
                 </>
               ) : (
-                /* MODO NORMAL: Importar y Analizar */
+                "Manifiesto YAML"
+              )}
+            </h2>
+            
+            <div className="flex gap-2">
+              {/* Ocultamos los botones superiores si estamos en modo Diff para evitar clics por inercia */}
+              {!showDiff && (
                 <>
                   <input 
                     type="file" accept=".yaml,.yml" ref={fileInputRef}
@@ -314,7 +297,7 @@ function App() {
                   </button>
                   <button 
                     onClick={handleValidate}
-                    disabled={loading || showDiff}
+                    disabled={loading}
                     className="flex items-center gap-1 px-4 py-1.5 bg-blue-600 rounded text-sm text-white font-medium hover:bg-blue-700 cursor-pointer transition disabled:opacity-50"
                   >
                     {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
@@ -324,43 +307,80 @@ function App() {
               )}
             </div>
           </div>
+          
+          {/* ZONA DE EDITORES */}
+          <div className="flex-1 relative flex flex-col min-h-0">
+            {/* Contenedor de Monaco Editor (Ocupa el espacio restante) */}
+            <div className="flex-1 relative">
+              {/* 1. VISOR DIFF (Oculto con CSS si no toca) */}
+              <div className={showDiff ? "block h-full absolute inset-0" : "hidden"}>
+                <DiffEditor
+                  height="100%"
+                  language="yaml"
+                  theme="vs-light"
+                  original={code ? code.replace(/\r\n/g, '\n') : ''}
+                  modified={proposedYaml ? proposedYaml.replace(/\r\n/g, '\n') : ''}
+                  options={{
+                    renderSideBySide: true,
+                    readOnly: true,
+                    minimap: { enabled: false },
+                    wordWrap: 'on',
+                    scrollBeyondLastLine: false,
+                    fontSize: 14,
+                  }}
+                />
+              </div>
 
-          <div className="flex-1 relative h-full">
-            {/* 1. VISOR DIFF */}
-            <div className={showDiff ? "block h-full" : "hidden"}>
-              <DiffEditor
-                height="100%"
-                language="yaml"
-                theme="vs-light"
-                original={code ? code.replace(/\r\n/g, '\n') : ''}
-                modified={proposedYaml ? proposedYaml.replace(/\r\n/g, '\n') : ''}
-                options={{
-                  renderSideBySide: true,
-                  readOnly: true,
-                  minimap: { enabled: false },
-                  wordWrap: 'on',
-                  scrollBeyondLastLine: false,
-                  fontSize: 14,
-                }}
-              />
+              {/* 2. EDITOR NORMAL (Oculto con CSS si hay Diff) */}
+              <div className={!showDiff ? "block h-full absolute inset-0" : "hidden"}>
+                <Editor
+                  height="100%"
+                  defaultLanguage="yaml"
+                  theme="vs-light"
+                  value={code}
+                  onChange={(value) => setCode(value)}
+                  onMount={handleEditorDidMount}
+                  options={{
+                    minimap: { enabled: false },
+                    fontSize: 14,
+                    wordWrap: 'on',
+                  }}
+                />
+              </div>
             </div>
 
-            {/* 2. EDITOR NORMAL */}
-            <div className={!showDiff ? "block h-full" : "hidden"}>
-              <Editor
-                height="100%"
-                defaultLanguage="yaml"
-                theme="vs-light"
-                value={code}
-                onChange={(value) => setCode(value)}
-                onMount={handleEditorDidMount}
-                options={{
-                  minimap: { enabled: false },
-                  fontSize: 14,
-                  wordWrap: 'on',
-                }}
-              />
-            </div>
+            {/* BARRA INFERIOR DE ACCIÓN (Solo aparece en modo Diff) */}
+            {showDiff && (
+              <div className="bg-slate-50 border-t border-slate-200 p-3 flex justify-between items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10">
+                <div className="flex items-center gap-2 text-sm text-slate-500">
+                  <Info className="w-4 h-4 text-blue-500" />
+                  <span>Revisa las líneas resaltadas antes de aplicar los parches al manifiesto.</span>
+                </div>
+                
+                <div className="flex gap-3">
+                  <button 
+                    onClick={() => {
+                      setShowDiff(false);
+                      setSystemMessages(prev => [...prev, { type: 'info', text: 'Cambios descartados. Se mantiene el YAML original.' }]);
+                    }}
+                    className="flex items-center gap-1 px-4 py-2 bg-white border border-red-200 rounded-md text-sm text-red-600 hover:bg-red-50 cursor-pointer transition shadow-sm"
+                  >
+                    <XCircle className="w-4 h-4" /> Descartar
+                  </button>
+                  
+                  <button 
+                    onClick={() => {
+                      setCode(proposedYaml);
+                      setShowDiff(false);
+                      setSystemMessages(prev => [...prev, { type: 'info', text: '✅ Cambios de seguridad aplicados al manifiesto.' }]);
+                    }}
+                    className="flex items-center gap-1 px-5 py-2 bg-green-600 rounded-md text-sm text-white hover:bg-green-700 cursor-pointer transition shadow-sm"
+                  >
+                    <CheckCircle className="w-4 h-4" /> Aceptar Cambios
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
