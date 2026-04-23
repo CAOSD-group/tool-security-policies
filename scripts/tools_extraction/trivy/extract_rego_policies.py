@@ -306,7 +306,7 @@ def extract_conditions_from_rego(rego_text, recommended_action="", field_map=Non
             conditions.append({"field": prop_clean, "operator": "EXISTS", "value": "true"})
     
     # Salvavidas de seguridad específico para puertos host si todo lo demás falla
-    if not any("hostPort" in c["field"] for c in conditions):
+    """if not any("hostPort" in c["field"] for c in conditions):
         if re.search(r'\bports\[.*?\]\.hostPort\b', rego_text):
             conditions.append({"field": "ports.hostPort", "operator": "EXISTS", "value": "true"})
         
@@ -318,8 +318,7 @@ def extract_conditions_from_rego(rego_text, recommended_action="", field_map=Non
                 # Si el texto dice "to true" => interpretamos que queremos != true
                 val = "true" if "true" in cond_text.lower() else "false"
                 field_name = prop01.replace("containers[].","").replace("containers[*].","")
-                conditions.append({"field": field_name, "operator": "==", "value": val})
-
+                conditions.append({"field": field_name, "operator": "==", "value": val}) """
     # Regex 3: Para números enteros (ej: ... <= 10000)
     # \d+ captura uno o más dígitos
     
@@ -445,7 +444,24 @@ def extract_conditions_from_rego(rego_text, recommended_action="", field_map=Non
     # 4. Limpiamos posibles duplicados exactos generados
     unique_conditions = []
     seen = set()
+    # Primero, identificamos todos los campos que tienen operaciones matemáticas
+    strong_fields = set()
     for nc in new_conditions:
+        val_str = str(nc["value"]).lower()
+        if nc["operator"] in ("<", ">", "<=", ">="):
+            strong_fields.add(nc["field"])
+        # Si es un string específico (ej. 'SYS_ADMIN', 'NET_RAW')
+        elif nc["operator"] in ("==", "!=") and val_str not in ("true", "false", "") and not str(nc["value"]).isdigit():
+            strong_fields.add(nc["field"])
+    
+    for nc in new_conditions:
+        val_str = str(nc["value"]).lower()
+        # Si el campo tiene una condición fuerte, BLOQUEAMOS las condiciones booleanas
+        # o de existencia (EXISTS) que haya generado el fallback por error.
+        if nc["field"] in strong_fields and nc["operator"] in ("EXISTS", "==") and val_str in ("true", "false", ""):
+            print(f"[LOGIC CLEANUP] Eliminando fallback genérico redundante para: {nc['field']}")
+            continue
+        
         tup = (nc["field"], nc["operator"], nc["value"])
         if tup not in seen:
             seen.add(tup)
@@ -576,31 +592,55 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
                 for feature, is_list, value_field in found_features:
                     value_str = str(value).lower()
                     expr = ""
-                    # Prioridad 1: Tenemos claro el intent (por el texto de recomendación)
-                    if intent == "PROHIBITION":
-                        expr = f"!{kind_cap}.{feature}"
-                        print(f"Intent detected as PROHIBITION based on recommended action text. Generated expression: {expr}")
-                    elif intent == "REQUIREMENT":
-                        expr = f"{kind_cap}.{feature}"
-                    # Prioridad 2: Operadores de comparación estándar contra Strings
-                    elif operator == "==" and value_str not in ["true", "false"]:
-                        #if value is not None and value.isdigit():  # Si no es un número, tratamos como string: 
-                        #    expr = f"{kind_cap}.{feature} > {value}"
-                        expr = f"{kind_cap}.{feature} != '{value}'"
-                    elif operator == "!=" and value_str not in ["true", "false"]:
-                        expr = f"{kind_cap}.{feature} == '{value}'"
-                    elif operator == ">":
-                        expr = f"{kind_cap}.{feature} > {value}"
-                    elif operator == "<=": ## Case runs_with_UID_le_10000
-                        expr = f"{kind_cap}.{feature} > {value}"                              
-                    # Prioridad 3: Fallback explícito para Booleanos si el intent falló
-                    else:
-                        if value_str == "true":
-                            expr = f"{kind_cap}.{feature}" if operator == "==" else f"!{kind_cap}.{feature}"
-                        elif value_str == "false":
-                            expr = f"!{kind_cap}.{feature}" if operator == "==" else f"{kind_cap}.{feature}"
+                    
+                    is_specific_string = isinstance(value, str) and value_str not in ["true", "false", ""] and not str(value).isdigit()
+                    
+                    # 2. PROTECCIÓN DEL NODO PADRE: 
+                    # Si buscamos 'NET_RAW', no queremos hacer "!capabilities_add" (el array entero).
+                    # Solo queremos aplicar la regla al nodo hijo (_StringValue).
+                    if is_specific_string and not feature.endswith('StringValue'):
+                        has_string_child = any(f[0].endswith('StringValue') for f in found_features)
+                        if has_string_child:
+                            # Saltamos el nodo padre y dejamos que en la siguiente iteración
+                            # lo gestione el nodo _StringValue
+                            continue
+                            
+                    # 3. CONSTRUCCIÓN DE LA EXPRESIÓN (Prioridad Matemática)
+                    if is_specific_string:
+                        # Si es un string específico, IGNORAMOS el 'intent'.
+                        # Si Rego dice (== 'NET_RAW') en una regla Deny, la constraint segura es (!=)
+                        if operator == "==":
+                            expr = f"{kind_cap}.{feature} != '{value}'"
+                        elif operator == "!=":
+                            expr = f"{kind_cap}.{feature} == '{value}'"
                         else:
-                            expr = f"UNSUPPORTED_OPERATOR({operator})"
+                            expr = f"{kind_cap}.{feature} != '{value}'" # Fallback por seguridad
+                    else:
+                        # Prioridad 1: Tenemos claro el intent (por el texto de recomendación)
+                        if intent == "PROHIBITION":
+                            expr = f"!{kind_cap}.{feature}"
+                            print(f"Intent detected as PROHIBITION based on recommended action text. Generated expression: {expr}")
+                        elif intent == "REQUIREMENT":
+                            expr = f"{kind_cap}.{feature}"
+                        # Prioridad 2: Operadores de comparación estándar contra Strings
+                        elif operator == "==" and value_str not in ["true", "false"]:
+                            #if value is not None and value.isdigit():  # Si no es un número, tratamos como string: 
+                            #    expr = f"{kind_cap}.{feature} > {value}"
+                            expr = f"{kind_cap}.{feature} != '{value}'"
+                        elif operator == "!=" and value_str not in ["true", "false"]:
+                            expr = f"{kind_cap}.{feature} == '{value}'"
+                        elif operator == ">":
+                            expr = f"{kind_cap}.{feature} > {value}"
+                        elif operator == "<=": ## Case runs_with_UID_le_10000
+                            expr = f"{kind_cap}.{feature} > {value}"                              
+                        # Prioridad 3: Fallback explícito para Booleanos si el intent falló
+                        else:
+                            if value_str == "true":
+                                expr = f"{kind_cap}.{feature}" if operator == "==" else f"!{kind_cap}.{feature}"
+                            elif value_str == "false":
+                                expr = f"!{kind_cap}.{feature}" if operator == "==" else f"{kind_cap}.{feature}"
+                            else:
+                                expr = f"UNSUPPORTED_OPERATOR({operator})"
                     # --- Lógica de Dependencia del Padre (!Padre | Hijo) --- Para constraints con operadores de comparación numéricos o booleanos, asumimos que la condición solo tiene sentido si el nodo padre existe. Por ejemplo, "containers.securityContext.capabilities.add == 'SYS_MODULE'"
                     #  solo es relevante si "containers.securityContext.capabilities.add" existe. En UVL, esto se puede modelar como una implicación: "(!containers.securityContext.capabilities.add | containers.securityContext.capabilities.add == 'SYS_MODULE')". Esto evita falsos positivos en casos donde el nodo no existe.
                     if expr and "UNSUPPORTED" not in expr and intent == "REQUIREMENT" and not expr.startswith('!') or value.isdigit():

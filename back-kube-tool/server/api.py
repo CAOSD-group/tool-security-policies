@@ -139,7 +139,7 @@ async def validate_manifest(request: ValidationRequest):
 @app.post("/validate-stream")
 async def validate_manifest_stream(request: ValidationRequest):
     """
-    Endpoint que evalúa las políticas de forma iterativa y devuelve los resultados 
+    Endpoint que evalúa las políticas de forma iterativa y devuelve los resultados
     en tiempo real (streaming) para que el Frontend no se quede congelado.
     """
     async def generate_results():
