@@ -27,9 +27,10 @@ def build_field_map(csv_path):
 
 def normalize_rego_path(rego_path):
     # Eliminamos prefijos comunes en Trivy y Kyverno
-    prefixes = ["container.", "allContainers.", "kubernetes.containers.", "kubernetes."]
+    prefixes = ["allContainers.", "kubernetes.containers.", "kubernetes.object.", "container.", "kubernetes."]
     for p in prefixes:
         if rego_path.startswith(p):
+            print(f"Normalizing Rego path: Removing prefix  {rego_path}  from prefix {p}")
             rego_path = rego_path.replace(p, "")
             
     # También limpiamos el índice [_] si llega hasta aquí
@@ -277,16 +278,60 @@ def extract_conditions_from_rego(rego_text, recommended_action="", field_map=Non
             conditions.append({"field": field, "operator": op, "value": value})
             print(f"Added numeric condition: {conditions[-1]}")
     
-    # NUEVO Regex 4: Detección semántica de 'utils.has_key'
+    # Regex 4: Detección semántica de 'utils.has_key'
     # Trivy lo usa muchísimo para ver si una propiedad existe (ej: volumes, hostPath)
     has_key_pat = re.findall(r'has_key\(([^,]+),\s*"([^"]+)"\)', rego_text)
     for obj, prop in has_key_pat:
         obj_clean = re.sub(r'\[.*?\]', '', obj).split('.')[-1]
         # Solo consideramos objetos raíz conocidos para evitar ruido de variables locales
-        if obj_clean in ["container", "containers", "spec", "volumes", "securityContext", "template"]:
+        if obj_clean in ["container", "containers", "spec", "volumes", "securityContext", "template", "capabilities"]:
             conditions.append({"field": f"{obj_clean}.{prop}", "operator": "EXISTS", "value": "true"})
+    
+    # Regex 5: Detección de Conjuntos y operador 'in' (RBAC y Listas Negras como KSV-0122/0123)
+    set_vars = {}
+    for var_name, values in re.findall(r'([a-zA-Z0-9_]+)\s*:=\s*\{([^}]+)\}', rego_text):
+        clean_values = [v.strip().strip('\'" \n\t') for v in values.split(',')]
+        set_vars[var_name] = clean_values
 
+    in_patterns = re.findall(r'([a-zA-Z0-9_\.\[\]]+)\s+in\s+([a-zA-Z0-9_]+)', rego_text)
+    for field_match, var_name in in_patterns:
+        # Añade esta línea para ignorar la variable del bucle de KSV-0039
+        if var_name == "required_fields":
+            continue
+        if var_name in set_vars:
+            field_clean = re.sub(r'\[.*?\]', '', field_match)
+            if "kubernetes.kind" not in field_clean: 
+                for val in set_vars[var_name]:
+                    # Para UVL, estar en una lista negra significa que debe ser distinto (!=) a cada valor
+                    #if 'capabilities.drop' in field_clean:
+                    #    conditions.append({"field": field_clean, "operator": "!=", "value": val})
+                    #else:
+                    conditions.append({"field": field_clean, "operator": "==", "value": val})
+                    print(f"Added RBAC/Set condition: {conditions[-1]}")
 
+    # Regex 6: Detección de bucles sobre 'required_fields' (Caso LimitRange KSV-0039)
+    req_fields_match = re.search(r'required_fields\s*:=\s*\{([^}]+)\}', rego_text)
+    if req_fields_match and 'kubernetes.has_field' in rego_text:
+        fields = [f.strip().strip('\'" \n\t') for f in req_fields_match.group(1).split(',')]
+        for f in fields:
+            if f:
+                conditions.append({"field": f"limits.{f}", "operator": "EXISTS", "value": "true"})
+                print(f"Added LimitRange condition: {conditions[-1]}")
+    
+    # Regex 7: Detección de Arrays multidilínea (Caso Volúmenes KSV-0028)
+    # Busca bloques como: disallowed_volume_types := [ "nfs", "iscsi", ... ]
+    array_blocks = re.findall(r'([a-zA-Z0-9_]+)\s*:=\s*\[(.*?)\]', rego_text, re.DOTALL)
+    for var_name, values in array_blocks:
+        # Limpiamos saltos de línea, comillas y comas
+        clean_values = [v.strip().strip('\'" \n\t,') for v in values.split('\n') if v.strip() and not v.strip().startswith("#")]
+        clean_values = [v for v in clean_values if v]
+        
+        # Si el array se usa para iterar claves prohibidas (ej. has_key(volume, type))
+        if 'has_key' in rego_text and ('disallowed' in var_name.lower() or 'volume' in var_name.lower()):
+            for val in clean_values:
+                # Añadimos cada volumen a la lista. El intent (PROHIBITION) se encargará de ponerles el '!' a todos.
+                conditions.append({"field": f"volumes.{val}", "operator": "EXISTS", "value": "true"})
+    
     # Extraer propiedades desde texto si no hay condiciones detectadas
     if not conditions and recommended_action:
         #print(f"reccomended {recommended_action}")
@@ -319,9 +364,8 @@ def extract_conditions_from_rego(rego_text, recommended_action="", field_map=Non
                 val = "true" if "true" in cond_text.lower() else "false"
                 field_name = prop01.replace("containers[].","").replace("containers[*].","")
                 conditions.append({"field": field_name, "operator": "==", "value": val}) """
-    # Regex 3: Para números enteros (ej: ... <= 10000)
+    # Regex para números enteros (ej: ... <= 10000)
     # \d+ captura uno o más dígitos
-    
     #pat_num = re.compile(r'(\S+?)\s*(==|!=|<=|>=|<|>)\s*(\d+)\b')
     pat_num = re.compile(r"'(containers[.\w\[\]\*]+)'[^<>=]+(==|!=|<=|>=|<|>)\s*(\d+)")
     matches_num = pat_num.findall(cond_text)
@@ -400,7 +444,10 @@ def extract_conditions_from_rego(rego_text, recommended_action="", field_map=Non
     paths_words = set(re.findall(r'[a-zA-Z]+', paths_string))
 
     for c in conditions:
-        field_as_uvl = c["field"].replace('.', '_')
+
+        norm_field = normalize_rego_path(c["field"]) ## Normalizes before checking existence in the model, to increase chances of matching
+        field_as_uvl = norm_field.replace('.', '_')
+        # Check if exists with the field normalized as UVL path
         field_exists = any(field_as_uvl in model_key for model_key in field_map.keys())
         
         # --- EL PUNTO MEDIO: ¿Es un alias legítimo? ---
@@ -422,8 +469,9 @@ def extract_conditions_from_rego(rego_text, recommended_action="", field_map=Non
         # --- APLICACIÓN DE LA REGLA ---
         if field_exists:
             # Si el campo ya era perfecto, lo limpiamos y lo guardamos
-            if c["field"].startswith("kubernetes.object."):
-                c["field"] = c["field"].replace("kubernetes.object.", "")
+            #if c["field"].startswith("kubernetes.object."):
+            #   c["field"] = c["field"].replace("kubernetes.object.", "")
+            c["field"] = norm_field
             new_conditions.append(c)
             
         elif not field_exists and valid_paths and is_legit_alias:
@@ -456,6 +504,17 @@ def extract_conditions_from_rego(rego_text, recommended_action="", field_map=Non
     
     for nc in new_conditions:
         val_str = str(nc["value"]).lower()
+        # Comprobamos si el campo actual es un "prefijo" (padre) de algún campo fuerte.
+        # Usamos + "." (por si sigue en formato Rego) y + "_" (por si el escudo ya lo expandió a formato UVL)
+        is_redundant_parent = any(
+            sf.startswith(nc["field"] + ".") or sf.startswith(nc["field"] + "_")
+            for sf in strong_fields
+        )
+        
+        # Si es un padre redundante y su operador era solo de existencia (EXISTS o == true), ¡lo borramos!
+        if is_redundant_parent and nc["operator"] in ("EXISTS", "==") and val_str in ("true", "false", ""):
+            print(f"[LOGIC CLEANUP] Eliminando fallback genérico padre redundante: {nc['field']}")
+            continue
         # Si el campo tiene una condición fuerte, BLOQUEAMOS las condiciones booleanas
         # o de existencia (EXISTS) que haya generado el fallback por error.
         if nc["field"] in strong_fields and nc["operator"] in ("EXISTS", "==") and val_str in ("true", "false", ""):
@@ -492,10 +551,10 @@ def detect_intent(recommended_action, value):
     
     text = recommended_action.lower()
 
-    if any(x in text for x in ["do not set", "false", "disallow", "no-", "drop", "to 'false'"]):
+    if any(x in text for x in ["do not set", "do not enable", "false", "disallow", "no-", "to 'false'", "remove"]): ## "drop"
         return "PROHIBITION" # !Feature
     
-    if any(x in text for x in ["to true", "to 'true'", "require", "must be", "enable"]):
+    if any(x in text for x in ["to true", "to 'true'", "require", "must be", "enable", "create", "configure", "add ", "specify at least"]):
         return "REQUIREMENT" # Feature
     
     return "UNKNOWN"
@@ -508,7 +567,7 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
     if not policy["conditions"]:
         print(f"[ERROR] No se pudieron extraer condiciones para la política: {meta.get('short_code')}")
         return None, None
-    print(f"Policy {meta.get('short_code')} conditions: {policy['conditions']}")
+    print(f"Policy in process {meta.get('short_code')} conditions: {policy['conditions']}")
     first_cond = policy["conditions"][0]  # Asumimos 1 condición base por ahora
     recommended_action = meta['recommended_action']
     print(f"conditions extracted: {first_cond} from recommended_action: {recommended_action}")
@@ -576,6 +635,7 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
 
         field_key = normalize_rego_path(field)
         intent = detect_intent(recommended_action, value)
+        print(f"Policy in process 22 {meta.get('short_code')} {intent} conditions: {policy['conditions']}")
 
         if kinds:
             for kind in meta["kinds"]:
@@ -607,14 +667,25 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
                             
                     # 3. CONSTRUCCIÓN DE LA EXPRESIÓN (Prioridad Matemática)
                     if is_specific_string:
+                        final_val = value.upper() if value.lower() == "all" else value
                         # Si es un string específico, IGNORAMOS el 'intent'.
                         # Si Rego dice (== 'NET_RAW') en una regla Deny, la constraint segura es (!=)
-                        if operator == "==":
-                            expr = f"{kind_cap}.{feature} != '{value}'"
-                        elif operator == "!=":
-                            expr = f"{kind_cap}.{feature} == '{value}'"
+                        if intent == "REQUIREMENT":
+                            # Si DEBE TENER este string (Caso KSV-0003: Add 'ALL')
+                            if operator == "==":
+                                expr = f"{kind_cap}.{feature} == '{final_val}'"
+                            elif operator == "!=":
+                                expr = f"{kind_cap}.{feature} != '{final_val}'"
+                            else:
+                                expr = f"{kind_cap}.{feature} == '{final_val}'"
                         else:
-                            expr = f"{kind_cap}.{feature} != '{value}'" # Fallback por seguridad
+                            # Si es PROHIBICIÓN (o desconocido), mantenemos la lógica de bloqueo
+                            if operator == "==":
+                                expr = f"{kind_cap}.{feature} != '{final_val}'"
+                            elif operator == "!=":
+                                expr = f"{kind_cap}.{feature} == '{final_val}'"
+                            else:
+                                expr = f"{kind_cap}.{feature} != '{final_val}'"
                     else:
                         # Prioridad 1: Tenemos claro el intent (por el texto de recomendación)
                         if intent == "PROHIBITION":
@@ -622,6 +693,8 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
                             print(f"Intent detected as PROHIBITION based on recommended action text. Generated expression: {expr}")
                         elif intent == "REQUIREMENT":
                             expr = f"{kind_cap}.{feature}"
+                        #elif operator == "EXISTS":
+                        #    expr = f"!{kind_cap}.{feature}" if intent == "PROHIBITION" else f"{kind_cap}.{feature}"
                         # Prioridad 2: Operadores de comparación estándar contra Strings
                         elif operator == "==" and value_str not in ["true", "false"]:
                             #if value is not None and value.isdigit():  # Si no es un número, tratamos como string: 
@@ -646,7 +719,7 @@ def rego_policy_to_uvl(policy, field_map, kind_map):
                     if expr and "UNSUPPORTED" not in expr and intent == "REQUIREMENT" and not expr.startswith('!') or value.isdigit():
                         parent_feature = None
                         # Buscamos el nodo padre (hasta containers, initContainers, o ephemeralContainers)
-                        match = re.search(r'(.*(?:containers|initContainers|ephemeralContainers))', feature, re.IGNORECASE)
+                        match = re.search(r'(.*(?:containers|initContainers|ephemeralContainers|limits))', feature, re.IGNORECASE)
                         #print(f"Intent detected as PROHIBITION based on recommended action text. Generated expression: {expr}")
 
                         if match:
@@ -710,7 +783,7 @@ if __name__ == "__main__":
     ## ../resources/kyverno_policies_yamls
     field_map = load_feature_dict("../resources/mapping_csv/kubernetes_mapping_properties_features.csv")
     #data = parse_rego_policy("../resources/kyverno_policies_yamls/OPA_Policies/SYS_ADMIN_capability.rego")
-    data = parse_rego_policy("../resources/trivy_OPA_Policies/host_pid.rego", field_map)
+    data = parse_rego_policy("../resources/trivy_OPA_Policies/capabilities_no_drop_at_least_one.rego", field_map)
 
     kind_map = load_kinds_prefix_mapping("../resources/mapping_csv/kubernetes_kinds_versions_detected.csv")
 

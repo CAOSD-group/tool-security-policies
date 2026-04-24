@@ -79,7 +79,11 @@ def parse_polaris_directory(polaris_dir):
       uvl_feature_block, uvl_constraint_expr = result
 
       # lookup severity from severity_map
-      severity = severity_map.get(check["id"], "warning")  # default to warning
+      severity = severity_map.get(check["id"], "medium")  # default to medium if not found
+      if severity == 'danger':
+        severity = 'high'
+      elif severity == 'warning':
+        severity = 'medium'
       # obtain weight from severity
       weight = severity_to_weight(severity)
 
