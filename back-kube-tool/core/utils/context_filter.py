@@ -42,6 +42,20 @@ def filter_context_aware_actions(original_config_elements: dict, actions_list: l
         elif "_metadata" in key:
             workload_root = key.split("_metadata")[0]
             break
+
+    # 2. Pre-computar las rutas base para los sufijos dinámicos
+    container_base_paths = set()
+    pod_spec_base_paths = set()
+    
+    for k in original_config_elements.keys():
+        k_str = str(k)
+        # Extraer base de contenedores
+        for c_type in ["_containers", "_ephemeralContainers", "_initContainers"]:
+            if c_type in k_str:
+                container_base_paths.add(k_str.split(c_type)[0] + c_type)
+        # Extraer base del PodSpec
+        if "_spec_containers" in k_str:
+            pod_spec_base_paths.add(k_str.split("_spec_containers")[0] + "_spec")
             
     existing_keys_str = " ".join(original_config_elements.keys())
     valid_actions = []
@@ -50,136 +64,110 @@ def filter_context_aware_actions(original_config_elements: dict, actions_list: l
         feat = action["feature_to_fix"]
         safe_val = action["safe_value"]
         
-        # --- REGLA 1: Coincidencia de Workload ---
-        if workload_root and "io_k8s" in feat and not feat.startswith(workload_root):
-            continue
-        # --- REGLA 2: Evitar Recursos Fantasma ---
-        if "initContainers" in feat and "initContainers" not in existing_keys_str:
-            continue
-        if "ephemeralContainers" in feat and "ephemeralContainers" not in existing_keys_str:
-            continue
-        # REGLA 3: ANDAMIAJE ESTRUCTURAL (Dual-Oracle Architecture)
-        # Buscamos si la feature que vamos a arreglar necesita propiedades obligatorias
-        # =================================================================
-        parts = feat.split('_')
-        for i in range(len(parts), 0, -1):
-            possible_parent = "_".join(parts[:i])
-            
-            # USAMOS STRUCTURAL_DEPENDENCIES en lugar de STRUCTURAL_ORACLE
-            if possible_parent in STRUCTURAL_DEPENDENCIES:
-                mandatory_siblings = STRUCTURAL_DEPENDENCIES[possible_parent]
-                
-                for sibling_feat, default_val in mandatory_siblings.items():
-                    if sibling_feat not in original_config_elements:
-                        clean_sibling = sibling_feat
-                        if strip_suffixes:
-                            clean_sibling = clean_sibling.replace("_valueInt", "").replace("_StringValue", "").replace("_IntegerValue", "").replace("_Always", "")
-                        
-                        if not any(a["feature_to_fix"] == clean_sibling for a in valid_actions):
-                            valid_actions.append({"feature_to_fix": clean_sibling, "safe_value": default_val})
-
-        # --- REGLA 4: Limpieza de Sufijos y Traducción para la feature principal (Solo para inyección en AST/YAML)---
+        # --- EXPANSIÓN DE SUFIJOS DINÁMICOS ---
+        # Convertimos 1 token abstracto en N rutas reales del manifiesto
+        expanded_features = []
         
-        if strip_suffixes:
-            # A) Traducir Booleano de Z3 a Enum de K8s
-            if "_Always" in feat and safe_val is True:
-                feat = feat.replace("_Always", "")
-                safe_val = "Always"
-            # B) Traducir dominios del modelo a URLs reales
-            if isinstance(safe_val, str):
-                safe_val = safe_val.replace("eu_foo_io", "eu.foo.io").replace("bar_io", "bar.io")
-            # C) Empaquetar escalares en listas para propiedades array de K8s
-            if "supplementalGroups" in feat and not isinstance(safe_val, list):
-                safe_val = [safe_val]
-                
-            # D) Limpieza final de sufijos
-            feat = feat.replace("_valueInt", "") \
-                    .replace("_StringValue", "") \
-                    .replace("_IntegerValue", "") \
-                    .replace("_Always", "")
-
-        # AUTOMATIZACIÓN DINÁMICA: REMEDIACIÓN DE IMÁGENES (Context-Aware)
-        if feat == "DYNAMIC_IMAGE_FEATURES" and safe_val == "__MAKE_IMAGE_SECURE__":
-            # Escaneamos TODAS las claves del manifiesto buscando imágenes
-            for k, v in original_config_elements.items():
-                k_str = str(k)
-                
-                # Si la clave termina en _image o _image_StringValue (dependiendo de tu aplanador)
-                if k_str.endswith(("_image", "_image_StringValue")):
-                    
-                    original_image = str(v).strip()
-                    # Fallback por si la imagen venía vacía o corrupta
-                    if original_image in ["True", "None", "", "unknown-image"]:
-                        original_image = "app-image"
-                        
-                    # 1. Quitamos el registro viejo si lo tenía (ej: docker.io/nginx -> nginx)
-                    image_basename = original_image.split("/")[-1]
-                    
-                    # 2. Quitamos el tag o checksum viejo para aislar el nombre de la app
-                    image_clean = image_basename.split(":")[0].split("@")[0]
-                    
-                    # 3. Construimos la imagen 100% segura (Registro OK + Tag OK + Checksum OK)
-                    secure_image = f"eu.foo.io/{image_clean}:secure-tag@sha256:0000000000000000000000000000000000000000000000000000000000000000"
-                    
-                    # 4. Limpiamos sufijos si es necesario para el Reverse Mapper
-                    clean_feat = k_str
-                    if strip_suffixes:
-                        clean_feat = clean_feat.replace("_StringValue", "")
-                        
-                    # 5. Añadimos la acción específica para ESTE contenedor
-                    valid_actions.append({
-                        "feature_to_fix": clean_feat,
-                        "safe_value": secure_image
-                    })
-            
-            continue # Saltamos el resto del bucle normal para este token
-        # AUTOMATIZACIÓN DINÁMICA: RECURSOS POLARIS (CPU / MEMORY)
-        # =====================================================================
-        if feat in ["DYNAMIC_CPU_LIMITS", "DYNAMIC_MEMORY_LIMITS", "DYNAMIC_CPU_REQUESTS", "DYNAMIC_MEMORY_REQUESTS"]:
-            
-            # 1. Determinamos si es limit o request, y si es cpu o memory
-            req_type = "limits" if "LIMITS" in feat else "requests"
-            res_type = "cpu" if "CPU" in feat else "memory"
-            
-            # 2. Buscamos el ancla del contenedor de forma infalible
-            container_base_paths = set()
-            for k in original_config_elements.keys():
-                k_str = str(k)
-                # Cualquier clave que esté dentro de un contenedor nos vale para sacar la ruta base
-                for c_type in ["_containers", "_ephemeralContainers"]: # exclude initContainers
-                    if c_type in k_str:
-                        # Cortamos todo lo que haya después del contenedor
-                        # Ej: pod_spec_containers_image -> pod_spec_containers
-                        base_path = k_str.split(c_type)[0] + c_type
-                        container_base_paths.add(base_path)
-
-            # 3. Construimos la ruta de recursos estándar de Kubernetes
+        if feat.startswith("DYNAMIC_CONTAINER_SUFFIX_"):
+            suffix = feat.replace("DYNAMIC_CONTAINER_SUFFIX_", "")
             for base_path in container_base_paths:
-                # Construimos la clave exacta para el AST: ej. ..._spec_containers_resources_limits_cpu
-                dynamic_resource_key = f"{base_path}_resources_{req_type}_{res_type}"
-                if strip_suffixes: # Opcional si tu motor limpia sufijos
-                    dynamic_resource_key = dynamic_resource_key.replace("_IntegerValue", "").replace("_StringValue", "")
-                # Añadimos la acción. Como safe_val es "100m" o "512Mi",
-                # el Reverse Mapper construirá un YAML perfecto.
-                valid_actions.append({
-                    "feature_to_fix": dynamic_resource_key, 
-                    "safe_value": safe_val
-                })
-            
-            continue # Saltamos el resto del bucle normal
-
-        # --- RESOLUCIÓN DE CONFLICTOS (Merge con Prioridad) ---
-        # Si el andamiaje estructural acaba de meter un valor por defecto para esta misma feature,
-        # la regla de seguridad (safe_val) lo SOBREESCRIBE porque tiene prioridad.
-        
-        existing_action = next((a for a in valid_actions if a["feature_to_fix"] == feat), None)
-        if existing_action:
-            existing_action["safe_value"] = safe_val
+                expanded_features.append(f"{base_path}_{suffix}")
+                
+        elif feat.startswith("DYNAMIC_POD_SUFFIX_"):
+            suffix = feat.replace("DYNAMIC_POD_SUFFIX_", "")
+            for base_path in pod_spec_base_paths:
+                expanded_features.append(f"{base_path}_{suffix}")
+                
+        elif feat.startswith("DYNAMIC_ROOT_SUFFIX_"):
+            suffix = feat.replace("DYNAMIC_ROOT_SUFFIX_", "")
+            if workload_root:
+                expanded_features.append(f"{workload_root}_{suffix}")
+                
         else:
-            valid_actions.append({
-                "feature_to_fix": feat,
-                "safe_value": safe_val
-            })
+            # Flujo normal, es una clave exacta o un token especial como DYNAMIC_IMAGE_FEATURES
+            expanded_features.append(feat)
+
+        # Ahora aplicamos tus Reglas 1-4 a las rutas ya expandidas y reales
+        for current_feat in expanded_features:
+            
+            # --- REGLA 1: Coincidencia de Workload ---
+            if workload_root and "io_k8s" in current_feat and not current_feat.startswith(workload_root):
+                continue
+                
+            # --- REGLA 2: Evitar Recursos Fantasma ---
+            if "initContainers" in current_feat and "initContainers" not in existing_keys_str:
+                continue
+            if "ephemeralContainers" in current_feat and "ephemeralContainers" not in existing_keys_str:
+                continue
+                
+            # --- REGLA 3: ANDAMIAJE ESTRUCTURAL (Dual-Oracle Architecture) ---
+            parts = current_feat.split('_')
+            for i in range(len(parts), 0, -1):
+                possible_parent = "_".join(parts[:i])
+                
+                if possible_parent in STRUCTURAL_DEPENDENCIES:
+                    mandatory_siblings = STRUCTURAL_DEPENDENCIES[possible_parent]
+                    
+                    for sibling_feat, default_val in mandatory_siblings.items():
+                        if sibling_feat not in original_config_elements:
+                            clean_sibling = sibling_feat
+                            if strip_suffixes:
+                                clean_sibling = clean_sibling.replace("_valueInt", "").replace("_StringValue", "").replace("_IntegerValue", "").replace("_Always", "")
+                            
+                            if not any(a["feature_to_fix"] == clean_sibling for a in valid_actions):
+                                valid_actions.append({"feature_to_fix": clean_sibling, "safe_value": default_val})
+
+            # --- REGLA 4: Limpieza de Sufijos y Traducción ---
+            final_feat = current_feat
+            final_safe_val = safe_val
+            
+            if strip_suffixes:
+                if "_Always" in final_feat and final_safe_val is True:
+                    final_feat = final_feat.replace("_Always", "")
+                    final_safe_val = "Always"
+                if isinstance(final_safe_val, str):
+                    final_safe_val = final_safe_val.replace("eu_foo_io", "eu.foo.io").replace("bar_io", "bar.io")
+                if "supplementalGroups" in final_feat and not isinstance(final_safe_val, list):
+                    final_safe_val = [final_safe_val]
+                    
+                final_feat = final_feat.replace("_valueInt", "") \
+                                     .replace("_StringValue", "") \
+                                     .replace("_IntegerValue", "") \
+                                     .replace("_Always", "")
+
+            # --- AUTOMATIZACIÓN DINÁMICA: REMEDIACIÓN DE IMÁGENES ---
+            # (Se mantiene intacta porque requiere leer valores previos del AST)
+            if final_feat == "DYNAMIC_IMAGE_FEATURES" and final_safe_val == "__MAKE_IMAGE_SECURE__":
+                for k, v in original_config_elements.items():
+                    k_str = str(k)
+                    if k_str.endswith(("_image", "_image_StringValue")):
+                        original_image = str(v).strip()
+                        if original_image in ["True", "None", "", "unknown-image"]:
+                            original_image = "app-image"
+                            
+                        image_basename = original_image.split("/")[-1]
+                        image_clean = image_basename.split(":")[0].split("@")[0]
+                        secure_image = f"eu.foo.io/{image_clean}:secure-tag@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+                        
+                        clean_feat = k_str
+                        if strip_suffixes:
+                            clean_feat = clean_feat.replace("_StringValue", "")
+                            
+                        valid_actions.append({
+                            "feature_to_fix": clean_feat,
+                            "safe_value": secure_image
+                        })
+                continue 
+
+            # --- RESOLUCIÓN DE CONFLICTOS (Merge con Prioridad) ---
+            existing_action = next((a for a in valid_actions if a["feature_to_fix"] == final_feat), None)
+            if existing_action:
+                existing_action["safe_value"] = final_safe_val
+            else:
+                valid_actions.append({
+                    "feature_to_fix": final_feat,
+                    "safe_value": final_safe_val
+                })
         
     return valid_actions
 

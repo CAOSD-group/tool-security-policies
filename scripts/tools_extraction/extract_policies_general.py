@@ -65,7 +65,7 @@ def get_base_prefix(kind_prefix): ## Used by the generate_uvl_policies
         return "ServAcc"
     elif "Service" in kind_prefix:
         return "Serv"
-    elif "Clusterolebinding" in kind_prefix:
+    elif "Clusterrolebinding" in kind_prefix:
         return "ClusRole"
     elif "Rolebinding" in kind_prefix:
         return "RoleBinding"
@@ -85,6 +85,8 @@ def get_base_prefix(kind_prefix): ## Used by the generate_uvl_policies
         return "PersistVolumeClaim" ## PodDisruptionBudgetFeatures
     elif "Poddisruptionbudget" in kind_prefix:
         return "PodDisrupBud"
+    elif "Limitrange" == kind_prefix:
+        return "LimitRange"
     else:
         return "Kubernetes"
     
