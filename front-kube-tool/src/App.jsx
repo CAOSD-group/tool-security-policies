@@ -71,7 +71,7 @@ function App() {
         body: JSON.stringify({ manifest_yaml: code }),
       });
 
-      if (!response.ok) throw new Error('Error en el servidor de validación');
+      if (!response.ok) throw new Error('Error in the validation server');
 
       // Leemos el stream de datos
       const reader = response.body.getReader();
@@ -143,7 +143,7 @@ function App() {
       setStructuralData(data);
     } catch (error) {
       console.error(error);
-      setStructuralData({ status: 'error', message: 'Error de red al conectar con el servidor SAT.' });
+      setStructuralData({ status: 'error', message: 'Network error while connecting to the SAT server.' });
     } finally {
       setLoadingStructure(false);
     }
@@ -202,7 +202,7 @@ function App() {
 
     //if (allActions.length === 0) return;
     if (remainingActions.length === 0) {
-      setSystemMessages(prev => [...prev, { type: 'info', text: 'No hay más acciones automáticas disponibles para aplicar.' }]);
+      setSystemMessages(prev => [...prev, { type: 'info', text: 'There are no more automatic actions available to apply.' }]);
       return;
     }
     
@@ -213,13 +213,13 @@ function App() {
         body: JSON.stringify({ manifest_yaml: code, actions: remainingActions }),
       });
 
-      if (!response.ok) throw new Error('Error al parchear');
+      if (!response.ok) throw new Error('Error while patching the manifest');
       const data = await response.json();
 
       if (data.status === 'success') {
         setProposedYaml(data.remediated_yaml); 
         setShowDiff(true); 
-        setSystemMessages(prev => [...prev, { type: 'info', text: 'Revisa los cambios propuestos en el panel (Diff).' }]);
+        setSystemMessages(prev => [...prev, { type: 'info', text: 'Review the proposed changes in the dashboard (Diff).' }]);
       }
     } catch (err) {
       setSystemMessages(prev => [...prev, { type: 'error', text: err.message }]);
@@ -252,14 +252,14 @@ function App() {
         }),
       });
 
-      if (!response.ok) throw new Error('Error al parchear el archivo');
+      if (!response.ok) throw new Error('Error while patching the manifest');
       
       const data = await response.json();
       
       if (data.status === 'success') {
         setProposedYaml(data.remediated_yaml); 
         setShowDiff(true); 
-        setSystemMessages(prev => [...prev, { type: 'info', text: 'Revisa los cambios propuestos en el panel (Diff).' }]);
+        setSystemMessages(prev => [...prev, { type: 'info', text: 'Review the proposed changes in the dashboard (Diff).' }]);
       }
     } catch (err) {
       setSystemMessages(prev => [...prev, { type: 'error', text: err.message }]);
@@ -294,10 +294,10 @@ function App() {
               {showDiff ? (
                 <>
                   <FileSearch className="w-5 h-5 text-indigo-600" />
-                  Revisión de Cambios (Changes View)
+                  Review Changes (Diff)
                 </>
               ) : (
-                "Manifiesto YAML"
+                "YAML Manifest Editor"
               )}
             </h2>
             
@@ -312,18 +312,18 @@ function App() {
                   <button 
                     onClick={() => fileInputRef.current.click()}
                     className="flex items-center gap-1 px-3 py-1.5 bg-white border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50 cursor-pointer transition"
-                    title='Import your local YAML'
+                    title='Upload your local YAML manifest'
                   >
-                    <Upload className="w-4 h-4" /> Importar
+                    <Upload className="w-4 h-4" /> Import
                   </button>
                   <button 
                     onClick={handleValidate}
                     disabled={loading}
-                    title='Start the validation of the manifest in the template!'
+                    title='Run the logic engine validation to discover misconfigurations in the current manifest'
                     className="flex items-center gap-1 px-4 py-1.5 bg-blue-600 rounded text-sm text-white font-medium hover:bg-blue-700 cursor-pointer transition disabled:opacity-50"
                   >
                     {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
-                    Analizar Seguridad
+                    Analyze Manifest
                   </button>
                 </>
               )}
@@ -376,7 +376,7 @@ function App() {
               <div className="bg-slate-50 border-t border-slate-200 p-3 flex justify-between items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10">
                 <div className="flex items-center gap-2 text-sm text-slate-500">
                   <Info className="w-4 h-4 text-blue-500" />
-                  <span>Revisa las líneas resaltadas antes de aplicar los parches al manifiesto.</span>
+                  <span>Check the highlighted lines before applying the patches to the manifest.</span>
                 </div>
                 
                 <div className="flex gap-3">
@@ -384,12 +384,12 @@ function App() {
                     onClick={() => {
                       setShowDiff(false);
                       setCurrentPolicyFixing(null); // Reset if discarding
-                      setSystemMessages(prev => [...prev, { type: 'info', text: 'Cambios descartados. Se mantiene el YAML original.' }]);
+                      setSystemMessages(prev => [...prev, { type: 'info', text: 'Changes discarded. The original YAML is maintained.' }]);
                     }}
-                    title='Descarta los cambios y manten el YAML original'
+                    title='Discard the changes and keep the original YAML'
                     className="flex items-center gap-1 px-4 py-2 bg-white border border-red-200 rounded-md text-sm text-red-600 hover:bg-red-50 cursor-pointer transition shadow-sm"
                   >
-                    <XCircle className="w-4 h-4" /> Descartar
+                    <XCircle className="w-4 h-4" /> Discard Changes
                   </button>
                   
                   <button 
@@ -405,12 +405,12 @@ function App() {
                       }
                       setCurrentPolicyFixing(null); // Reseteamos
 
-                      setSystemMessages(prev => [...prev, { type: 'info', text: 'Cambios de seguridad aplicados al manifiesto.' }]);
+                      setSystemMessages(prev => [...prev, { type: 'info', text: 'Security changes applied to the manifest.' }]);
                     }}
-                    title="Aplica este código corregido a tu editor principal"
+                    title="Apply this corrected code to your main editor and update the manifest with the recommended security patches."
                     className="flex items-center gap-1 px-5 py-2 bg-green-600 rounded-md text-sm text-white hover:bg-green-700 cursor-pointer transition shadow-sm"
                   >
-                    <CheckCircle className="w-4 h-4" /> Aceptar Cambios
+                    <CheckCircle className="w-4 h-4" /> Accept & Apply
                   </button>
                 </div>
               </div>
@@ -430,7 +430,7 @@ function App() {
                 activeTab === 'audit' ? 'bg-white shadow-sm text-blue-700' : 'text-gray-600 hover:bg-gray-300'
               }`}
             >
-              <ShieldCheck className="w-4 h-4" /> Auditoría de Seguridad (Z3)
+              <ShieldCheck className="w-4 h-4" /> Security Audit (Z3)
             </button>
             
             <button 
@@ -442,7 +442,7 @@ function App() {
                 activeTab === 'structure' ? 'bg-white shadow-sm text-purple-700' : 'text-gray-600 hover:bg-gray-300'
               }`}
             >
-              <FileSearch className="w-4 h-4" /> Esquema K8s (SAT)
+              <FileSearch className="w-4 h-4" /> K8s Schema (SAT)
             </button>
           </div>
 
@@ -452,16 +452,18 @@ function App() {
               <>
                 {/* Título y Botón de Reparar Todo */}
                   <div className="flex justify-between items-center mb-4 border-b border-gray-200 pb-2">
-                    <h2 className="text-xl font-bold text-gray-800">Resultados de Auditoría</h2>
+                    <h2 className="text-xl font-bold text-gray-800">Audit Results</h2>
                     {results && !results.secure && results.violations.some(v => v.remediation_actions?.length > 0) && (
                       <button 
-                        // Si ya se aplicó el global, este botón sirve como atajo para re-analizar
                         onClick={globalFixApplied ? handleValidate : handleFixAll}
                         disabled={loading}
+                        // 3 ESTADOS DEL TOOLTIP (COINCIDIENDO CON EL TEXTO)
                         title={
                           globalFixApplied
-                            ? "Vuelve a analizar para confirmar la seguridad en la política reparada."
-                            : "Aplica automáticamente parches a todas las políticas que aún no has reparado."
+                            ? "Global fixes applied. Re-scan to confirm security posture."
+                            : fixedPolicies.size > 0
+                              ? "Automatically apply patches to the remaining unresolved policies."
+                              : "Automatically apply patches to all unresolved policies."
                         }
                         className={`px-4 py-2 rounded shadow text-sm font-semibold transition flex items-center gap-2 ${
                           loading
@@ -474,12 +476,12 @@ function App() {
                         {globalFixApplied ? (
                           <>
                             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : 'animate-spin-slow'}`} /> 
-                            Volver a Analizar
+                            Verify All Fixes
                           </>
                         ) : (
                           <>
                             <Wrench className="w-4 h-4" /> 
-                            {fixedPolicies.size > 0 ? "Reparar Restantes" : "Reparar Todo"}
+                            {fixedPolicies.size > 0 ? "Fix Remaining" : "Auto-Fix All"}
                           </>
                         )}
                       </button>
@@ -490,14 +492,14 @@ function App() {
                   {!results && !loading && !error && systemMessages.length === 0 && (
                     <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
                       <ShieldCheck className="w-16 h-16 mb-2 opacity-20" />
-                      <p>Pega tu YAML o importa un archivo y haz clic en "Analizar Seguridad"</p>
+                      <p>Paste your YAML code or import a file, then click "Analyze Security"</p>
                     </div>
                   )}
 
                   {/* Manejo de Errores Críticos(Ej. Backend apagado) */}
                   {error && (
                     <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg">
-                      <strong>Error de conexión:</strong> {error}
+                      <strong>Connection Error:</strong> {error}
                     </div>
                   )}
                   {/* PANEL DE MENSAJES DEL SISTEMA */}
@@ -518,7 +520,7 @@ function App() {
                             onClick={() => setShowLogHistory(!showLogHistory)} 
                             className="text-xs font-semibold underline hover:text-blue-900 cursor-pointer"
                           >
-                            {showLogHistory ? "Ocultar historial" : `Ver historial (${systemMessages.length - 1})`}
+                            {showLogHistory ? "Hide log history" : `View log history (${systemMessages.length - 1})`}
                           </button>
                         )}
                       </div>
@@ -545,16 +547,16 @@ function App() {
                         <div className="p-4 rounded-lg mb-6 flex items-center gap-3 bg-blue-50 text-blue-800 border border-blue-200 shadow-sm animate-pulse">
                           <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
                           <div>
-                            <h3 className="text-lg font-bold">Analizando manifiesto...</h3>
-                            <p className="text-sm opacity-80">Evaluando políticas de seguridad con el motor Z3.</p>
+                            <h3 className="text-lg font-bold">Scanning manifest...</h3>
+                            <p className="text-sm opacity-80">Evaluating security policies with the Z3 engine.</p>
                           </div>
                         </div>
                       ) : results.scanned_resources === 0 && results.violations.length === 0 ? (
                         <div className="p-4 rounded-lg mb-6 flex items-center gap-3 bg-gray-100 text-gray-500 border border-gray-200">
                           <Info className="w-8 h-8" />
                           <div>
-                            <h3 className="text-lg font-bold">Sin recursos analizados</h3>
-                            <p className="text-sm">El manifiesto no contiene recursos válidos para evaluar.</p>
+                            <h3 className="text-lg font-bold">No resources analysed</h3>
+                            <p className="text-sm">The manifest does not contain valid resources for evaluation.</p>
                           </div>
                         </div>
                       ) : (
@@ -562,9 +564,9 @@ function App() {
                           {results.secure ? <ShieldCheck className="w-8 h-8" /> : <ShieldAlert className="w-8 h-8" />}
                           <div>
                             <h3 className="text-lg font-bold">
-                              {results.secure ? "¡Manifiesto Seguro!" : "MISconfigurations Detectadas"}
+                              {results.secure ? "Secure Manifest!" : "MISconfigurations Detected"}
                             </h3>
-                            <p className="text-sm opacity-80">Recursos procesados válidos: {results.scanned_resources}</p>
+                            <p className="text-sm opacity-80">Valid resources processed: {results.scanned_resources}</p>
                           </div>
                         </div>
                       )}
@@ -583,7 +585,7 @@ function App() {
                         return (
                           <div className="mb-6 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
                             <h3 className="text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
-                              Balance de Seguridad ({totalPolicies} políticas evaluadas)
+                              Security Report ({totalPolicies} policies evaluated)
                             </h3>
                           
                             {/* Barra de progreso apilada */}
@@ -591,22 +593,22 @@ function App() {
                               <div
                                 style={{ width: `${passedPercentage}%` }}
                                 className="bg-green-500 hover:bg-green-400 transition-all duration-500"
-                                title={`${passedCount} Superadas`}
+                                title={`${passedCount} Passed`}
                               ></div>
                               <div
                                 style={{ width: `${failedPercentage}%` }}
                                 className="bg-red-500 hover:bg-red-400 transition-all duration-500"
-                                title={`${failedCount} Incumplidas`}
+                                title={`${failedCount} Failed`}
                               ></div>
                             </div>
                             
                             {/* Leyendas con porcentajes */}
                             <div className="flex justify-between mt-2 text-xs font-semibold">
                               <span className="text-green-700">
-                                {passedCount} Superadas ({passedPercentage}%)
+                                {passedCount} Passed ({passedPercentage}%)
                               </span>
                               <span className="text-red-700">
-                                {failedCount} Incumplidas ({failedPercentage}%)
+                                {failedCount} Failed ({failedPercentage}%)
                               </span>
                             </div>
                           </div>
@@ -625,7 +627,7 @@ function App() {
                             <div className="flex items-center gap-2">
                               <ShieldCheck className="w-5 h-5 text-green-600" />
                               <h3 className="text-md font-bold text-green-800">
-                                Ver políticas superadas con éxito ({results.passed_policies.length})
+                                View passed policies ({results.passed_policies.length})
                               </h3>
                             </div>
                             {/* Flecha indicadora principal */}
@@ -686,7 +688,7 @@ function App() {
                           <div className="flex items-center gap-2 mb-3">
                             <ShieldAlert className="w-5 h-5 text-red-600" />
                             <h3 className="text-md font-bold text-gray-800">
-                              Políticas incumplidas ({results.violations.length})
+                              Failed policies ({results.violations.length})
                             </h3>
                           </div>
                           {results.violations.map((violation, index) => (
@@ -712,7 +714,7 @@ function App() {
                               
                               {violation.remediation && (
                                 <div className="bg-blue-50 text-blue-800 p-3 rounded text-sm border border-blue-100 mb-3">
-                                  <strong>💡 Recomendación:</strong> {violation.remediation}
+                                  <strong>💡 Recommendation:</strong> {violation.remediation}
                                 </div>
                               )}
 
@@ -726,8 +728,8 @@ function App() {
                                     <button 
                                       onClick={isFixed ? handleValidate : () => handleRemediate(violation)}
                                       title={isFixed 
-                                        ? "Ya se aplicó la correción para la política. Vuelve a analizar para confirmar que el problema se ha resuelto." 
-                                        : "Aplica automáticamente los parches sugeridos para esta vulnerabilidad específica."
+                                        ? "The fix for the policy has already been applied. Please check again to confirm that the issue has been resolved." 
+                                        : "Automatically apply the recommended patches for this specific policy."
                                       }
                                       className={`mt-2 text-sm font-medium py-1.5 px-3 rounded shadow-sm transition cursor-pointer flex items-center gap-1 w-fit ${
                                         isFixed 
@@ -737,11 +739,11 @@ function App() {
                                     >
                                       {isFixed ? (
                                         <>
-                                          <RefreshCw className="w-4 h-4 animate-spin-slow" /> Volver a Analizar
+                                          <RefreshCw className="w-4 h-4 animate-spin-slow" /> Verify Fix
                                         </>
                                       ) : (
                                         <>
-                                          <Wrench className="w-4 h-4" /> Auto-Corregir Problema
+                                          <Wrench className="w-4 h-4" /> Auto-Fix Issue
                                         </>
                                       )}
                                     </button>
@@ -763,16 +765,16 @@ function App() {
               <div className="flex flex-col h-full">
                 <div className="bg-white p-6 rounded-xl border shadow-sm flex-1">
                   <div className="border-b border-gray-200 pb-3 mb-6">
-                    <h2 className="text-xl font-bold text-gray-800">Validación del Esquema K8s</h2>
+                    <h2 className="text-xl font-bold text-gray-800">K8s Schema Validation</h2>
                     <p className="text-sm text-gray-500 mt-1">
-                      Comprueba restricciones obligatorias (Mandatory) y relaciones estructurales (Cross-Tree Constraints) usando el solver SAT.
+                      Check mandatory constraints and cross-tree constraints using the SAT solver.
                     </p>
                   </div>
                   
                   {loadingStructure ? (
                     <div className="flex flex-col items-center justify-center h-40 space-y-4">
                       <Loader2 className="w-10 h-10 animate-spin text-purple-600" />
-                      <p className="text-gray-500 font-medium animate-pulse">Compilando características y resolviendo SAT...</p>
+                      <p className="text-gray-500 font-medium animate-pulse">Compiling features and solving SAT...</p>
                     </div>
                   ) : (
                     <>
@@ -780,7 +782,7 @@ function App() {
                       {!structuralData && (
                         <div className="flex flex-col items-center justify-center h-40 text-gray-400">
                           <FileSearch className="w-12 h-12 mb-2 opacity-20" />
-                          <p>Ocurrió un error o no se inició la validación.</p>
+                          <p>An error occurred or validation did not start.</p>
                         </div>
                       )}
 
@@ -790,13 +792,13 @@ function App() {
                           <div className="flex items-start gap-4">
                             <CheckCircle className="w-10 h-10 text-green-600 flex-shrink-0" />
                             <div>
-                              <h3 className="text-xl font-bold text-green-800">Manifiesto Estructuralmente Válido</h3>
+                              <h3 className="text-xl font-bold text-green-800">Structurally Valid Manifest</h3>
                               <p className="text-green-700 mt-2 text-md leading-relaxed">
                                 {structuralData.message}
                               </p>
                               {structuralData.time !== undefined && (
                                 <p className="text-xs text-green-600 mt-4 font-mono bg-green-100 w-fit px-2 py-1 rounded">
-                                  ✓ Resuelto en {structuralData.time}s via Glucose3 (SAT)
+                                 Resolved in {structuralData.time}s via Glucose3 (SAT)
                                 </p>
                               )}
                             </div>
@@ -810,11 +812,11 @@ function App() {
                           <div className="flex items-start gap-4">
                             <XCircle className="w-10 h-10 text-red-600 flex-shrink-0" />
                             <div className="w-full">
-                              <h3 className="text-xl font-bold text-red-800">Error Estructural Detectado</h3>
+                              <h3 className="text-xl font-bold text-red-800">Structural Error Detected</h3>
                               
                               {structuralData.source && (
                                 <div className="mt-2 inline-block px-2 py-1 bg-red-100 text-red-800 text-xs font-bold rounded uppercase">
-                                  Fuente: {structuralData.source}
+                                  Source: {structuralData.source}
                                 </div>
                               )}
                               
@@ -824,7 +826,7 @@ function App() {
 
                               {structuralData.time !== undefined && (
                                 <p className="text-xs text-red-500 mt-4 font-mono bg-red-100 w-fit px-2 py-1 rounded">
-                                  Rechazado en {structuralData.time}s via Glucose3 (SAT)
+                                  Rejected in {structuralData.time}s via Glucose3 (SAT)
                                 </p>
                               )}
                             </div>
