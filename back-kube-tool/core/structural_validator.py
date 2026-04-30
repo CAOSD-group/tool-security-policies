@@ -55,15 +55,15 @@ class StructuralValidator:
                 return {
                     "valid": True,
                     "time": val_time,
-                    "message": "El manifiesto es estructuralmente válido. Cumple el esquema de Kubernetes."
+                    "message": "The manifest is structurally valid. It conforms  with the Kubernetes schema."
                 }
             else:
                 return {
                     "valid": False,
                     "time": val_time,
-                    "message": "El manifiesto es INVÁLIDO estructuralmente. Faltan propiedades obligatorias (Mandatory) o existen conflictos de esquema."
+                    "message": "The manifest is structurally invalid. Missing mandatory properties or schema conflicts exist."
                 }
                 
         except Exception as e:
-            logger.error(f"Error en validación SAT: {e}")
-            return {"valid": False, "time": 0, "message": f"Error interno del solver: {str(e)}"}
+            logger.error(f"Error in SAT validation: {e}")
+            return {"valid": False, "time": 0, "message": f"Internal solver error: {str(e)}"}
