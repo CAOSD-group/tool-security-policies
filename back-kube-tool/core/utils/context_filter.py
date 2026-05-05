@@ -44,19 +44,38 @@ def filter_context_aware_actions(original_config_elements: dict, actions_list: l
             break
 
     # 2. Pre-computar las rutas base para los sufijos dinámicos
-    container_base_paths = set()
+    main_container_paths = set()
+    init_container_paths = set()
+    ephemeral_container_paths = set()
     pod_spec_base_paths = set()
     
+    # Único recorrido sobre las keys del AST para clasificar alcances
     for k in original_config_elements.keys():
         k_str = str(k)
-        # Extraer base de contenedores
-        for c_type in ["_containers", "_ephemeralContainers", "_initContainers"]:
-            if c_type in k_str:
-                container_base_paths.add(k_str.split(c_type)[0] + c_type)
-        # Extraer base del PodSpec
+        
+        # Scope: Contenedores Principales
+        if "_containers" in k_str and "_initContainers" not in k_str and "_ephemeralContainers" not in k_str:
+            main_container_paths.add(k_str.split("_containers")[0] + "_containers")
+            
+        # Scope: InitContainers
+        if "_initContainers" in k_str:
+            init_container_paths.add(k_str.split("_initContainers")[0] + "_initContainers")
+            
+        # Scope: EphemeralContainers
+        if "_ephemeralContainers" in k_str:
+            ephemeral_container_paths.add(k_str.split("_ephemeralContainers")[0] + "_ephemeralContainers")
+            
+        # Scope: Base del PodSpec
         if "_spec_containers" in k_str:
             pod_spec_base_paths.add(k_str.split("_spec_containers")[0] + "_spec")
-            
+
+
+    # Scope: Todos los contenedores (Unión de los 3 anteriores)
+    all_container_paths = main_container_paths | init_container_paths | ephemeral_container_paths
+    # Nuevo set específico para contenedores que pertenecen estrictamente a un Pod
+    pod_container_paths = all_container_paths if workload_root == "io_k8s_api_core_v1_Pod" else set()
+
+
     existing_keys_str = " ".join(original_config_elements.keys())
     valid_actions = []
     
@@ -68,9 +87,20 @@ def filter_context_aware_actions(original_config_elements: dict, actions_list: l
         # Convertimos 1 token abstracto en N rutas reales del manifiesto
         expanded_features = []
         
-        if feat.startswith("DYNAMIC_CONTAINER_SUFFIX_"):
-            suffix = feat.replace("DYNAMIC_CONTAINER_SUFFIX_", "")
-            for base_path in container_base_paths:
+        if feat.startswith("DYNAMIC_ALL_CONTAINERS_"):
+            suffix = feat.replace("DYNAMIC_ALL_CONTAINERS_", "")
+            for base_path in all_container_paths:
+                expanded_features.append(f"{base_path}_{suffix}")
+                
+        elif feat.startswith("DYNAMIC_MAIN_CONTAINERS_"):
+            suffix = feat.replace("DYNAMIC_MAIN_CONTAINERS_", "")
+            for base_path in main_container_paths:
+                expanded_features.append(f"{base_path}_{suffix}")
+
+        elif feat.startswith("DYNAMIC_POD_CONTAINERS_"):
+            # Nuevo Scope: Sólo parchear contenedores si el recurso es explícitamente un Pod
+            suffix = feat.replace("DYNAMIC_POD_CONTAINERS_", "")
+            for base_path in pod_container_paths:
                 expanded_features.append(f"{base_path}_{suffix}")
                 
         elif feat.startswith("DYNAMIC_POD_SUFFIX_"):
@@ -84,7 +114,6 @@ def filter_context_aware_actions(original_config_elements: dict, actions_list: l
                 expanded_features.append(f"{workload_root}_{suffix}")
                 
         else:
-            # Flujo normal, es una clave exacta o un token especial como DYNAMIC_IMAGE_FEATURES
             expanded_features.append(feat)
 
         # Ahora aplicamos tus Reglas 1-4 a las rutas ya expandidas y reales
@@ -135,29 +164,22 @@ def filter_context_aware_actions(original_config_elements: dict, actions_list: l
                                      .replace("_IntegerValue", "") \
                                      .replace("_Always", "")
 
-            # --- AUTOMATIZACIÓN DINÁMICA: REMEDIACIÓN DE IMÁGENES ---
-            # (Se mantiene intacta porque requiere leer valores previos del AST)
-            if final_feat == "DYNAMIC_IMAGE_FEATURES" and final_safe_val == "__MAKE_IMAGE_SECURE__":
-                for k, v in original_config_elements.items():
-                    k_str = str(k)
-                    if k_str.endswith(("_image", "_image_StringValue")):
-                        original_image = str(v).strip()
-                        if original_image in ["True", "None", "", "unknown-image"]:
-                            original_image = "app-image"
-                            
-                        image_basename = original_image.split("/")[-1]
-                        image_clean = image_basename.split(":")[0].split("@")[0]
-                        secure_image = f"eu.foo.io/{image_clean}:secure-tag@sha256:0000000000000000000000000000000000000000000000000000000000000000"
-                        
-                        clean_feat = k_str
-                        if strip_suffixes:
-                            clean_feat = clean_feat.replace("_StringValue", "")
-                            
-                        valid_actions.append({
-                            "feature_to_fix": clean_feat,
-                            "safe_value": secure_image
-                        })
-                continue 
+            # Este es el único caso donde necesitamos leer el AST para inferir la remediación
+            if final_safe_val == "__MAKE_IMAGE_SECURE__":
+                # Buscamos en el AST original (usando la clave antes o después del strip)
+                original_image = original_config_elements.get(current_feat)
+                if not original_image:
+                    original_image = original_config_elements.get(current_feat + "_StringValue", "app-image:latest")
+                
+                original_image = str(original_image).strip()
+                if original_image in ["True", "None", "", "unknown-image"]:
+                    original_image = "app-image:latest"
+                    
+                image_basename = original_image.split("/")[-1]
+                image_clean = image_basename.split(":")[0].split("@")[0]
+                
+                # Inyección respetando el nombre de imagen base con registro y digest
+                final_safe_val = f"eu.foo.io/{image_clean}:secure-tag@sha256:0000000000000000000000000000000000000000000000000000000000000000"
 
             # --- RESOLUCIÓN DE CONFLICTOS (Merge con Prioridad) ---
             existing_action = next((a for a in valid_actions if a["feature_to_fix"] == final_feat), None)
