@@ -970,3 +970,62 @@ kubernetes_no_hostprocess_containers
 
 interfaz sea "consciente"
 Resetear el estado al "Importar"
+
+Yaml testing for all politices Dep
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frankenstein-app
+  namespace: default
+  labels:
+    app: frankenstein
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frankenstein
+  template:
+    metadata:
+      labels:
+        app: frankenstein
+    spec:
+      hostNetwork: true
+      hostIPC: true
+      hostPID: true
+      automountServiceAccountToken: true
+      # Pondremos a prueba el operador $delete (kubernetes_no_hostaliases)
+      hostAliases:
+        - ip: "127.0.0.1"
+          hostnames:
+            - "local.evil.dev"
+      # Pondremos a prueba el trade-off destructivo del $delete (Disallow_hostPath)
+      volumes:
+        - name: secret-volume
+          configMap:
+            name: app-config
+        - name: evil-hostpath
+          hostPath:
+            path: /etc/shadow
+      initContainers:
+        - name: network-hijacker
+          image: alpine:latest # Validado por Regex: tagNotSpecified
+          securityContext:
+            privileged: true
+            runAsUser: 0
+            capabilities:
+              add: ["SYS_MODULE", "NET_RAW"]
+      containers:
+        - name: main-backend
+          image: docker.io/nginx # Validado por Regex: Require_Images_Use_Checksums
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80 # Fallará Require_Container_Port_Names (falta 'name')
+              hostPort: 8080    # Fallará Disallow_hostPorts
+          securityContext:
+            allowPrivilegeEscalation: true
+            readOnlyRootFilesystem: false
+            capabilities:
+              add: ["SYS_ADMIN", "CHOWN"] # Pondremos a prueba el operador $remove
+          # Faltan probes (liveness/readiness) -> Polaris inyectará en main container
+          # Faltan resources (limits/requests) -> Polaris inyectará en main container

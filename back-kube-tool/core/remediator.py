@@ -69,7 +69,21 @@ class Remediator:
                 key = int(key)
 
             if is_last:
-                current_node[key] = value
+                #current_node[key] = value
+                # If the value is a removal instruction, we need to handle it differently
+                if isinstance(value, dict) and "$delete" in value:
+                    if key in current_node:
+                        del current_node[key]
+                
+                # 2. Operador para borrar un ELEMENTO de una lista (Ej: SYS_ADMIN en capabilities)
+                elif isinstance(value, dict) and "$remove" in value:
+                    item_to_remove = value["$remove"]
+                    # Verificamos si el nodo actual contiene una lista en esa clave
+                    if key in current_node and isinstance(current_node[key], list):
+                        current_node[key] = [x for x in current_node[key] if x != item_to_remove]
+                else:
+                    # Normal write operation
+                    current_node[key] = value
             else:
                 if key not in current_node:
                     current_node[key] = CommentedMap() ##{} # Inject a native object to preserve comments

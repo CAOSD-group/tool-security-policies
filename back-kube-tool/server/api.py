@@ -145,7 +145,7 @@ async def validate_manifest_stream(request: ValidationRequest):
     async def generate_results():
         try:
             # 1. Avisamos al frontend de que empezamos a parsear
-            yield json.dumps({"status": "info", "message": "Parseando manifiesto YAML..."}) + "\n"
+            yield json.dumps({"status": "info", "message": "Parsing the YAML manifest..."}) + "\n"
             await asyncio.sleep(0.1) # Pequeña pausa para que el stream fluya
             
             documents = ManifestParser.parse(request.manifest_yaml)
@@ -163,14 +163,14 @@ async def validate_manifest_stream(request: ValidationRequest):
             failed_policies = set()
             
             for doc in documents:
-                kind = doc.get('kind', 'Desconocido')
-                api_version = doc.get('apiVersion', 'Desconocida')
+                kind = doc.get('kind', 'Unknown')
+                api_version = doc.get('apiVersion', 'Unknown')
                 
                 if not doc.get('kind'):
-                    yield json.dumps({"status": "error", "message": "El documento no tiene propiedad 'kind'."}) + "\n"
+                    yield json.dumps({"status": "error", "message": "The document has no 'kind' property."}) + "\n"
                     continue
                 if not doc.get('apiVersion'): ## Solo se comprueba si no existe la prop, si existe pero no está en el CSV, el error lo lanzará el CSVMapper y se lo enviaremos al frontend
-                    yield json.dumps({"status": "error", "message": "El documento no tiene propiedad 'apiVersion'."}) + "\n"
+                    yield json.dumps({"status": "error", "message": "The document has no 'apiVersion' property."}) + "\n"
                     continue
                 
                 # CORRECCIÓN BUG: INTENTAMOS MAPEAR PRIMERO (Filtro de sintaxis base)
@@ -181,12 +181,12 @@ async def validate_manifest_stream(request: ValidationRequest):
                     mapped_json_dict = csv_mapper.transform_manifest(doc)
                 except ValueError as ve:
                     # Le enviamos el error exacto al frontend
-                    yield json.dumps({"status": "error", "message": f"[{api_version}/{kind}] Recurso no soportado por el modelo: {str(ve)}"}) + "\n"
+                    yield json.dumps({"status": "error", "message": f"[{api_version}/{kind}] Feature not supported by the model: {str(ve)}"}) + "\n"
                     continue
 
                 active_policies = inference_engine.get_policies_for_kind(kind)
                 if not active_policies:
-                    yield json.dumps({"status": "info", "message": f"[{kind}] No hay políticas de seguridad aplicables a este recurso."}) + "\n"
+                    yield json.dumps({"status": "info", "message": f"[{kind}] No security policies are applicable to this resource."}) + "\n"
                     continue
                 # --- NUEVO: Añadimos las políticas activas de este recurso ---
                 all_active_policies.update(active_policies)
@@ -200,7 +200,7 @@ async def validate_manifest_stream(request: ValidationRequest):
                     resource_name = doc.get('metadata', {}).get('name', 'unknown')
                     # Avisamos al frontend del recurso que estamos analizando
                     #yield json.dumps({"status": "info", "message": f"Analizando {kind}: {doc.get('metadata', {}).get('name', 'unknown')}..."}) + "\n"
-                    yield json.dumps({"status": "info", "message": f"Analizando {kind}: {resource_name}..."}) + "\n"  
+                    yield json.dumps({"status": "info", "message": f"Analyzing {kind}: {resource_name}..."}) + "\n"  
                     
                     regex_policy_names = set(regex_val.policy_map.keys())
                     # Filtramos las políticas activas de Regex
@@ -223,7 +223,7 @@ async def validate_manifest_stream(request: ValidationRequest):
                                 failed_policies.add(v["policy"])
                                 ## Extract policy tool from UVL metadata
                                 meta = validator.get_policy_metadata(v["policy"])
-                                v["tool"] = meta.get("tool", "Desconocida")
+                                v["tool"] = meta.get("tool", "Unknown")
                                 # Obtenemos lista de acciones para reparar esta política
                                 actions = registry.get_remediation_actions(v["policy"])
                                 if actions:
@@ -247,10 +247,10 @@ async def validate_manifest_stream(request: ValidationRequest):
                             print(f"Error en la politica con el meta {policy_name}: {meta}")
                             v_obj = {
                                 "policy": policy_name,
-                                "tool": meta.get("tool", "Desconocida"),
+                                "tool": meta.get("tool", "Unknown"),
                                 "severity": meta.get("severity", "medium"), # Usamos .get() de forma segura
-                                "description": rep.get("reason", meta.get("description", "Revisión Regex fallida.")),
-                                "remediation": meta.get("remediation", "Revisar configuración.")
+                                "description": rep.get("reason", meta.get("description", "Regex validation failed.")),
+                                "remediation": meta.get("remediation", "Review configuration.")
                             }
                             # Obtenemos acciones de remediación si las hay
                             actions = registry.get_remediation_actions(policy_name)                            
@@ -276,7 +276,7 @@ async def validate_manifest_stream(request: ValidationRequest):
 
                 passed_policies_details.append({
                     "policy": p_name,
-                    "tool": meta.get("tool", "Desconocida"),
+                    "tool": meta.get("tool", "Unknown"),
                     "severity": meta.get("severity", "INFO"), # Nivel por defecto si no tiene
                     "description": desc
                 })
@@ -289,10 +289,10 @@ async def validate_manifest_stream(request: ValidationRequest):
             }) + "\n"
 
         except yaml.YAMLError as e:
-            yield json.dumps({"status": "error", "message": f"YAML Inválido: {str(e)}"}) + "\n"
+            yield json.dumps({"status": "error", "message": f"Invalid YAML: {str(e)}"}) + "\n"
         except Exception as e:
             logger.error(f"Validation error: {e}")
-            yield json.dumps({"status": "error", "message": "Error interno del servidor."}) + "\n"
+            yield json.dumps({"status": "error", "message": "Internal server error."}) + "\n"
 
     # Devolvemos el generador como un Stream NDJSON (Newline Delimited JSON)
     return StreamingResponse(generate_results(), media_type="application/x-ndjson")
@@ -300,8 +300,8 @@ async def validate_manifest_stream(request: ValidationRequest):
 @app.post("/remediate")
 async def remediate_manifest(request: RemediateRequest):
     """
-    Toma un manifiesto YAML, la feature que viola la seguridad, y el valor seguro.
-    Devuelve el YAML parcheado conservando comentarios y formato.
+    Takes a YAML manifest, the feature that violates security, and the safe value.
+    Returns the patched YAML while preserving comments and format.
     """
     try:
         reverse_mapper = app_state['reverse_mapper']
@@ -331,28 +331,28 @@ async def remediate_manifest(request: RemediateRequest):
 
     except KeyError as ke:
         logger.error(f"Remediation error (Dependency missing in app_state): {ke}")
-        raise HTTPException(status_code=500, detail=f"Error interno: Dependencia {str(ke)} no encontrada.")
+        raise HTTPException(status_code=500, detail=f"Internal error: Dependency {str(ke)} not found.")
     except Exception as e:
         logger.error(f"Remediation error: {e}")
-        raise HTTPException(status_code=500, detail=f"Error al parchear el YAML: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error occurred while patching the YAML: {str(e)}")
 
 @app.post("/validate-structure")
 async def validate_structure_endpoint(request: ValidationRequest):
     """
-    Endpoint dedicado a la validación estructural pura del esquema de K8s.
-    Usa el Feature Model completo y un solver SAT (PySAT).
+    Endpoint dedicated to structural validation of the K8s schema.
+    Uses the complete Feature Model and a SAT solver (PySAT).
     """
     try:
         documents = ManifestParser.parse(request.manifest_yaml)
         if not documents:
-            return {"status": "error", "message": "YAML vacío o inválido."}
+            return {"status": "error", "message": "Invalid or empty YAML."}
             
         csv_mapper = app_state['csv_mapper']
         sat_validator = app_state['structural_validator']
         
         doc = documents[0] # Validamos el primer YAML (puedes iterar si hay varios)
-        api_version = doc.get('apiVersion', 'Desconocida')
-        kind = doc.get('kind', 'Desconocido')
+        api_version = doc.get('apiVersion', 'Unknown')
+        kind = doc.get('kind', 'Unknown')
         
         # 1. Filtro 1: ¿Existe en el CSV? (Sintaxis Base)
         try:
@@ -361,13 +361,13 @@ async def validate_structure_endpoint(request: ValidationRequest):
             return {
                 "status": "invalid",
                 "source": "Mapper",
-                "message": f"[{api_version}/{kind}] Recurso no soportado por el modelo estructural: {str(ve)}"
+                "message": f"[{api_version}/{kind}] Feature not supported by the structural model: {str(ve)}"
             }
 
         # 2. Generación de Configuración FlamaPy
         configurations = MappingEngine.manifest_to_configurations(mapped_json_dict)
         if not configurations:
-            return {"status": "error", "message": "No se pudo generar la configuración para el solver."}
+            return {"status": "error", "message": "Configuration for solver could not be generated."}
             
         target_config = configurations[0]
         
