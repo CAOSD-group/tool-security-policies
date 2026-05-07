@@ -44,7 +44,7 @@ class RemediationRegistry:
             # =========================================================
             "pullPolicyNotAlways": [{"feature_to_fix": "DYNAMIC_MAIN_CONTAINERS_imagePullPolicy", "safe_value": "Always"}],
             "Require_imagePullPolicy_Always": [{"feature_to_fix": "DYNAMIC_MAIN_CONTAINERS_imagePullPolicy", "safe_value": "Always"}],
-            "hostPortSet": [{"feature_to_fix": "DYNAMIC_MAIN_CONTAINERS_ports_hostPort", "safe_value": 0}],
+            "hostPortSet": [{"feature_to_fix": "DYNAMIC_MAIN_CONTAINERS_ports_hostPort", "safe_value": {"$delete": True}}], ## port 0 is invalid port in Kubernetes, "0 < x < 65536" so it effectively removes the hostPort configuration 
             "Require_Container_Port_Names": [{"feature_to_fix": "DYNAMIC_MAIN_CONTAINERS_ports_name", "safe_value": "secure-port"}],
             "livenessProbeMissing": [{"feature_to_fix": "DYNAMIC_MAIN_CONTAINERS_livenessProbe", "safe_value": {"exec": {"command": ["cat", "/tmp/healthy"]}, "initialDelaySeconds": 5, "periodSeconds": 5}}],
             "readinessProbeMissing": [{"feature_to_fix": "DYNAMIC_MAIN_CONTAINERS_readinessProbe", "safe_value": {"exec": {"command": ["cat", "/tmp/healthy"]}, "initialDelaySeconds": 5, "periodSeconds": 5}}],
@@ -72,10 +72,10 @@ class RemediationRegistry:
             "Disallow_Privilege_Escalation": [{"feature_to_fix": "DYNAMIC_POD_CONTAINERS_securityContext_allowPrivilegeEscalation", "safe_value": False}],
             "Disallow_Privileged_Containers": [{"feature_to_fix": "DYNAMIC_POD_CONTAINERS_securityContext_privileged", "safe_value": False}],
             "Require_Read_Only_Root_Filesystem": [{"feature_to_fix": "DYNAMIC_POD_CONTAINERS_securityContext_readOnlyRootFilesystem", "safe_value": True}],
-            "Disallow_procMount": [{"feature_to_fix": "DYNAMIC_POD_CONTAINERS_securityContext_procMount", "safe_value": "Default"}],
+            "Disallow_procMount": [{"feature_to_fix": "DYNAMIC_POD_CONTAINERS_securityContext_procMount", "safe_value": "Default"}], ## Dude for DefaultProcMount is the default value that allows the container runtime to choose the procMount type, which is typically "Unmasked" but can be more secure than "Unmasked" depending on the runtime's defaults and configuration. By setting it to "Default", you allow the runtime to apply its default security settings, which can help mitigate risks associated with custom procMount configurations.
             "Require_Run_As_Non_Root_User": [{"feature_to_fix": "DYNAMIC_POD_CONTAINERS_securityContext_runAsUser", "safe_value": 10001}],
             "Require_Run_As_ContainerUser_Windows": [{"feature_to_fix": "DYNAMIC_POD_CONTAINERS_securityContext_windowsOptions_runAsUserName", "safe_value": "ContainerUser"}],
-            "Disallow_hostPorts": [{"feature_to_fix": "DYNAMIC_POD_CONTAINERS_ports_hostPort", "safe_value": 0}],
+            "Disallow_hostPorts": [{"feature_to_fix": "DYNAMIC_POD_CONTAINERS_ports_hostPort", "safe_value": {"$delete": True}}], ## port 0 is invalid port in Kubernetes, "0 < x < 65536" so it effectively removes the hostPort configuration
             "Disallow_SELinux": [{"feature_to_fix": "DYNAMIC_POD_CONTAINERS_securityContext_seLinuxOptions", "safe_value": {"$remove": "ALL"}}],
 
             # =========================================================
