@@ -2,7 +2,7 @@ import logging
 from flamapy.metamodels.configuration_metamodel.models import Configuration
 from flamapy.metamodels.fm_metamodel.models import FeatureModel, Feature
 from flamapy.metamodels.z3_metamodel.operations import Z3SatisfiableConfiguration
-from core.policy_inference import PolicyInference
+##from core.policy_inference import PolicyInference
 
 logger = logging.getLogger(__name__)
 

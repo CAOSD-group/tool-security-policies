@@ -1,7 +1,7 @@
 import io
 import math
 from ruamel.yaml import YAML
-from core.utils.context_filter import enforce_k8s_object_arrays
+from .utils.context_filter import enforce_k8s_object_arrays
 from ruamel.yaml.comments import CommentedMap
 
 class Remediator:
