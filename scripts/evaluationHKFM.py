@@ -6,7 +6,7 @@ import difflib
 import yaml
 import sys
 from pathlib import Path
-
+import traceback
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 
@@ -27,8 +27,8 @@ from back_kube_tool.core.remediator import Remediator
 from back_kube_tool.core.utils.context_filter import filter_context_aware_actions
 
 VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls"
-OUTPUT_CSV = ROOT / "evaluation" / "remediation_benchmark_results.csv"
-TMP_REMEDIATED_DIR = ROOT / "evaluation" / "tmp_remediated"
+OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_benchmark_results02.csv"
+TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediated02"
 
 # (Asegúrate de que estas rutas coinciden con tu entorno)
 UVL_PATH = os.getenv("UVL_MODEL_PATH", str(ROOT / "back_kube_tool" / "models" / "HKFM.uvl"))
@@ -121,7 +121,8 @@ def run_remediation_benchmark():
                 configurations = MappingEngine.manifest_to_configurations(mapped_json_dict)
                 if not configurations: continue
                 target_config = configurations[0]
-                
+                print(f"[{filename}] Evaluando {len(active_policies)} políticas activas sobre {kind}...") # Log de progreso
+                print(f"Config ejemplo: {target_config.elements}") # Log de ejemplo de configuración
                 # A.1 Z3 Validation
                 z3_policies = [p for p in active_policies if p not in regex_policy_names]
                 z3_violations = validator.validate_configuration(target_config, z3_policies)
@@ -194,8 +195,10 @@ def run_remediation_benchmark():
                 ])
 
             except Exception as e:
+                print(f"{configurations} {active_policies}")
                 print(f"[ERROR] Fallo procesando {filename}: {e}")
-
+                traceback.print_exc() 
+                print("-" * 50)
     print(f"\n[OK] Benchmarking finalizado. Resultados en: {OUTPUT_CSV}")
 
 if __name__ == '__main__':
