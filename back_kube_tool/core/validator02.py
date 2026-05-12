@@ -4,6 +4,7 @@ from flamapy.metamodels.fm_metamodel.models import FeatureModel, Feature
 from flamapy.metamodels.z3_metamodel.operations import Z3SatisfiableConfiguration
 ##from core.policy_inference import PolicyInference
 import z3
+import inspect
 
 logger = logging.getLogger(__name__)
 
@@ -14,91 +15,84 @@ class Validator:
 
     self._parent_cache: dict[str, list[str]] = {}
     self._mand_desc_cache: dict[str, list[str]] = {}
-        
+    
   def validate_configuration(self, config: Configuration, active_policies: list[str]) -> list[dict]:
-    """
-    Iteratively tests policies against the configuration using native Z3 push/pop.
-    Separates Base YAML constraints (O(1)) from Policy constraints (O(P)) for max performance.
-    """
-    failed_policies_report = []
-    base_completed_elements = self._complete_full_configuration(config.elements)
-    
-    # =========================================================
-    # 1. INICIALIZACIÓN DEL SOLVER Y REGLAS DEL MODELO
-    # =========================================================
-    solver = z3.Solver()
-    for constraint in self.z3_model.constraints:
-        try:
-            # Filtro estricto: Solo cargamos ecuaciones booleanas nativas de Z3.
-            # Esto arregla el problema de las 0 alertas por motor vacío.
-            if z3.is_expr(constraint) and z3.is_bool(constraint):
-                solver.add(constraint)
-        except Exception:
-            pass
+      failed_policies_report = []
+      base_completed_elements = self._complete_full_configuration(config.elements)
+      
+      # =========================================================
+      # 1. INICIALIZACIÓN GLOBAL DEL SOLVER (El Universo Z3)
+      # =========================================================
+      z3_ctx = getattr(self.z3_model, 'ctx', None)
+      solver = z3.Solver(ctx=z3_ctx) 
+      
+      # Cargamos las 76.580 reglas solo UNA VEZ
+      for constraint in self.z3_model.constraints:
+          try:
+              if z3.is_expr(constraint) and z3.is_bool(constraint):
+                  solver.add(constraint)
+          except Exception:
+              pass
 
-    # =========================================================
-    # 2. DEFINIR EL DOMINIO DE LAS POLÍTICAS
-    # Encontramos todas las variables de las políticas para no forzarlas a False
-    # =========================================================
-    policy_related = set()
-    for p in active_policies:
-        closure = self._add_single_feature_closure({p: True}, p)
-        policy_related.update(closure.keys())
+      # Limpiamos las variables de FlamaPy para uso directo
+      z3_vars = getattr(self.z3_model, 'variables', getattr(self.z3_model, 'features', {}))
+      processed_vars = {}
+      for k, v in z3_vars.items():
+          if not z3.is_expr(v):
+              if hasattr(v, 'z3_var'):
+                  processed_vars[k] = v.z3_var
+          else:
+              processed_vars[k] = v
 
-    # =========================================================
-    # 3. CARGA BASE DEL MANIFIESTO Y "MUNDO CERRADO" (1 SOLA VEZ)
-    # =========================================================
-    base_keys = set(base_completed_elements.keys())
-    
-    # A. Inyectamos los datos reales del YAML (Booleanos y Atributos como puertos/strings)
-    for key, val in base_completed_elements.items():
-        if isinstance(val, bool):
-            solver.add(z3.Bool(key) == val)
-        elif isinstance(val, int) or (isinstance(val, float) and val.is_integer()):
-            solver.add(z3.Int(key) == int(val))
-        elif isinstance(val, str):
-            solver.add(z3.String(key) == z3.StringVal(val))
+      # =========================================================
+      # 2. BUCLE ITERATIVO ULTRARRÁPIDO CON "ASSUMPTIONS"
+      # =========================================================
+      for policy in active_policies:
+          try:
+              # FlamaPy prepara el Mundo Cerrado perfectamente
+              temp_elements = base_completed_elements.copy()
+              temp_elements[policy] = True
+              temp_elements = self._add_single_feature_closure(temp_elements, policy)
+              
+              temp_config = Configuration(temp_elements)
+              temp_config.set_full(True) 
 
-    # B. Simulación de set_full(True): Todo lo que no está en el YAML es False.
-    # Esto se ejecuta solo 1 vez, reduciendo el tiempo de 40s a milisegundos.
-    all_features = [f.name for f in self.flat_fm.get_features()]
-    for feat in all_features:
-        if feat not in base_keys and feat not in policy_related:
-            solver.add(z3.Bool(feat) == False)
+              # ===============================================================
+              # LA MAGIA: En lugar de usar solver.add(), empaquetamos el YAML 
+              # en una lista de memoria (Assumptions) y se lo enviamos a C++.
+              # ===============================================================
+              assumptions = []
+              for feat_name, val in temp_config.elements.items():
+                  z3_var = processed_vars.get(feat_name)
+                  if z3_var is None:
+                      continue
 
-    # =========================================================
-    # 4. EVALUACIÓN DE POLÍTICAS (Iteración ultrarrápida)
-    # =========================================================
-    for policy in active_policies:
-        solver.push() # Guardamos la memoria RAM con el YAML ya cargado
-        
-        try:
-            # Calculamos las dependencias específicas de ESTA política
-            policy_closure = self._add_single_feature_closure({policy: True}, policy)
-            
-            # Para todo el universo de políticas, activamos la actual y desactivamos el resto
-            for feat in policy_related:
-                if feat in policy_closure:
-                    solver.add(z3.Bool(feat) == True)
-                else:
-                    solver.add(z3.Bool(feat) == False)
-                    
-            # Comprobación Matemática
-            if solver.check() == z3.unsat:
-                meta = self.get_policy_metadata(policy)
-                failed_policies_report.append({
-                    "policy": policy,
-                    "severity": meta.get("severity", "unknown"),
-                    "tool": meta.get("tool", "unknown"),
-                    "description": meta.get("description", "empty"),
-                    "remediation": meta.get("remediation", "Check policy")
-                })
-        except Exception as e:
-            pass
-            
-        solver.pop() # Restauramos para la siguiente política
+                  sort_str = str(z3_var.sort())
+                  if sort_str == "Bool" and isinstance(val, bool):
+                      # Adjuntamos la variable o su negación a la lista de supuestos
+                      assumptions.append(z3_var if val else z3.Not(z3_var))
+                  elif sort_str == "Int" and isinstance(val, (int, float)):
+                      assumptions.append(z3_var == z3.IntVal(int(val), ctx=z3_ctx))
+                  elif sort_str == "String" and isinstance(val, str):
+                      assumptions.append(z3_var == z3.StringVal(val, ctx=z3_ctx))
 
-    return failed_policies_report
+              # === COMPROBACIÓN MATEMÁTICA EN 1 SOLA LLAMADA ===
+              # check(*assumptions) evalúa las reglas base BAJO las condiciones del YAML
+              if solver.check(*assumptions) == z3.unsat:
+                  meta = self.get_policy_metadata(policy)
+                  failed_policies_report.append({
+                      "policy": policy,
+                      "severity": meta.get("severity", "unknown"),
+                      "tool": meta.get("tool", "unknown"),
+                      "description": meta.get("description", "empty"),
+                      "remediation": meta.get("remediation", "Check policy")
+                  })
+                  
+          except Exception as e:
+              # pass silently or log
+              pass
+
+      return failed_policies_report
 
   # --- MÉTODOS DE CACHÉ Y AUTOCOMPLETADO OPTIMIZADOS ---
   def _parents_of(self, feature_name: str) -> list[str]:
