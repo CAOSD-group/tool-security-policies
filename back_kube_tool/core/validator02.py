@@ -5,6 +5,7 @@ from flamapy.metamodels.z3_metamodel.operations import Z3SatisfiableConfiguratio
 ##from core.policy_inference import PolicyInference
 import z3
 import inspect
+import concurrent.futures
 
 logger = logging.getLogger(__name__)
 
@@ -15,84 +16,80 @@ class Validator:
 
     self._parent_cache: dict[str, list[str]] = {}
     self._mand_desc_cache: dict[str, list[str]] = {}
-    
+
   def validate_configuration(self, config: Configuration, active_policies: list[str]) -> list[dict]:
-      failed_policies_report = []
-      base_completed_elements = self._complete_full_configuration(config.elements)
-      
-      # =========================================================
-      # 1. INICIALIZACIÓN GLOBAL DEL SOLVER (El Universo Z3)
-      # =========================================================
-      z3_ctx = getattr(self.z3_model, 'ctx', None)
-      solver = z3.Solver(ctx=z3_ctx) 
-      
-      # Cargamos las 76.580 reglas solo UNA VEZ
-      for constraint in self.z3_model.constraints:
-          try:
-              if z3.is_expr(constraint) and z3.is_bool(constraint):
-                  solver.add(constraint)
-          except Exception:
-              pass
+    """
+    Algoritmo Híbrido de Validación:
+    1. Fast-Path (Global Check): Evalúa todas las políticas a la vez. Si SAT, termina en O(1).
+    2. Fallback Secuencial: Si UNSAT, evalúa una a una para aislar las vulnerabilidades exactas.
+    """
+    failed_policies_report = []
+    
+    if not active_policies:
+        return failed_policies_report
 
-      # Limpiamos las variables de FlamaPy para uso directo
-      z3_vars = getattr(self.z3_model, 'variables', getattr(self.z3_model, 'features', {}))
-      processed_vars = {}
-      for k, v in z3_vars.items():
-          if not z3.is_expr(v):
-              if hasattr(v, 'z3_var'):
-                  processed_vars[k] = v.z3_var
-          else:
-              processed_vars[k] = v
+    # Pre-computamos el andamiaje base
+    base_completed_elements = self._complete_full_configuration(config.elements)
 
-      # =========================================================
-      # 2. BUCLE ITERATIVO ULTRARRÁPIDO CON "ASSUMPTIONS"
-      # =========================================================
-      for policy in active_policies:
-          try:
-              # FlamaPy prepara el Mundo Cerrado perfectamente
-              temp_elements = base_completed_elements.copy()
-              temp_elements[policy] = True
-              temp_elements = self._add_single_feature_closure(temp_elements, policy)
-              
-              temp_config = Configuration(temp_elements)
-              temp_config.set_full(True) 
+    # =================================================================
+    # FASE 1: THE FAST-PASS (Vía Rápida Global)
+    # =================================================================
+    temp_elements_global = base_completed_elements.copy()
+    for policy in active_policies:
+        temp_elements_global[policy] = True
+        temp_elements_global = self._add_single_feature_closure(temp_elements_global, policy)
+        
+    temp_config_global = Configuration(temp_elements_global)
+    temp_config_global.set_full(True) # Closed world
+    
+    sat_op_global = Z3SatisfiableConfiguration()
+    sat_op_global.set_configuration(temp_config_global)
+    
+    # Comprobamos todas de golpe.
+    # Si devuelve SAT, el manifiesto cumple TODAS las reglas.
+    if sat_op_global.execute(self.z3_model).get_result():
+        # ¡Terminamos en ~3 segundos!
+        return failed_policies_report
 
-              # ===============================================================
-              # LA MAGIA: En lugar de usar solver.add(), empaquetamos el YAML 
-              # en una lista de memoria (Assumptions) y se lo enviamos a C++.
-              # ===============================================================
-              assumptions = []
-              for feat_name, val in temp_config.elements.items():
-                  z3_var = processed_vars.get(feat_name)
-                  if z3_var is None:
-                      continue
+    # =================================================================
+    # FASE 2: IDENTIFICACIÓN QUIRÚRGICA (Fallback Secuencial)
+    # Solo llegamos aquí si el Fast-Pass detectó al menos 1 error.
+    # Evaluamos individualmente para decirle al remediador QUÉ arreglar.
+    # =================================================================
+    for policy in active_policies:
+      try:
+        temp_elements = base_completed_elements.copy()
+        temp_elements[policy] = True
+        temp_elements = self._add_single_feature_closure(temp_elements, policy)
+        
+        temp_config = Configuration(temp_elements)
+        temp_config.set_full(True) 
+        
+        sat_op = Z3SatisfiableConfiguration()
+        sat_op.set_configuration(temp_config)
+        is_sat = sat_op.execute(self.z3_model).get_result()
+        
+        if not is_sat:
+          meta = self.get_policy_metadata(policy)
+          failed_policies_report.append({
+            "policy": policy,
+            "severity": meta.get("severity", "unknown"),
+            "tool": meta.get("tool", "unknown"),
+            "description": meta.get("description", "empty"),
+            "remediation": meta.get("remediation", "Check policy")
+          })
 
-                  sort_str = str(z3_var.sort())
-                  if sort_str == "Bool" and isinstance(val, bool):
-                      # Adjuntamos la variable o su negación a la lista de supuestos
-                      assumptions.append(z3_var if val else z3.Not(z3_var))
-                  elif sort_str == "Int" and isinstance(val, (int, float)):
-                      assumptions.append(z3_var == z3.IntVal(int(val), ctx=z3_ctx))
-                  elif sort_str == "String" and isinstance(val, str):
-                      assumptions.append(z3_var == z3.StringVal(val, ctx=z3_ctx))
+      except Exception as e:
+        logger.error(f"Error evaluating policy {policy}: {e}")
+        failed_policies_report.append({
+          "policy": policy,
+          "severity": "error",
+          "description": f"Internal mapping error: {e}",
+          "remediation": "Check policy mapping."
+        })
 
-              # === COMPROBACIÓN MATEMÁTICA EN 1 SOLA LLAMADA ===
-              # check(*assumptions) evalúa las reglas base BAJO las condiciones del YAML
-              if solver.check(*assumptions) == z3.unsat:
-                  meta = self.get_policy_metadata(policy)
-                  failed_policies_report.append({
-                      "policy": policy,
-                      "severity": meta.get("severity", "unknown"),
-                      "tool": meta.get("tool", "unknown"),
-                      "description": meta.get("description", "empty"),
-                      "remediation": meta.get("remediation", "Check policy")
-                  })
-                  
-          except Exception as e:
-              # pass silently or log
-              pass
+    return failed_policies_report
 
-      return failed_policies_report
 
   # --- MÉTODOS DE CACHÉ Y AUTOCOMPLETADO OPTIMIZADOS ---
   def _parents_of(self, feature_name: str) -> list[str]:

@@ -12,13 +12,13 @@ spec:
       imagePullPolicy: Always
       name: busybox
       securityContext:
-        readOnlyRootFilesystem: true
-        runAsGroup: 10001
+        runAsUser: 10001
         runAsNonRoot: true
         capabilities:
           drop:
             - ALL
-        runAsUser: 10001
+        runAsGroup: 10001
+        readOnlyRootFilesystem: true
       resources:
         limits:
           cpu: 100m
@@ -30,10 +30,10 @@ spec:
   hostNetwork: false
   dnsPolicy: ClusterFirstWithHostNet
   securityContext:
-    runAsUser: 1000
-    runAsGroup: 3000
-    fsGroup: 2000
     supplementalGroups:
       - 100
+    fsGroup: 2000
+    runAsUser: 1000
+    runAsGroup: 3000
   hostIPC: false
   hostPID: false
