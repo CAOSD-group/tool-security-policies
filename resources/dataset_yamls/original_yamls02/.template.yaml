@@ -1,0 +1,34 @@
+# DEPLOYMENT
+#
+# kubectl create -f .template.yaml
+# kubectl get deployments
+# kubectl get replicaset
+# kubectl get pods
+# kubectl get all
+# 
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment
+  labels:
+    app: myapp
+    type: frontend
+
+spec:
+  template:
+    # Contains the pod definition
+    metadata:
+      name: myapp-pod
+      labels:
+        app: myapp
+        type: frontend
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx
+  replicas: 3
+  selector:
+    matchLabels:
+      # See labels for pods
+      type: frontend

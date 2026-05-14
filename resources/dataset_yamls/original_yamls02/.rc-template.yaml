@@ -1,0 +1,28 @@
+# REPLICATION CONTROLLER
+#
+# kubectl create -f .rc-template.yaml
+# kubectl get replicationcontroller
+# kubectl get pods
+#   - name starts with the name of replication controller
+
+apiVersion: v1              # Different version identifier compared to the ReplicaSet
+kind: ReplicationController
+metadata:
+  name: myapp-rc
+  labels:
+    app: myapp
+    type: frontend
+
+spec:
+  template:
+    # Contains the pod definition
+    metadata:
+      name: myapp-pod
+      labels:
+        app: myapp
+        type: frontend
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx
+  replicas: 3

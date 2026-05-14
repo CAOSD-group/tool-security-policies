@@ -1,0 +1,14 @@
+apiVersion: crisarias.com/v1alpha1
+kind: MpiJob
+metadata:
+  labels:
+    app.kubernetes.io/name: mpijob
+    app.kubernetes.io/instance: mpijob-instance
+    app.kubernetes.io/part-of: kubernetes-mpi-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: kubernetes-mpi-operator
+  name: openmpijob
+spec:
+  jobName: "openmpijob"
+  clusterName: "barva"
+  command: source ~/.bashrc && git clone https://github.com/Crisarias/mpich-examples && cd mpich-examples/mpi-hello-world/code && make && mpirun -hostfile /nfs/hosts.openmpi -n 8 ./mpi_hello_world > /nfs/result.txt

@@ -1,0 +1,19 @@
+apiVersion: crisarias.com/v1alpha1
+kind: MpiCluster
+metadata:
+  labels:
+    app.kubernetes.io/name: poascluster
+    app.kubernetes.io/instance: poascluster-instance
+    app.kubernetes.io/part-of: kubernetes-mpi-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: kubernetes-mpi-operator
+  name: poascluster
+spec:
+  clusterName: "poas"
+  clusterNodeImage: "docker.io/crisarias/mpicluster-mpich-slurm-operator-base:latest"
+  clusterNodesCount: 8
+  coresPerNode: 15
+  memoryPerNode: 30000
+  sshPort: 22
+  localVolumePath: "/mnt/beegfs"
+  localVolumeCapacity: 500

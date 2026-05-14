@@ -17,37 +17,52 @@ class Validator:
         
   def validate_configuration(self, config: Configuration, active_policies: list[str]) -> list[dict]:
     """
-    Iteratively tests policies against the configuration using Z3.
+    Algoritmo Híbrido de Validación:
+    1. Fast-Path (Global Check): Evaluates all policies at once. If SAT, terminates in O(1).
+    2. Fallback Secuencial: If UNSAT, iteratively tests all policies against the configuration.
     Returns a list of violation dictionaries.
     """
     failed_policies_report = []
     
+    if not active_policies:
+        return failed_policies_report
+
+    # Pre-computamos el andamiaje base
     base_completed_elements = self._complete_full_configuration(config.elements)
+
+    # FASE 1: THE FAST-PASS (The fast path): Eavaluated all the policies at once.
+    temp_elements_global = base_completed_elements.copy()
+    for policy in active_policies:
+        temp_elements_global[policy] = True
+        temp_elements_global = self._add_single_feature_closure(temp_elements_global, policy)
+        
+    temp_config_global = Configuration(temp_elements_global)
+    temp_config_global.set_full(True) # Closed world
+    
+    sat_op_global = Z3SatisfiableConfiguration()
+    sat_op_global.set_configuration(temp_config_global)
+    
+    
+    # Check all the rules.
+    if sat_op_global.execute(self.z3_model).get_result():
+        return failed_policies_report
+
+    # FASE 2: The sequential approach (Fallback Secuencial)
+    # Individual evaluation for each policy.
 
     for policy in active_policies:
       try:
         temp_elements = base_completed_elements.copy()
         temp_elements[policy] = True
-        # 1. Clean copy of the manifest elements
-        #temp_elements = config.elements.copy()
-        # 2. Activate ONLY the current policy we want to audit
-        #temp_elements[policy] = True
-        
-        # 3. Complete the configuration (inject parents/mandatory children)
         temp_elements = self._add_single_feature_closure(temp_elements, policy)
+        
         temp_config = Configuration(temp_elements)
+        temp_config.set_full(True) 
         
-        #temp_config = Configuration(temp_elements)
-        #temp_config_completed = self._complete_configuration(temp_config)
-        #temp_config_completed.set_full(True)
-        
-        temp_config.set_full(True) # Mark as full to avoid Z3 warnings about missing features
-        # 4. Validate with Z3
         sat_op = Z3SatisfiableConfiguration()
-        sat_op.set_configuration(temp_config) # temp_config_completed
+        sat_op.set_configuration(temp_config)
         is_sat = sat_op.execute(self.z3_model).get_result()
         
-        # 5. If UNSAT, record vulnerability
         if not is_sat:
           meta = self.get_policy_metadata(policy)
           print(f"Error en la politica con el meta: {meta}")
@@ -64,8 +79,8 @@ class Validator:
         failed_policies_report.append({
           "policy": policy,
           "severity": "error",
-          "description": f"Internal mapping/solver error: {e}",
-          "remediation": "Check policy mapping and FM constraints."
+          "description": f"Internal mapping error: {e}",
+          "remediation": "Check policy mapping."
         })
 
     return failed_policies_report

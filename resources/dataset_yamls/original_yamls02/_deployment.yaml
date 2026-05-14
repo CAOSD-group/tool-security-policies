@@ -1,0 +1,57 @@
+{{- define "common.deployment.tpl" -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-{{ .Chart.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      volumes:
+        {{- range .Values.volumes }}
+        - name: {{ .name }}
+          hostPath:
+            path: {{ .path }}
+        {{- end }}
+      containers:
+        {{- range .Values.containers }}
+        - name: {{ .name }}
+          image: {{ .image }}
+          volumeMounts:
+            {{- range .volumeMounts }}
+            - name: {{ .name }}
+              mountPath: {{ .path }}
+            {{- end }}
+          ports:
+            {{- range .ports }}
+            - containerPort: {{ .in }}
+              hostPort: {{ .out }}
+              protocol: {{ default "TCP" .protocol }}
+            {{- end }}
+          envFrom:
+            {{- if default false .envFromConfigMap }}
+            - configMapRef:
+                name: {{ $.Release.Name }}-{{ $.Chart.Name }}-configmap
+            {{- end }}
+            {{- if default false .envFromSecrets }}
+            - secretRef:
+                name: {{ $.Release.Name }}-{{ $.Chart.Name }}-secrets
+            {{- end }}
+          # TODO: remove when changing the tag to latest
+          imagePullPolicy: Always
+          securityContext:
+            privileged: {{ default false .privileged }}
+        {{- end }}
+{{- end -}}
+
+{{- define "common.deployment" -}}
+{{- include "common.util.merge" (append . "common.deployment.tpl") -}}
+{{- end -}}

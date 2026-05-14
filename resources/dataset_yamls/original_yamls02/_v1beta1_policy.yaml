@@ -1,0 +1,18 @@
+apiVersion: app.spacelift.io/v1beta1
+kind: Policy
+metadata:
+  name: policy-sample
+spec:
+  type: PLAN
+  spaceName: space-sample
+  description: Prevent creation of IAM users test
+  attachedStacksNames:
+    - stack-sample
+  body: |
+    package spacelift
+
+    deny[sprintf("must not create AWS IAM users", [resource.address])] {
+      some resource
+      created_resources[resource]
+      resource.type == "aws_iam_user"
+    }

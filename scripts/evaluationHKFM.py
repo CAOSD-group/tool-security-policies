@@ -27,8 +27,8 @@ from back_kube_tool.core.remediator import Remediator
 from back_kube_tool.core.utils.context_filter import filter_context_aware_actions
 
 VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls"
-OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_benchmark_results04.csv"
-TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediated04"
+OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_benchmark_results05.csv"
+TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediated05"
 
 # (Asegúrate de que estas rutas coinciden con tu entorno)
 UVL_PATH = os.getenv("UVL_MODEL_PATH", str(ROOT / "back_kube_tool" / "models" / "HKFM.uvl"))
@@ -178,6 +178,12 @@ def run_remediation_benchmark():
                     remediated_doc = ManifestParser.parse(file_in.read())[0]
                 
                 rem_mapped_dict = csv_mapper.transform_manifest(remediated_doc)
+                if filename in ["019-securityContext1_1.yaml", "08-Pod_DNS_simplified.yaml"]:
+                    print(f"\n[DICCIONARIO REMEDIADO {filename}]:")
+                    for k, v in rem_mapped_dict.items():
+                        print(f"  - {k}: {v}")
+                        print("-" * 50)
+
                 rem_config = MappingEngine.manifest_to_configurations(rem_mapped_dict)[0]
                 
                 z3_violations_new = validator.validate_configuration(rem_config, z3_policies)
@@ -185,7 +191,7 @@ def run_remediation_benchmark():
                 
                 final_alerts = len(z3_violations_new) + (len(regex_report_new) if not passed_regex_new else 0)
                 is_fully_secure = (final_alerts == 0)
-
+                print(f"{filename}: final alerts {final_alerts} \n violations in rem: {z3_violations_new}")
                 # --- E. REGISTRO CSV ---
                 writer.writerow([
                     filename, kind, initial_alerts_z3, initial_alerts_regex, 

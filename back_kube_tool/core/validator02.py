@@ -6,7 +6,7 @@ from flamapy.metamodels.z3_metamodel.operations import Z3SatisfiableConfiguratio
 import z3
 import inspect
 import concurrent.futures
-
+import traceback
 logger = logging.getLogger(__name__)
 
 class Validator:
@@ -18,75 +18,113 @@ class Validator:
     self._mand_desc_cache: dict[str, list[str]] = {}
 
   def validate_configuration(self, config: Configuration, active_policies: list[str]) -> list[dict]:
-    """
-    Algoritmo Híbrido de Validación:
-    1. Fast-Path (Global Check): Evalúa todas las políticas a la vez. Si SAT, termina en O(1).
-    2. Fallback Secuencial: Si UNSAT, evalúa una a una para aislar las vulnerabilidades exactas.
-    """
     failed_policies_report = []
-    
-    if not active_policies:
-        return failed_policies_report
-
-    # Pre-computamos el andamiaje base
     base_completed_elements = self._complete_full_configuration(config.elements)
-
-    # =================================================================
-    # FASE 1: THE FAST-PASS (Vía Rápida Global)
-    # =================================================================
-    temp_elements_global = base_completed_elements.copy()
-    for policy in active_policies:
-        temp_elements_global[policy] = True
-        temp_elements_global = self._add_single_feature_closure(temp_elements_global, policy)
-        
-    temp_config_global = Configuration(temp_elements_global)
-    temp_config_global.set_full(True) # Closed world
     
-    sat_op_global = Z3SatisfiableConfiguration()
-    sat_op_global.set_configuration(temp_config_global)
+    # Extraemos las restricciones cruzadas (Tus políticas reales)
+    ctcs = self.flat_fm.get_constraints()
     
-    # Comprobamos todas de golpe.
-    # Si devuelve SAT, el manifiesto cumple TODAS las reglas.
-    if sat_op_global.execute(self.z3_model).get_result():
-        # ¡Terminamos en ~3 segundos!
-        return failed_policies_report
+    # Mapa maestro para distinguir qué es una Variable de K8s y qué es Texto Puro
+    all_features = {f.name for f in self.flat_fm.get_features()}
 
-    # =================================================================
-    # FASE 2: IDENTIFICACIÓN QUIRÚRGICA (Fallback Secuencial)
-    # Solo llegamos aquí si el Fast-Pass detectó al menos 1 error.
-    # Evaluamos individualmente para decirle al remediador QUÉ arreglar.
-    # =================================================================
+    # =========================================================
+    # MOTOR DE EVALUACIÓN AST NATIVO
+    # =========================================================
+    def evaluate_ast(node, elements):
+        if node is None:
+            return True
+            
+        # A. Nodo Hoja (Evaluación de variables y valores)
+        if not node.left and not node.right:
+            val = node.data
+            
+            # 1. Limpieza de comillas si Flamapy las dejó
+            if isinstance(val, str) and ((val.startswith("'") and val.endswith("'")) or (val.startswith('"') and val.endswith('"'))):
+                return val.strip("'").strip('"')
+                
+            # 2. Si es un número en formato string, lo parseamos
+            if isinstance(val, str) and val.replace('.','',1).isdigit():
+                return float(val) if '.' in val else int(val)
+            
+            # 3. Buscamos en el manifiesto YAML
+            if val in elements:
+              res = elements[val]
+              return res[0] if isinstance(res, list) and len(res) > 0 else res                
+            
+            # [PARCHE DE ATRIBUTOS]: FlamaPy añade sufijos. Los limpiamos.
+            for suffix in ['_asInteger', '_StringValue', '_IntegerValue']:
+                if isinstance(val, str) and val.endswith(suffix):
+                    clean_val = val[:-len(suffix)]
+                    if clean_val in elements:
+                      res = elements[clean_val]
+                      return res[0] if isinstance(res, list) and len(res) > 0 else res
+                    
+            # 4. Si no está en el YAML, hay dos opciones:
+            if val in all_features:
+                # Es una característica de Kubernetes (ej. readOnlyRootFilesystem) que no está en el YAML -> Es Falso.
+                return False
+            else:
+                # No es una característica del modelo. Es un texto literal de tu UVL (ej. 'aws-node', 'ALL')
+                return val
+
+        # B. Nodos Operadores (Con soporte para sintaxis interna astoperation.*)
+        op = str(node.data).lower()
+
+        if 'not' in op and 'equals' not in op: # astoperation.not
+            return not evaluate_ast(node.left, elements)
+
+        left_val = evaluate_ast(node.left, elements)
+        right_val = evaluate_ast(node.right, elements)
+
+        # Lógica Booleana
+        if 'and' in op: return left_val and right_val
+        if 'or' in op: return left_val or right_val
+        if 'implies' in op or 'requires' in op: return (not left_val) or right_val
+        if 'excludes' in op: return not (left_val and right_val)
+
+        # Lógica Relacional (Atributos, Puertos, Textos)
+        try:
+            if 'not_equals' in op or '!=' in op: return str(left_val) != str(right_val)
+            if 'equals' in op or '==' in op: return str(left_val) == str(right_val)
+            if 'greater' in op or '>' in op: return float(left_val) > float(right_val)
+            if 'less' in op or '<' in op: return float(left_val) < float(right_val)
+        except Exception:
+            return False
+
+        return False
+
+    # =========================================================
+    # BUCLE ITERATIVO (Velocidad O(1))
+    # =========================================================
     for policy in active_policies:
-      try:
-        temp_elements = base_completed_elements.copy()
-        temp_elements[policy] = True
-        temp_elements = self._add_single_feature_closure(temp_elements, policy)
-        
-        temp_config = Configuration(temp_elements)
-        temp_config.set_full(True) 
-        
-        sat_op = Z3SatisfiableConfiguration()
-        sat_op.set_configuration(temp_config)
-        is_sat = sat_op.execute(self.z3_model).get_result()
-        
-        if not is_sat:
-          meta = self.get_policy_metadata(policy)
-          failed_policies_report.append({
-            "policy": policy,
-            "severity": meta.get("severity", "unknown"),
-            "tool": meta.get("tool", "unknown"),
-            "description": meta.get("description", "empty"),
-            "remediation": meta.get("remediation", "Check policy")
-          })
+        try:
+            temp_elements = base_completed_elements.copy()
+            temp_elements[policy] = True
+            temp_elements = self._add_single_feature_closure(temp_elements, policy)
 
-      except Exception as e:
-        logger.error(f"Error evaluating policy {policy}: {e}")
-        failed_policies_report.append({
-          "policy": policy,
-          "severity": "error",
-          "description": f"Internal mapping error: {e}",
-          "remediation": "Check policy mapping."
-        })
+            policy_failed = False
+            
+            # Comprobamos las restricciones. Si alguna da False, el YAML incumple tu política
+            for ctc in ctcs:
+                if evaluate_ast(ctc.ast.root, temp_elements) is False:
+                    policy_failed = True
+                    break
+
+            # Si falló, añadimos la alerta
+            if policy_failed:
+                meta = self.get_policy_metadata(policy)
+                #print(f"Error en la politica con el meta: {meta}")
+                failed_policies_report.append({
+                    "policy": policy,
+                    "severity": meta.get("severity", "unknown"),
+                    "tool": meta.get("tool", "unknown"),
+                    "description": meta.get("description", "empty"),
+                    "remediation": meta.get("remediation", "Check policy")
+                })
+
+        except Exception as e:
+            # print(f"Error evaluando AST en {policy}: {e}")
+            pass
 
     return failed_policies_report
 

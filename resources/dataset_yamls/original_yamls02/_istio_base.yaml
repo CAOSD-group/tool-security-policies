@@ -1,0 +1,139 @@
+{{- define "common.istio_base" -}}
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: book-outlet-require-jwt
+spec:
+  action: ALLOW
+  rules:
+  - {}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: book-outlet
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: default
+spec:
+  mtls:
+    mode: PERMISSIVE
+---
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: book-outlet-request-authentication
+spec:
+  jwtRules:
+  - forwardOriginalToken: true
+    issuer: http://auth-server
+    jwksUri: http://auth-server.kjvmsvc-app.svc.cluster.local/oauth2/jwks
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: book-outlet
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: kjvmsvc-app-gw
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - hosts:
+    - minikube.me
+    port:
+      name: https
+      number: 443
+      protocol: HTTPS
+    tls:
+      credentialName: kjvmsvc-app-certificate
+      mode: SIMPLE
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: kjvmsvc-app-vs
+spec:
+  gateways:
+  - kjvmsvc-app-gw
+  hosts:
+  - minikube.me
+  http:
+  - match:
+    - uri:
+        prefix: /oauth2
+    route:
+    - destination:
+        host: auth-server
+  - match:
+    - uri:
+        prefix: /login
+    route:
+    - destination:
+        host: auth-server
+  - match:
+    - uri:
+        prefix: /error
+    route:
+    - destination:
+        host: auth-server
+  - match:
+    - uri:
+        prefix: /book-outlet
+    route:
+    - destination:
+        host: book-outlet
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: /openapi
+    route:
+    - destination:
+        host: book-outlet
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: /webjars
+    route:
+    - destination:
+        host: book-outlet
+        port:
+          number: 80
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: health-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - hosts:
+    - "health.minikube.me"
+    port:
+      number: 443
+      name: https-health
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: kjvmsvc-app-certificate
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: health-vs
+spec:
+  hosts:
+  - "health.minikube.me"
+  gateways:
+  - health-gateway
+  http:
+  - route:
+    - destination:
+        host: book-outlet
+        port:
+          number: 4004
+{{- end -}}
