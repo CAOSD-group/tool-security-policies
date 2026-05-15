@@ -1,0 +1,41 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-cluster-manager-config-mp1
+  namespace: mysql-cluster
+immutable: true
+data:
+  config.ini: |+
+    [ndbd default]
+    NoOfReplicas=2
+
+    [ndb_mgmd]
+    hostname=mysql-cluster-manager-mp1-0.cluster-manager-service-mp1.mysql-cluster.svc.kube.askug.net
+    NodeId=1
+    datadir=/var/lib/mysql-cluster
+
+    [ndb_mgmd]
+    hostname=mysql-cluster-manager-mp8-0.cluster-manager-service-mp8.mysql-cluster.svc.kube.askug.net
+    NodeId=2
+    datadir=/var/lib/mysql-cluster
+
+    [ndbd]
+    hostname=mysql-cluster-data-node-mp1-0.cluster-node-service-mp1.mysql-cluster.svc.kube.askug.net
+    NodeId=3
+    datadir=/var/lib/mysql/data
+
+    [ndbd]
+    hostname=mysql-cluster-data-node-mp8-0.cluster-node-service-mp8.mysql-cluster.svc.kube.askug.net
+    NodeId=4
+    datadir=/var/lib/mysql/data
+
+    [mysqld]
+    hostname=mysql-cluster-server-mp1-0.cluster-server-service-mp1.mysql-cluster.svc.kube.askug.net
+    NodeId=5
+
+    [mysqld]
+    hostname=mysql-cluster-server-mp8-0.cluster-server-service-mp8.mysql-cluster.svc.kube.askug.net
+    NodeId=6
+
+...

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: replicaset-1
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      env: qa
+  template:
+    metadata:
+      labels:
+        env: qa
+    spec:
+      containers:
+        - name: nginx
+          image: eu.foo.io/nginx:secure-tag@sha256:0000000000000000000000000000000000000000000000000000000000000000
+          securityContext:
+            runAsGroup: 10001
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            runAsUser: 10001
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 100m
+            limits:
+              memory: 512Mi
+              cpu: 100m

@@ -26,9 +26,9 @@ from back_kube_tool.core.reverse_mapper import ReverseMapper
 from back_kube_tool.core.remediator import Remediator
 from back_kube_tool.core.utils.context_filter import filter_context_aware_actions
 
-VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls"
-OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_benchmark_results05.csv"
-TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediated05"
+VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls" / "original_yamls02"
+OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_benchmark_results03.csv"
+TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediated03"
 
 # (Asegúrate de que estas rutas coinciden con tu entorno)
 UVL_PATH = os.getenv("UVL_MODEL_PATH", str(ROOT / "back_kube_tool" / "models" / "HKFM.uvl"))
@@ -113,6 +113,11 @@ def run_remediation_benchmark():
                     mapped_json_dict = csv_mapper.transform_manifest(doc)
                 except ValueError as ve:
                     print(f"[{filename}] Omitido (No soportado): {ve}")
+                    writer.writerow([
+                        filename, kind, 
+                        "ERROR_MAP", "ERROR_MAP", "ERROR_MAP", # Alertas marcadas como error
+                        0.0, 0.0, False, 0, 0, 0.0         # Tiempos a 0 y False en seguridad
+                    ])
                     continue
 
                 active_policies = inference_engine.get_policies_for_kind(kind)
@@ -178,12 +183,6 @@ def run_remediation_benchmark():
                     remediated_doc = ManifestParser.parse(file_in.read())[0]
                 
                 rem_mapped_dict = csv_mapper.transform_manifest(remediated_doc)
-                if filename in ["019-securityContext1_1.yaml", "08-Pod_DNS_simplified.yaml"]:
-                    print(f"\n[DICCIONARIO REMEDIADO {filename}]:")
-                    for k, v in rem_mapped_dict.items():
-                        print(f"  - {k}: {v}")
-                        print("-" * 50)
-
                 rem_config = MappingEngine.manifest_to_configurations(rem_mapped_dict)[0]
                 
                 z3_violations_new = validator.validate_configuration(rem_config, z3_policies)
@@ -201,7 +200,6 @@ def run_remediation_benchmark():
                 ])
 
             except Exception as e:
-                print(f"{configurations} {active_policies}")
                 print(f"[ERROR] Fallo procesando {filename}: {e}")
                 traceback.print_exc() 
                 print("-" * 50)

@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: caddy
+  labels:
+    restarter.kubedoop.dev/enable: 'true'
+spec:
+  serviceName: caddy
+  replicas: 1
+  selector:
+    matchLabels:
+      app: caddy
+  template:
+    metadata:
+      labels:
+        app: caddy
+    spec:
+      containers:
+        - name: caddy
+          image: caddy:2
+          env:
+            - name: BASIC_AUTH
+              valueFrom:
+                secretKeyRef:
+                  name: basic-auth
+                  key: BASIC_AUTH
+          ports:
+            - containerPort: 80
+              name: http
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+            requests:
+              memory: 512Mi
+              cpu: 100m
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          volumeMounts:
+            - name: caddyfile
+              mountPath: /etc/caddy/Caddyfile
+              subPath: Caddyfile
+          securityContext:
+            runAsGroup: 10001
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            runAsUser: 10001
+      volumes:
+        - name: caddyfile
+          configMap:
+            name: caddyfile

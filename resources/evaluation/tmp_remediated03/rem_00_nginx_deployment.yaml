@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mi-nginx
+  labels:
+    app: v1
+    environment: dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: v1
+      environment: dev
+  template:
+    metadata:
+      labels:
+        app: v1
+        environment: dev
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx:1.26-bookworm
+          ports:
+            - containerPort: 80
+          securityContext:
+            runAsGroup: 10001
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            runAsUser: 10001
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 100m
+            limits:
+              memory: 512Mi
+              cpu: 100m

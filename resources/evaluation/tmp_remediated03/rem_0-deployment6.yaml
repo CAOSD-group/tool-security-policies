@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echoserver
+  namespace: secure-namespace
+spec:
+  selector:
+    matchLabels:
+      app: echoserver
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: echoserver
+    spec:
+      containers:
+        - image: k8s.gcr.io/e2e-test-images/echoserver:2.5
+          name: echoserver
+          ports:
+            - containerPort: 8080
+          securityContext:
+            runAsGroup: 10001
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            runAsUser: 10001
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 100m
+            limits:
+              memory: 512Mi
+              cpu: 100m

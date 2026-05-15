@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hamster
+  namespace: secure-namespace
+spec:
+  selector:
+    matchLabels:
+      app: hamster
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: hamster
+    spec:
+      containers:
+        - name: hamster
+          image: k8s.gcr.io/ubuntu-slim:0.1
+          resources:
+            requests:
+              cpu: 180m
+              memory: 50Mi
+            limits:
+              cpu: 600m
+              memory: 100Mi
+          command: ["/bin/sh"]
+          args:
+            - "-c"
+            - "while true; do timeout 0.2s yes >/dev/null; sleep 0.5s; done"
+          securityContext:
+            runAsGroup: 10001
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            runAsUser: 10001

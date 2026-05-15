@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ndb-cluster-testing-pod-service
+  namespace: ndb-cluster
+spec:
+  selector:
+    uid: 8eaa5eca-7979-11ef-8c0f-00155d052bda
+  type: ClusterIP
+  loadBalancerIP: 10.216.80.41
+  ports:
+    - protocol: TCP
+      name: tcp-22
+      port: 32000
+      targetPort: 22

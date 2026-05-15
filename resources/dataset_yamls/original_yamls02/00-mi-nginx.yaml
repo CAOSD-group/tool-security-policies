@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mi-nginx
+  namespace: default
+  labels:
+    app: v1
+    environment: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: v1
+      environment: dev
+  template:
+    metadata:
+      labels:
+        app: v1
+        environment: dev
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx:1.26-bookworm
+          ports:
+            - containerPort: 80

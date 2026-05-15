@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-cluster-testing-service
+  namespace: mysql-cluster
+spec:
+  selector:
+    app: 2d530c06-7558-11ee-8d74-afc5d10856bf
+  type: ClusterIP
+  loadBalancerIP: 10.216.80.33
+  ports:
+    - protocol: TCP
+      name: http-22
+      port: 32000
+      targetPort: 22

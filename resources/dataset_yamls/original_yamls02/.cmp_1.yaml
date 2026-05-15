@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cmp-kustomize-build-with-helm-and-envsubst
+  namespace: argocd
+data:
+  kustomize-build-with-helm-and-envsubst.yaml: "\napiVersion: argoproj.io/v1alpha1\n\
+    kind: ConfigManagementPlugin\nmetadata:\n  name: kustomize-build-with-helm-and-envsubst\n\
+    spec:\n  generate:\n    command: [\"sh\", \"-c\"]\n    args: [\"kustomize build\
+    \ --enable-helm | envsubst\"]\n"

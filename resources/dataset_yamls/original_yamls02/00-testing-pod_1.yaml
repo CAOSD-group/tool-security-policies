@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: ndb-cluster
+  name: ndb-cluster-testing-pod
+  labels:
+    uid: 8eaa5eca-7979-11ef-8c0f-00155d052bda
+spec:
+  restartPolicy: OnFailure
+  nodeSelector:
+    nodeType: worker
+    kubernetes.io/hostname: mp1
+  serviceAccountName: ndb-cluster-testing-pod-sa
+  volumes:
+  - name: testing-volume
+    persistentVolumeClaim:
+      claimName: ndb-cluster-storage
+  containers:
+  - name: testing-pod
+    image: alpine:3.20
+    command:
+    - sh
+    - -c
+    - 'echo "Install OpenSSH"; apk add openssh-server curl netcat-openbsd; ssh-keygen
+      -t rsa -f /etc/ssh/ssh_host_rsa_key -q -N ""; sed -i "s/#PermitRootLogin prohibit-password/PermitRootLogin
+      yes/g" /etc/ssh/sshd_config; echo "root:123456" | chpasswd; /usr/sbin/sshd -D
+      -e -ddd '
+    volumeMounts:
+    - mountPath: /mnt/tmp
+      name: testing-volume
+      readOnly: false
+    ports:
+    - containerPort: 22
+      name: tcp22
+    resources:
+      limits:
+        memory: 256Mi
+        cpu: 150m
+      requests:
+        memory: 128Mi
+        cpu: 75m

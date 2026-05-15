@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-dns
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: external-dns
+  template:
+    metadata:
+      labels:
+        app: external-dns
+    spec:
+      serviceAccountName: external-dns
+      containers:
+        - name: external-dns
+          image: k8s.gcr.io/external-dns/external-dns:v0.10.2
+          args:
+            - --source=service
+            - --source=ingress
+            - --provider=aws
+            - --aws-zone-type=public
+            - --registry=txt
+            - --txt-owner-id=my-hostedzone-identifier
+          securityContext:
+            runAsGroup: 10001
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            runAsUser: 10001
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 100m
+            limits:
+              memory: 512Mi
+              cpu: 100m
+      securityContext:
+        fsGroup: 65534
+  replicas: 2

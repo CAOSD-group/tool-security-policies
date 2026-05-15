@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: velero
+  name: minio
+  labels:
+    component: minio
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      component: minio
+  template:
+    metadata:
+      labels:
+        component: minio
+    spec:
+      volumes:
+        - name: storage
+          emptyDir: {}
+        - name: config
+          emptyDir: {}
+      containers:
+        - name: minio
+          image: eu.foo.io/minio:secure-tag@sha256:0000000000000000000000000000000000000000000000000000000000000000
+          imagePullPolicy: IfNotPresent
+          args:
+            - server
+            - /storage
+            - --config-dir=/config
+          env:
+            - name: MINIO_ACCESS_KEY
+              value: minio
+            - name: MINIO_SECRET_KEY
+              value: minio123
+          ports:
+            - containerPort: 9000
+          volumeMounts:
+            - name: storage
+              mountPath: /storage
+            - name: config
+              mountPath: /config
+          securityContext:
+            runAsGroup: 10001
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            runAsUser: 10001
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 100m
+            limits:
+              memory: 512Mi
+              cpu: 100m
+  replicas: 2

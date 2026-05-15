@@ -85,9 +85,9 @@ class Validator:
         # Lógica Relacional (Atributos, Puertos, Textos)
         try:
             if 'not_equals' in op or '!=' in op: return str(left_val) != str(right_val)
-            if 'equals' in op or '==' in op: return str(left_val) == str(right_val)
-            if 'greater' in op or '>' in op: return float(left_val) > float(right_val)
-            if 'less' in op or '<' in op: return float(left_val) < float(right_val)
+            elif 'equals' in op or '==' in op: return str(left_val) == str(right_val)
+            elif 'greater' in op or '>' in op: return float(left_val) > float(right_val)
+            elif 'lower' in op or 'less' in op or '<' in op: return float(left_val) < float(right_val)        
         except Exception:
             return False
 

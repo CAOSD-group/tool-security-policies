@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: velero
+  name: minio-setup
+  labels:
+    component: minio
+  ownerReferences:
+    - apiVersion: batch/v1
+      kind: CronJob
+      name: parent-cronjob
+      uid: '1234'
+spec:
+  template:
+    metadata:
+      name: minio-setup
+    spec:
+      restartPolicy: OnFailure
+      volumes:
+        - name: config
+          emptyDir: {}
+      containers:
+        - name: mc
+          image: eu.foo.io/mc:secure-tag@sha256:0000000000000000000000000000000000000000000000000000000000000000
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - mc --config-dir=/config config host add velero http://minio:9000 minio minio123 && mc --config-dir=/config mb -p velero/velero
+          volumeMounts:
+            - name: config
+              mountPath: /config
+          securityContext:
+            runAsGroup: 10001
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            runAsUser: 10001
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 100m
+            limits:
+              memory: 512Mi
+              cpu: 100m

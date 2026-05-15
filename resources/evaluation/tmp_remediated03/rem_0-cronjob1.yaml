@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cronjob
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      backoffLimit: 4
+      activeDeadlineSeconds: 240
+      parallelism: 2
+      completions: 3
+      template:
+        spec:
+          containers:
+            - name: cronjob
+              image: eu.foo.io/busybox:secure-tag@sha256:0000000000000000000000000000000000000000000000000000000000000000
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+                - -c
+                - date; echo Hello from the Kubernetes cluster
+              securityContext:
+                runAsGroup: 10001
+                capabilities:
+                  drop:
+                    - ALL
+                runAsNonRoot: true
+                readOnlyRootFilesystem: true
+                runAsUser: 10001
+              resources:
+                requests:
+                  memory: 512Mi
+                  cpu: 100m
+                limits:
+                  memory: 512Mi
+                  cpu: 100m
+          restartPolicy: OnFailure

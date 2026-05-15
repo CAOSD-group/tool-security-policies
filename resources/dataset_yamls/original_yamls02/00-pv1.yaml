@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-data-node-storage-mp1
+  labels:
+    file-system: ext4
+    node-name: mp1
+    physical-volume: lvm-thin-partition
+    max-size: 20GiB
+spec:
+  capacity:
+    storage: 20Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: mysql-data-node-mp1
+  local:
+    path: /mnt/kube/mysql/node
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - mp1

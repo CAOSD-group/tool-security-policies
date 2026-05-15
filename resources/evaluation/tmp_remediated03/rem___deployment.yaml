@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-rolling-update-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nodejs-app
+  template:
+    metadata:
+      name: nodejs-app-pod
+      labels:
+        app: nodejs-app
+    spec:
+      containers:
+        - name: nodejs-image
+          image: ankitdawra/nodejs-image:latest2
+          resources:
+            limits:
+              cpu: 100m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 512Mi
+          envFrom:
+            - configMapRef:
+                name: mysql-configs
+            - secretRef:
+                name: mysql-secrets
+          securityContext:
+            runAsGroup: 10001
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            runAsUser: 10001

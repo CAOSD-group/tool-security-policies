@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: mysql-cluster
+  name: mysql-cluster-connectivity-testing
+  labels:
+    app: 2d530c06-7558-11ee-8d74-afc5d10856bf
+spec:
+  restartPolicy: OnFailure
+  dnsPolicy: ClusterFirst
+  nodeSelector:
+    kubernetes.io/hostname: mp8
+  containers:
+  - name: testing-pod
+    image: alpine:3.18
+    command:
+    - sh
+    - -c
+    - 'echo "Install Packages"; mkdir -p /etc/podinfo; apk add openssh-server netcat-openbsd
+      curl; ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -q -N ""; sed -i "s/#PermitRootLogin
+      prohibit-password/PermitRootLogin yes/g" /etc/ssh/sshd_config; echo "root:123456"
+      | chpasswd; echo "$POD_IP $(hostname)"; /usr/sbin/sshd -D -e -ddd '
+    ports:
+    - containerPort: 22
+      name: tcp22
+    env:
+    - name: POD_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
+    resources:
+      limits:
+        memory: 256Mi
+        cpu: 500m
+      requests:
+        memory: 128Mi
+        cpu: 250m

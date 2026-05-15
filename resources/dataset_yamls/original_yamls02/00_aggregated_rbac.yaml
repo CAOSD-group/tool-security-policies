@@ -1,0 +1,19 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  annotations: {}
+  labels:
+    name: syn-yawol-controller-view
+    rbac.authorization.k8s.io/aggregate-to-admin: 'true'
+    rbac.authorization.k8s.io/aggregate-to-edit: 'true'
+    rbac.authorization.k8s.io/aggregate-to-view: 'true'
+  name: syn:yawol-controller:view
+rules:
+- apiGroups:
+  - yawol.stackit.cloud
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch

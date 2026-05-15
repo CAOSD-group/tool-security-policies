@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ndb-cluster-exporter-service
+  namespace: ndb-cluster
+spec:
+  selector:
+    uid: 87a64c70-8594-11ef-9428-7fa2bd4fe393
+  type: ClusterIP
+  loadBalancerIP: 10.216.80.37
+  ports:
+    - protocol: TCP
+      name: tcp9104
+      port: 32000
+      targetPort: 9104

@@ -49,10 +49,10 @@ spec:
               memory: "128Mi"
               cpu: "250m"
           securityContext:
-            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 10001
             capabilities:
               drop:
                 - ALL
-            runAsNonRoot: true
-            runAsUser: 10001
             runAsGroup: 10001
+            readOnlyRootFilesystem: true

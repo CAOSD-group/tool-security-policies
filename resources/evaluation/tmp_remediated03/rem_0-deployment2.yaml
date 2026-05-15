@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: express
+  namespace: demo
+spec:
+  selector:
+    matchLabels:
+      app: express
+  template:
+    metadata:
+      labels:
+        app: express
+    spec:
+      containers:
+        - image: eu.foo.io/express-073:secure-tag@sha256:0000000000000000000000000000000000000000000000000000000000000000
+          name: express
+          ports:
+            - name: http
+              containerPort: 8081
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 200m
+              memory: 128Mi
+          securityContext:
+            runAsGroup: 10001
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            runAsUser: 10001
+  replicas: 2

@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ndb-cluster-exporter
+  namespace: ndb-cluster
+  labels:
+    uid: 87a64c70-8594-11ef-9428-7fa2bd4fe393
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      uid: 87a64c70-8594-11ef-9428-7fa2bd4fe393
+  template:
+    metadata:
+      labels:
+        uid: 87a64c70-8594-11ef-9428-7fa2bd4fe393
+    spec:
+      restartPolicy: Always
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: ndbDataType
+                    operator: In
+                    values:
+                      - ndb.node
+                      - ndb.server
+      containers:
+        - name: cluster-server
+          image: hub.askug.net/mysql-cluster-mysql-prometheus-exporter:0.0.2-beta3
+          args:
+            - mysqld_exporter
+            - ndb-cluster-balancer-service.ndb-cluster.svc.kube.askug.net:3306
+          ports:
+            - name: tcp9104
+              protocol: TCP
+              containerPort: 9104
+          livenessProbe:
+            httpGet:
+              path: /-/healthy
+              port: 9104
+            initialDelaySeconds: 15
+            periodSeconds: 60
+          readinessProbe:
+            httpGet:
+              path: /-/ready
+              port: 9104
+            initialDelaySeconds: 15
+            periodSeconds: 90
+          env:
+            - name: MYSQL_EXPORTER_VERSION
+              value: 0.15.1
+            - name: MYSQLD_EXPORTER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ndb-cluster-exporter-secrets
+                  key: mysqld-exporter-password
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: '1'
+            requests:
+              memory: 256Mi
+              cpu: 500m
+          securityContext:
+            runAsGroup: 10001
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            runAsUser: 10001

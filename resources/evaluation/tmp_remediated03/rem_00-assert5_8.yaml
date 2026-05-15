@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: dapr-placement-server
+  namespace: dapr-system
+spec:
+  template:
+    spec:
+      imagePullSecrets:
+        - name: canonical-registry-credentials

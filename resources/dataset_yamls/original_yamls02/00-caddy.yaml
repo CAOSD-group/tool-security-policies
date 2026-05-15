@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: caddyfile
+data:
+  Caddyfile: ":80 {\n  root * /wwwroot/\n  file_server\n\n  # read env basic auth\
+    \ snippet from https://caddyserver.com/docs/caddyfile/directives/http.basicauth\n\
+    \  {$BASIC_AUTH}\n\n  respond \"Welcome, {http.auth.user.id}\" 200\n}\n"

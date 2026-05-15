@@ -373,6 +373,10 @@ class ContentPolicyValidator:
         return True
     
 
+    def _has_kind(self, doc: dict, target_kind: str) -> bool:
+        """Comprueba de forma segura si el manifiesto es del tipo esperado."""
+        return doc.get('kind', '') == target_kind
+    
     def _validate_require_ingress_https(self, doc, config_elements):
         """
         Kyverno require-ingress-https:
@@ -735,31 +739,31 @@ class ContentPolicyValidator:
     def _validate_memory_requests_set(self, doc, config_elements):
         return self._validate_resource_presence_raw(doc, "requests", "memory", "memoryRequestsMissing")
 
-def _find_objects_in_lists_by_suffix(self, data, list_suffixes):
-    """
-    Searches recursively for lists whose KEY ends with any of the list_suffixes and returns all dicts (items) inside those lists.
-    """
-    if isinstance(list_suffixes, str):
-        list_suffixes = [list_suffixes]
+    def _find_objects_in_lists_by_suffix(self, data, list_suffixes):
+        """
+        Searches recursively for lists whose KEY ends with any of the list_suffixes and returns all dicts (items) inside those lists.
+        """
+        if isinstance(list_suffixes, str):
+            list_suffixes = [list_suffixes]
 
-    found = []
+        found = []
 
-    if isinstance(data, dict):
-        for k, v in data.items():
-            k_str = str(k)
+        if isinstance(data, dict):
+            for k, v in data.items():
+                k_str = str(k)
 
-            # Si esta clave es una lista objetivo, extraemos sus items dict
-            if any(k_str.endswith(suf) for suf in list_suffixes) and isinstance(v, list):
-                for item in v:
-                    if isinstance(item, dict):
-                        found.append(item)
+                # Si esta clave es una lista objetivo, extraemos sus items dict
+                if any(k_str.endswith(suf) for suf in list_suffixes) and isinstance(v, list):
+                    for item in v:
+                        if isinstance(item, dict):
+                            found.append(item)
 
-            # Recursión
-            if isinstance(v, (dict, list)):
-                found.extend(self._find_objects_in_lists_by_suffix(v, list_suffixes))
+                # Recursión
+                if isinstance(v, (dict, list)):
+                    found.extend(self._find_objects_in_lists_by_suffix(v, list_suffixes))
 
-    elif isinstance(data, list):
-        for item in data:
-            found.extend(self._find_objects_in_lists_by_suffix(item, list_suffixes))
+        elif isinstance(data, list):
+            for item in data:
+                found.extend(self._find_objects_in_lists_by_suffix(item, list_suffixes))
 
-    return found
+        return found

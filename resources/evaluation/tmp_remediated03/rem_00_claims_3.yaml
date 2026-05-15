@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp:
+  labels:
+    name: volume-ethmonitor
+  name: volume-ethmonitor
+spec:
+  accessModes:
+    - ReadWriteOncePod
+  resources:
+    requests:
+      storage: 10Gi
+status: {}

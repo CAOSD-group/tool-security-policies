@@ -1,0 +1,37 @@
+#pod labels and selector labels must be same.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: mywebsite
+    tier: frontend
+spec:
+  replicas: 4
+  template:
+    metadata:
+      name: myapp-pod
+      labels:
+        env: prod
+    spec:
+      containers:
+        - name: nginx
+          image: eu.foo.io/nginx:secure-tag@sha256:0000000000000000000000000000000000000000000000000000000000000000
+          securityContext:
+            runAsUser: 10001
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+            runAsGroup: 10001
+            runAsNonRoot: true
+          resources:
+            limits:
+              cpu: 100m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 512Mi
+  selector:
+    matchLabels:
+      env: prod

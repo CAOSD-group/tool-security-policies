@@ -1,0 +1,41 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ndb-cluster-manager-config
+  namespace: ndb-cluster
+immutable: true
+data:
+  config.ini: |+
+    [ndbd default]
+    NoOfReplicas=2
+
+    [ndb_mgmd]
+    hostname=ndb-cluster-manager-0.ndb-cluster-manager-service.ndb-cluster.svc.kube.askug.net
+    NodeId=1
+    datadir=/var/lib/ndb-cluster
+
+    [ndb_mgmd]
+    hostname=ndb-cluster-manager-1.ndb-cluster-manager-service.ndb-cluster.svc.kube.askug.net
+    NodeId=2
+    datadir=/var/lib/ndb-cluster
+
+    [ndbd]
+    hostname=ndb-cluster-data-node-0.ndb-cluster-data-node-service.ndb-cluster.svc.kube.askug.net
+    NodeId=3
+    datadir=/var/lib/mysql/data
+
+    [ndbd]
+    hostname=ndb-cluster-data-node-1.ndb-cluster-data-node-service.ndb-cluster.svc.kube.askug.net
+    NodeId=4
+    datadir=/var/lib/mysql/data
+
+    [mysqld]
+    hostname=ndb-cluster-server-0.ndb-cluster-server-service.ndb-cluster.svc.kube.askug.net
+    NodeId=5
+
+    [mysqld]
+    hostname=ndb-cluster-server-1.ndb-cluster-server-service.ndb-cluster.svc.kube.askug.net
+    NodeId=6
+
+...

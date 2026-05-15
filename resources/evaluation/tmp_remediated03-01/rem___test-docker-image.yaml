@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-docker
+  labels:
+    component: ci
+spec:
+  # Use service account that can deploy to all namespaces
+  # serviceAccountName: jenkins
+  securityContext:
+    fsGroup: 2000
+    runAsUser: 1000
+    supplementalGroups:
+      - 100
+    runAsGroup: 3000
+  containers:
+    - name: docker
+      image: eu.foo.io/docker:secure-tag@sha256:0000000000000000000000000000000000000000000000000000000000000000
+      securityContext:
+        privileged: false
+        runAsUser: 10001
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop:
+            - ALL
+        runAsGroup: 10001
+        runAsNonRoot: true
+      command:
+        - cat
+      tty: true
+      volumeMounts:
+        - mountPath: /var/run/docker.sock
+          name: docker-sock
+      imagePullPolicy: Always
+      resources:
+        limits:
+          cpu: 100m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 512Mi

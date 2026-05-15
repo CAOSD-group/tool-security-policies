@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: mysql-cluster
+  name: mysql-cluster-connectivity-testing
+  labels:
+    app: 2d530c06-7558-11ee-8d74-afc5d10856bf
+spec:
+  restartPolicy: OnFailure
+  dnsPolicy: ClusterFirst
+  containers:
+    - name: testing-pod
+      image: eu.foo.io/alpine:secure-tag@sha256:0000000000000000000000000000000000000000000000000000000000000000
+      command:
+        - sh
+        - -c
+        - 'echo "Install Packages"; mkdir -p /etc/podinfo; apk add openssh-server netcat-openbsd curl; ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -q -N ""; sed -i "s/#PermitRootLogin prohibit-password/PermitRootLogin yes/g" /etc/ssh/sshd_config; echo "root:123456" | chpasswd; echo "$POD_IP $(hostname)"; /usr/sbin/sshd -D -e -ddd '
+      ports:
+        - containerPort: 22
+          name: tcp22
+      env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+      resources:
+        limits:
+          memory: 256Mi
+          cpu: 500m
+        requests:
+          memory: 128Mi
+          cpu: 250m
+      securityContext:
+        runAsGroup: 10001
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop:
+            - ALL
+        runAsNonRoot: true
+        runAsUser: 10001
+      imagePullPolicy: Always
+  securityContext:
+    supplementalGroups:
+      - 100
+    fsGroup: 2000
+    runAsUser: 1000
+    runAsGroup: 3000

@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ndb-cluster-volume
+  labels:
+    fileSystem: ext4
+    volumeType: block
+    volumeProvider: lvm
+    maxSize: 20Gi
+spec:
+  capacity:
+    storage: 20Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ndb-cluster-cache
+  local:
+    fsType: ext4
+    path: /dev/kube.storage.ndb.node
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: ndbDataType
+          operator: In
+          values:
+          - ndb.node
+          - ndb.server
+
+...

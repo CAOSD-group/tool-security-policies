@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-cluster-server-storage-mp8
+  labels:
+    file-system: ext4
+    node-name: mp8
+    physical-volume: lvm-partition
+    max-size: 20GiB
+spec:
+  capacity:
+    storage: 20Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: mysql-data-server-mp8
+  local:
+    path: /mnt/kube/mysql/server
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - mp8

@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ndb-cluster-data-node-config
+  namespace: ndb-cluster
+immutable: true
+data:
+  my.cnf: |+
+    [mysql_cluster]
+    ndb-connectstring=ndb-cluster-manager-0.ndb-cluster-manager-service.ndb-cluster.svc.kube.askug.net,ndb-cluster-manager-1.ndb-cluster-manager-service.ndb-cluster.svc.kube.askug.net
+
+    # [mysql]
+    # datadir=/var/lib/mysql-data
+
+...

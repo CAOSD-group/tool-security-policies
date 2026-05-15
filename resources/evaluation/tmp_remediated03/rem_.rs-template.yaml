@@ -1,0 +1,58 @@
+# REPLICA SET
+#
+# kubectl create -f .rs-template.yaml
+# kubectl get replicaset
+# kubectl delete replicaset myapp-replicaset
+# kubectl replace -f .rs-template.yaml
+# kubectl scale --replicas=6 replicaset myapp-replicaset
+# kubectl get pods
+#   - name starts with the name of replication controller
+#
+# scaling
+#   - change replicas field to given number, then run
+#       kubectl replace -f .rs-template.yaml
+#   - kubectl scale --replicas=6 -f .rs-template.yaml, or
+#   - kubectl scale --replicas=6 replicaset myapp-replicaset
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: myapp-replicaset
+  labels:
+    app: myapp
+    type: frontend
+
+spec:
+  template:
+    # Contains the pod definition
+    metadata:
+      name: myapp-pod
+      labels:
+        app: myapp
+        type: frontend
+    spec:
+      containers:
+        - name: nginx-container
+          image: eu.foo.io/nginx:secure-tag@sha256:0000000000000000000000000000000000000000000000000000000000000000
+          securityContext:
+            runAsGroup: 10001
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            runAsUser: 10001
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 100m
+            limits:
+              memory: 512Mi
+              cpu: 100m
+  replicas: 3
+  selector:
+    # ReplicaSet can manage not only pods under its definition but all matching the defined labels
+    # Optional for ReplicationController but required for ReplicaSet
+    matchLabels:
+      # See labels for pods
+      type: frontend

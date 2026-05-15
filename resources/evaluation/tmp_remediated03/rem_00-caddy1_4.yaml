@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: assert-caddy-ready
+spec:
+  restartPolicy: Never
+  containers:
+    - name: assert-caddy
+      image: eu.foo.io/ubi9-minimal:secure-tag@sha256:0000000000000000000000000000000000000000000000000000000000000000
+      resources:
+        limits:
+          memory: 100Mi
+          cpu: 100m
+        requests:
+          memory: 512Mi
+          cpu: 100m
+      command:
+        - sh
+        - -c
+        - "EXPECTED=\"Welcome,\"\nwhile true; do\n  ACTUAL=$(curl -s http://caddy:80)\n  # check EXPECTED ~= ACTUAL\n  if echo \"$ACTUAL\" | grep -q \"$EXPECTED\"; then\n    echo \"assertion passed\"\n    exit 0\n  else\n    echo \"assertion failed\"\n    echo \"EXPECTED: $EXPECTED\"\n    echo \"ACTUAL: $ACTUAL\"\n    sleep 5\n  fi\ndone\n"
+      securityContext:
+        runAsGroup: 10001
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop:
+            - ALL
+        runAsNonRoot: true
+        runAsUser: 10001
+      imagePullPolicy: Always
+  securityContext:
+    supplementalGroups:
+      - 100
+    fsGroup: 2000
+    runAsUser: 1000
+    runAsGroup: 3000
