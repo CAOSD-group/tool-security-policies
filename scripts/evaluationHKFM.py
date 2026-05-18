@@ -27,8 +27,8 @@ from back_kube_tool.core.remediator import Remediator
 from back_kube_tool.core.utils.context_filter import filter_context_aware_actions
 
 VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls" / "original_yamls02"
-OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_benchmark_results03.csv"
-TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediated03"
+OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_benchmark_results04.csv"
+TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediated04"
 
 # (Asegúrate de que estas rutas coinciden con tu entorno)
 UVL_PATH = os.getenv("UVL_MODEL_PATH", str(ROOT / "back_kube_tool" / "models" / "HKFM.uvl"))

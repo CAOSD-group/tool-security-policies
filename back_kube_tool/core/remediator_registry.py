@@ -184,7 +184,7 @@ class RemediationRegistry:
             "Restrict_StorageClass": [{"feature_to_fix": "io_k8s_api_storage_v1_StorageClass_reclaimPolicy", "safe_value": "Delete"}],
             "Limit_hostPath_PersistentVolumes_to_Specific_Directories": [{"feature_to_fix": "io_k8s_api_core_v1_PersistentVolume_spec_hostPath_path", "safe_value": "/data"}],
             "Enforce_ReadWriteOncePod": [{"feature_to_fix": "io_k8s_api_core_v1_PersistentVolumeClaim_spec_accessModes", "safe_value": ["ReadWriteOncePod"]}],
-            "Restrict_Jobs": [{"feature_to_fix": "io_k8s_api_batch_v1_Job_metadata_ownerReferences", "safe_value": [{"apiVersion": "batch/v1", "kind": "CronJob", "name": "parent-cronjob", "uid": "1234"}]}],
+            #"Restrict_Jobs": [{"feature_to_fix": "io_k8s_api_batch_v1_Job_metadata_ownerReferences", "safe_value": [{"apiVersion": "batch/v1", "kind": "CronJob", "name": "parent-cronjob", "uid": "1234"}]}],
             "kubernetes_limit_range_usage": [{"feature_to_fix": "io_k8s_api_core_v1_LimitRange_spec_limits_type", "safe_value": "Container"}],
             
             # --- Reglas de Nivel Namespace ---

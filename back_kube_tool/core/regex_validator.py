@@ -501,13 +501,15 @@ class ContentPolicyValidator:
         Kyverno: si PV.spec.hostPath existe -> spec.hostPath.path debe empezar por '/data'
         """
         # 1) Solo aplica si hay un PersistentVolume en el YAML
-        if not self._has_kind(config_elements, "PersistentVolume"):
+        if not self._has_kind(doc, "PersistentVolume"):
+            print("No se detecta PersistentVolume, la política no aplica.") # Debug
             return True
 
         # 2) Extraer posibles hostPath.path
         # Ajusta el sufijo si en tu aplanado se llama distinto.
-        paths = self._find_values_by_suffix_recursive(config_elements, "PersistentVolume_spec_hostPath_path")
+        paths = self._find_values_by_suffix_recursive(config_elements, "_spec_hostPath_path")
         if not paths:
+            print("No se detectan hostPath.path, la política no aplica.") # Debug
             # No hay hostPath.path => significa "no hay hostPath" o no aparece => pasa
             return True
 

@@ -236,7 +236,7 @@ async def validate_manifest_stream(request: ValidationRequest):
                     # El regex validator analiza el YAML puro (doc) contra las políticas activas
                     active_regex_policies = list(set(active_policies) & regex_policy_names)
                     passed_regex, regex_report = regex_val.validate_with_report(doc, target_config.elements, active_regex_policies)
-                    
+                    print(f"target_config.elements: {target_config.elements}")
                     if not passed_regex:
                         for rep in regex_report:
                             total_violations += 1
