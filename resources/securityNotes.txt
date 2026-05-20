@@ -1029,3 +1029,16 @@ spec:
               add: ["SYS_ADMIN", "CHOWN"] # Pondremos a prueba el operador $remove
           # Faltan probes (liveness/readiness) -> Polaris inyectará en main container
           # Faltan resources (limits/requests) -> Polaris inyectará en main container
+
+
+
+Error al generar el modelo, grupo alternative fuera de contexto:
+
+								alternative
+									io_k8s_api_batch_v1_Job_spec_template_Never {doc 'Specific value: Never'}
+									io_k8s_api_batch_v1_Job_spec_template_OnFailure {doc 'Specific value: OnFailure'}
+
+
+A --> B es exactamente lo mismo que NO A or B (NO A o B).
+*** Pendiente ajustar script de kyverno para completar la generacion correcta de esta politica.  
+Check_Environment_Variables => (!Pod.io_k8s_api_core_v1_Pod_spec_containers_env | Pod.io_k8s_api_core_v1_Pod_spec_containers_env_name != 'DISABLE_OPA' | Pod.io_k8s_api_core_v1_Pod_spec_containers_env_value != 'true')

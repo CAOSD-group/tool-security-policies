@@ -2181,9 +2181,6 @@ features
 																	io_k8s_api_batch_v1_Job_spec_template_spec_volumes_vsphereVolume_fsType_ntfs {doc 'Specific value: ntfs'}
 															String io_k8s_api_batch_v1_Job_spec_template_spec_volumes_vsphereVolume_storagePolicyID {doc 'storagePolicyID is the storage Policy Based Management (SPBM) profile ID associated with the StoragePolicyName'}
 															String io_k8s_api_batch_v1_Job_spec_template_spec_volumes_vsphereVolume_storagePolicyName {doc 'storagePolicyName is the storage Policy Based Management (SPBM) profile name'}
-								alternative
-									io_k8s_api_batch_v1_Job_spec_template_Never {doc 'Specific value: Never'}
-									io_k8s_api_batch_v1_Job_spec_template_OnFailure {doc 'Specific value: OnFailure'}
 						optional
 							Integer io_k8s_api_batch_v1_Job_spec_activeDeadlineSeconds {doc 'Specifies the duration in seconds relative to the startTime that the job may be continuously active before the system tries to terminate it; value must be positive integer If a Job is suspended (at creation or through an update), this timer will effectively be stopped and reset when the Job is resumed again'}
 							Integer io_k8s_api_batch_v1_Job_spec_backoffLimit {default 6, doc 'Specifies the number of retries before marking this job failed Defaults to 6'}

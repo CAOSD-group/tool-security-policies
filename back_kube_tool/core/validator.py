@@ -30,6 +30,41 @@ class Validator:
     # Pre-computamos el andamiaje base
     base_completed_elements = self._complete_full_configuration(config.elements)
 
+    temp_config_base = Configuration(base_completed_elements)
+    temp_config_base.set_full(True) # Closed world
+    sat_op_base = Z3SatisfiableConfiguration()
+    sat_op_base.set_configuration(temp_config_base)
+    #is_real_base_sat = sat_op_base.execute(self.z3_model).get_result()
+    if not sat_op_base.execute(self.z3_model).get_result():
+      print("\n[DEBUG] 🚨 EL MANIFIESTO BASE ES UNSAT. Buscando culpables...")
+      print(sorted(base_completed_elements.keys()))
+      # 1. Comprobar Restricciones del Árbol (Mandatory, Alternative, Or)
+      for feat_name in list(base_completed_elements.keys()):
+          feat = self.flat_fm.get_feature_by_name(feat_name)
+          if feat:
+              # Buscar hijos obligatorios que falten
+              for child in feat.get_children():
+                  if child.is_mandatory() and child.name not in base_completed_elements:
+                      print(f"  ❌ FALTA OBLIGATORIO: '{child.name}' (Padre: {feat_name})")
+              
+              # Buscar grupos Alternative (XOR) y OR rotos
+              for rel in feat.get_relations():
+                  if rel.is_alternative():
+                      selected = [c.name for c in rel.children if c.name in base_completed_elements]
+                      if len(selected) != 1:
+                          print(f"  ❌ GRUPO ALTERNATIVE ROTO en '{feat_name}'. Seleccionados: {selected}")
+                          esperados = [c.name for c in rel.children]
+                          print(f"  ❌ GRUPO ALTERNATIVE ROTO en '{feat_name}'.\n     -> Esperaba EXACTAMENTE 1 de estos: {esperados}\n     -> Pero recibió: 0")
+                  elif rel.is_or():
+                      selected = [c.name for c in rel.children if c.name in base_completed_elements]
+                      if len(selected) == 0:
+                          print(f"  ❌ GRUPO OR ROTO en '{feat_name}'. Se necesita al menos 1 hijo.")
+
+      # 2. Comprobar Restricciones Cruzadas (CTCs) usando tu AST
+      #for ctc in ctcs:
+      #    if evaluate_ast(ctc.ast.root, base_completed_elements) is False:
+      #        print(f"  ❌ CTC ROTA: {ctc.name} -> {ctc.ast.pretty_str()}")
+    
     # FASE 1: THE FAST-PASS (The fast path): Eavaluated all the policies at once.
     temp_elements_global = base_completed_elements.copy()
     for policy in active_policies:
@@ -42,10 +77,9 @@ class Validator:
     sat_op_global = Z3SatisfiableConfiguration()
     sat_op_global.set_configuration(temp_config_global)
     
-    
-    # Check all the rules.
     if sat_op_global.execute(self.z3_model).get_result():
         return failed_policies_report
+    
 
     # FASE 2: The sequential approach (Fallback Secuencial)
     # Individual evaluation for each policy.

@@ -19,7 +19,7 @@ from back_kube_tool.core.manifest_parser import ManifestParser
 from back_kube_tool.core.csv_mapper import CSVMapper
 from back_kube_tool.core.mapping_engine import MappingEngine
 from back_kube_tool.core.policy_inference import PolicyInference
-from back_kube_tool.core.validator02 import Validator
+from back_kube_tool.core.validator import Validator
 from back_kube_tool.core.regex_validator import ContentPolicyValidator
 from back_kube_tool.core.remediator_registry import RemediationRegistry
 from back_kube_tool.core.reverse_mapper import ReverseMapper
@@ -27,8 +27,8 @@ from back_kube_tool.core.remediator import Remediator
 from back_kube_tool.core.utils.context_filter import filter_context_aware_actions
 
 VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls" / "original_yamls02"
-OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_benchmark_results04.csv"
-TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediated04"
+OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_benchmark_results05_z3.csv"
+TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediated05_z3"
 
 # (Asegúrate de que estas rutas coinciden con tu entorno)
 UVL_PATH = os.getenv("UVL_MODEL_PATH", str(ROOT / "back_kube_tool" / "models" / "HKFM.uvl"))
