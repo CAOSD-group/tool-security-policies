@@ -86,14 +86,14 @@ def generate_structural_oracle(uvl_model_path, output_json_path):
     # FILTRADO INTELIGENTE DE ARRAYS ANTES DE GUARDAR
     # ========================================================
     
-    # A) Mapas Dinámicos: Tienen 'KeyMap' o 'ValueMap' como hijos
+    # A) Mapas Dinámicos: Tienen 'KeyMap' o 'ValueMap' como hijos // En duda agregar: StringValueAdditional
     dynamic_maps = set()
     for parent, children in parent_child_map.items():
         if any("KeyMap" in child or "ValueMap" in child for child in children):
             dynamic_maps.add(parent)
 
     # B) Overrides Estáticos: Mapas nativos de K8s que no usan KeyMap/ValueMap en UVL
-    hardcoded_maps = ["annotations", "labels", "matchLabels", "limits", "requests"]
+    hardcoded_maps = ["annotations", "labels", "matchLabels", "limits", "requests", "nodeSelector"]  # Ejemplos comunes, ajusta según tu modelo
 
     # C) Expulsar los Mapas de la lista de Arrays
     arrays_to_remove = set()

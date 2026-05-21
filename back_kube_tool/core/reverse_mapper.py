@@ -61,7 +61,7 @@ class ReverseMapper:
                     break
         
         # 4. Limpieza de sufijos heurísticos de tu csv_mapper
-        suffixes_to_clean = ["_asString", "_asInteger", "_asNumber", "_StringValue", "_KeyMap", "_ValueMap", "_isEmpty"]
+        suffixes_to_clean = ["_asString", "_asInteger", "_asNumber", "_StringValue", "_KeyMap", "_ValueMap", "_isEmpty", "StringValueAdditional"]
         for suffix in suffixes_to_clean:
             if path_str.endswith(suffix):
                 # Cortamos solo el final

@@ -1042,3 +1042,15 @@ Error al generar el modelo, grupo alternative fuera de contexto:
 A --> B es exactamente lo mismo que NO A or B (NO A o B).
 *** Pendiente ajustar script de kyverno para completar la generacion correcta de esta politica.  
 Check_Environment_Variables => (!Pod.io_k8s_api_core_v1_Pod_spec_containers_env | Pod.io_k8s_api_core_v1_Pod_spec_containers_env_name != 'DISABLE_OPA' | Pod.io_k8s_api_core_v1_Pod_spec_containers_env_value != 'true')
+
+
+error sintaxis en structural_json para nodeSelector 
+"io_k8s_api_apps_v1_DaemonSet_spec_template_spec_nodeSelector",
+io_k8s_api_apps_v1_Deployment_spec_template_spec_nodeSelector
+
+*** En duda agregar: StringValueAdditional como Mapas Dinámicos para no incluir sus features en la seccion de arrays.
+
+
+Quitado del struc de la tool:
+"io_k8s_api_storage_v1_StorageClass_parameters",
+Si se siguen repitiendo los errores por este tipo de features, usar StringValueAdditional para evitar que se definan como arrays.

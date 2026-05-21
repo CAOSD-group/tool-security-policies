@@ -45,7 +45,7 @@ class Validator:
               # Buscar hijos obligatorios que falten
               for child in feat.get_children():
                   if child.is_mandatory() and child.name not in base_completed_elements:
-                      print(f"  ❌ FALTA OBLIGATORIO: '{child.name}' (Padre: {feat_name})")
+                      print(f"FALTA OBLIGATORIO: '{child.name}' (Padre: {feat_name})")
               
               # Buscar grupos Alternative (XOR) y OR rotos
               for rel in feat.get_relations():
