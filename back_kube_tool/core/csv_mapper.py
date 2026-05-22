@@ -69,10 +69,14 @@ class CSVMapper:
 
     elif isinstance(data, list):
         for item in data:
-          sub_simple, sub_hierarchical, sub_kv_pairs, _ = self.extract_yaml_properties(item, parent_key, root_info, first_add=False)
-          simple_props.extend(sub_simple)
-          hierarchical_props.extend(sub_hierarchical)
-          key_value_pairs.extend(sub_kv_pairs)
+            
+            if isinstance(item, (dict, list)):     
+                sub_simple, sub_hierarchical, sub_kv_pairs, _ = self.extract_yaml_properties(item, parent_key, root_info, first_add=False)
+                simple_props.extend(sub_simple)
+                hierarchical_props.extend(sub_hierarchical)
+                key_value_pairs.extend(sub_kv_pairs)
+            else: ### To take account the values of the arrays to be able to match them with the features with value in the CSV
+                key_value_pairs.append((parent_key, item))
 
     # If we have apiVersion and kind, we add a prefix to the feature to improve accuracy.
     if 'apiVersion' in root_info and 'kind' in root_info and first_add:
@@ -385,14 +389,15 @@ class CSVMapper:
                                 auxFeaturesAddedList.add(value_features)
                                 aux_hierchical_prop.append(key_features)
                 # Representation of the selected values, it is checked if any yaml value matches the last part of the characteristics in the list.
-                elif isinstance(value_features, str) and value == value_features.split("_")[-1] and value_features not in auxFeaturesAddedList:
+                #elif isinstance(value_features, str) and value == value_features.split("_")[-1] and value_features not in auxFeaturesAddedList:
+                elif isinstance(value_features, str) and (value == value_features.split("_")[-1] or (isinstance(value, list) and value_features.split("_")[-1] in value)) and value_features not in auxFeaturesAddedList:
                     aux_key_last_before_value = value_features.split("_")[-2]
                     if value_features.endswith(key_features) and key.endswith(aux_key_last_before_value):
                         aux_nested = True
-                        feature_nested[value_features] = aux_nested ## value: at the end the boolean value is left as the added feature is boolean as well
+                        feature_nested[value_features] = True ## value: at the end the boolean value is left as the added feature is boolean as well
                         auxFeaturesAddedList.add(value_features)
                         aux_hierchical_prop.append(key_features)
-
+                        
                 elif isinstance(value_features, str) and isinstance(value, dict) and not value and 'isEmpty02' == value_features.split("_")[-1] and value_features not in auxFeaturesAddedList:
                     aux_key_last_before_value = value_features.split("_")[-2]
                     aux_feature_before_insertion = value_features.rsplit("_", 1)[0] ## you get the value feature minus the last insert

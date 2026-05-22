@@ -185,8 +185,14 @@ class RemediationRegistry:
             "Limit_hostPath_PersistentVolumes_to_Specific_Directories": [{"feature_to_fix": "io_k8s_api_core_v1_PersistentVolume_spec_hostPath_path", "safe_value": "/data"}],
             "Enforce_ReadWriteOncePod": [{"feature_to_fix": "io_k8s_api_core_v1_PersistentVolumeClaim_spec_accessModes", "safe_value": ["ReadWriteOncePod"]}],
             #"Restrict_Jobs": [{"feature_to_fix": "io_k8s_api_batch_v1_Job_metadata_ownerReferences", "safe_value": [{"apiVersion": "batch/v1", "kind": "CronJob", "name": "parent-cronjob", "uid": "1234"}]}],
-            "kubernetes_limit_range_usage": [{"feature_to_fix": "io_k8s_api_core_v1_LimitRange_spec_limits_type", "safe_value": "Container"}],
-            
+            #"kubernetes_limit_range_usage": [{"feature_to_fix": "io_k8s_api_core_v1_LimitRange_spec_limits_type", "safe_value": "Container"}],
+            "kubernetes_limit_range_usage": [
+            {"feature_to_fix": "io_k8s_api_core_v1_LimitRange_spec_limits_type", "safe_value": "Container"},
+            {"feature_to_fix": "io_k8s_api_core_v1_LimitRange_spec_limits_max", "safe_value": {"cpu": "500m", "memory": "500Mi"}},
+            {"feature_to_fix": "io_k8s_api_core_v1_LimitRange_spec_limits_min", "safe_value": {"cpu": "100m", "memory": "100Mi"}},
+            {"feature_to_fix": "io_k8s_api_core_v1_LimitRange_spec_limits_default", "safe_value": {"cpu": "200m", "memory": "200Mi"}},
+            {"feature_to_fix": "io_k8s_api_core_v1_LimitRange_spec_limits_defaultRequest", "safe_value": {"cpu": "100m", "memory": "100Mi"}}
+            ],
             # --- Reglas de Nivel Namespace ---
             "Add_PSA_Namespace_Reporting": [{"feature_to_fix": "io_k8s_api_core_v1_Namespace_metadata_labels_pod_security_kubernetes_io_enforce", "safe_value": "restricted"}],
             "Enforce_Istio_Ambient_Mode": [{"feature_to_fix": "io_k8s_api_core_v1_Namespace_metadata_labels_istio_io_dataplane_mode", "safe_value": "ambient"}],

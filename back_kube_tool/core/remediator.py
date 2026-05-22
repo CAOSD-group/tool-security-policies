@@ -83,7 +83,16 @@ class Remediator:
                         current_node[key] = [x for x in current_node[key] if x != item_to_remove]
                 else:
                     # Normal write operation
-                    current_node[key] = value
+                    # Si intentamos inyectar un diccionario y ya existe uno en esa posición:
+                    if key in current_node and isinstance(current_node[key], dict) and isinstance(value, dict):
+                        for k, v in value.items():
+                            # SOLO inyectamos la propiedad si el usuario no la había definido previamente
+                            if k not in current_node[key]:
+                                current_node[key][k] = v
+                    else:
+                        # Comportamiento estándar (sobrescribe o crea de cero)
+                        current_node[key] = value
+                    ##current_node[key] = value
             else:
                 if key not in current_node:
                     current_node[key] = CommentedMap() ##{} # Inject a native object to preserve comments

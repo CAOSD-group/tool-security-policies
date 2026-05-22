@@ -207,7 +207,8 @@ def enforce_k8s_object_arrays(data, current_path=""):
             is_map = any(m.endswith(new_path) for m in K8S_DYNAMIC_MAPS)
             # Si el modelo dictó que es un Mapa, anulamos la conversión a Array
             # Evita que limits y requests se conviertan en listas (guiones)
-            if new_path.endswith("_resources_limits") or new_path.endswith("_resources_requests"):
+            ## Its necessary to add a heuristic for resources like limits/requests that are maps but don't have KeyMap/ValueMap in their UVL features. Not specify in the JSON Schemas
+            if new_path.endswith("_resources_limits") or new_path.endswith("_resources_requests") or new_path.endswith("_limits_min") or new_path.endswith("_limits_default") or new_path.endswith("_limits_defaultRequest") or new_path.endswith("_limits_max"):
                 is_map = True
 
             if is_map:
