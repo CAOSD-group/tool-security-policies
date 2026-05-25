@@ -13,15 +13,15 @@ class Remediator:
     def __init__(self):
         self.yaml = YAML()
         self.yaml.preserve_quotes = True
-        # FORZAR EL ESTILO KUBERNETES:
-        # mapping=2: Los diccionarios se indentan 2 espacios.
-        # sequence=4: Las listas se indentan 4 espacios desde la raíz.
-        # offset=2: El guion (-) se desplaza 2 espacios a la derecha.
+        # Style configuration to preserve original formatting as much as possible:
+        # mapping=2: The indentation for mappings is 2 spaces.
+        # sequence=4: The indentation for sequences is 4 spaces.
+        # offset=2: The offset for the '-' bullet is 2 spaces.
         self.yaml.width = math.inf
         self.yaml.indent(mapping=2, sequence=4, offset=2)
-        # PUNTO 2: Evita saltos de línea automáticos en cadenas largas
-        
-        # NOTA: Se elimina self.yaml.indent para que ruamel infiera el estilo original
+        # Turn off aliasing to prevent the use of anchors and references, which can alter the structure of the output YAML
+        self.yaml.representer.ignore_aliases = lambda *data: True 
+        ## Se elimina self.yaml.indent para que ruamel infiera el estilo original
 
     def apply_batch_remediation(self, yaml_content: str, patches: list) -> str:
         """

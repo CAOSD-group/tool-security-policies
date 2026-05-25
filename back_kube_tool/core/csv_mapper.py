@@ -311,7 +311,7 @@ class CSVMapper:
                     aux_key_last_before_map = value_features.split("_")[-2]
                     aux_feature_before_insertion = value_features.rsplit("_", 1)[0] ## you get the value feature minus the last insert
                     #values_arr_int = []
-                    if value and key == aux_feature_before_insertion and key_features.endswith(f"{aux_key_last_before_map}_valueInt"):
+                    if value is not None and key == aux_feature_before_insertion and key_features.endswith(f"{aux_key_last_before_map}_valueInt"):
                         print("ENTRA CONDICIONAL valueInt")
                         auxFeaturesAddedList.add(value_features)
                         aux_hierchical_prop.append(key_features)
