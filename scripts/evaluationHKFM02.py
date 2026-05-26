@@ -27,9 +27,9 @@ from back_kube_tool.core.reverse_mapper import ReverseMapper
 from back_kube_tool.core.remediator import Remediator
 from back_kube_tool.core.utils.context_filter import filter_context_aware_actions
 
-VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls" / "original_yamls03"
-OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_testing_Z3_AST_02.csv"
-TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_02"
+VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls" / "original_yamls02-3"
+OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_testing_Z3_AST_02-3.csv"
+TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_02-3"
 
 # (Asegúrate de que estas rutas coinciden con tu entorno)
 UVL_PATH = os.getenv("UVL_MODEL_PATH", str(ROOT / "back_kube_tool" / "models" / "HKFM.uvl"))

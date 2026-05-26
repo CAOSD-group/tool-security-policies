@@ -355,9 +355,9 @@ class ContentPolicyValidator:
             return True
 
         owners = self._find_owner_references_recursive(config_elements)
-        
         if not owners:
-            print("[Fail] Restrict_Jobs: Detectado un 'Job' manual (sin ownerReferences). Los Jobs deben ser creados por CronJobs.")
+            print("[Fail] Restrict_Jobs: Detect a manual 'Job' (without ownerReferences). The Jobs must be created by CronJobs.")
+            #print("[Fail] Restrict_Jobs: Detectado un 'Job' manual (sin ownerReferences). Los Jobs deben ser creados por CronJobs.")
             return False
 
         has_cronjob_owner = False
@@ -367,7 +367,7 @@ class ContentPolicyValidator:
                 break
         
         if not has_cronjob_owner:
-            print("[Fail] Restrict_Jobs: El Job no pertenece a un CronJob.")
+            print("[Fail] Restrict_Jobs: Job is not owned by a CronJob.")
             return False
 
         return True
@@ -769,3 +769,26 @@ class ContentPolicyValidator:
                 found.extend(self._find_objects_in_lists_by_suffix(item, list_suffixes))
 
         return found
+    
+
+    def _find_owner_references_recursive(self, data):
+        """
+        Searches recursively for 'ownerReferences' blocks in the manifest and returns a list of dicts with the resource owners.
+        """
+        owners = []
+        
+        if isinstance(data, dict):
+            for key, value in data.items():
+                # Search for the key, either in its raw YAML format or flattened (e.g., metadata_ownerReferences)
+                if "ownerReferences" in key:
+                    if isinstance(value, list):
+                        owners.extend(value)
+                else:
+                    # If it's not the key we're looking for, we continue descending levels
+                    owners.extend(self._find_owner_references_recursive(value))
+                    
+        elif isinstance(data, list):
+            for item in data:
+                owners.extend(self._find_owner_references_recursive(item))
+                
+        return owners
