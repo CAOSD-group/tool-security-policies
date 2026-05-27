@@ -28,8 +28,8 @@ from back_kube_tool.core.remediator import Remediator
 from back_kube_tool.core.utils.context_filter import filter_context_aware_actions
 
 VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls" / "testing"
-OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_testing_Z3_AST_02.csv"
-TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_01"
+OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_testing_Z3_AST_03.csv"
+TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_02"
 
 # (Asegúrate de que estas rutas coinciden con tu entorno)
 UVL_PATH = os.getenv("UVL_MODEL_PATH", str(ROOT / "back_kube_tool" / "models" / "HKFM.uvl"))
@@ -43,9 +43,9 @@ def run_kubeconform(yaml_path: str) -> tuple[bool, str]:
     try:
         # capture_output=True hace que Python atrape el texto en result.stdout
         result = subprocess.run(
-            ["kubeconform", "-strict", "-summary", yaml_path], 
-            capture_output=True, 
-            text=True, 
+            ["kubeconform", "-strict", "-summary", yaml_path],
+            capture_output=True,
+            text=True,
             timeout=5
         )
         
@@ -108,8 +108,8 @@ def run_remediation_benchmark():
         writer.writerow([
             "Filename", "Kind", "Orig_Z3_Alerts", "Orig_AST_Alerts", "Orig_Regex_Alerts",
             "Rem_Alerts", "T_Detection_ms", "T_AST_Remed_ms",
-            "Is_Fully_Secure", "Is_AST_100%_Accurate", "AST_Lines_Added", ## "Is_K8s_Valid",
-            "AST_Lines_Removed", "Comments_Retention_%"
+            "Is_Fully_Secure", "Is_AST_100%_Accurate", "Is_K8s_Rem_Valid", "AST_Lines_Added", ## "Is_K8s_Valid",
+            "AST_Lines_Removed", "Comments_Retention_%", "Kubeconform_Error" ## En caso de que la remediación rompa el manifiesto, registramos el error de kubeconform para análisis posterior
         ])
         
         for filename in yaml_files:
@@ -252,7 +252,7 @@ def run_remediation_benchmark():
                     filename, kind, initial_alerts_z3, initial_alerts_ast, initial_alerts_regex, 
                     final_alerts, t_detection_ms, t_ast_remediation_ms,
                     is_fully_secure, is_differential_match, is_remediated_k8s_valid, lines_added, ## is_k8s_valid
-                    lines_removed, comment_retention
+                    lines_removed, comment_retention, error_string_empty
                 ])
 
             except Exception as e:
