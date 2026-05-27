@@ -27,22 +27,44 @@ from back_kube_tool.core.reverse_mapper import ReverseMapper
 from back_kube_tool.core.remediator import Remediator
 from back_kube_tool.core.utils.context_filter import filter_context_aware_actions
 
-VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls" / "original_yamls02-3"
-OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_testing_Z3_AST_02-3.csv"
-TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_02-3"
+VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls" / "testing"
+OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_testing_Z3_AST_02.csv"
+TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_01"
 
 # (Asegúrate de que estas rutas coinciden con tu entorno)
 UVL_PATH = os.getenv("UVL_MODEL_PATH", str(ROOT / "back_kube_tool" / "models" / "HKFM.uvl"))
 CSV_FEATURES = str(ROOT / "resources" / "mapping_csv" / "kubernetes_mapping_properties_features.csv")
 CSV_KINDS = str(ROOT / "resources" / "mapping_csv" / "kubernetes_kinds_versions_detected.csv")
 
-## METRICS AUXILIARES
-def run_kubeconform(yaml_path: str) -> bool:
+def run_kubeconform(yaml_path: str) -> tuple[bool, str]:
+    """
+    Ejecuta kubeconform. Devuelve una tupla: (Es_Valido, Mensaje_De_Error)
+    """
     try:
-        result = subprocess.run(["kubeconform", "-strict", "-summary", yaml_path], capture_output=True, text=True, timeout=5)
-        return result.returncode == 0
+        # capture_output=True hace que Python atrape el texto en result.stdout
+        result = subprocess.run(
+            ["kubeconform", "-strict", "-summary", yaml_path], 
+            capture_output=True, 
+            text=True, 
+            timeout=5
+        )
+        
+        is_valid = (result.returncode == 0)
+        error_msg = ""
+        
+        # Si NO es válido, guardamos el texto del error
+        if not is_valid:
+            # Quitamos los saltos de línea para que no rompa el formato del CSV
+            error_raw = result.stdout.strip() if result.stdout else result.stderr.strip()
+            error_msg = error_raw.replace('\n', ' | ')
+            
+        return is_valid, error_msg
+
     except FileNotFoundError:
-        return True
+        print("[ERROR CRÍTICO] kubeconform not installed or not in PATH. Skipping Kubernetes structural validation.")
+        return False, "Kubeconform_Not_Found_In_Path"
+    except subprocess.TimeoutExpired:
+        return False, "Timeout_Exceeded"
 
 def calculate_semantic_preservation(orig_path: str, rem_path: str):
     with open(orig_path, 'r') as f: orig_lines = f.readlines()
@@ -84,8 +106,8 @@ def run_remediation_benchmark():
     with open(OUTPUT_CSV, mode='w', newline='') as f:
         writer = csv.writer(f)
         writer.writerow([
-            "Filename", "Kind", "Orig_Z3_Alerts", "Orig_AST_Alerts", "Orig_Regex_Alerts", 
-            "Rem_Alerts", "T_Detection_ms", "T_AST_Remed_ms", 
+            "Filename", "Kind", "Orig_Z3_Alerts", "Orig_AST_Alerts", "Orig_Regex_Alerts",
+            "Rem_Alerts", "T_Detection_ms", "T_AST_Remed_ms",
             "Is_Fully_Secure", "Is_AST_100%_Accurate", "AST_Lines_Added", ## "Is_K8s_Valid",
             "AST_Lines_Removed", "Comments_Retention_%"
         ])
@@ -93,6 +115,24 @@ def run_remediation_benchmark():
         for filename in yaml_files:
             yaml_path = os.path.join(VALID_YAMLS_DIR, filename)
             tmp_remediated_path = os.path.join(TMP_REMEDIATED_DIR, f"rem_{filename}")
+            
+            #· --- 0. Structural Check (FAIL-FAST) ---
+            t0_kubeconform = time.perf_counter()
+            is_valid_schema, kube_error_msg = run_kubeconform(yaml_path)
+            t_kubeconform_ms = round((time.perf_counter() - t0_kubeconform) * 1000, 2)
+
+            if not is_valid_schema:
+                print(f"[{filename}] Rechazado: {kube_error_msg}.")
+                # Registramos el rechazo en el CSV y saltamos al siguiente archivo
+                writer.writerow([
+                    filename, "Unknown",
+                    "SCHEMA_ERROR", "SCHEMA_ERROR", "SCHEMA_ERROR",
+                    "SCHEMA_ERROR",
+                    t_kubeconform_ms, 0.0, # Anotamos el tiempo que tardó en rechazarlo
+                    False, False, False,
+                    0, 0, kube_error_msg
+                ])
+                continue
             
             try:
                 with open(yaml_path, 'r') as file_in:
@@ -112,7 +152,7 @@ def run_remediation_benchmark():
                 except ValueError as ve:
                     print(f"[{filename}] Omitido (No soportado): {ve}")
                     writer.writerow([
-                        filename, kind, 
+                        filename, kind,
                         "ERROR_MAP", "ERROR_MAP", "ERROR_MAP", # Alertas marcadas como error
                         0.0, 0.0, False, 0, 0, 0.0         # Tiempos a 0 y False en seguridad
                     ])
@@ -188,7 +228,7 @@ def run_remediation_benchmark():
                 t_ast_remediation_ms = round((time.perf_counter() - t0_rem) * 1000, 2)
 
                 # --- C. VALIDACIONES Y MÉTRICAS POST-REMEDIACIÓN ---
-                #is_k8s_valid = run_kubeconform(tmp_remediated_path)
+                is_remediated_k8s_valid, error_string_empty = run_kubeconform(tmp_remediated_path)
                 comment_retention, lines_added, lines_removed = calculate_semantic_preservation(yaml_path, tmp_remediated_path)
 
                 # --- D. RE-EVALUACIÓN DE SEGURIDAD (Idempotencia) ---
@@ -210,14 +250,14 @@ def run_remediation_benchmark():
                 # --- E. REGISTRO CSV ---
                 writer.writerow([
                     filename, kind, initial_alerts_z3, initial_alerts_ast, initial_alerts_regex, 
-                    final_alerts, t_detection_ms, t_ast_remediation_ms, 
-                    is_fully_secure, is_differential_match, lines_added, ## is_k8s_valid
+                    final_alerts, t_detection_ms, t_ast_remediation_ms,
+                    is_fully_secure, is_differential_match, is_remediated_k8s_valid, lines_added, ## is_k8s_valid
                     lines_removed, comment_retention
                 ])
 
             except Exception as e:
                 print(f"[ERROR] Fallo procesando {filename}: {e}")
-                traceback.print_exc() 
+                traceback.print_exc()
                 print("-" * 50)
     print(f"\n[OK] Benchmarking finalizado. Resultados en: {OUTPUT_CSV}")
 
