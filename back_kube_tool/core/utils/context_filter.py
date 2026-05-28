@@ -22,7 +22,7 @@ for parent, children in STRUCTURAL_DEPENDENCIES.items():
     # Si alguna de las propiedades hijas contiene "KeyMap" o "ValueMap", 
     # inferimos automáticamente que el padre es un Mapa (Diccionario), no una Lista.
     if any("KeyMap" in child_feat or "ValueMap" in child_feat or "StringValueAdditional" in child_feat for child_feat in children.keys()):
-        K8S_DYNAMIC_MAPS.add(parent)
+        K8S_DYNAMIC_MAPS.add(parent) ## Maybe add asString, asNumber / alternative Quantivy values to detect maps that don't follow the KeyMap/ValueMap convention but are still maps (like limits/requests)
 
 def filter_context_aware_actions(original_config_elements: dict, actions_list: list, strip_suffixes: bool = False) -> list:
     """

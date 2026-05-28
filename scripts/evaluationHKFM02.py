@@ -27,9 +27,9 @@ from back_kube_tool.core.reverse_mapper import ReverseMapper
 from back_kube_tool.core.remediator import Remediator
 from back_kube_tool.core.utils.context_filter import filter_context_aware_actions
 
-VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls" / "testing"
-OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_testing_Z3_AST_03.csv"
-TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_02"
+VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls" / "original_yamls_1k"
+OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_testing_Z3_AST_1k.csv"
+TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_1k"
 
 # (Asegúrate de que estas rutas coinciden con tu entorno)
 UVL_PATH = os.getenv("UVL_MODEL_PATH", str(ROOT / "back_kube_tool" / "models" / "HKFM.uvl"))
@@ -106,8 +106,8 @@ def run_remediation_benchmark():
     with open(OUTPUT_CSV, mode='w', newline='') as f:
         writer = csv.writer(f)
         writer.writerow([
-            "Filename", "Kind", "Orig_Z3_Alerts", "Orig_AST_Alerts", "Orig_Regex_Alerts",
-            "Rem_Alerts", "T_Detection_ms", "T_AST_Remed_ms",
+            "Filename", "Kind", "Policies_Evaluated", "Orig_Z3_Alerts", "Orig_AST_Alerts", "Orig_Regex_Alerts", "Total_Initial_Alerts",
+            "Rem_Alerts", "T_Detection_ms", "T_AST_Remed_ms", "T_Total_Pipeline_ms",
             "Is_Fully_Secure", "Is_AST_100%_Accurate", "Is_K8s_Rem_Valid", "AST_Lines_Added", ## "Is_K8s_Valid",
             "AST_Lines_Removed", "Comments_Retention_%", "Kubeconform_Error" ## En caso de que la remediación rompa el manifiesto, registramos el error de kubeconform para análisis posterior
         ])
@@ -126,11 +126,12 @@ def run_remediation_benchmark():
                 # Registramos el rechazo en el CSV y saltamos al siguiente archivo
                 writer.writerow([
                     filename, "Unknown",
-                    "SCHEMA_ERROR", "SCHEMA_ERROR", "SCHEMA_ERROR",
-                    "SCHEMA_ERROR",
-                    t_kubeconform_ms, 0.0, # Anotamos el tiempo que tardó en rechazarlo
-                    False, False, False,
-                    0, 0, kube_error_msg
+                    "SCHEMA_ERROR", # Policies_Evaluated
+                    "", "", "", "", # Orig Z3, AST, Regex, Total Alerts
+                    "", # Rem_Alerts
+                    t_kubeconform_ms, 0.0, t_kubeconform_ms, # Anotamos el tiempo que tardó en rechazarlo
+                    "", "", "", # Is_Secure, Is_Accurate, Is_K8s_Rem_Valid
+                    0, 0, 0.0, kube_error_msg
                 ])
                 continue
             
@@ -151,10 +152,17 @@ def run_remediation_benchmark():
                     mapped_json_dict = csv_mapper.transform_manifest(doc)
                 except ValueError as ve:
                     print(f"[{filename}] Omitido (No soportado): {ve}")
+                    t_detection_ms = round((time.perf_counter() - t0_init) * 1000, 2)
+                    # 18 elementos exactos
                     writer.writerow([
-                        filename, kind,
-                        "ERROR_MAP", "ERROR_MAP", "ERROR_MAP", # Alertas marcadas como error
-                        0.0, 0.0, False, 0, 0, 0.0         # Tiempos a 0 y False en seguridad
+                        filename, kind, 
+                        "ERROR_MAP", # Policies_Evaluated
+                        "", "", "", "", # Alerts
+                        "", # Rem_Alerts
+                        t_detection_ms, 0.0, t_detection_ms, # Timers
+                        "", "", "", # Is_Secure, Is_Accurate, Is_K8s_Rem_Valid
+                        0, 0, 0.0, 
+                        str(ve) # Register the mapping error in the CSV for analysis (e.g., missing kind, unsupported features, etc.)
                     ])
                     continue
 
@@ -195,8 +203,11 @@ def run_remediation_benchmark():
                 initial_alerts_z3 = len(z3_violations)
                 initial_alerts_regex = len(regex_report) if not passed_regex else 0
 
+                total_initial_alerts = initial_alerts_ast + initial_alerts_regex
+                num_policies = len(active_policies) if active_policies else 0
+                
                 if len(all_initial_violations) == 0:
-                    writer.writerow([filename, kind, initial_alerts_z3, initial_alerts_ast, initial_alerts_regex, t_detection_ms, 0.0, True, True, 0, 0, 100.0])
+                    writer.writerow([filename, kind, num_policies, initial_alerts_z3, initial_alerts_ast, initial_alerts_regex, total_initial_alerts, 0, t_detection_ms, 0.0, t_detection_ms, True, True, True, 0, 0, 100.0, ""])
                     continue
 
                 # --- B. MOTOR DE REMEDIACIÓN ---
@@ -246,11 +257,11 @@ def run_remediation_benchmark():
                 is_fully_secure = (final_alerts == 0)
                 print(f"{filename}: final alerts {final_alerts} \n violations in rem: {ast_violations_new}")
                 ## If the remediation was applicated and the final alerts are 0, we check the structural preservation with Kubeconform. If it is not valid, we mark the remediation as not fully secure, because it broke the manifest.
-                
+                t_total_pipeline_ms = round(t_detection_ms + t_ast_remediation_ms, 2) ## Total pipeline time (Detection + Remediation) - Not including kubeconform time, as it's a separate structural validation step.
                 # --- E. REGISTRO CSV ---
                 writer.writerow([
-                    filename, kind, initial_alerts_z3, initial_alerts_ast, initial_alerts_regex, 
-                    final_alerts, t_detection_ms, t_ast_remediation_ms,
+                    filename, kind, num_policies, initial_alerts_z3, initial_alerts_ast, initial_alerts_regex, total_initial_alerts,
+                    final_alerts, t_detection_ms, t_ast_remediation_ms, t_total_pipeline_ms,
                     is_fully_secure, is_differential_match, is_remediated_k8s_valid, lines_added, ## is_k8s_valid
                     lines_removed, comment_retention, error_string_empty
                 ])

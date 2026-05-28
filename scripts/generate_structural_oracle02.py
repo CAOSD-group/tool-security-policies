@@ -93,7 +93,7 @@ def generate_structural_oracle(uvl_model_path, output_json_path):
             dynamic_maps.add(parent)
 
     # B) Overrides Estáticos: Mapas nativos de K8s que no usan KeyMap/ValueMap en UVL
-    hardcoded_maps = ["annotations", "labels", "matchLabels", "limits", "requests", "nodeSelector"]  # Ejemplos comunes, ajusta según tu modelo
+    hardcoded_maps = ["annotations", "labels", "matchLabels", "limits", "requests", "nodeSelector", "capacity"]  # Ejemplos comunes, ajusta según tu modelo
 
     # C) Expulsar los Mapas de la lista de Arrays
     arrays_to_remove = set()
