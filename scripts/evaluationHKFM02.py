@@ -27,9 +27,9 @@ from back_kube_tool.core.reverse_mapper import ReverseMapper
 from back_kube_tool.core.remediator import Remediator
 from back_kube_tool.core.utils.context_filter import filter_context_aware_actions
 
-VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls" / "original_yamls_1k"
-OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_testing_Z3_AST_1k.csv"
-TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_1k"
+VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls" / "original_yamls_10k"
+OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_testing_Z3_AST_10k.csv"
+TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_10k"
 
 # (Asegúrate de que estas rutas coinciden con tu entorno)
 UVL_PATH = os.getenv("UVL_MODEL_PATH", str(ROOT / "back_kube_tool" / "models" / "HKFM.uvl"))
@@ -46,7 +46,7 @@ def run_kubeconform(yaml_path: str) -> tuple[bool, str]:
             ["kubeconform", "-strict", "-summary", yaml_path],
             capture_output=True,
             text=True,
-            timeout=5
+            timeout=7
         )
         
         is_valid = (result.returncode == 0)
@@ -78,7 +78,12 @@ def calculate_semantic_preservation(orig_path: str, rem_path: str):
     lines_added = sum(1 for d in diff if d.startswith('+ '))
     lines_removed = sum(1 for d in diff if d.startswith('- '))
     
-    return round(comment_retention, 2), lines_added, lines_removed
+    ## Absolute metric of how closely the remediated file matches the original (including both code and comments).
+    #  A higher percentage means the remediated file is more similar to the original, which can be an indicator of better semantic preservation.
+    matcher = difflib.SequenceMatcher(None, orig_lines, rem_lines)
+    patch_similarity = round(matcher.ratio() * 100, 2)
+    
+    return round(comment_retention, 2), lines_added, lines_removed, patch_similarity
 
 
 def run_remediation_benchmark():
@@ -109,7 +114,7 @@ def run_remediation_benchmark():
             "Filename", "Kind", "Policies_Evaluated", "Orig_Z3_Alerts", "Orig_AST_Alerts", "Orig_Regex_Alerts", "Total_Initial_Alerts",
             "Rem_Alerts", "T_Detection_ms", "T_AST_Remed_ms", "T_Total_Pipeline_ms",
             "Is_Fully_Secure", "Is_AST_100%_Accurate", "Is_K8s_Rem_Valid", "AST_Lines_Added", ## "Is_K8s_Valid",
-            "AST_Lines_Removed", "Comments_Retention_%", "Kubeconform_Error" ## En caso de que la remediación rompa el manifiesto, registramos el error de kubeconform para análisis posterior
+            "AST_Lines_Removed", "Patch_Similarity_%", "Comments_Retention_%", "Kubeconform_Error" ## En caso de que la remediación rompa el manifiesto, registramos el error de kubeconform para análisis posterior
         ])
         
         for filename in yaml_files:
@@ -131,7 +136,7 @@ def run_remediation_benchmark():
                     "", # Rem_Alerts
                     t_kubeconform_ms, 0.0, t_kubeconform_ms, # Anotamos el tiempo que tardó en rechazarlo
                     "", "", "", # Is_Secure, Is_Accurate, Is_K8s_Rem_Valid
-                    0, 0, 0.0, kube_error_msg
+                    0, 0, 0.0, 0.0, kube_error_msg
                 ])
                 continue
             
@@ -161,7 +166,7 @@ def run_remediation_benchmark():
                         "", # Rem_Alerts
                         t_detection_ms, 0.0, t_detection_ms, # Timers
                         "", "", "", # Is_Secure, Is_Accurate, Is_K8s_Rem_Valid
-                        0, 0, 0.0, 
+                        0, 0, 0.0, 0.0, 
                         str(ve) # Register the mapping error in the CSV for analysis (e.g., missing kind, unsupported features, etc.)
                     ])
                     continue
@@ -240,7 +245,7 @@ def run_remediation_benchmark():
 
                 # --- C. VALIDACIONES Y MÉTRICAS POST-REMEDIACIÓN ---
                 is_remediated_k8s_valid, error_string_empty = run_kubeconform(tmp_remediated_path)
-                comment_retention, lines_added, lines_removed = calculate_semantic_preservation(yaml_path, tmp_remediated_path)
+                comment_retention, lines_added, lines_removed, patch_similarity = calculate_semantic_preservation(yaml_path, tmp_remediated_path)
 
                 # --- D. RE-EVALUACIÓN DE SEGURIDAD (Idempotencia) ---
                 with open(tmp_remediated_path, 'r') as file_in:
@@ -263,7 +268,7 @@ def run_remediation_benchmark():
                     filename, kind, num_policies, initial_alerts_z3, initial_alerts_ast, initial_alerts_regex, total_initial_alerts,
                     final_alerts, t_detection_ms, t_ast_remediation_ms, t_total_pipeline_ms,
                     is_fully_secure, is_differential_match, is_remediated_k8s_valid, lines_added, ## is_k8s_valid
-                    lines_removed, comment_retention, error_string_empty
+                    lines_removed, patch_similarity, comment_retention, error_string_empty
                 ])
 
             except Exception as e:

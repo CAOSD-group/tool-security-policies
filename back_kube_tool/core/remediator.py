@@ -18,7 +18,8 @@ class Remediator:
         # sequence=4: The indentation for sequences is 4 spaces.
         # offset=2: The offset for the '-' bullet is 2 spaces.
         self.yaml.width = math.inf
-        self.yaml.indent(mapping=2, sequence=4, offset=2)
+
+        #self.yaml.indent(mapping=2, sequence=4, offset=2) # Delete the line to evit the "FORMATTER POLLUTION" 
         # Turn off aliasing to prevent the use of anchors and references, which can alter the structure of the output YAML
         self.yaml.representer.ignore_aliases = lambda *data: True 
         ## Se elimina self.yaml.indent para que ruamel infiera el estilo original
