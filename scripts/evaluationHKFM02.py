@@ -28,8 +28,8 @@ from back_kube_tool.core.remediator import Remediator
 from back_kube_tool.core.utils.context_filter import filter_context_aware_actions
 
 VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls" / "original_yamls_10k"
-OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_testing_Z3_AST_10k.csv"
-TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_10k"
+OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_testing_Z3_AST_10k_V2.csv"
+TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_10k_V2"
 
 # (Asegúrate de que estas rutas coinciden con tu entorno)
 UVL_PATH = os.getenv("UVL_MODEL_PATH", str(ROOT / "back_kube_tool" / "models" / "HKFM.uvl"))
@@ -38,7 +38,8 @@ CSV_KINDS = str(ROOT / "resources" / "mapping_csv" / "kubernetes_kinds_versions_
 
 def run_kubeconform(yaml_path: str) -> tuple[bool, str]:
     """
-    Ejecuta kubeconform. Devuelve una tupla: (Es_Valido, Mensaje_De_Error)
+    Execute kubeconform against the given YAML file to validate its structure against Kubernetes schemas.
+    Returns a tuple of (is_valid, error_message). If the YAML is valid, error_message will be an empty string.
     """
     try:
         # capture_output=True hace que Python atrape el texto en result.stdout
@@ -177,6 +178,13 @@ def run_remediation_benchmark():
                 configurations = MappingEngine.manifest_to_configurations(mapped_json_dict)
                 if not configurations: continue
                 target_config = configurations[0]
+                print("\n--- INICIO DE AUDITORÍA DE CONFIGURACIÓN ---")
+                print(f"Número de configuraciones generadas: {len(configurations)}")
+                protocolos_activos = {k: v for k, v in target_config.elements.items() if "protocol" in k and v is True}
+                print(f"Protocolos activos en configs[0]: {list(protocolos_activos.keys())}")
+                print("--- FIN DE AUDITORÍA ---\n")
+                
+                
                 print(f"[{filename}] Evaluando {len(active_policies)} políticas activas sobre {kind}...") # Log de progreso
                 print(f"Config ejemplo: {target_config.elements}") # Log de ejemplo de configuración
                 # A.1 Z3 Validation

@@ -1,0 +1,12 @@
+apiVersion: v1  #Api version
+kind: Pod       #Resource name 
+metadata:
+  name: pod01 #Name of the pod
+  namespace: roboshop #Name of the namespace
+spec:
+  # list of containers
+  containers:
+  - name: container01   #Nmae of the container
+    image: nginx        #Name of the image, puling it from dockerhub as it is a public iamge.
+    ports:
+    - containerPort: 80 #Just for information 

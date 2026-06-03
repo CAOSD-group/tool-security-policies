@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp
+  labels:
+    name: myapp
+spec:
+  volumes:
+  - name: vol
+    secret:
+      secretName: mysecrets
+  containers:
+  - name: myapp
+    volumeMounts:
+      - mountPath: /vars
+        name: vol
+    image: nginx:alpine
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 80

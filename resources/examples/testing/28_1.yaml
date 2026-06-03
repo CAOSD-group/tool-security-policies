@@ -1,0 +1,10 @@
+apiVersion: jobico.coeux.dev/v1
+kind: Job
+metadata:
+  name: job-for-ev2
+spec:
+  events:
+  - name: ev1
+    wasm: echo.wasm
+    schema:
+      key: schema-ev2

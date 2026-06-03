@@ -130,21 +130,25 @@ def filter_context_aware_actions(original_config_elements: dict, actions_list: l
                 continue
                 
             # --- REGLA 3: ANDAMIAJE ESTRUCTURAL (Dual-Oracle Architecture) ---
-            parts = current_feat.split('_')
-            for i in range(len(parts), 0, -1):
-                possible_parent = "_".join(parts[:i])
-                
-                if possible_parent in STRUCTURAL_DEPENDENCIES:
-                    mandatory_siblings = STRUCTURAL_DEPENDENCIES[possible_parent]
+            # CORTOCIRCUITO: Si la acción es de borrado o remoción, saltamos el cálculo de hijos obligatorios
+            if isinstance(safe_val, dict) and ("$delete" in safe_val or "$remove" in safe_val):
+                pass 
+            else:
+                parts = current_feat.split('_')
+                for i in range(len(parts), 0, -1):
+                    possible_parent = "_".join(parts[:i])
                     
-                    for sibling_feat, default_val in mandatory_siblings.items():
-                        if sibling_feat not in original_config_elements:
-                            clean_sibling = sibling_feat
-                            if strip_suffixes:
-                                clean_sibling = clean_sibling.replace("_valueInt", "").replace("_StringValue", "").replace("_IntegerValue", "").replace("_Always", "")
-                            
-                            if not any(a["feature_to_fix"] == clean_sibling for a in valid_actions):
-                                valid_actions.append({"feature_to_fix": clean_sibling, "safe_value": default_val})
+                    if possible_parent in STRUCTURAL_DEPENDENCIES:
+                        mandatory_siblings = STRUCTURAL_DEPENDENCIES[possible_parent]
+                        
+                        for sibling_feat, default_val in mandatory_siblings.items():
+                            if sibling_feat not in original_config_elements:
+                                clean_sibling = sibling_feat
+                                if strip_suffixes:
+                                    clean_sibling = clean_sibling.replace("_valueInt", "").replace("_StringValue", "").replace("_IntegerValue", "").replace("_Always", "")
+                                
+                                if not any(a["feature_to_fix"] == clean_sibling for a in valid_actions):
+                                    valid_actions.append({"feature_to_fix": clean_sibling, "safe_value": default_val})
 
             # --- REGLA 4: Limpieza de Sufijos y Traducción ---
             final_feat = current_feat

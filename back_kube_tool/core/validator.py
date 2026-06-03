@@ -51,10 +51,14 @@ class Validator:
               for rel in feat.get_relations():
                   if rel.is_alternative():
                       selected = [c.name for c in rel.children if c.name in base_completed_elements]
-                      if len(selected) != 1:
+                      if len(selected) == 0:
                           print(f"  ❌ GRUPO ALTERNATIVE ROTO en '{feat_name}'. Seleccionados: {selected}")
                           esperados = [c.name for c in rel.children]
                           print(f"  ❌ GRUPO ALTERNATIVE ROTO en '{feat_name}'.\n     -> Esperaba EXACTAMENTE 1 de estos: {esperados}\n     -> Pero recibió: 0")
+                      elif len(selected) > 1:
+                          print(f"  ❌ GRUPO ALTERNATIVE ROTO en '{feat_name}'. Seleccionados: {selected}")
+                          esperados = [c.name for c in rel.children]
+                          print(f"  ❌ GRUPO ALTERNATIVE ROTO en '{feat_name}'.\n     -> Esperaba EXACTAMENTE 1 de estos: {esperados}\n     -> Pero recibió: {len(selected)}")
                   elif rel.is_or():
                       selected = [c.name for c in rel.children if c.name in base_completed_elements]
                       if len(selected) == 0:

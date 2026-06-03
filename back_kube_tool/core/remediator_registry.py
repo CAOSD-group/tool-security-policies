@@ -78,6 +78,24 @@ class RemediationRegistry:
             "Disallow_hostPorts": [{"feature_to_fix": "DYNAMIC_POD_CONTAINERS_ports_hostPort", "safe_value": {"$delete": True}}], ## port 0 is invalid port in Kubernetes, "0 < x < 65536" so it effectively removes the hostPort configuration
             "Disallow_SELinux": [{"feature_to_fix": "DYNAMIC_POD_CONTAINERS_securityContext_seLinuxOptions", "safe_value": {"$remove": "ALL"}}],
 
+            ### Static disallor Secrets
+            "Disallow_all_Secrets": [
+                # Poda en Contenedores Estándar
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_containers_env_valueFrom_secretKeyRef", "safe_value": {"$delete": True}},
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_containers_envFrom_secretRef", "safe_value": {"$delete": True}},
+                
+                # Poda en InitContainers
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_initContainers_env_valueFrom_secretKeyRef", "safe_value": {"$delete": True}},
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_initContainers_envFrom_secretRef", "safe_value": {"$delete": True}},
+                
+                # Poda en EphemeralContainers
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_ephemeralContainers_env_valueFrom_secretKeyRef", "safe_value": {"$delete": True}},
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_ephemeralContainers_envFrom_secretRef", "safe_value": {"$delete": True}},
+                
+                # Poda en Volúmenes
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_volumes_secret", "safe_value": {"$delete": True}}
+            ],
+
             # =========================================================
             # 4. POD SPEC (Atributos base del Pod, aplica a Deployments, DaemonSets, etc.)
             # =========================================================
@@ -118,7 +136,11 @@ class RemediationRegistry:
             "kubernetes_no_non_ephemeral_volumes": [{"feature_to_fix": "DYNAMIC_POD_SUFFIX_volumes", "safe_value": {"$delete": True}}],
             "kubernetes_no_hostaliases": [{"feature_to_fix": "DYNAMIC_POD_SUFFIX_hostAliases", "safe_value": {"$delete": True}}],
             "Block_Ephemeral_Containers": [{"feature_to_fix": "DYNAMIC_POD_SUFFIX_ephemeralContainers", "safe_value": {"$delete": True}}],
-            "Restrict_node_selection": [{"feature_to_fix": "DYNAMIC_POD_SUFFIX_nodeSelector", "safe_value": {"$delete": True}}],
+            #"Restrict_node_selection": [{"feature_to_fix": "DYNAMIC_POD_SUFFIX_nodeSelector", "safe_value": {"$delete": True}}],
+            "Restrict_node_selection": [
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_nodeSelector", "safe_value": {"$delete": True}},
+                {"feature_to_fix": "io_k8s_api_core_v1_Pod_spec_nodeName", "safe_value": {"$delete": True}}
+                ],
             "Require_imagePullSecrets": [{"feature_to_fix": "DYNAMIC_POD_SUFFIX_imagePullSecrets", "safe_value": [{"name": "secure-registry-credentials"}]}], ### Not activated yet
             
             # --- Polaris Homologación ---
@@ -150,14 +172,15 @@ class RemediationRegistry:
             # =========================================================
             "Restrict_Service_Port_Range": [{"feature_to_fix": "io_k8s_api_core_v1_Service_spec_ports_port", "safe_value": 32000}],
             "Disallow_Localhost_ExternalName_Services": [{"feature_to_fix": "io_k8s_api_core_v1_Service_spec_externalName", "safe_value": "development.local"}],
-            "Require_Ingress_HTTPS": [{"feature_to_fix": "io_k8s_api_networking_v1_Ingress_metadata_annotations_kubernetes_io_ingress_allow_http", "safe_value": "false"}],
+            #"Require_Ingress_HTTPS": [{"feature_to_fix": "io_k8s_api_networking_v1_Ingress_metadata_annotations_kubernetes_io_ingress_allow_http", "safe_value": "false"}],
             "Disallow_NodePort": [{"feature_to_fix": "io_k8s_api_core_v1_Service_spec_type", "safe_value": "ClusterIP"}],
             "Restrict_External_IPs": [{"feature_to_fix": "io_k8s_api_core_v1_Service_spec_externalIPs", "safe_value": {"$delete": True}}],
             "kubernetes_no_svc_with_extip": [{"feature_to_fix": "io_k8s_api_core_v1_Service_spec_externalIPs", "safe_value": {"$delete": True}}],
             "Disallow_Service_Type_LoadBalancer": [{"feature_to_fix": "io_k8s_api_core_v1_Service_spec_type", "safe_value": "ClusterIP"}], ## !Serv.io_k8s_api_core_v1_Service_spec_type_LoadBalancer
             "tlsSettingsMissing": [{"feature_to_fix": "io_k8s_api_networking_v1_Ingress_spec_tls", "safe_value": [{"hosts": ["secure.example.com"], "secretName": "tls-secret"}]}],
             "Require_Encryption_with_AWS_LoadBalancers": [{"feature_to_fix": "io_k8s_api_core_v1_Service_metadata_annotations_service_beta_kubernetes_io_aws_load_balancer_ssl_cert", "safe_value": "arn:aws:acm:region:account:certificate/uuid"}],
-            "Restrict_Ingress_defaultBackend": [{"feature_to_fix": "io_k8s_api_networking_v1_Ingress_spec_defaultBackend", "safe_value": {"service": {"name": "secure-backend", "port": {"number": 443}}}}],
+            ##"Restrict_Ingr    ess_defaultBackend": [{"feature_to_fix": "io_k8s_api_networking_v1_Ingress_spec_defaultBackend", "safe_value": {"service": {"name": "secure-backend", "port": {"number": 443}}}}],
+            "Restrict_Ingress_defaultBackend": [{"feature_to_fix": "io_k8s_api_networking_v1_Ingress_spec_defaultBackend", "safe_value": {"$delete": True}}],
             "Restrict_Ingress_Classes": [{"feature_to_fix": "io_k8s_api_networking_v1_Ingress_metadata_annotations_kubernetes_io_ingress_class", "safe_value": "nginx"}],
 
 

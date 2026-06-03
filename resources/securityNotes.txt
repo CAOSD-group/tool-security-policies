@@ -1054,3 +1054,56 @@ io_k8s_api_apps_v1_Deployment_spec_template_spec_nodeSelector
 Quitado del struc de la tool:
 "io_k8s_api_storage_v1_StorageClass_parameters",
 Si se siguen repitiendo los errores por este tipo de features, usar StringValueAdditional para evitar que se definan como arrays.
+
+
+Harcodear sufijos:
+
+# back_kube_tool/core/constants.py
+FLAMAPY_SUFFIXES = (
+    "_asInteger", "_asNumber", "_asString", 
+    "_StringValue", "_IntegerValue", 
+    "_KeyMap", "_ValueMap", "_isEmpty", 
+    "_StringValueAdditional", "StringValueAdditional"
+)
+
+
+01-config-node-local-dns_3: arreglado con parche en mapping_engine
+
+01-deployment-original_1: arreglado con parche en modulo de Service, clusterIP como String y no como alternative de valores
+
+01-odoo-ingress: arreglado con el parche a la remediacion de la politica Restrict_Ingress_defaultBackend
+
+01-pod: Disallow_all_Secrets no definido, + ajuste necesario en STRUCTURAL_DEPENDENCIES para no comprobarlas si la operacion es delete o remove
+
+01-nfd_12: arreglado con la elminiacion de sufijos _nameStr en Deployment
+
+helloworld-dual-stack: arreglado modificando un array de alternative mal definido por or
+
+high_cpu_pod_1: faltaba agregar una parte de la restriccion como delete en Restrict_node_selection 
+
+hivems-hive-metastore-service: En proceso, tiene sintaxis valida en k8s pero "rara" para evaluacion estatica, son declaraciones dinamicas con helm
+
+
+### 01-nfd_12
+Eliminación sufijo _nameStr
+Se utilizaba en el modelo SAT por la "limitacion" de que solo se tenia en cuenta los bools, se modifico
+para permitir la no seleccion de dichos features pero ahora "estorba" el procesamiento con Z3 ya que se
+puede realizar directamente. Se procede a borrar los features con la estructura mandatory + string _nameStr
+** Aplicar a cada modulo de los usados. **
+
+io_k8s_api_apps_v1_Deployment_spec_template_spec_securityContext_seccompProfile_localhostProfile {abstract, doc 'localhostProfile indicates a profile defined in a file on the node should be used The profile must be preconfigured on the node to work Must be a descending path, relative to the kubelet_s configured seccomp profile location Must be set if type is Localhost Must NOT be set for any other type'}
+  mandatory
+    io_k8s_api_apps_v1_Deployment_spec_template_spec_securityContext_seccompProfile_localhostProfile_nameStr {doc 'Added String mandatory for changing booleans of boolean_keywords: string *_name'}
+
+To:
+
+String io_k8s_api_apps_v1_Deployment_spec_template_spec_securityContext_seccompProfile_localhostProfile {doc 'localhostProfile indicates a profile defined in a file on the node should be used The profile must be preconfigured on the node to work Must be a descending path, relative to the kubelet_s configured seccomp profile location Must be set if type is Localhost Must NOT be set for any other type'}
+
+
+### helloworld-dual-stack
+Cambio de alternative por or; permite definir mas de un valor por seleccion
+io_k8s_api_core_v1_Service_spec_ipFamilies cardinality [0..1] {doc 'IPFamilies is a list of IP families (eg IPv4, IPv6) assigned to this service This field is usually assigned automatically based on cluster configuration and the ipFamilyPolicy field If this field is specified manually, the requested family is available in the cluster, and ipFamilyPolicy allows it, it will be used; otherwise creation of the service will fail This field is conditionally mutable: it allows for adding or removing a secondary IP family, but it does not allow changing the primary IP family of the Service Valid values are IPv4 and IPv6  This field only applies to Services of types ClusterIP, NodePort, and LoadBalancer, and does apply to headless services This field will be wiped when updating a Service to type ExternalNameThis field may hold a maximum of two entries (dual-stack families, in either order)  These families must correspond to the values of the clusterIPs field, if specified Both clusterIPs and ipFamilies are governed by the ipFamilyPolicy field'}
+  or
+    io_k8s_api_core_v1_Service_spec_ipFamilies_IPv6 {doc 'Specific value: IPv6'}
+    io_k8s_api_core_v1_Service_spec_ipFamilies_headless {doc 'Specific value: headless'}
+    io_k8s_api_core_v1_Service_spec_ipFamilies_IPv4 {doc 'Specific value: IPv4'}

@@ -38,11 +38,12 @@ class Remediator:
             # 2. Aplicar todos los cambios recursivos en memoria
             for patch in patches:
                 self._apply_recursive(data, patch['path'], patch['value'])
-            
+
+            ## Clean up any empty nodes that may have been left as a result of deletions (simulate Web API sanitization)
+            self._prune_empty_nodes(data)            
             # 3. Aplicar post-procesamiento de arrays del oráculo en el mismo objeto
             data = enforce_k8s_object_arrays(data)
-            
-            ## Clean up any empty nodes that may have been left as a result of deletions (simulate Web API sanitization)
+            # Limpieza final de seguridad por si el paso 4 dejó algo huérfano
             self._prune_empty_nodes(data)
 
             # 4. Volcar a string una sola vez al final
@@ -99,6 +100,9 @@ class Remediator:
                     ##current_node[key] = value
             else:
                 if key not in current_node:
+                    if isinstance(value, dict) and ("$delete" in value or "$remove" in value):
+                        return
+
                     current_node[key] = CommentedMap() ##{} # Inject a native object to preserve comments
                 self._apply_recursive(current_node[key], path[1:], value)
     
@@ -113,10 +117,11 @@ class Remediator:
             for k, v in data.items():
                 self._prune_empty_nodes(v)
                 # Si tras limpiar los hijos, el nodo quedó vacío, lo marcamos para borrar
-                if v == [] or v == {}:
+                if isinstance(v, (dict, list)) and len(v) == 0:
                     keys_to_delete.append(k)
             for k in keys_to_delete:
                 del data[k]
         elif isinstance(data, list):
             for item in data:
                 self._prune_empty_nodes(item)
+            data[:] = [item for item in data if not (isinstance(item, (dict, list)) and len(item) == 0)]

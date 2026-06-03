@@ -47,8 +47,12 @@ class MappingEngine:
                     for item in value:
                         # Ampliado para atrapar tanto diccionarios como listas anidadas
                         if isinstance(item, (dict, list)):
-                            flat_item = cls._flatten_primitive_kv(item, namespace)
-                            combined_block.append(flat_item)
+                            #flat_item = cls._flatten_primitive_kv(item, namespace)
+                            #combined_block.append(flat_item)
+                            flat_items_list = cls._flatten_primitive_kv(item, namespace)
+                            for flat_item in flat_items_list:
+                                combined_block.append(flat_item)
+                                
                         elif isinstance(item, (str, int, float, bool)):
                             # Mantenemos el soporte combinatorio pero no perdemos la pista
                             combined_block.append({cls.qualify(str(item), namespace): True})
@@ -58,29 +62,78 @@ class MappingEngine:
                     base_config[qkey] = True
 
     @classmethod
-    def _flatten_primitive_kv(cls, d: Any, namespace: str = "") -> dict:
+    def _flatten_primitive_kv(cls, d: Any, namespace: str = "") -> List[dict]:
         """
-        Versión mejorada: Extrae recursivamente los valores primitivos 
-        incluso si están enterrados dentro de listas de diccionarios.
+        Extrae los valores primitivos.
+        Si encuentra un diccionario, acumula.
+        Si encuentra una lista anidada, MULTIPLICA las configuraciones (Unrolling).
+        Retorna siempre una Lista de Diccionarios.
         """
-        flat = {}
+        # Si recibimos un primitivo (caso base extraño pero posible)
+        if not isinstance(d, (dict, list)):
+            return [{}]
+
         if isinstance(d, dict):
+            # Empezamos con una sola configuración base vacía
+            configs_acumuladas = [{}]
+            
             for k, v in d.items():
                 qk = cls.qualify(k, namespace)
+                
                 if isinstance(v, (str, int, float, bool)):
-                    flat[qk] = v
+                    # A todas las configuraciones actuales, les añadimos este valor primitivo
+                    for cfg in configs_acumuladas:
+                        cfg[qk] = v
+                        
                 elif isinstance(v, dict):
-                    flat[qk] = True
-                    flat.update(cls._flatten_primitive_kv(v, namespace))
+                    # Inyectamos True por la presencia de la clave
+                    for cfg in configs_acumuladas:
+                        cfg[qk] = True
+                    
+                    # Llamada recursiva (devuelve una lista de configuraciones hijas)
+                    hijos_configs = cls._flatten_primitive_kv(v, namespace)
+                    
+                    # Multiplicamos: Para cada config actual, añadimos cada config hija
+                    nuevas_configs = []
+                    for base_cfg in configs_acumuladas:
+                        for hijo_cfg in hijos_configs:
+                            nueva_combinacion = deepcopy(base_cfg)
+                            nueva_combinacion.update(hijo_cfg)
+                            nuevas_configs.append(nueva_combinacion)
+                    configs_acumuladas = nuevas_configs
+                    
                 elif isinstance(v, list):
-                    # ESTA ES LA CLAVE QUE FALTABA: Navegar dentro de las listas
-                    flat[qk] = True
+                    # Inyectamos True por la presencia de la clave de la lista
+                    for cfg in configs_acumuladas:
+                        cfg[qk] = True
+                        
+                    if len(v) == 0:
+                        continue
+                    
+                    # --- EL NÚCLEO DE LA SOLUCIÓN ---
+                    # Para cada elemento de la lista, obtenemos sus sub-configuraciones
+                    todas_las_ramas_de_la_lista = []
                     for item in v:
-                        flat.update(cls._flatten_primitive_kv(item, namespace))
+                        ramas_del_item = cls._flatten_primitive_kv(item, namespace)
+                        todas_las_ramas_de_la_lista.extend(ramas_del_item)
+                    
+                    # Multiplicamos el estado actual por todas las ramas posibles de esta lista
+                    nuevas_configs = []
+                    for base_cfg in configs_acumuladas:
+                        for rama_lista in todas_las_ramas_de_la_lista:
+                            nueva_combinacion = deepcopy(base_cfg)
+                            nueva_combinacion.update(rama_lista)
+                            nuevas_configs.append(nueva_combinacion)
+                    configs_acumuladas = nuevas_configs
+                    
+            return configs_acumuladas
+
         elif isinstance(d, list):
+            # Si el punto de entrada a la función es directamente una lista
+            configs_acumuladas = []
             for item in d:
-                flat.update(cls._flatten_primitive_kv(item, namespace))
-        return flat
+                configs_acumuladas.extend(cls._flatten_primitive_kv(item, namespace))
+            return configs_acumuladas if configs_acumuladas else [{}]
 
     @classmethod
     def _generate_combinations(cls, base_config: Dict, blocks: List, max_combinations: int = 10000) -> List[Configuration]:

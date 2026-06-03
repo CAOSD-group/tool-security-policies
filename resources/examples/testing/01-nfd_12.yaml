@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nfd
+  name: nfd-master
+  namespace: node-feature-discovery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nfd-master
+  template:
+    metadata:
+      labels:
+        app: nfd-master
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: node-role.kubernetes.io/master
+                operator: In
+                values:
+                - ''
+            weight: 1
+          - preference:
+              matchExpressions:
+              - key: node-role.kubernetes.io/control-plane
+                operator: In
+                values:
+                - ''
+            weight: 1
+      containers:
+      - command:
+        - nfd-master
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        image: registry.k8s.io/nfd/node-feature-discovery:v0.14.1
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          exec:
+            command:
+            - /usr/bin/grpc_health_probe
+            - -addr=:8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        name: nfd-master
+        ports:
+        - containerPort: 8081
+          name: metrics
+        - containerPort: 8080
+          name: grpc
+        readinessProbe:
+          exec:
+            command:
+            - /usr/bin/grpc_health_probe
+            - -addr=:8080
+          failureThreshold: 10
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+        volumeMounts:
+        - mountPath: /etc/kubernetes/node-feature-discovery
+          name: nfd-master-conf
+          readOnly: true
+      enableServiceLinks: false
+      serviceAccount: nfd-master
+      tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
+        operator: Equal
+        value: ''
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/control-plane
+        operator: Equal
+        value: ''
+      volumes:
+      - configMap:
+          name: nfd-master-conf
+        name: nfd-master-conf

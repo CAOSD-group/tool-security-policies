@@ -195,7 +195,14 @@ async def validate_manifest_stream(request: ValidationRequest):
                 scanned_resources += 1
 
                 if configurations:
-                    target_config = configurations[0] 
+                    target_config = configurations[0]
+
+                    print("\n--- INICIO DE AUDITORÍA DE CONFIGURACIÓN ---")
+                    print(f"Número de configuraciones generadas: {len(configurations)}")
+                    protocolos_activos = {k: v for k, v in target_config.elements.items() if "protocol" in k and v is True}
+                    print(f"Protocolos activos en configs[0]: {list(protocolos_activos.keys())}")
+                    print("--- FIN DE AUDITORÍA ---\n")
+                
                     #print("\n=== FEATURES MAPEADAS LISTAS PARA Z3 ===")
                     resource_name = doc.get('metadata', {}).get('name', 'unknown')
                     # Avisamos al frontend del recurso que estamos analizando

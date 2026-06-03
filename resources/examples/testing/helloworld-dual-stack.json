@@ -1,0 +1,42 @@
+{
+    "filename": "helloworld-dual-stack.yaml",
+    "apiVersion": "v1",
+    "config": {
+        "io_k8s_api_core_v1_Service_apiVersion": "v1",
+        "io_k8s_api_core_v1_Service_kind": "Service",
+        "io_k8s_api_core_v1_Service_metadata": {
+            "io_k8s_api_core_v1_Service_metadata_name": "helloworld",
+            "io_k8s_api_core_v1_Service_metadata_labels": [
+                {
+                    "io_k8s_api_core_v1_Service_metadata_labels_KeyMap": "app",
+                    "io_k8s_api_core_v1_Service_metadata_labels_ValueMap": "helloworld"
+                },
+                {
+                    "io_k8s_api_core_v1_Service_metadata_labels_KeyMap": "service",
+                    "io_k8s_api_core_v1_Service_metadata_labels_ValueMap": "helloworld"
+                }
+            ]
+        },
+        "io_k8s_api_core_v1_Service_spec": {
+            "io_k8s_api_core_v1_Service_spec_ipFamilyPolicy": {
+                "io_k8s_api_core_v1_Service_spec_ipFamilyPolicy_RequireDualStack": true
+            },
+            "io_k8s_api_core_v1_Service_spec_ipFamilies": [
+                "IPv6",
+                "IPv4"
+            ],
+            "io_k8s_api_core_v1_Service_spec_ports": [
+                {
+                    "io_k8s_api_core_v1_Service_spec_ports_port": 5000,
+                    "io_k8s_api_core_v1_Service_spec_ports_name": "http"
+                }
+            ],
+            "io_k8s_api_core_v1_Service_spec_selector": [
+                {
+                    "io_k8s_api_core_v1_Service_spec_selector_KeyMap": "app",
+                    "io_k8s_api_core_v1_Service_spec_selector_ValueMap": "helloworld"
+                }
+            ]
+        }
+    }
+}
