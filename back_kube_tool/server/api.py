@@ -17,11 +17,12 @@ from core.reverse_mapper import ReverseMapper
 from core.remediator import Remediator
 from core.remediator_registry import RemediationRegistry
 from core.regex_validator import ContentPolicyValidator
-from core.utils.context_filter import filter_context_aware_actions
+from core.utils.context_filter import filter_context_aware_actions,sanitize_k8s_manifest
 from fastapi.responses import StreamingResponse
 from typing import List, Any
 import json
 import asyncio
+import copy
 from core.structural_validator import StructuralValidator
 
 
@@ -172,13 +173,21 @@ async def validate_manifest_stream(request: ValidationRequest):
                 if not doc.get('apiVersion'): ## Solo se comprueba si no existe la prop, si existe pero no está en el CSV, el error lo lanzará el CSVMapper y se lo enviaremos al frontend
                     yield json.dumps({"status": "error", "message": "The document has no 'apiVersion' property."}) + "\n"
                     continue
+                #### Fix for empty documents (e.g., "---\n---\n") that YAML parser might return as None
+                ### In testing probes, error with empty propierties, resources_requests, resources_limits
+                # 1. Creamos un clon exacto para no destruir la metadata del usuario
+                eval_doc = copy.deepcopy(doc)
                 
+                # 2. Sanitizamos SOLO la copia (borramos managedFields, status, {}, [])
+                clean_eval_doc = sanitize_k8s_manifest(eval_doc)
+
                 # CORRECCIÓN BUG: INTENTAMOS MAPEAR PRIMERO (Filtro de sintaxis base)
                 # Si esto falla (ej. v133), nunca sumamos políticas "fantasma" al recuento.
                 # =========================================================================
+
                 try:
                     # Aquí es donde falla si el kind/version no está en tu CSV
-                    mapped_json_dict = csv_mapper.transform_manifest(doc)
+                    mapped_json_dict = csv_mapper.transform_manifest(clean_eval_doc) ## doc
                 except ValueError as ve:
                     # Le enviamos el error exacto al frontend
                     yield json.dumps({"status": "error", "message": f"[{api_version}/{kind}] Feature not supported by the model: {str(ve)}"}) + "\n"

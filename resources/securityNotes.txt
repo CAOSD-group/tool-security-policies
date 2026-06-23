@@ -1082,7 +1082,16 @@ helloworld-dual-stack: arreglado modificando un array de alternative mal definid
 high_cpu_pod_1: faltaba agregar una parte de la restriccion como delete en Restrict_node_selection 
 
 hivems-hive-metastore-service: En proceso, tiene sintaxis valida en k8s pero "rara" para evaluacion estatica, son declaraciones dinamicas con helm
+managedFields: %% Error en la lectura para procesar y comprobar en manifiestos que contengan:
+- Ignorado por ahora, posible bifurcación más adelante del manifiesto saneado y su comprobación de este
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:meta.helm.sh/release-name: {}
 
+** anotado en el word posible solucion **
 
 ### 01-nfd_12
 Eliminación sufijo _nameStr

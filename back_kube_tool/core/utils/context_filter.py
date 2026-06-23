@@ -234,3 +234,35 @@ def enforce_k8s_object_arrays(data, current_path=""):
                 data[i] = enforce_k8s_object_arrays(data[i], current_path)
                         
     return data
+
+def sanitize_k8s_manifest(yaml_dict: dict) -> dict:
+    """
+    Elimina exclusivamente nodos vacíos ({}, []) dentro del manifiesto.
+    Evita encender nodos padre en el oráculo lógico (Z3) cuando el usuario
+    no ha definido propiedades hijas (ej. requests: {}).
+    """
+    if not isinstance(yaml_dict, dict):
+        return yaml_dict
+
+    # PODA RECURSIVA DE NODOS VACÍOS (Aislada y quirúrgica)
+    def prune_empty(data):
+        if isinstance(data, dict):
+            keys_to_delete = []
+            for k, v in data.items():
+                prune_empty(v)
+                # Si tras limpiar los hijos, el nodo quedó vacío ({}), se marca para borrar
+                if isinstance(v, (dict, list)) and len(v) == 0:
+                    keys_to_delete.append(k)
+            for k in keys_to_delete:
+                del data[k]
+                
+        elif isinstance(data, list):
+            for item in data:
+                prune_empty(item)
+            # Si un elemento de la lista quedó vacío, se filtra
+            data[:] = [item for item in data if not (isinstance(item, (dict, list)) and len(item) == 0)]
+
+    # Aplicamos la poda sobre el diccionario reproducible
+    prune_empty(yaml_dict)
+    
+    return yaml_dict

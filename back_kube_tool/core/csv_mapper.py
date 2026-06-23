@@ -352,11 +352,18 @@ class CSVMapper:
                     aux_value_last = value_features.rsplit("_", 1)[0]
                     if key == aux_value_last:
                         if isinstance(value, dict):
+                            # If the dictionary is empty (e.g. requests: {}), we ignore it completely to avoid turning on the parent node in Z3 without having children to evaluate.
+                            # to avoid turning on the parent node in Z3 without having children to evaluate.
+                            if not value:
+                                continue
+
                             for key_item, value_item in value.items():
                                 if value_features not in auxFeaturesAddedList:
                                     feature_entry = {}  # Dictionary for each feature
                                     # Validate that the value is consistent with the expected type of the feature
-                                    if isinstance(value_item, str) and value_features.endswith("asString"):
+                                    print(f"KEY ITEM: {key_item} VALUE ITEM: {value_item} VALUE FEATURES: {value_features}")
+                                    if isinstance(key_item, str) and value_features.endswith("asString"):
+                                        print(f"ENTRA CONDICIONAL asString")
                                         feature_entry[value_features] = f"{key_item}:{value_item}"
                                     elif isinstance(value_item, int) and value_features.endswith("asInteger"):
                                         feature_entry[value_features] = f"{key_item}:{value_item}"
