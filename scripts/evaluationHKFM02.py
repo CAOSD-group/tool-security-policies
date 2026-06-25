@@ -27,9 +27,11 @@ from back_kube_tool.core.reverse_mapper import ReverseMapper
 from back_kube_tool.core.remediator import Remediator
 from back_kube_tool.core.utils.context_filter import filter_context_aware_actions
 
-VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls" / "original_yamls_10k"
-OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_testing_Z3_AST_10k_V2.csv"
-TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_10k_V2"
+#VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls" / "original_yamls_10k"
+VALID_YAMLS_DIR = ROOT / "resources" / "examples" / "testing"  # Para pruebas rápidas, puedes cambiar a un subdirectorio con menos archivos YAML
+
+OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_testing_Z3_AST_1_testing.csv"
+TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_1_testing"
 
 # (Asegúrate de que estas rutas coinciden con tu entorno)
 UVL_PATH = os.getenv("UVL_MODEL_PATH", str(ROOT / "back_kube_tool" / "models" / "HKFM.uvl"))
@@ -113,10 +115,10 @@ def run_remediation_benchmark():
         writer = csv.writer(f)
         writer.writerow([
             "Filename", "Kind", "Policies_Evaluated", "Orig_Z3_Alerts", "Orig_AST_Alerts", "Orig_Regex_Alerts", "Total_Initial_Alerts",
-            "Rem_Alerts", "T_Detection_ms", "T_AST_Remed_ms", "T_Total_Pipeline_ms",
+            "Rem_Alerts", "N_Features", "N_Features_in_Policies_Complete", "N_Features_in_Policies_Failed", "N_Configurations", "T_Detection_ms", "T_AST_Remed_ms", "T_Total_Pipeline_ms",
             "Is_Fully_Secure", "Is_AST_100%_Accurate", "Is_K8s_Rem_Valid", "AST_Lines_Added", ## "Is_K8s_Valid",
             "AST_Lines_Removed", "Patch_Similarity_%", "Comments_Retention_%", "Kubeconform_Error" ## En caso de que la remediación rompa el manifiesto, registramos el error de kubeconform para análisis posterior
-        ])
+        ]) ## Pendent to add Nº Features, Nº Features in Policies, Nº Configurations
         
         for filename in yaml_files:
             yaml_path = os.path.join(VALID_YAMLS_DIR, filename)
@@ -135,7 +137,7 @@ def run_remediation_benchmark():
                     "SCHEMA_ERROR", # Policies_Evaluated
                     "", "", "", "", # Orig Z3, AST, Regex, Total Alerts
                     "", # Rem_Alerts
-                    t_kubeconform_ms, 0.0, t_kubeconform_ms, # Anotamos el tiempo que tardó en rechazarlo
+                    0, 0, 0, 0, t_kubeconform_ms, 0.0, t_kubeconform_ms, # Anotamos el tiempo que tardó en rechazarlo
                     "", "", "", # Is_Secure, Is_Accurate, Is_K8s_Rem_Valid
                     0, 0, 0.0, 0.0, kube_error_msg
                 ])
@@ -164,7 +166,7 @@ def run_remediation_benchmark():
                         filename, kind, 
                         "ERROR_MAP", # Policies_Evaluated
                         "", "", "", "", # Alerts
-                        "", # Rem_Alerts
+                        "", 0, 0, 0, 0, # Rem_Alerts, N_Features, N_Features_in_Policies, N_Configurations
                         t_detection_ms, 0.0, t_detection_ms, # Timers
                         "", "", "", # Is_Secure, Is_Accurate, Is_K8s_Rem_Valid
                         0, 0, 0.0, 0.0, 
@@ -191,6 +193,14 @@ def run_remediation_benchmark():
                 z3_policies = [p for p in active_policies if p not in regex_policy_names]
                 z3_violations = z3_validator.validate_configuration(target_config, z3_policies)
                 ast_violations = ast_validator.validate_configuration(target_config, z3_policies)
+
+                ## Extract the number of features involved in the policies for reporting
+                num_features_in_config = len(target_config.elements)
+                num_features_in_active_policies = len(inference_engine.get_features_for_policies(z3_policies)) 
+                num_features_in_failed_policies = len({feature for v in z3_violations + ast_violations for feature in v.get("features", [])})
+                print(f"[{filename}] Features in config: {num_features_in_config}, Features in active policies: {num_features_in_active_policies}, Features in failed policies: {num_features_in_failed_policies}")
+                num_configurations = len(configurations)
+
                 ## Extract the names of failed policies
                 z3_failed_set = {v["policy"] for v in z3_violations}
                 ast_failed_set = {v["policy"] for v in ast_violations}
@@ -220,7 +230,7 @@ def run_remediation_benchmark():
                 num_policies = len(active_policies) if active_policies else 0
                 
                 if len(all_initial_violations) == 0:
-                    writer.writerow([filename, kind, num_policies, initial_alerts_z3, initial_alerts_ast, initial_alerts_regex, total_initial_alerts, 0, t_detection_ms, 0.0, t_detection_ms, True, True, True, 0, 0, 100.0, ""])
+                    writer.writerow([filename, kind, num_policies, initial_alerts_z3, initial_alerts_ast, initial_alerts_regex, total_initial_alerts, 0, num_features_in_config, num_features_in_active_policies, num_features_in_failed_policies, num_configurations, t_detection_ms, 0.0, t_detection_ms, True, True, True, 0, 0, 100.0, ""])
                     continue
 
                 # --- B. MOTOR DE REMEDIACIÓN ---
@@ -274,7 +284,7 @@ def run_remediation_benchmark():
                 # --- E. REGISTRO CSV ---
                 writer.writerow([
                     filename, kind, num_policies, initial_alerts_z3, initial_alerts_ast, initial_alerts_regex, total_initial_alerts,
-                    final_alerts, t_detection_ms, t_ast_remediation_ms, t_total_pipeline_ms,
+                    final_alerts, num_features_in_config, num_features_in_active_policies, num_features_in_failed_policies, num_configurations, t_detection_ms, t_ast_remediation_ms, t_total_pipeline_ms,
                     is_fully_secure, is_differential_match, is_remediated_k8s_valid, lines_added, ## is_k8s_valid
                     lines_removed, patch_similarity, comment_retention, error_string_empty
                 ])

@@ -1116,3 +1116,13 @@ io_k8s_api_core_v1_Service_spec_ipFamilies cardinality [0..1] {doc 'IPFamilies i
     io_k8s_api_core_v1_Service_spec_ipFamilies_IPv6 {doc 'Specific value: IPv6'}
     io_k8s_api_core_v1_Service_spec_ipFamilies_headless {doc 'Specific value: headless'}
     io_k8s_api_core_v1_Service_spec_ipFamilies_IPv4 {doc 'Specific value: IPv4'}
+
+
+
+#### vector-add-2
+
+Parche modificando las condiciones del csv_mapper:
+Antes se leia como un array de valores sin agregar el asString... ahora se recorre correctamente como un mapa y era necesaria la mod para pasar por String de manera preferente
+if isinstance(key_item, str) and value_features.endswith("asString"):
+
+###watcher

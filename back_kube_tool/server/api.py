@@ -187,7 +187,7 @@ async def validate_manifest_stream(request: ValidationRequest):
 
                 try:
                     # Aquí es donde falla si el kind/version no está en tu CSV
-                    mapped_json_dict = csv_mapper.transform_manifest(clean_eval_doc) ## doc
+                    mapped_json_dict = csv_mapper.transform_manifest(clean_eval_doc) ## doc ## 
                 except ValueError as ve:
                     # Le enviamos el error exacto al frontend
                     yield json.dumps({"status": "error", "message": f"[{api_version}/{kind}] Feature not supported by the model: {str(ve)}"}) + "\n"
