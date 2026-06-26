@@ -29,14 +29,17 @@ from back_kube_tool.core.utils.context_filter import filter_context_aware_action
 
 #VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls" / "original_yamls_10k"
 VALID_YAMLS_DIR = ROOT / "resources" / "examples" / "testing"  # Para pruebas rápidas, puedes cambiar a un subdirectorio con menos archivos YAML
-
+print(f"Root directory: {ROOT}")
 OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_testing_Z3_AST_1_testing.csv"
 TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_1_testing"
 
 # (Asegúrate de que estas rutas coinciden con tu entorno)
 UVL_PATH = os.getenv("UVL_MODEL_PATH", str(ROOT / "back_kube_tool" / "models" / "HKFM.uvl"))
-CSV_FEATURES = str(ROOT / "resources" / "mapping_csv" / "kubernetes_mapping_properties_features.csv")
-CSV_KINDS = str(ROOT / "resources" / "mapping_csv" / "kubernetes_kinds_versions_detected.csv")
+CSV_FEATURES = str(ROOT / "back_kube_tool" / "resources" / "mapping_csv" / "kubernetes_mapping_properties_features.csv")
+CSV_KINDS = str(ROOT / "back_kube_tool" / "resources" / "mapping_csv" / "kubernetes_kinds_versions_detected.csv")
+
+#CSV_FEATURES = str(ROOT / "resources" / "mapping_csv" / "kubernetes_mapping_properties_features.csv")
+#CSV_KINDS = str(ROOT / "resources" / "mapping_csv" / "kubernetes_kinds_versions_detected.csv")
 
 def run_kubeconform(yaml_path: str) -> tuple[bool, str]:
     """
@@ -196,8 +199,16 @@ def run_remediation_benchmark():
 
                 ## Extract the number of features involved in the policies for reporting
                 num_features_in_config = len(target_config.elements)
-                num_features_in_active_policies = len(inference_engine.get_features_for_policies(z3_policies)) 
-                num_features_in_failed_policies = len({feature for v in z3_violations + ast_violations for feature in v.get("features", [])})
+                num_features_in_active_policies = len(inference_engine.get_features_for_policies(z3_policies))
+                
+                # 1. Extraemos solo los nombres de las políticas de las violaciones
+                failed_policy_names = [v.get("policy") for v in z3_violations + ast_violations if v.get("policy")]
+                # 2. Le pedimos a tu motor la lista de features implicadas (el blast radius)
+                failed_features_set = inference_engine.get_features_for_policies(failed_policy_names)
+                print(f"Failed policies: {failed_policy_names}  Failed features: {failed_features_set}")
+                num_features_in_failed_policies = len(failed_features_set)
+                ##num_features_in_failed_policies = len({feature for v in z3_violations + ast_violations for feature in v.get("features", [])})
+
                 print(f"[{filename}] Features in config: {num_features_in_config}, Features in active policies: {num_features_in_active_policies}, Features in failed policies: {num_features_in_failed_policies}")
                 num_configurations = len(configurations)
 
