@@ -7,6 +7,7 @@ import yaml
 import sys
 from pathlib import Path
 import traceback
+import copy
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 
@@ -25,13 +26,13 @@ from back_kube_tool.core.regex_validator import ContentPolicyValidator
 from back_kube_tool.core.remediator_registry import RemediationRegistry
 from back_kube_tool.core.reverse_mapper import ReverseMapper
 from back_kube_tool.core.remediator import Remediator
-from back_kube_tool.core.utils.context_filter import filter_context_aware_actions
+from back_kube_tool.core.utils.context_filter import filter_context_aware_actions,sanitize_k8s_manifest
 
-#VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls" / "original_yamls_10k"
-VALID_YAMLS_DIR = ROOT / "resources" / "examples" / "testing"  # Para pruebas rápidas, puedes cambiar a un subdirectorio con menos archivos YAML
+VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls" / "original_yamls_10k"
+#VALID_YAMLS_DIR = ROOT / "resources" / "examples" / "testing"  # Para pruebas rápidas, puedes cambiar a un subdirectorio con menos archivos YAML
 print(f"Root directory: {ROOT}")
-OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_testing_Z3_AST_1_testing.csv"
-TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_1_testing"
+OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_benchmark_results01_Z3_AST_Complete.csv"
+TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_10K_Complete"
 
 # (Asegúrate de que estas rutas coinciden con tu entorno)
 UVL_PATH = os.getenv("UVL_MODEL_PATH", str(ROOT / "back_kube_tool" / "models" / "HKFM.uvl"))
@@ -158,9 +159,17 @@ def run_remediation_benchmark():
                 
                 # --- A. DETECCIÓN BASE (Espejo de api.py) ---
                 t0_init = time.perf_counter()
-                
+                ### In testing probes, error with empty propierties, resources_requests, resources_limits
+
+                # 1. Creamos un clon exacto para no destruir la metadata del usuario
+                eval_doc = copy.deepcopy(doc)
+                # 2. Sanitizamos SOLO la copia (borramos managedFields, status, {}, [])
+                clean_eval_doc = sanitize_k8s_manifest(eval_doc)
+
                 try:
-                    mapped_json_dict = csv_mapper.transform_manifest(doc)
+                    #mapped_json_dict = csv_mapper.transform_manifest(doc)
+                    mapped_json_dict = csv_mapper.transform_manifest(clean_eval_doc)
+
                 except ValueError as ve:
                     print(f"[{filename}] Omitido (No soportado): {ve}")
                     t_detection_ms = round((time.perf_counter() - t0_init) * 1000, 2)
@@ -191,24 +200,20 @@ def run_remediation_benchmark():
                 
                 
                 print(f"[{filename}] Evaluando {len(active_policies)} políticas activas sobre {kind}...") # Log de progreso
-                print(f"Config ejemplo: {target_config.elements}") # Log de ejemplo de configuración
+                ##print(f"Config ejemplo: {target_config.elements}") # Log de ejemplo de configuración
                 # A.1 Z3 Validation
                 z3_policies = [p for p in active_policies if p not in regex_policy_names]
                 z3_violations = z3_validator.validate_configuration(target_config, z3_policies)
                 ast_violations = ast_validator.validate_configuration(target_config, z3_policies)
 
-                ## Extract the number of features involved in the policies for reporting
+                ## Extract the features involved in the policies for reporting
                 num_features_in_config = len(target_config.elements)
                 num_features_in_active_policies = len(inference_engine.get_features_for_policies(z3_policies))
                 
-                # 1. Extraemos solo los nombres de las políticas de las violaciones
+                # Extract the names of failed policies from both Z3 and AST violations for comparison
                 failed_policy_names = [v.get("policy") for v in z3_violations + ast_violations if v.get("policy")]
-                # 2. Le pedimos a tu motor la lista de features implicadas (el blast radius)
-                failed_features_set = inference_engine.get_features_for_policies(failed_policy_names)
-                print(f"Failed policies: {failed_policy_names}  Failed features: {failed_features_set}")
-                num_features_in_failed_policies = len(failed_features_set)
-                ##num_features_in_failed_policies = len({feature for v in z3_violations + ast_violations for feature in v.get("features", [])})
-
+                # Get the number of features involved in the failed policies for reporting
+                num_features_in_failed_policies = len(inference_engine.get_features_for_policies(failed_policy_names))
                 print(f"[{filename}] Features in config: {num_features_in_config}, Features in active policies: {num_features_in_active_policies}, Features in failed policies: {num_features_in_failed_policies}")
                 num_configurations = len(configurations)
 

@@ -103,7 +103,7 @@ class PolicyInference:
   def get_features_for_policies(self, policy_names: List[str]) -> Set[str]:
     """Returns all mathematical features involved in a list of policies."""
     all_features = set()
-    print(f"Second testing of list policies Set {policy_names}")
+    ##print(f"Second testing of list policies Set {policy_names}")
     for p in policy_names:
         all_features.update(self.policy_features_map.get(p, set()))
     return all_features

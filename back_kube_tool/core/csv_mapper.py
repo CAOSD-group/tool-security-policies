@@ -361,9 +361,8 @@ class CSVMapper:
                                 if value_features not in auxFeaturesAddedList:
                                     feature_entry = {}  # Dictionary for each feature
                                     # Validate that the value is consistent with the expected type of the feature
-                                    print(f"KEY ITEM: {key_item} VALUE ITEM: {value_item} VALUE FEATURES: {value_features}")
+                                    ##print(f"KEY ITEM: {key_item} VALUE ITEM: {value_item} VALUE FEATURES: {value_features}")
                                     if isinstance(key_item, str) and value_features.endswith("asString"):
-                                        print(f"ENTRA CONDICIONAL asString")
                                         feature_entry[value_features] = f"{key_item}:{value_item}"
                                     elif isinstance(value_item, int) and value_features.endswith("asInteger"):
                                         feature_entry[value_features] = f"{key_item}:{value_item}"

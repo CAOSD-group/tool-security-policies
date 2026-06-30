@@ -197,7 +197,7 @@ async def validate_manifest_stream(request: ValidationRequest):
                 if not active_policies:
                     yield json.dumps({"status": "info", "message": f"[{kind}] No security policies are applicable to this resource."}) + "\n"
                     continue
-                # --- NUEVO: Añadimos las políticas activas de este recurso ---
+                # Add the active policies to the global set for final reporting
                 all_active_policies.update(active_policies)
 
                 configurations = MappingEngine.manifest_to_configurations(mapped_json_dict)
