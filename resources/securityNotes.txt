@@ -1129,3 +1129,25 @@ if isinstance(key_item, str) and value_features.endswith("asString"):
 
 00-assert24.yaml:
 se detecta como una inconsistencia, ya que al no definir ninguna propiedad spec no se debería de comprobar (invalido estructuralmente)
+
+
+
+### virtualservice_destinationhosts_1, virtualservice_route_rule_no_effects_ingress_4
+
+Error detectado al usar un protocolo no soportado: HTTP, HTTPS
+
+"protocol": {
+  "description": "The IP protocol for this port. Supports \"TCP\", \"UDP\", and \"SCTP\". Default is TCP.",
+  "type": "string"
+},
+
+[DEBUG] 🚨 EL MANIFIESTO BASE ES UNSAT. Buscando culpables...
+['PoliciesKubernetes', 'ServiceFeatures', 'io_k8s_api_core_v1_Service', 'io_k8s_api_core_v1_Service_apiVersion', 'io_k8s_api_core_v1_Service_kind', 'io_k8s_api_core_v1_Service_metadata', 'io_k8s_api_core_v1_Service_metadata_name', 'io_k8s_api_core_v1_Service_metadata_namespace', 'io_k8s_api_core_v1_Service_spec', 'io_k8s_api_core_v1_Service_spec_ports', 'io_k8s_api_core_v1_Service_spec_ports_name', 'io_k8s_api_core_v1_Service_spec_ports_port', 'io_k8s_api_core_v1_Service_spec_ports_protocol']
+  ❌ GRUPO ALTERNATIVE ROTO en 'io_k8s_api_core_v1_Service_spec_ports_protocol'. Seleccionados: []
+  ❌ GRUPO ALTERNATIVE ROTO en 'io_k8s_api_core_v1_Service_spec_ports_protocol'.
+     -> Esperaba EXACTAMENTE 1 de estos: ['io_k8s_api_core_v1_Service_spec_ports_protocol_SCTP', 'io_k8s_api_core_v1_Service_spec_ports_protocol_TCP', 'io_k8s_api_core_v1_Service_spec_ports_protocol_UDP']
+
+
+## whoami19
+Ajuste en regex para procesar correctamente propiedades con resources: null => resources = c.get("resources") or {}
+Tambien en: _apply_recursive

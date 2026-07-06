@@ -99,7 +99,7 @@ class Remediator:
                         current_node[key] = value
                     ##current_node[key] = value
             else:
-                if key not in current_node:
+                if key not in current_node or current_node[key] is None:
                     if isinstance(value, dict) and ("$delete" in value or "$remove" in value):
                         return
 

@@ -707,9 +707,9 @@ class ContentPolicyValidator:
 
     def _validate_resource_presence_raw(self, doc, req_type, res_type, policy_name):
         """
-        Validador genérico para Polaris usando recursividad sobre el YAML original.
+        Generic validator for Polaris using recursion over the original YAML.
         """
-        # 1. Buscamos contenedores recursivamente en el YAML crudo (Adiós a los gets por Kind)
+        # 1. Null-Safe Search for Containers
         containers = self._find_containers_in_raw(doc)
         
         if not containers:
@@ -719,9 +719,10 @@ class ContentPolicyValidator:
         for c in containers:
             c_name = c.get("name", "<unknown>")
             
-            # 2. Navegamos la estructura estándar y natural de Kubernetes
-            resources = c.get("resources", {})
-            block = resources.get(req_type, {})
+            # 2. Null-Safe Extraction
+            resources = c.get("resources") or {}
+            
+            block = resources.get(req_type) or {}
 
             if res_type not in block:
                 print(f"[Fail] {policy_name}: El contenedor '{c_name}' no define {req_type} para {res_type}.")
