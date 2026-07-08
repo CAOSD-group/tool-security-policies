@@ -113,7 +113,7 @@ class RemediationRegistry:
             "Require_Pod_priorityClassName": [{"feature_to_fix": "DYNAMIC_POD_SUFFIX_priorityClassName", "safe_value": "high-priority"}],
             "priorityClassNotSet": [{"feature_to_fix": "DYNAMIC_POD_SUFFIX_priorityClassName", "safe_value": "high-priority"}],
             
-            "Disallow_hostProcess": [{"feature_to_fix": "DYNAMIC_POD_SUFFIX_securityContext_windowsOptions_hostProcess", "safe_value": False}],
+            "Disallow_hostProcess": [{"feature_to_fix": "DYNAMIC_ALL_CONTAINERS_securityContext_windowsOptions_hostProcess", "safe_value": False}],
             "kubernetes_no_hostprocess_containers": [{"feature_to_fix": "DYNAMIC_POD_SUFFIX_securityContext_windowsOptions_hostProcess", "safe_value": False}],
             
             "Restrict_control_plane_scheduling": [{"feature_to_fix": "DYNAMIC_POD_SUFFIX_tolerations", "safe_value": {"$delete": True}}],
