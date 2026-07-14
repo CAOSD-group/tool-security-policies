@@ -203,8 +203,18 @@ def run_remediation_benchmark():
                 ##print(f"Config ejemplo: {target_config.elements}") # Log de ejemplo de configuración
                 # A.1 Z3 Validation
                 z3_policies = [p for p in active_policies if p not in regex_policy_names]
-                z3_violations = z3_validator.validate_configuration(target_config, z3_policies)
-                ast_violations = ast_validator.validate_configuration(target_config, z3_policies)
+                #### Tiempos de medicion individuales no agregados:
+                ###t0_z3 = time.perf_counter()
+                #z3_violations = z3_validator.validate_configuration(target_config, z3_policies)
+                #t_z3_ms = round((time.perf_counter() - t0_z3) * 1000, 2)
+
+                # --- Iniciar medición individual AST ---
+                #t0_ast = time.perf_counter()
+                #ast_violations = ast_validator.validate_configuration(target_config, z3_policies)
+                #t_ast_ms = round((time.perf_counter() - t0_ast) * 1000, 2)
+                
+                #z3_violations = z3_validator.validate_configuration(target_config, z3_policies)
+                #ast_violations = ast_validator.validate_configuration(target_config, z3_policies)
 
                 ## Extract the features involved in the policies for reporting
                 num_features_in_config = len(target_config.elements)

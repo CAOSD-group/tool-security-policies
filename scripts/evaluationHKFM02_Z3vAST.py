@@ -30,7 +30,8 @@ from back_kube_tool.core.utils.context_filter import filter_context_aware_action
 #VALID_YAMLS_DIR = ROOT / "resources" / "examples" / "testing"  # Para pruebas rápidas, puedes cambiar a un subdirectorio con menos archivos YAML
 print(f"Root directory: {ROOT}") ## tool-security-rules
 #DATASET_BASE = ROOT / "../scriptJsonToUvl" / "yamls_agrupations" ## c:\Users\CAOSD\projects\scriptJsonToUvl\yamls_agrupation
-DATASET_BASE = (ROOT / "../scriptJsonToUvl/yamls_agrupation").resolve()
+DATASET_BASE = (ROOT / "../../investigacion/scriptJsonToUvl/yamls_agrupation").resolve()
+## c:\projects\investigacion\scriptJsonToUvl
 print(f"Ruta del dataset: {DATASET_BASE}")
 CATEGORIES = ["tiny", "small", "medium", "large"]
 OUTPUT_CSV = ROOT / "resources" / "evaluation" / "z3_vs_ast_comparison.csv"
@@ -46,7 +47,7 @@ CSV_KINDS = str(ROOT / "back_kube_tool" / "resources" / "mapping_csv" / "kuberne
 
 def get_random_manifests(base_dir, categories, sample_size=10000):
     """
-    Recorre las carpetas especificadas, recolecta todos los YAMLs, 
+    Recorre las carpetas especificadas, recolecta todos los YAMLs,
     los mezcla y devuelve una muestra aleatoria del tamaño solicitado.
     """
     all_files = []
@@ -109,7 +110,7 @@ def run_comparison_benchmark():
     print("[INFO] Inicializando Arquitectura Dual-Oracle para Comparativa...")
     os.makedirs(os.path.dirname(OUTPUT_CSV), exist_ok=True)
     
-    # 1. CARGA EN MEMORIA
+    # 1. Memory load of the UVL model and initialization of validators
     loader = ModelLoader(UVL_PATH)
     regex_validator = ContentPolicyValidator()
     regex_policy_names = set(regex_validator.policy_map.keys())
@@ -119,17 +120,17 @@ def run_comparison_benchmark():
     ast_validator = ASTValidator(loader.flat_fm, loader.z3_model)
     csv_mapper = CSVMapper(CSV_FEATURES, CSV_KINDS)
     
-    # 2. OBTENER LA MUESTRA DE 10K ARCHIVOS
+    # 2 Obtain a random sample of manifests from the dataset
     sampled_files = get_random_manifests(DATASET_BASE, CATEGORIES, sample_size=10000)
 
     with open(OUTPUT_CSV, mode='w', newline='') as f:
         writer = csv.writer(f)
         # 1. Cabeceras con la nomenclatura exacta de tu evaluación anterior
         writer.writerow([
-            "Filename", "Category", "Kind", 
-            "N_Features", "N_Features_in_Policies_Complete", 
-            "N_Features_in_Policies_Failed", "N_Configurations", 
-            "Z3_Policies_Evaluated", "Z3_Alerts", "AST_Alerts", "Is_Match", 
+            "Filename", "Category", "Kind",
+            "N_Features", "N_Features_in_Policies_Complete",
+            "N_Features_in_Policies_Failed", "N_Configurations",
+            "Z3_Policies_Evaluated", "Z3_Alerts", "AST_Alerts", "Is_Match",
             "T_Z3_ms", "T_AST_ms", "False_Positives_AST", "False_Negatives_AST", "Error_Mapping"
         ])
         
@@ -137,7 +138,7 @@ def run_comparison_benchmark():
             filename = os.path.basename(filepath)
             
             try:
-                with open(filepath, 'r') as file_in:
+                with open(filepath, 'r', encoding='utf-8') as file_in:
                     yaml_content_str = file_in.read()
                 
                 documents = ManifestParser.parse(yaml_content_str)
@@ -162,20 +163,18 @@ def run_comparison_benchmark():
                 if not configurations: continue
                 target_config = configurations[0]
                 
-                # Excluimos las políticas puramente Regex
+                # Excluded policies that are regex-based, as they are handled separately
                 z3_policies = [p for p in active_policies if p not in regex_policy_names]
-                if not z3_policies: continue
-
-                # 2. Extracción de las Métricas Estructurales Base (Tu código exacto)
+                
                 n_configurations = len(configurations)
                 n_features = len(target_config.elements)
 
-                # --- MEDICIÓN Y EJECUCIÓN Z3 ---
+                # --- Timing Z3 ---
                 t0_z3 = time.perf_counter()
                 z3_violations = z3_validator.validate_configuration(target_config, z3_policies)
                 t_z3_ms = round((time.perf_counter() - t0_z3) * 1000, 2)
 
-                # --- MEDICIÓN Y EJECUCIÓN AST ---
+                # --- Timing AST ---
                 t0_ast = time.perf_counter()
                 ast_violations = ast_validator.validate_configuration(target_config, z3_policies)
                 t_ast_ms = round((time.perf_counter() - t0_ast) * 1000, 2)
@@ -195,15 +194,17 @@ def run_comparison_benchmark():
                 # Qué reportó AST que Z3 no (Falso Positivo) / Qué ignoró (Falso Negativo)
                 false_positives = list(ast_failed_set - z3_failed_set)
                 false_negatives = list(z3_failed_set - ast_failed_set)
+                
+                print(f"[INFO] Archivo: {filename} false positives: {false_positives}, false negatives: {false_negatives}")
 
                 if not is_match:
                     print(f"[DISCREPANCIA] Archivo: {filename} ({category})")
 
                 # 4. Guardado en CSV con las columnas solicitadas
                 writer.writerow([
-                    filename, category, kind, 
-                    n_features, n_features_in_policies_complete, 
-                    n_features_in_policies_failed, n_configurations, 
+                    filename, category, kind,
+                    n_features, n_features_in_policies_complete,
+                    n_features_in_policies_failed, n_configurations,
                     len(z3_policies), len(z3_failed_set), len(ast_failed_set), is_match,
                     t_z3_ms, t_ast_ms, str(false_positives), str(false_negatives), ""
                 ])
