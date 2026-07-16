@@ -74,38 +74,6 @@ def get_random_manifests(base_dir, categories, sample_size=10000):
     return sampled_files
 
 
-def run_kubeconform(yaml_path: str) -> tuple[bool, str]:
-    """
-    Execute kubeconform against the given YAML file to validate its structure against Kubernetes schemas.
-    Returns a tuple of (is_valid, error_message). If the YAML is valid, error_message will be an empty string.
-    """
-    try:
-        # capture_output=True hace que Python atrape el texto en result.stdout
-        result = subprocess.run(
-            ["kubeconform", "-strict", "-summary", yaml_path],
-            capture_output=True,
-            text=True,
-            timeout=7
-        )
-        
-        is_valid = (result.returncode == 0)
-        error_msg = ""
-        
-        # Si NO es válido, guardamos el texto del error
-        if not is_valid:
-            # Quitamos los saltos de línea para que no rompa el formato del CSV
-            error_raw = result.stdout.strip() if result.stdout else result.stderr.strip()
-            error_msg = error_raw.replace('\n', ' | ')
-            
-        return is_valid, error_msg
-
-    except FileNotFoundError:
-        print("[ERROR CRÍTICO] kubeconform not installed or not in PATH. Skipping Kubernetes structural validation.")
-        return False, "Kubeconform_Not_Found_In_Path"
-    except subprocess.TimeoutExpired:
-        return False, "Timeout_Exceeded"
-
-
 def run_comparison_benchmark():
     print("[INFO] Inicializando Arquitectura Dual-Oracle para Comparativa...")
     os.makedirs(os.path.dirname(OUTPUT_CSV), exist_ok=True)
