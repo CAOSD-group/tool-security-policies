@@ -37,7 +37,7 @@ class Validator:
     #is_real_base_sat = sat_op_base.execute(self.z3_model).get_result()
     if not sat_op_base.execute(self.z3_model).get_result():
       print("\n[DEBUG] 🚨 EL MANIFIESTO BASE ES UNSAT. Buscando culpables...")
-      print(sorted(base_completed_elements.keys()))
+      #print(sorted(base_completed_elements.keys()))
       # 1. Comprobar Restricciones del Árbol (Mandatory, Alternative, Or)
       for feat_name in list(base_completed_elements.keys()):
           feat = self.flat_fm.get_feature_by_name(feat_name)
@@ -63,12 +63,19 @@ class Validator:
                       selected = [c.name for c in rel.children if c.name in base_completed_elements]
                       if len(selected) == 0:
                           print(f"  ❌ GRUPO OR ROTO en '{feat_name}'. Se necesita al menos 1 hijo.")
-
+      return [{
+            "policy": "STRUCTURAL_UNSAT",
+            "severity": "critical",
+            "tool": "UVL_Base_Model",
+            "description": "Estructura base del manifest inválida según modelo UVL (faltan obligatorios o XOR rotos).",
+            "remediation": "Revisar estructura YAML contra la especificación oficial de Kubernetes."
+        }]
       # 2. Comprobar Restricciones Cruzadas (CTCs) usando tu AST
       #for ctc in ctcs:
       #    if evaluate_ast(ctc.ast.root, base_completed_elements) is False:
       #        print(f"  ❌ CTC ROTA: {ctc.name} -> {ctc.ast.pretty_str()}")
-    
+      # Lo registramos en el CSV limpiamente para que no descuadre las métricas
+
     # FASE 1: THE FAST-PASS (The fast path): Eavaluated all the policies at once.
     temp_elements_global = base_completed_elements.copy()
     for policy in active_policies:

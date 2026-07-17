@@ -29,12 +29,12 @@ from back_kube_tool.core.utils.context_filter import filter_context_aware_action
 #VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls" / "original_yamls_10k"
 #VALID_YAMLS_DIR = ROOT / "resources" / "examples" / "testing"  # Para pruebas rápidas, puedes cambiar a un subdirectorio con menos archivos YAML
 print(f"Root directory: {ROOT}") ## tool-security-rules
-#DATASET_BASE = ROOT / "../scriptJsonToUvl" / "yamls_agrupations" ## c:\Users\CAOSD\projects\scriptJsonToUvl\yamls_agrupation
-DATASET_BASE = (ROOT / "../../investigacion/scriptJsonToUvl/yamls_agrupation").resolve()
+DATASET_BASE = ROOT / "../scriptJsonToUvl" / "yamls_agrupation" ## c:\Users\CAOSD\projects\scriptJsonToUvl\yamls_agrupation
+#DATASET_BASE = (ROOT / "../../investigacion/scriptJsonToUvl/yamls_agrupation").resolve()
 ## c:\projects\investigacion\scriptJsonToUvl
 print(f"Ruta del dataset: {DATASET_BASE}")
 CATEGORIES = ["tiny", "small", "medium", "large"]
-OUTPUT_CSV = ROOT / "resources" / "evaluation" / "z3_vs_ast_comparison.csv"
+OUTPUT_CSV = ROOT / "resources" / "evaluation" / "z3_vs_ast_comparison_03.csv"
 #OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_benchmark_results01_Z3_AST_Complete.csv"
 
 # (Asegúrate de que estas rutas coinciden con tu entorno)
@@ -45,7 +45,7 @@ CSV_KINDS = str(ROOT / "back_kube_tool" / "resources" / "mapping_csv" / "kuberne
 #CSV_FEATURES = str(ROOT / "resources" / "mapping_csv" / "kubernetes_mapping_properties_features.csv")
 #CSV_KINDS = str(ROOT / "resources" / "mapping_csv" / "kubernetes_kinds_versions_detected.csv")
 
-def get_random_manifests(base_dir, categories, sample_size=10000):
+def get_random_manifests(base_dir, categories, sample_size=10100):
     """
     Recorre las carpetas especificadas, recolecta todos los YAMLs,
     los mezcla y devuelve una muestra aleatoria del tamaño solicitado.
@@ -89,7 +89,7 @@ def run_comparison_benchmark():
     csv_mapper = CSVMapper(CSV_FEATURES, CSV_KINDS)
     
     # 2 Obtain a random sample of manifests from the dataset
-    sampled_files = get_random_manifests(DATASET_BASE, CATEGORIES, sample_size=10000)
+    sampled_files = get_random_manifests(DATASET_BASE, CATEGORIES, sample_size=10100)
 
     with open(OUTPUT_CSV, mode='w', newline='') as f:
         writer = csv.writer(f)
@@ -141,6 +141,22 @@ def run_comparison_benchmark():
                 t0_z3 = time.perf_counter()
                 z3_violations = z3_validator.validate_configuration(target_config, z3_policies)
                 t_z3_ms = round((time.perf_counter() - t0_z3) * 1000, 2)
+                # --- FILTRO FAIL-FAST BASADO EN LA RESPUESTA DEL CORE ---
+                if z3_violations and z3_violations[0]["policy"] == "STRUCTURAL_UNSAT":
+                    print(f"[{filename}] Saltado: Estructura base inválida (UNSAT en K8s UVL).")
+                    
+                    writer.writerow([
+                        filename, kind, 
+                        "STRUCTURAL_UNSAT", # Policies_Evaluated
+                        "", "", "", "",     # Orig_Z3, Orig_AST, Orig_Regex, Total_Initial_Alerts
+                        "",                 # Rem_Alerts
+                        len(target_config.elements), 0, 0, len(configurations), 
+                        t_z3_ms, 0.0, 0.0, 0.0, 0.0, # Timers
+                        "", "", "",         # Is_Secure, Is_AST_Accurate, Is_K8s_Rem_Valid
+                        0, 0, 0.0, 0.0,     # Métricas de remediación
+                        "{'error': 'STRUCTURAL_UNSAT'}", "Estructura base del manifest inválida según modelo UVL"
+                    ])
+                    continue
 
                 # --- Timing AST ---
                 t0_ast = time.perf_counter()

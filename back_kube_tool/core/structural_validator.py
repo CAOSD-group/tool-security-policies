@@ -67,3 +67,33 @@ class StructuralValidator:
         except Exception as e:
             logger.error(f"Error in SAT validation: {e}")
             return {"valid": False, "time": 0, "message": f"Internal solver error: {str(e)}"}
+        
+    def validate_structuralAST (base_completed_elements, flat_fm):
+
+        print("\n[DEBUG] 🚨 EL MANIFIESTO BASE ES UNSAT. Buscando culpables...")
+        print(sorted(base_completed_elements.keys()))
+        # 1. Comprobar Restricciones del Árbol (Mandatory, Alternative, Or)
+        for feat_name in list(base_completed_elements.keys()):
+            feat = flat_fm.get_feature_by_name(feat_name)
+            if feat:
+                # Buscar hijos obligatorios que falten
+                for child in feat.get_children():
+                    if child.is_mandatory() and child.name not in base_completed_elements:
+                        print(f"FALTA OBLIGATORIO: '{child.name}' (Padre: {feat_name})")
+                
+                # Buscar grupos Alternative (XOR) y OR rotos
+                for rel in feat.get_relations():
+                    if rel.is_alternative():
+                        selected = [c.name for c in rel.children if c.name in base_completed_elements]
+                        if len(selected) == 0:
+                            print(f"  ❌ GRUPO ALTERNATIVE ROTO en '{feat_name}'. Seleccionados: {selected}")
+                            esperados = [c.name for c in rel.children]
+                            print(f"  ❌ GRUPO ALTERNATIVE ROTO en '{feat_name}'.\n     -> Esperaba EXACTAMENTE 1 de estos: {esperados}\n     -> Pero recibió: 0")
+                        elif len(selected) > 1:
+                            print(f"  ❌ GRUPO ALTERNATIVE ROTO en '{feat_name}'. Seleccionados: {selected}")
+                            esperados = [c.name for c in rel.children]
+                            print(f"  ❌ GRUPO ALTERNATIVE ROTO en '{feat_name}'.\n     -> Esperaba EXACTAMENTE 1 de estos: {esperados}\n     -> Pero recibió: {len(selected)}")
+                    elif rel.is_or():
+                        selected = [c.name for c in rel.children if c.name in base_completed_elements]
+                        if len(selected) == 0:
+                            print(f"  ❌ GRUPO OR ROTO en '{feat_name}'. Se necesita al menos 1 hijo.")
