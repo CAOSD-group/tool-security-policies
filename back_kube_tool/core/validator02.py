@@ -49,7 +49,7 @@ class Validator:
             # 3. Buscamos en el manifiesto YAML
             if val in elements:
               res = elements[val]
-              return res[0] if isinstance(res, list) and len(res) > 0 else res                
+              return res[0] if isinstance(res, list) and len(res) > 0 else res
             
             # [PARCHE DE ATRIBUTOS]: FlamaPy añade sufijos. Los limpiamos.
             for suffix in ['_asInteger', '_StringValue', '_IntegerValue']:
@@ -87,7 +87,7 @@ class Validator:
             if 'not_equals' in op or '!=' in op: return str(left_val) != str(right_val)
             elif 'equals' in op or '==' in op: return str(left_val) == str(right_val)
             elif 'greater' in op or '>' in op: return float(left_val) > float(right_val)
-            elif 'lower' in op or 'less' in op or '<' in op: return float(left_val) < float(right_val)        
+            elif 'lower' in op or 'less' in op or '<' in op: return float(left_val) < float(right_val)
         except Exception:
             return False
 
@@ -167,7 +167,7 @@ class Validator:
   def _complete_full_configuration(self, original_elements: dict) -> dict:
       elems = original_elements.copy()
       for selected in list(elems.keys()):
-          if elems[selected]:  
+          if elems[selected]:
               elems = self._add_single_feature_closure(elems, selected)
       return elems
 
