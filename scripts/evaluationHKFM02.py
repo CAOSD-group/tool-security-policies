@@ -29,10 +29,16 @@ from back_kube_tool.core.remediator import Remediator
 from back_kube_tool.core.utils.context_filter import filter_context_aware_actions,sanitize_k8s_manifest
 
 #VALID_YAMLS_DIR = ROOT / "resources" / "dataset_yamls" / "original_yamls_10k"
-VALID_YAMLS_DIR = ROOT / "resources" / "examples" / "testing"  # Para pruebas rápidas, puedes cambiar a un subdirectorio con menos archivos YAML
+#VALID_YAMLS_DIR = ROOT / "resources" / "examples" / "testing"  # Para pruebas rápidas, puedes cambiar a un subdirectorio con menos archivos YAML
+VALID_YAMLS_DIR = ROOT / "../scriptJsonToUvl" / "yamls_agrupation" / "tiny"
+
 print(f"Root directory: {ROOT}")
-OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_benchmark_results01_Z3_AST_testing.csv"
-TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_testing"
+print(f"Ruta del dataset: {VALID_YAMLS_DIR}")
+
+CATEGORIES = ["tiny", "small", "medium", "large"]
+
+OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_benchmark_results01_AST_Complete.csv"
+TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_AST_Complete"
 
 # (Asegúrate de que estas rutas coinciden con tu entorno)
 UVL_PATH = os.getenv("UVL_MODEL_PATH", str(ROOT / "back_kube_tool" / "models" / "HKFM.uvl"))
