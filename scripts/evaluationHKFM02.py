@@ -134,7 +134,7 @@ def run_remediation_benchmark():
     with open(OUTPUT_CSV, mode='w', newline='') as f:
         writer = csv.writer(f)
         writer.writerow([
-            "Filename", "Kind", "Policies_Evaluated", "Orig_AST_Alerts", "Orig_Regex_Alerts", "Total_Initial_Alerts", "Security_Score", ## "Orig_Z3_Alerts",
+            "Filename", "Kind", "Policies_Evaluated", "Orig_AST_Alerts", "Orig_Regex_Alerts", "Total_Initial_Alerts", "Security_Score", "Risk_Deduction_Score", ## "Orig_Z3_Alerts",
             "Rem_Alerts", "N_Features", "N_Features_in_Policies_Complete", "N_Features_in_Policies_Failed", "N_Configurations", "T_AST_ms", "T_Detection_ms", "T_AST_Remed_ms", "T_Total_Pipeline_ms", ## , "T_Z3_ms"
             "Is_Fully_Secure", "Is_K8s_Rem_Valid", "AST_Lines_Added", ## , "Is_AST_100%_Accurate" "Is_K8s_Valid",
             "AST_Lines_Removed", "Patch_Similarity_%", "Comments_Retention_%", "Failed_Policies_Details", "Kubeconform_Error" ## En caso de que la remediación rompa el manifiesto, registramos el error de kubeconform para análisis posterior
@@ -154,12 +154,12 @@ def run_remediation_benchmark():
                 # Registramos el rechazo en el CSV y saltamos al siguiente archivo
                 writer.writerow([
                     filename, "Unknown","SCHEMA_ERROR", # 1-3 # Policies_Evaluated
-                    "", "", "", "", ## 4-7 (AST, Regex, Total, Score) # Orig Z3, ## "",
-                    "", # 8 Rem_Alerts
-                    0, 0, 0, 0, # 9-12 (Features, Configs)
-                    0.0, 0.0, 0.0, t_kubeconform_ms, # 13-16 (Timers) # T_AST_ms, T_Detection_ms, T_AST_Remed_ms  # Anotamos el tiempo que tardó en rechazarlo
-                    "", "", "", # 17-19 Is_Secure, Is_K8s_Rem_Valid, Lines_Added
-                    0, 0.0, 0.0,"", kube_error_msg #  0.0,
+                    "", "", "", "", ## 4-8 (AST, Regex, Total, SecScore, RiskDeductionScore) # Orig Z3, ## "",
+                    "", # 9 Rem_Alerts
+                    0, 0, 0, 0, # 10-13 (Features, Configs)
+                    0.0, 0.0, 0.0, t_kubeconform_ms, # 14-17 (Timers) # T_AST_ms, T_Detection_ms, T_AST_Remed_ms  # Anotamos el tiempo que tardó en rechazarlo
+                    "", "", "", # 18-20 Is_Secure, Is_K8s_Rem_Valid, Lines_Added
+                    0, 0.0, 0.0,"", kube_error_msg #  21-25 0.0,
                 ])
                 continue
             
@@ -189,16 +189,16 @@ def run_remediation_benchmark():
                 except ValueError as ve:
                     print(f"[{filename}] Omitido (No soportado): {ve}")
                     t_detection_ms = round((time.perf_counter() - t0_init) * 1000, 2)
-                    # 24 elementos exactos
+                    # 25 elementos exactos
                     writer.writerow([
                         filename, kind, "ERROR_MAP", # 1-3
-                        "", "", "", "",# 4-7 Alerts + Security Score ##"",
-                        "", # 8
-                        0, 0, 0, 0, # 9-12: Rem_Alerts, N_Features, N_Features_in_Policies, N_Configurations
-                        0.0, t_detection_ms, 0.0, t_detection_ms, # 13-16 Timers
-                        "", "", "", # 17-19: Is_Secure, Is_Accurate, Is_K8s_Rem_Valid
-                        0, 0.0, 0.0, "", #20-23
-                        str(ve) # 24 Register the mapping error in the CSV for analysis (e.g., missing kind, unsupported features, etc.)
+                        "", "", "", "", "",# 4-8 Alerts + Security Score ##"",
+                        "", # 9
+                        0, 0, 0, 0, # 10-13: Rem_Alerts, N_Features, N_Features_in_Policies, N_Configurations
+                        0.0, t_detection_ms, 0.0, t_detection_ms, # 14-17 Timers
+                        "", "", "", # 18-20: Is_Secure, Is_Accurate, Is_K8s_Rem_Valid
+                        0, 0.0, 0.0, "", #21-24
+                        str(ve) # 25 Register the mapping error in the CSV for analysis (e.g., missing kind, unsupported features, etc.)
                     ])
                     continue
 
@@ -264,14 +264,15 @@ def run_remediation_benchmark():
                     for v in ast_violations if v.get("policy") ## z3_violations +
                 }
                 
-                ## Security Score Calculation (w(p) function)
+                ## Security Score Calculation (w(p) function) & Risk Deduction (CVSS-style)
                 all_initial_violations = ast_violations + (regex_report if not passed_regex else [])
                 failed_policies_set = {v.get("policy") for v in all_initial_violations if v.get("policy")}
                 
                 total_weight = 0.0
                 passed_weight = 0.0
+                total_failed_weight = 0.0
                 
-                # 2. Iteramos sobre P_{enabled} (todas las políticas activas para este Kind)
+                # 2. Iterate over all active policies to calculate weights
                 for policy in active_policies:
                     # Obtenemos el peso w(p) desde el UVL
                     meta = ast_validator.get_policy_metadata(policy)
@@ -282,9 +283,15 @@ def run_remediation_benchmark():
                     # sat(p,C) = 1 si la política NO está en los fallos
                     if policy not in failed_policies_set:
                         passed_weight += w_p
-                
-                # 3. Calculamos la proporción final en porcentaje
+                    else:
+                        total_failed_weight += w_p
+
+                # 3. Calculate the Security Score as a percentage of passed weight over total weight
                 security_score = round((passed_weight / total_weight * 100), 2) if total_weight > 0 else 100.0
+                
+                # Metric 2: Risk Deduction Score (Scale factor = 15.0 per weight)
+                ALPHA_SCALE = 15.0
+                risk_deduction_score = round(max(0.0, 100.0 - (total_failed_weight * ALPHA_SCALE)), 2)
                 
                 ## Added the regex policies to the failed_policies_details dictionary for reporting
                 for rep in regex_report:
@@ -304,12 +311,12 @@ def run_remediation_benchmark():
                 
                 if len(all_initial_violations) == 0:
                     writer.writerow([filename, kind, num_policies, # 1-3
-                                    initial_alerts_ast, initial_alerts_regex, total_initial_alerts, security_score, # 4-7
-                                    0, # 8
-                                    num_features_in_config, num_features_in_active_policies, num_features_in_failed_policies, num_configurations, # 9-12
-                                    t_ast_ms, t_detection_ms, 0.0, 0.0, # 13-16
-                                    True, True, 0, # 17-19: Is_Secure=True, Is_K8s_Rem_Valid=True, Added=0
-                                    0, 100.0, 100.0, str(failed_policies_details), "" ## 20-24 # initial_alerts_z3,  t_z3_ms,
+                                    initial_alerts_ast, initial_alerts_regex, total_initial_alerts, security_score, risk_deduction_score, # 4-8
+                                    0, # 9
+                                    num_features_in_config, num_features_in_active_policies, num_features_in_failed_policies, num_configurations, # 10-13
+                                    t_ast_ms, t_detection_ms, 0.0, 0.0, # 14-17
+                                    True, True, 0, # 18-20: Is_Secure=True, Is_K8s_Rem_Valid=True, Added=0
+                                    0, 100.0, 100.0, str(failed_policies_details), "" ## 21-25 # initial_alerts_z3,  t_z3_ms,
                                     ])
                     continue
 
@@ -364,11 +371,11 @@ def run_remediation_benchmark():
                 # --- E. REGISTRO CSV ---
                 writer.writerow([
                     filename, kind, num_policies, # 1-3
-                    initial_alerts_ast, initial_alerts_regex, total_initial_alerts, security_score, # 4-7 ## initial_alerts_z3,
-                    final_alerts, # 8
-                    num_features_in_config, num_features_in_active_policies, num_features_in_failed_policies, num_configurations, # 9-12
-                    t_ast_ms, t_detection_ms, t_ast_remediation_ms, t_total_pipeline_ms, # 13-16 ## t_z3_ms
-                    is_fully_secure, is_remediated_k8s_valid, lines_added, # 17-19 # is_differential_match, is_k8s_valid
+                    initial_alerts_ast, initial_alerts_regex, total_initial_alerts, security_score, risk_deduction_score, # 4-8 ## initial_alerts_z3,
+                    final_alerts, # 9
+                    num_features_in_config, num_features_in_active_policies, num_features_in_failed_policies, num_configurations, # 10-13
+                    t_ast_ms, t_detection_ms, t_ast_remediation_ms, t_total_pipeline_ms, # 14-17 ## t_z3_ms
+                    is_fully_secure, is_remediated_k8s_valid, lines_added, # 18-20 # is_differential_match, is_k8s_valid
                     lines_removed, patch_similarity, comment_retention, str(failed_policies_details), error_string_empty
                 ])
 

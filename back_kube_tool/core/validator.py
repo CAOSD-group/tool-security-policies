@@ -102,7 +102,7 @@ class Validator:
         temp_elements = self._add_single_feature_closure(temp_elements, policy)
         
         temp_config = Configuration(temp_elements)
-        temp_config.set_full(True) 
+        temp_config.set_full(True)
         
         sat_op = Z3SatisfiableConfiguration()
         sat_op.set_configuration(temp_config)
