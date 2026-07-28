@@ -37,8 +37,8 @@ print(f"Ruta del dataset: {VALID_YAMLS_DIR}")
 
 CATEGORIES = ["tiny", "small", "medium", "large"]
 
-OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_benchmark_results01_AST_Complete.csv"
-TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_AST_Complete"
+OUTPUT_CSV = ROOT / "resources" / "evaluation" / "remediation_benchmark_results01_AST_Complete_V2.csv"
+TMP_REMEDIATED_DIR = ROOT / "resources" / "evaluation" / "tmp_remediateds_AST_Complete_V2"
 
 # (Asegúrate de que estas rutas coinciden con tu entorno)
 UVL_PATH = os.getenv("UVL_MODEL_PATH", str(ROOT / "back_kube_tool" / "models" / "HKFM.uvl"))
