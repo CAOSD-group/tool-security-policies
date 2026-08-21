@@ -1,0 +1,1229 @@
+
+##### FILE: 01-infra_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-Ingress-class.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-ingress.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource mooncard/Ingress/mooncard-ingress failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+2 - has-tls TLS must be defined.
+policy restrict-ingress-classes -> resource mooncard/Ingress/mooncard-ingress failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-ingress1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource default/Ingress/gateway-ingress failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+2 - has-tls TLS must be defined.
+policy restrict-ingress-classes -> resource default/Ingress/gateway-ingress failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+
+pass: 1, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-ingress2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource default/Ingress/gateway-ingress failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+2 - has-tls TLS must be defined.
+policy restrict-ingress-classes -> resource default/Ingress/gateway-ingress failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+
+pass: 1, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-ingressclass-resource.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-ingressclass-resource1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-ingressclass-resource2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-ingressclass-resource3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-ingressclass-resource4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-ingressclass-resource5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-ingressclass-resource6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-ingressclass-resource7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-init-script-cm.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource app-betanin/ConfigMap/betanin-script failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install-nginx-ingress-controller_.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy add-psa-namespace-reporting -> resource default/Namespace/ingress-nginx failed:
+1 - check-namespace-labels validation error: This Namespace is missing a PSA label. rule check-namespace-labels failed at path /metadata/labels/pod-security.kubernetes.io/*/
+policy enforce-ambient-mode-namespace -> resource default/Namespace/ingress-nginx failed:
+1 - check-amblient-mode-enabled validation error: All new Namespaces must have Istio ambient mode enabled. rule check-amblient-mode-enabled failed at path /metadata/labels/istio.io/dataplane-mode/
+policy enforce-sidecar-injection-namespace -> resource default/Namespace/ingress-nginx failed:
+1 - check-istio-injection-enabled validation error: All new Namespaces must have Istio sidecar injection enabled. rule check-istio-injection-enabled failed at path /metadata/labels/istio-injection/
+policy kasten-validate-ns-by-preset-label -> resource default/Namespace/ingress-nginx failed:
+1 - kasten-validate-ns-by-preset-label validation error: Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten Policy Preset:
+
+  "gold" - <Insert human readable settings of each preset option>
+  "silver" - <For example, hourly backups, exported to immutable S3 storage>
+  "bronze" - <Or, daily local snapshots, NOT exported to external storage>
+  "none" - No local snapshots or backups. rule kasten-validate-ns-by-preset-label failed at path /metadata/labels/dataprotection/
+policy require-linkerd-mesh-injection -> resource default/Namespace/ingress-nginx failed:
+1 - require-mesh-annotation validation error: All Namespaces must set the annotation `linkerd.io/inject` to `enabled`. rule require-mesh-annotation failed at path /metadata/annotations/
+
+pass: 0, fail: 5, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install-nginx-ingress-controller_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource ingress-nginx/ServiceAccount/ingress-nginx failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install-nginx-ingress-controller_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource ingress-nginx/ServiceAccount/ingress-nginx-admission failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install-nginx-ingress-controller_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install-nginx-ingress-controller_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install-nginx-ingress-controller_5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install-nginx-ingress-controller_6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install-nginx-ingress-controller_7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install-nginx-ingress-controller_8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install-nginx-ingress-controller_9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install-nginx-ingress-controller_10.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install-nginx-ingress-controller_11.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource ingress-nginx/ConfigMap/ingress-nginx-controller failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/foo/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install-nginx-ingress-controller_12.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource ingress-nginx/Service/ingress-nginx-controller failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource ingress-nginx/Service/ingress-nginx-controller failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: 01-install-nginx-ingress-controller_13.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource ingress-nginx/Service/ingress-nginx-controller-admission failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: 01-install-nginx-ingress-controller_14.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-secrets -> resource ingress-nginx/Deployment/ingress-nginx-controller failed:
+1 - autogen-secrets-not-from-volumes validation error: No Secrets from volumes. rule autogen-secrets-not-from-volumes failed at path /spec/template/spec/volumes/0/secret/
+policy require-annotations -> resource ingress-nginx/Deployment/ingress-nginx-controller failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy deployment-has-multiple-replicas -> resource ingress-nginx/Deployment/ingress-nginx-controller failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-imagepullsecrets -> resource ingress-nginx/Deployment/ingress-nginx-controller failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource ingress-nginx/Deployment/ingress-nginx-controller failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/app/
+policy require-non-root-groups -> resource ingress-nginx/Deployment/ingress-nginx-controller failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/runAsGroup/
+policy require-pod-priorityclassname -> resource ingress-nginx/Deployment/ingress-nginx-controller failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource ingress-nginx/Deployment/ingress-nginx-controller failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/readOnlyRootFilesystem/
+policy restrict-automount-sa-token -> resource ingress-nginx/Deployment/ingress-nginx-controller failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource ingress-nginx/Deployment/ingress-nginx-controller failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy restrict-node-selection -> resource ingress-nginx/Deployment/ingress-nginx-controller failed:
+1 - autogen-restrict-nodeselector validation error: Setting the nodeSelector field is prohibited. rule autogen-restrict-nodeselector failed at path /spec/template/spec/nodeSelector/
+policy validate-userid-groupid-fsgroup -> resource ingress-nginx/Deployment/ingress-nginx-controller failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 38, fail: 14, warn: 0, error: 0, skip: 3 
+
+##### FILE: 01-install-nginx-ingress-controller_15.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-annotations -> resource ingress-nginx/Job/ingress-nginx-admission-create failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-imagepullsecrets -> resource ingress-nginx/Job/ingress-nginx-admission-create failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource ingress-nginx/Job/ingress-nginx-admission-create failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/app/
+policy require-non-root-groups -> resource ingress-nginx/Job/ingress-nginx-admission-create failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/runAsGroup/
+policy require-pod-priorityclassname -> resource ingress-nginx/Job/ingress-nginx-admission-create failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy restrict-automount-sa-token -> resource ingress-nginx/Job/ingress-nginx-admission-create failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource ingress-nginx/Job/ingress-nginx-admission-create failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy restrict-jobs -> resource ingress-nginx/Job/ingress-nginx-admission-create failed:
+1 - restrict-job-from-cronjob Jobs are only allowed if spawned from CronJobs.
+policy restrict-node-selection -> resource ingress-nginx/Job/ingress-nginx-admission-create failed:
+1 - autogen-restrict-nodeselector validation error: Setting the nodeSelector field is prohibited. rule autogen-restrict-nodeselector failed at path /spec/template/spec/nodeSelector/
+policy validate-userid-groupid-fsgroup -> resource ingress-nginx/Job/ingress-nginx-admission-create failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 40, fail: 12, warn: 0, error: 0, skip: 3 
+
+##### FILE: 01-install-nginx-ingress-controller_16.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-annotations -> resource ingress-nginx/Job/ingress-nginx-admission-patch failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-imagepullsecrets -> resource ingress-nginx/Job/ingress-nginx-admission-patch failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource ingress-nginx/Job/ingress-nginx-admission-patch failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/app/
+policy require-non-root-groups -> resource ingress-nginx/Job/ingress-nginx-admission-patch failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/runAsGroup/
+policy require-pod-priorityclassname -> resource ingress-nginx/Job/ingress-nginx-admission-patch failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy restrict-automount-sa-token -> resource ingress-nginx/Job/ingress-nginx-admission-patch failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource ingress-nginx/Job/ingress-nginx-admission-patch failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy restrict-jobs -> resource ingress-nginx/Job/ingress-nginx-admission-patch failed:
+1 - restrict-job-from-cronjob Jobs are only allowed if spawned from CronJobs.
+policy restrict-node-selection -> resource ingress-nginx/Job/ingress-nginx-admission-patch failed:
+1 - autogen-restrict-nodeselector validation error: Setting the nodeSelector field is prohibited. rule autogen-restrict-nodeselector failed at path /spec/template/spec/nodeSelector/
+policy validate-userid-groupid-fsgroup -> resource ingress-nginx/Job/ingress-nginx-admission-patch failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 40, fail: 12, warn: 0, error: 0, skip: 3 
+
+##### FILE: 01-install-nginx-ingress-controller_17.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install-nginx-ingress-controller_18.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install10.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install11.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install12.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install13.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install14.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install15_.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install15_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/smtp4dev failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/smtp4dev failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: 01-install15_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/smtp4dev failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/smtp4dev failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/smtp4dev failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/smtp4dev failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/smtp4dev failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/smtp4dev failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-kubecost-labels -> resource default/Deployment/smtp4dev failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/smtp4dev failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/smtp4dev failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/smtp4dev failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/smtp4dev failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/smtp4dev failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/smtp4dev failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy restrict-node-affinity -> resource default/Deployment/smtp4dev failed:
+1 - autogen-check-nodeaffinity validation error: Node affinity cannot be used. rule autogen-check-nodeaffinity failed at path /spec/template/spec/affinity/nodeAffinity/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/smtp4dev failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 35, fail: 17, warn: 0, error: 0, skip: 3 
+
+##### FILE: 01-install16.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install17_.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy add-psa-namespace-reporting -> resource default/Namespace/gitops-service-argocd failed:
+1 - check-namespace-labels validation error: This Namespace is missing a PSA label. rule check-namespace-labels failed at path /metadata/labels/
+policy enforce-ambient-mode-namespace -> resource default/Namespace/gitops-service-argocd failed:
+1 - check-amblient-mode-enabled validation error: All new Namespaces must have Istio ambient mode enabled. rule check-amblient-mode-enabled failed at path /metadata/labels/
+policy enforce-sidecar-injection-namespace -> resource default/Namespace/gitops-service-argocd failed:
+1 - check-istio-injection-enabled validation error: All new Namespaces must have Istio sidecar injection enabled. rule check-istio-injection-enabled failed at path /metadata/labels/
+policy kasten-validate-ns-by-preset-label -> resource default/Namespace/gitops-service-argocd failed:
+1 - kasten-validate-ns-by-preset-label validation error: Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten Policy Preset:
+
+  "gold" - <Insert human readable settings of each preset option>
+  "silver" - <For example, hourly backups, exported to immutable S3 storage>
+  "bronze" - <Or, daily local snapshots, NOT exported to external storage>
+  "none" - No local snapshots or backups. rule kasten-validate-ns-by-preset-label failed at path /metadata/labels/
+policy require-linkerd-mesh-injection -> resource default/Namespace/gitops-service-argocd failed:
+1 - require-mesh-annotation validation error: All Namespaces must set the annotation `linkerd.io/inject` to `enabled`. rule require-mesh-annotation failed at path /metadata/annotations/
+
+pass: 0, fail: 5, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install17_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install17_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy add-psa-namespace-reporting -> resource default/Namespace/jane failed:
+1 - check-namespace-labels validation error: This Namespace is missing a PSA label. rule check-namespace-labels failed at path /metadata/labels/pod-security.kubernetes.io/*/
+policy enforce-ambient-mode-namespace -> resource default/Namespace/jane failed:
+1 - check-amblient-mode-enabled validation error: All new Namespaces must have Istio ambient mode enabled. rule check-amblient-mode-enabled failed at path /metadata/labels/istio.io/dataplane-mode/
+policy enforce-sidecar-injection-namespace -> resource default/Namespace/jane failed:
+1 - check-istio-injection-enabled validation error: All new Namespaces must have Istio sidecar injection enabled. rule check-istio-injection-enabled failed at path /metadata/labels/istio-injection/
+policy kasten-validate-ns-by-preset-label -> resource default/Namespace/jane failed:
+1 - kasten-validate-ns-by-preset-label validation error: Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten Policy Preset:
+
+  "gold" - <Insert human readable settings of each preset option>
+  "silver" - <For example, hourly backups, exported to immutable S3 storage>
+  "bronze" - <Or, daily local snapshots, NOT exported to external storage>
+  "none" - No local snapshots or backups. rule kasten-validate-ns-by-preset-label failed at path /metadata/labels/dataprotection/
+policy require-linkerd-mesh-injection -> resource default/Namespace/jane failed:
+1 - require-mesh-annotation validation error: All Namespaces must set the annotation `linkerd.io/inject` to `enabled`. rule require-mesh-annotation failed at path /metadata/annotations/
+
+pass: 0, fail: 5, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install17_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource jane/ConfigMap/my-config-map-2 failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install17_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy add-psa-namespace-reporting -> resource default/Namespace/john failed:
+1 - check-namespace-labels validation error: This Namespace is missing a PSA label. rule check-namespace-labels failed at path /metadata/labels/pod-security.kubernetes.io/*/
+policy enforce-ambient-mode-namespace -> resource default/Namespace/john failed:
+1 - check-amblient-mode-enabled validation error: All new Namespaces must have Istio ambient mode enabled. rule check-amblient-mode-enabled failed at path /metadata/labels/istio.io/dataplane-mode/
+policy enforce-sidecar-injection-namespace -> resource default/Namespace/john failed:
+1 - check-istio-injection-enabled validation error: All new Namespaces must have Istio sidecar injection enabled. rule check-istio-injection-enabled failed at path /metadata/labels/istio-injection/
+policy kasten-validate-ns-by-preset-label -> resource default/Namespace/john failed:
+1 - kasten-validate-ns-by-preset-label validation error: Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten Policy Preset:
+
+  "gold" - <Insert human readable settings of each preset option>
+  "silver" - <For example, hourly backups, exported to immutable S3 storage>
+  "bronze" - <Or, daily local snapshots, NOT exported to external storage>
+  "none" - No local snapshots or backups. rule kasten-validate-ns-by-preset-label failed at path /metadata/labels/dataprotection/
+policy require-linkerd-mesh-injection -> resource default/Namespace/john failed:
+1 - require-mesh-annotation validation error: All Namespaces must set the annotation `linkerd.io/inject` to `enabled`. rule require-mesh-annotation failed at path /metadata/annotations/
+
+pass: 0, fail: 5, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install18_.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install18_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install19.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install20_.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy add-psa-namespace-reporting -> resource default/Namespace/test-1-32-appsets-scm-tls-mount failed:
+1 - check-namespace-labels validation error: This Namespace is missing a PSA label. rule check-namespace-labels failed at path /metadata/labels/
+policy enforce-ambient-mode-namespace -> resource default/Namespace/test-1-32-appsets-scm-tls-mount failed:
+1 - check-amblient-mode-enabled validation error: All new Namespaces must have Istio ambient mode enabled. rule check-amblient-mode-enabled failed at path /metadata/labels/
+policy enforce-sidecar-injection-namespace -> resource default/Namespace/test-1-32-appsets-scm-tls-mount failed:
+1 - check-istio-injection-enabled validation error: All new Namespaces must have Istio sidecar injection enabled. rule check-istio-injection-enabled failed at path /metadata/labels/
+policy kasten-validate-ns-by-preset-label -> resource default/Namespace/test-1-32-appsets-scm-tls-mount failed:
+1 - kasten-validate-ns-by-preset-label validation error: Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten Policy Preset:
+
+  "gold" - <Insert human readable settings of each preset option>
+  "silver" - <For example, hourly backups, exported to immutable S3 storage>
+  "bronze" - <Or, daily local snapshots, NOT exported to external storage>
+  "none" - No local snapshots or backups. rule kasten-validate-ns-by-preset-label failed at path /metadata/labels/
+policy require-linkerd-mesh-injection -> resource default/Namespace/test-1-32-appsets-scm-tls-mount failed:
+1 - require-mesh-annotation validation error: All Namespaces must set the annotation `linkerd.io/inject` to `enabled`. rule require-mesh-annotation failed at path /metadata/annotations/
+
+pass: 0, fail: 5, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install20_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource test-1-32-appsets-scm-tls-mount/ConfigMap/test-1-32-appsets-scm-tls-cm failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install20_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install21.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install23.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install3_.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy add-psa-namespace-reporting -> resource default/Namespace/test-1-8-custom failed:
+1 - check-namespace-labels validation error: This Namespace is missing a PSA label. rule check-namespace-labels failed at path /metadata/labels/
+policy enforce-ambient-mode-namespace -> resource default/Namespace/test-1-8-custom failed:
+1 - check-amblient-mode-enabled validation error: All new Namespaces must have Istio ambient mode enabled. rule check-amblient-mode-enabled failed at path /metadata/labels/
+policy enforce-sidecar-injection-namespace -> resource default/Namespace/test-1-8-custom failed:
+1 - check-istio-injection-enabled validation error: All new Namespaces must have Istio sidecar injection enabled. rule check-istio-injection-enabled failed at path /metadata/labels/
+policy kasten-validate-ns-by-preset-label -> resource default/Namespace/test-1-8-custom failed:
+1 - kasten-validate-ns-by-preset-label validation error: Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten Policy Preset:
+
+  "gold" - <Insert human readable settings of each preset option>
+  "silver" - <For example, hourly backups, exported to immutable S3 storage>
+  "bronze" - <Or, daily local snapshots, NOT exported to external storage>
+  "none" - No local snapshots or backups. rule kasten-validate-ns-by-preset-label failed at path /metadata/labels/
+policy require-linkerd-mesh-injection -> resource default/Namespace/test-1-8-custom failed:
+1 - require-mesh-annotation validation error: All Namespaces must set the annotation `linkerd.io/inject` to `enabled`. rule require-mesh-annotation failed at path /metadata/annotations/
+
+pass: 0, fail: 5, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install3_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install4_.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy add-psa-namespace-reporting -> resource default/Namespace/test-1-12-custom failed:
+1 - check-namespace-labels validation error: This Namespace is missing a PSA label. rule check-namespace-labels failed at path /metadata/labels/
+policy enforce-ambient-mode-namespace -> resource default/Namespace/test-1-12-custom failed:
+1 - check-amblient-mode-enabled validation error: All new Namespaces must have Istio ambient mode enabled. rule check-amblient-mode-enabled failed at path /metadata/labels/
+policy enforce-sidecar-injection-namespace -> resource default/Namespace/test-1-12-custom failed:
+1 - check-istio-injection-enabled validation error: All new Namespaces must have Istio sidecar injection enabled. rule check-istio-injection-enabled failed at path /metadata/labels/
+policy kasten-validate-ns-by-preset-label -> resource default/Namespace/test-1-12-custom failed:
+1 - kasten-validate-ns-by-preset-label validation error: Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten Policy Preset:
+
+  "gold" - <Insert human readable settings of each preset option>
+  "silver" - <For example, hourly backups, exported to immutable S3 storage>
+  "bronze" - <Or, daily local snapshots, NOT exported to external storage>
+  "none" - No local snapshots or backups. rule kasten-validate-ns-by-preset-label failed at path /metadata/labels/
+policy require-linkerd-mesh-injection -> resource default/Namespace/test-1-12-custom failed:
+1 - require-mesh-annotation validation error: All Namespaces must set the annotation `linkerd.io/inject` to `enabled`. rule require-mesh-annotation failed at path /metadata/annotations/
+
+pass: 0, fail: 5, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install4_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy add-psa-namespace-reporting -> resource default/Namespace/test-1-12-custom2 failed:
+1 - check-namespace-labels validation error: This Namespace is missing a PSA label. rule check-namespace-labels failed at path /metadata/labels/
+policy enforce-ambient-mode-namespace -> resource default/Namespace/test-1-12-custom2 failed:
+1 - check-amblient-mode-enabled validation error: All new Namespaces must have Istio ambient mode enabled. rule check-amblient-mode-enabled failed at path /metadata/labels/
+policy enforce-sidecar-injection-namespace -> resource default/Namespace/test-1-12-custom2 failed:
+1 - check-istio-injection-enabled validation error: All new Namespaces must have Istio sidecar injection enabled. rule check-istio-injection-enabled failed at path /metadata/labels/
+policy kasten-validate-ns-by-preset-label -> resource default/Namespace/test-1-12-custom2 failed:
+1 - kasten-validate-ns-by-preset-label validation error: Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten Policy Preset:
+
+  "gold" - <Insert human readable settings of each preset option>
+  "silver" - <For example, hourly backups, exported to immutable S3 storage>
+  "bronze" - <Or, daily local snapshots, NOT exported to external storage>
+  "none" - No local snapshots or backups. rule kasten-validate-ns-by-preset-label failed at path /metadata/labels/
+policy require-linkerd-mesh-injection -> resource default/Namespace/test-1-12-custom2 failed:
+1 - require-mesh-annotation validation error: All Namespaces must set the annotation `linkerd.io/inject` to `enabled`. rule require-mesh-annotation failed at path /metadata/annotations/
+
+pass: 0, fail: 5, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install4_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-install9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-javaapp-deployment.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/java-app failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/java-app failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/initContainers/0/securityContext/
+policy require-annotations -> resource default/Deployment/java-app failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-image-checksum -> resource default/Deployment/java-app failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/initContainers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/java-app failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/java-app failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/java-app failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/java-app failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/initContainers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/java-app failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/java-app failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/java-app failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/java-app failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/initContainers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/java-app failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 37, fail: 15, warn: 0, error: 0, skip: 3 
+
+##### FILE: 01-jenkins-pv-pvc_.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/jenkins failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-jenkins-pv-pvc_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource devops/PersistentVolumeClaim/jenkins failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-kafka_.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-kb-deploy.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-secrets -> resource default/Deployment/kb-prod failed:
+1 - autogen-secrets-not-from-env validation error: No Secrets from env. rule autogen-secrets-not-from-env failed at path /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/
+policy disallow-default-namespace -> resource default/Deployment/kb-prod failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/kb-prod failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy secrets-not-from-env-vars -> resource default/Deployment/kb-prod failed:
+1 - autogen-secrets-not-from-env-vars validation error: Secrets must be mounted as volumes, not as environment variables. rule autogen-secrets-not-from-env-vars failed at path /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/
+policy require-annotations -> resource default/Deployment/kb-prod failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy deployment-has-multiple-replicas -> resource default/Deployment/kb-prod failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/kb-prod failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/kb-prod failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/kb-prod failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/app/
+policy require-labels -> resource default/Deployment/kb-prod failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/kb-prod failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/kb-prod failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/kb-prod failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/kb-prod failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/kb-prod failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/kb-prod failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 34, fail: 18, warn: 0, error: 0, skip: 3 
+
+##### FILE: 01-kiali_.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource istio-system/ServiceAccount/kiali failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-kiali_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource istio-system/ConfigMap/kiali failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/foo/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-kiali_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-kiali_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-kiali_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-kiali_5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-kiali_6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-kiali_7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource istio-system/Service/kiali failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource istio-system/Service/kiali failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: 01-kiali_8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-secrets -> resource istio-system/Deployment/kiali failed:
+1 - autogen-secrets-not-from-volumes validation error: No Secrets from volumes. rule autogen-secrets-not-from-volumes failed at path /spec/template/spec/volumes/1/secret/
+policy require-annotations -> resource istio-system/Deployment/kiali failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/corp.org/department/
+policy deployment-has-multiple-replicas -> resource istio-system/Deployment/kiali failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource istio-system/Deployment/kiali failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-kubecost-labels -> resource istio-system/Deployment/kiali failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-non-root-groups -> resource istio-system/Deployment/kiali failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/runAsGroup/
+policy require-pod-priorityclassname -> resource istio-system/Deployment/kiali failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy restrict-automount-sa-token -> resource istio-system/Deployment/kiali failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource istio-system/Deployment/kiali failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource istio-system/Deployment/kiali failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 39, fail: 12, warn: 0, error: 0, skip: 4 
+
+##### FILE: 01-kibana-deployment.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/kibana failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/kibana failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/kibana failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/kibana failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/kibana failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/kibana failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/kibana failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/kibana failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/kibana failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/kibana failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/kibana failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/kibana failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/kibana failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/kibana failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/kibana failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 35, fail: 17, warn: 0, error: 0, skip: 3 
+
+##### FILE: 01-kibana-deployment1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/kibana failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/kibana failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/kibana failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/kibana failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/kibana failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/kibana failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/kibana failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/kibana failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/kibana failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/kibana failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/kibana failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/kibana failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/kibana failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/kibana failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/kibana failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 35, fail: 17, warn: 0, error: 0, skip: 3 
+
+##### FILE: 01-kibana-deployment2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/kibana failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/kibana failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/kibana failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/kibana failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/kibana failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/kibana failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/kibana failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/kibana failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/kibana failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/kibana failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/kibana failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/kibana failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/kibana failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/kibana failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/kibana failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 35, fail: 17, warn: 0, error: 0, skip: 3 
+
+##### FILE: 01-kind-cluster.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-kind-cluster1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-kind-cluster2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-kind-cluster3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-kind-cluster4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-kind-cluster5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-kind-cluster6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-kind-cluster7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: 01-kubernetes-deployment.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/myapp1-deployment failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 37, fail: 16, warn: 0, error: 0, skip: 2 
+
+##### FILE: 01-kubernetes-deployment1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/myapp1-deployment failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 37, fail: 16, warn: 0, error: 0, skip: 2 
+
+##### FILE: 01-kubernetes-deployment10.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/myapp1-deployment failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/myapp1-deployment failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 36, fail: 17, warn: 0, error: 0, skip: 2 
+
+##### FILE: 01-kubernetes-deployment11.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/myapp1-deployment failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 37, fail: 16, warn: 0, error: 0, skip: 2 
+
+##### FILE: 01-kubernetes-deployment12.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/myapp1-deployment failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 37, fail: 16, warn: 0, error: 0, skip: 2 
+
+##### FILE: 01-kubernetes-deployment13.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/myapp1-deployment failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/myapp1-deployment failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 37, fail: 16, warn: 0, error: 0, skip: 2 
+
+##### FILE: 01-kubernetes-deployment14.yaml #####

@@ -8,6 +8,10 @@ import sys
 from pathlib import Path
 import traceback
 import copy
+
+import sys
+sys.setrecursionlimit(10000) ## Set a higher recursion limit to handle deeply nested YAML structures
+
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 
@@ -80,24 +84,31 @@ def run_kubeconform(yaml_path: str) -> tuple[bool, str]:
         return False, "Timeout_Exceeded"
 
 def calculate_semantic_preservation(orig_path: str, rem_path: str):
-    with open(orig_path, 'r') as f: orig_lines = f.readlines()
-    with open(rem_path, 'r') as f: rem_lines = f.readlines()
-    
-    orig_comments = sum(1 for line in orig_lines if line.strip().startswith('#'))
-    rem_comments = sum(1 for line in rem_lines if line.strip().startswith('#'))
-    comment_retention = (rem_comments / orig_comments * 100) if orig_comments > 0 else 100.0
+    try:
+        with open(orig_path, 'r', encoding='utf-8') as f: orig_lines = f.readlines()
+        with open(rem_path, 'r', encoding='utf-8') as f: rem_lines = f.readlines()
+        
+        orig_comments = sum(1 for line in orig_lines if line.strip().startswith('#'))
+        rem_comments = sum(1 for line in rem_lines if line.strip().startswith('#'))
+        comment_retention = (rem_comments / orig_comments * 100) if orig_comments > 0 else 100.0
 
-    diff = list(difflib.ndiff(orig_lines, rem_lines))
-    lines_added = sum(1 for d in diff if d.startswith('+ '))
-    lines_removed = sum(1 for d in diff if d.startswith('- '))
+        diff = list(difflib.ndiff(orig_lines, rem_lines))
+        lines_added = sum(1 for d in diff if d.startswith('+ '))
+        lines_removed = sum(1 for d in diff if d.startswith('- '))
+        
+        ## Absolute metric of how closely the remediated file matches the original (including both code and comments).
+        #  A higher percentage means the remediated file is more similar to the original, which can be an indicator of better semantic preservation.
+        matcher = difflib.SequenceMatcher(None, orig_lines, rem_lines)
+        patch_similarity = round(matcher.ratio() * 100, 2)
+        
+        return round(comment_retention, 2), lines_added, lines_removed, patch_similarity
+    except RecursionError:
+        print(f"[ERROR] Recursion error occurred while calculating files too high:")
+        return 0.0, 0, 0, 0.0
+    except Exception as e:
+        print(f"[ERROR] Failed to calculate semantic preservation: {e}")
+        return 0.0, 0, 0, 0.0
     
-    ## Absolute metric of how closely the remediated file matches the original (including both code and comments).
-    #  A higher percentage means the remediated file is more similar to the original, which can be an indicator of better semantic preservation.
-    matcher = difflib.SequenceMatcher(None, orig_lines, rem_lines)
-    patch_similarity = round(matcher.ratio() * 100, 2)
-    
-    return round(comment_retention, 2), lines_added, lines_removed, patch_similarity
-
 def get_policy_weight(severity: str) -> float:
     """
     Mapping of policy severity to a numerical weight for scoring purposes.
@@ -255,7 +266,7 @@ def run_remediation_benchmark():
                 # A.2 Regex Validation
                 active_regex_policies = list(set(active_policies) & regex_policy_names)
                 passed_regex, regex_report = regex_validator.validate_with_report(doc, target_config.elements, active_regex_policies)
-                t_detection_ms = round((time.perf_counter() - t0_init) * 1000, 2)
+                t_detection_ms = round((time.perf_counter() - t0_init) * 1000, 2) ### Tiene sentido calcular todo el tiempo de deteccion?
 
                 ## if not is_differential_match:
                 ##     print(f"\n[🚨 DISCREPANCY IN {filename}]")

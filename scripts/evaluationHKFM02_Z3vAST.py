@@ -144,17 +144,23 @@ def run_comparison_benchmark():
                 # --- FILTRO FAIL-FAST BASADO EN LA RESPUESTA DEL CORE ---
                 if z3_violations and z3_violations[0]["policy"] == "STRUCTURAL_UNSAT":
                     print(f"[{filename}] Saltado: Estructura base inválida (UNSAT en K8s UVL).")
-                    
                     writer.writerow([
-                        filename, kind, 
-                        "STRUCTURAL_UNSAT", # Policies_Evaluated
-                        "", "", "", "",     # Orig_Z3, Orig_AST, Orig_Regex, Total_Initial_Alerts
-                        "",                 # Rem_Alerts
-                        len(target_config.elements), 0, 0, len(configurations), 
-                        t_z3_ms, 0.0, 0.0, 0.0, 0.0, # Timers
-                        "", "", "",         # Is_Secure, Is_AST_Accurate, Is_K8s_Rem_Valid
-                        0, 0, 0.0, 0.0,     # Métricas de remediación
-                        "{'error': 'STRUCTURAL_UNSAT'}", "Estructura base del manifest inválida según modelo UVL"
+                        filename,             # 1. Filename
+                        "Unknown",            # 2. Category
+                        kind,                 # 3. Kind
+                        0,                    # 4. N_Features
+                        0,                    # 5. N_Features_in_Policies_Complete
+                        0,                    # 6. N_Features_in_Policies_Failed
+                        0,                    # 7. N_Configurations
+                        0,                    # 8. Z3_Policies_Evaluated
+                        0,                    # 9. Z3_Alerts
+                        0,                    # 10. AST_Alerts
+                        False,                # 11. Is_Match
+                        0.0,                  # 12. T_Z3_ms
+                        0.0,                  # 13. T_AST_ms
+                        "[]",                 # 14. False_Positives_AST
+                        "[]",                 # 15. False_Negatives_AST
+                        "STRUCTURAL_UNSAT"    # 16. Error_Mapping
                     ])
                     continue
 
