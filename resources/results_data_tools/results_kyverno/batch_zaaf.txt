@@ -1,0 +1,2581 @@
+
+##### FILE: service-4-cluster-ip_7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/bye-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service-4-cluster-ip_8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/sleep-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service-4k.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/radarr-4k failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/radarr-4k failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service-4k1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/sonarr-4k failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/sonarr-4k failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service-a.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource default/ConfigMap/service-a failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-a_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource default/ConfigMap/service-a-nginx.conf failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-a_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/service-a failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/service-a failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/service-a failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/service-a failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/service-a failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/service-a failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/service-a failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/service-a failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/service-a failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/service-a failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/service-a failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/service-a failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/service-a failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/service-a failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/service-a failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 36, fail: 17, warn: 0, error: 0, skip: 2 
+
+##### FILE: service-a_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/service-a failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/service-a failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service-a1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource default/ConfigMap/service-a failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-a1_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource default/ConfigMap/service-a-nginx.conf failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-a1_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/service-a failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/service-a failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/service-a failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/service-a failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/service-a failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/service-a failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/service-a failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/service-a failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/service-a failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/service-a failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/service-a failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/service-a failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/service-a failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/service-a failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/service-a failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 36, fail: 17, warn: 0, error: 0, skip: 2 
+
+##### FILE: service-a1_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/service-a failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/service-a failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service-a2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/service-a failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/service-a failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service-a3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource default/ConfigMap/service-a failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-a3_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource default/ConfigMap/service-a-nginx.conf failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-a3_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/service-a failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/service-a failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/service-a failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/service-a failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/service-a failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/service-a failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/service-a failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/service-a failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/service-a failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/service-a failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/service-a failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/service-a failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/service-a failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/service-a failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/service-a failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 36, fail: 17, warn: 0, error: 0, skip: 2 
+
+##### FILE: service-a3_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/service-a failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/service-a failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service-a4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource default/ConfigMap/service-a failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-a4_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource default/ConfigMap/service-a-nginx.conf failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-a4_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/service-a failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/service-a failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/service-a failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/service-a failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/service-a failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/service-a failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/service-a failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/service-a failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/service-a failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/service-a failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/service-a failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/service-a failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/service-a failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/service-a failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/service-a failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 36, fail: 17, warn: 0, error: 0, skip: 2 
+
+##### FILE: service-a4_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/service-a failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/service-a failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service-a5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/service-a failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/service-a failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service-a6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource default/ConfigMap/service-a failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-a6_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource default/ConfigMap/service-a-nginx.conf failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-a6_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/service-a failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/service-a failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/service-a failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/service-a failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/service-a failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/service-a failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/service-a failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/service-a failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/service-a failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/service-a failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/service-a failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/service-a failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/service-a failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/service-a failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/service-a failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 36, fail: 17, warn: 0, error: 0, skip: 2 
+
+##### FILE: service-a6_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/service-a failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/service-a failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service-a7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource default/ConfigMap/service-a failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-a7_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource default/ConfigMap/service-a-nginx.conf failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-a7_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/service-a failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/service-a failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/service-a failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/service-a failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/service-a failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/service-a failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/service-a failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/service-a failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/service-a failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/service-a failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/service-a failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/service-a failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/service-a failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/service-a failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/service-a failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 36, fail: 17, warn: 0, error: 0, skip: 2 
+
+##### FILE: service-a7_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/service-a failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/service-a failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service-account-adservice.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/adservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-adservice1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/adservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-adservice2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/adservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-adservice3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/adservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-adservice4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/adservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-adservice5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/adservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-adservice6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/adservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-adservice7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/adservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-binding.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-cartservice.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/cartservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-cartservice1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/cartservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-cartservice2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/cartservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-cartservice3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/cartservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-cartservice4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/cartservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-cartservice5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/cartservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-cartservice6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/cartservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-cartservice7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/cartservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-checkoutservice.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/checkoutservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-checkoutservice1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/checkoutservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-checkoutservice2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/checkoutservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-checkoutservice3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/checkoutservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-checkoutservice4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/checkoutservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-checkoutservice5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/checkoutservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-checkoutservice6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/checkoutservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-checkoutservice7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/checkoutservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-currencyservice.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/currencyservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-currencyservice1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/currencyservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-currencyservice2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/currencyservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-currencyservice3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/currencyservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-currencyservice4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/currencyservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-currencyservice5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/currencyservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-currencyservice6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/currencyservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-currencyservice7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/currencyservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-custom.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/prod-default failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-difference-strategy.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/distribute-default failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-emailservice.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/emailservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-emailservice1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/emailservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-emailservice2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/emailservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-emailservice3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/emailservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-emailservice4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/emailservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-emailservice5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/emailservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-emailservice6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/emailservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-emailservice7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/emailservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-frontend.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/frontend failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-frontend1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/frontend failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-frontend2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/frontend failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-frontend3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/frontend failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-frontend4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/frontend failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-frontend5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/frontend failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-frontend6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/frontend failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-frontend7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/frontend failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-loadgenerator.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/loadgenerator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-loadgenerator1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/loadgenerator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-loadgenerator2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/loadgenerator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-loadgenerator3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/loadgenerator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-loadgenerator4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/loadgenerator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-loadgenerator5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/loadgenerator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-loadgenerator6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/loadgenerator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-loadgenerator7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/loadgenerator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-normal.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/all-in-one-default failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-patch.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kubeflow/ServiceAccount/admission-webhook-service-account failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-patch_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kubeflow/ServiceAccount/centraldashboard failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-patch_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kubeflow/ServiceAccount/jupyter-web-app-service-account failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-patch_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kubeflow/ServiceAccount/katib-controller failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-patch_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kubeflow/ServiceAccount/katib-ui failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-patch_5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kubeflow/ServiceAccount/kserve-controller-manager failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-patch_6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kubeflow/ServiceAccount/kserve-models-web-app failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-patch_7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kubeflow/ServiceAccount/meta-controller-service failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-patch_8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kubeflow/ServiceAccount/notebook-controller-service-account failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-patch_9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kubeflow/ServiceAccount/profiles-controller-service-account failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-patch_10.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kubeflow/ServiceAccount/pvcviewer-controller-manager failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-patch_11.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kubeflow/ServiceAccount/tensorboard-controller-controller-manager failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-patch_12.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kubeflow/ServiceAccount/tensorboards-web-app-service-account failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-patch_13.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kubeflow/ServiceAccount/training-operator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-patch_14.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kubeflow/ServiceAccount/volumes-web-app-service-account failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-patch_15.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource istio-system/ServiceAccount/istiod failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-patch_16.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource istio-system/ServiceAccount/authservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-paymentservice.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/paymentservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-paymentservice1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/paymentservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-paymentservice2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/paymentservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-paymentservice3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/paymentservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-paymentservice4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/paymentservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-paymentservice5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/paymentservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-paymentservice6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/paymentservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-paymentservice7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/paymentservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-pod.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Pod/my-pod failed:
+1 - validate-namespace validation error: Using 'default' namespace is not allowed. rule validate-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Pod/my-pod failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Pod/my-pod failed:
+1 - imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule imagepullpolicy-always failed at path /spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Pod/my-pod failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-image-checksum -> resource default/Pod/my-pod failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Pod/my-pod failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Pod/my-pod failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/
+policy require-labels -> resource default/Pod/my-pod failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/
+policy require-non-root-groups -> resource default/Pod/my-pod failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Pod/my-pod failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Pod/my-pod failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Pod/my-pod failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Pod/my-pod failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Pod/my-pod failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/
+
+pass: 37, fail: 16, warn: 0, error: 0, skip: 1 
+
+##### FILE: service-account-pod2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-pod2_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-pod2_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/service-account-pod-read failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-pod2_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Pod/service-account-pod failed:
+1 - validate-namespace validation error: Using 'default' namespace is not allowed. rule validate-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Pod/service-account-pod failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Pod/service-account-pod failed:
+1 - imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule imagepullpolicy-always failed at path /spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Pod/service-account-pod failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-image-checksum -> resource default/Pod/service-account-pod failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Pod/service-account-pod failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Pod/service-account-pod failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/
+policy require-labels -> resource default/Pod/service-account-pod failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/
+policy require-non-root-groups -> resource default/Pod/service-account-pod failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Pod/service-account-pod failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Pod/service-account-pod failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Pod/service-account-pod failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Pod/service-account-pod failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Pod/service-account-pod failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/
+
+pass: 37, fail: 16, warn: 0, error: 0, skip: 1 
+
+##### FILE: service-account-productcatalogservice.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/productcatalogservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-productcatalogservice1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/productcatalogservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-productcatalogservice2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/productcatalogservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-productcatalogservice3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/productcatalogservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-productcatalogservice4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/productcatalogservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-productcatalogservice5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/productcatalogservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-productcatalogservice6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/productcatalogservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-productcatalogservice7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/productcatalogservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-recommendationservice.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/recommendationservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-recommendationservice1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/recommendationservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-recommendationservice2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/recommendationservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-recommendationservice3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/recommendationservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-recommendationservice4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/recommendationservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-recommendationservice5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/recommendationservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-recommendationservice6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/recommendationservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-recommendationservice7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/recommendationservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-secret.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/faros-controllers-token failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-secret1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/service-account-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-secret2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/my-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-shippingservice.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/shippingservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-shippingservice1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/shippingservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-shippingservice2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/shippingservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-shippingservice3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/shippingservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-shippingservice4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/shippingservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-shippingservice5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/shippingservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-shippingservice6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/shippingservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-shippingservice7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/shippingservice failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-template.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource ඞඞඞ/ServiceAccount/key-vault-sa failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-viewer.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account-viewer_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/external-dns failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account.yaml.verified.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/my-service-account failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/flux-target-updater failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account1_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account1_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account10.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource ingress-nginx/ServiceAccount/nginx-ingress-serviceaccount failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account100.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/elasticsearch failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account101.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/elasticsearch failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account102.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/faros-controllers failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account103.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/prometheus-operator-svc-ac failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account104.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource wso2is/ServiceAccount/is-service-account failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account11.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account114.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/kube-state-metrics failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account115.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/prometheus failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account116.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/prometheus-operator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account117.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/kube-state-metrics failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account118.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/node-exporter failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account119.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus-k8s failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account12.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account120.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus-operator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account121.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/kube-state-metrics failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account122.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/node-exporter failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account123.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus-k8s failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account124.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/prometheus-operator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account125.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource ingress-nginx/ServiceAccount/nginx-ingress-serviceaccount failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account13.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/backend failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account132.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/goldpinger-serviceaccount failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account135.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kube-system/ServiceAccount/kube-state-metrics failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account136.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource external-secrets/ServiceAccount/external-secrets-irsa failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account137.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/kube-state-metrics failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account138.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/prometheus failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account139.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/prometheus-operator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account14.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/backend-weighted failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account140.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/kube-state-metrics failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account141.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/node-exporter failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account142.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus-k8s failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account143.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus-operator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account144.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/kube-state-metrics failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account145.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/node-exporter failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account146.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus-k8s failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account147.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/prometheus-operator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account148.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/workload-identity-sa failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account151.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account152.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/pod-leitor failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account16.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource ingress-nginx/ServiceAccount/nginx-ingress-serviceaccount failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account162.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kube-system/ServiceAccount/kube-state-metrics failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account167.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account168.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource ekspose/ServiceAccount/ekspose-sa failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account169.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource demo/ServiceAccount/mysql-sa failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account17.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource ingress-nginx/ServiceAccount/nginx-ingress-serviceaccount failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account171.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/kondense failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account173.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource python/ServiceAccount/heimdal-sa failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account174.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account175.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource wso2is/ServiceAccount/is-service-account failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account176.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/bootstrap-access failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account177.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account18.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/kube-state-metrics failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account180.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kube-system/ServiceAccount/csi-secrets-store-provider-aws failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account181.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource production/ServiceAccount/nginx failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account182.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kube-system/ServiceAccount/secrets-store-csi-driver failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account183.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/k8-env failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account184.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kube-system/ServiceAccount/skooner-sa failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account19.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/prometheus failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account193.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account195.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/deployment-service-account failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account195_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account195_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account196.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/kube-state-metrics failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account197.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/prometheus failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account198.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/prometheus-operator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account199.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/kube-state-metrics failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/k8s-status-badge failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account2_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account2_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account20.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/prometheus-operator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account200.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/node-exporter failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account201.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus-k8s failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account202.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus-operator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account203.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/kube-state-metrics failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account204.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/node-exporter failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account205.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus-k8s failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account206.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/prometheus-operator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account207.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/test-sa failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account208.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account209.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/app failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account21.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/kube-state-metrics failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account210.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/app failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account211.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/app failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account212.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/app failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account213.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/app failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account214.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/app failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account215.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/app failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account216.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/acceso-api failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account217.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource cnpg-system/ServiceAccount/cnpg-manager failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account218.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource slackwatch/ServiceAccount/slackwatch-backend failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account219.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource k8s-ecr-token-updater/ServiceAccount/sa-default failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account22.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/node-exporter failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account220.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/prometheus-service-account failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account222.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/div failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account223.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/example-app failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account224.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/filebeat failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account224_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account224_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account224_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account224_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account224_5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account224_6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account225.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/pod-manager-service-account failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account225_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account225_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account227.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kubernetes-dashboard/ServiceAccount/admin-user failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account227_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/admin-user failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account228.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account229.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account23.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus-k8s failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account230.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus-operator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account231.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kube-system/ServiceAccount/aws-load-balancer-controller failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account232.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/kube-state-metrics failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account233.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account234.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account235.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/kube-state-metrics failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account236.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account237.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account238.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/kube-state-metrics failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account239.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account24.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus-operator failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account240.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account241.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account242.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/node-exporter failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account243.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/node-exporter failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account244.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account245.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account246.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account247.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account248.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account249.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account25.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/kube-state-metrics failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account250.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/cadvisor failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account251.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/kube-state-metrics failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account252.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/prometheus failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account253.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account254.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/cadvisor failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account255.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/kube-state-metrics failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account256.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/cadvisor failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account257.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/kube-state-metrics failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account258.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account259.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kube-system/ServiceAccount/aws-load-balancer-controller failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service-account26.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource monitoring/ServiceAccount/node-exporter failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+

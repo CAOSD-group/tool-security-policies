@@ -1,0 +1,2176 @@
+
+##### FILE: networking-tests8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Pod/mysql failed:
+1 - validate-namespace validation error: Using 'default' namespace is not allowed. rule validate-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Pod/mysql failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy require-annotations -> resource default/Pod/mysql failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-image-checksum -> resource default/Pod/mysql failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Pod/mysql failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Pod/mysql failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/department/
+policy require-labels -> resource default/Pod/mysql failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Pod/mysql failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Pod/mysql failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Pod/mysql failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Pod/mysql failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Pod/mysql failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Pod/mysql failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/
+
+pass: 36, fail: 15, warn: 0, error: 0, skip: 3 
+
+##### FILE: networking-tests8_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/database failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: networking.amazon-vpc-routed-eni-k8s-1.16_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kube-system/ServiceAccount/aws-node failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.amazon-vpc-routed-eni-k8s-1.16_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 1 
+
+##### FILE: networking.amazon-vpc-routed-eni-k8s-1.16_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.amazon-vpc-routed-eni-k8s-1.16_5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.amazon-vpc-routed-eni-k8s-1.161_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kube-system/ServiceAccount/aws-node failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.amazon-vpc-routed-eni-k8s-1.161_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 1 
+
+##### FILE: networking.amazon-vpc-routed-eni-k8s-1.161_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.amazon-vpc-routed-eni-k8s-1.161_5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress10.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource 4/Ingress/2 failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource 4/Ingress/2 failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource 4/Ingress/2 failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress11.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress12.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress13.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource 4/Ingress/2 failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource 4/Ingress/2 failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource 4/Ingress/2 failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress14.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource 4/Ingress/2 failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource 4/Ingress/2 failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource 4/Ingress/2 failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress15.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress16.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress17.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress18.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress19.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress20.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress21.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress22.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource 4/Ingress/2 failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource 4/Ingress/2 failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource 4/Ingress/2 failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress23.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource 4/Ingress/2 failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource 4/Ingress/2 failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource 4/Ingress/2 failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress24.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress25.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress26.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress27.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress28.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress29.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress33.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource 4/Ingress/2 failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource 4/Ingress/2 failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource 4/Ingress/2 failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress34.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource 4/Ingress/2 failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource 4/Ingress/2 failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource 4/Ingress/2 failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress35.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource 4/Ingress/2 failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource 4/Ingress/2 failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource 4/Ingress/2 failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress36.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress37.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress38.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress39.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource 4/Ingress/2 failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource 4/Ingress/2 failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource 4/Ingress/2 failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress40.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress41.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress42.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress43.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress44.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress45.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress46.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress47.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress48.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress49.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress50.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.Ingress9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource namespaceValue/Ingress/nameValue failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource namespaceValue/Ingress/nameValue failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+policy restrict-ingress-defaultbackend -> resource namespaceValue/Ingress/nameValue failed:
+1 - restrict-ingress-defaultbackend validation error: Setting the defaultBackend field is prohibited. rule restrict-ingress-defaultbackend failed at path /spec/defaultBackend/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass.after_roundtrip.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass.after_roundtrip1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass10.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass11.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass12.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass13.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass14.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass15.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass16.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass17.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass18.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass19.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass20.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass21.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass22.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass23.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass24.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass25.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass26.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass27.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass28.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass29.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass33.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass34.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass35.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass36.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass37.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass38.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass39.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass40.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass41.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass42.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass43.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass44.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass45.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass46.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass47.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass48.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass49.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass50.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.IngressClass9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy.after_roundtrip.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy.after_roundtrip1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy.after_roundtrip2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy.after_roundtrip3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy.after_roundtrip4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy.after_roundtrip5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy.after_roundtrip6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy.after_roundtrip7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy.after_roundtrip8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy.after_roundtrip9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy10.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy11.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy12.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy13.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy14.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy15.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy16.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy17.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy18.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy19.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy20.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy21.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy22.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy23.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy24.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy25.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy26.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy27.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy28.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy29.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy30.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy31.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy32.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy33.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy34.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy35.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy39.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy40.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy41.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy42.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy43.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy44.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy45.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy46.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy47.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy48.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy49.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy50.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy51.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy52.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy53.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy54.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy55.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy56.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1.NetworkPolicy9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress.after_roundtrip.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress.after_roundtrip1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress.after_roundtrip2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress.after_roundtrip3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress.after_roundtrip4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress.after_roundtrip5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress.after_roundtrip6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress.after_roundtrip7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress.after_roundtrip8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress.after_roundtrip9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress10.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress11.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress12.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress13.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress14.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress15.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress16.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress17.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress18.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress19.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress20.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress21.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress22.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress23.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress24.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress25.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress26.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress27.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress28.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress29.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress30.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress31.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress32.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.IPAddress9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR10.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR11.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR12.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR13.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR14.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR15.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR16.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR17.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR18.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR19.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR20.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR21.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR22.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.k8s.io.v1alpha1.ServiceCIDR9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networking.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/commafeed failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: networking1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/health-api failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: networking2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/linkding failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: networking3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/n8n failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: networking4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/wallabag failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: networking5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/zettelkasten-tracker failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: networking6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/pgadmin failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: networkpolicies.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicies_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy-allow-all.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: NetworkPolicy-allow-tailscale-ingress.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: NetworkPolicy-allow-tailscale-ingress1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: NetworkPolicy-allow-traefik-ingress.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: NetworkPolicy-allow-traefik-ingress1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: NetworkPolicy-allow-traefik-ingress2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: NetworkPolicy-allow-upstream-tls-dns-egress.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy-api.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy-api1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy-api2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy-api3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: NetworkPolicy-argocd-application-controller.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: NetworkPolicy-argocd-dex-server.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: NetworkPolicy-argocd-redis.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: NetworkPolicy-argocd-repo-server.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: NetworkPolicy-argocd-server.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy-certman.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy-certman1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy-definition.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy-egress35.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy-ingress18.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy110.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy118.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy146.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy146_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy151.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy add-psa-namespace-reporting -> resource default/Namespace/test failed:
+1 - check-namespace-labels validation error: This Namespace is missing a PSA label. rule check-namespace-labels failed at path /metadata/labels/
+policy enforce-ambient-mode-namespace -> resource default/Namespace/test failed:
+1 - check-amblient-mode-enabled validation error: All new Namespaces must have Istio ambient mode enabled. rule check-amblient-mode-enabled failed at path /metadata/labels/
+policy enforce-sidecar-injection-namespace -> resource default/Namespace/test failed:
+1 - check-istio-injection-enabled validation error: All new Namespaces must have Istio sidecar injection enabled. rule check-istio-injection-enabled failed at path /metadata/labels/
+policy kasten-validate-ns-by-preset-label -> resource default/Namespace/test failed:
+1 - kasten-validate-ns-by-preset-label validation error: Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten Policy Preset:
+
+  "gold" - <Insert human readable settings of each preset option>
+  "silver" - <For example, hourly backups, exported to immutable S3 storage>
+  "bronze" - <Or, daily local snapshots, NOT exported to external storage>
+  "none" - No local snapshots or backups. rule kasten-validate-ns-by-preset-label failed at path /metadata/labels/
+policy require-linkerd-mesh-injection -> resource default/Namespace/test failed:
+1 - require-mesh-annotation validation error: All Namespaces must set the annotation `linkerd.io/inject` to `enabled`. rule require-mesh-annotation failed at path /metadata/annotations/
+
+pass: 0, fail: 5, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy151_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource test/Service/keycloak-web failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: networkpolicy151_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy151_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy docker-socket-check -> resource test/Deployment/keycloak failed:
+1 - autogen-conditional-anchor-dockersock validation error: If a hostPath volume exists and is set to `/var/run/docker.sock`, the label `allow-docker` must equal `true`. rule autogen-conditional-anchor-dockersock failed at path /spec/template/metadata/labels/allow-docker/
+policy require-annotations -> resource test/Deployment/keycloak failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy deployment-has-multiple-replicas -> resource test/Deployment/keycloak failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-kubecost-labels -> resource test/Deployment/keycloak failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/app/
+policy require-non-root-groups -> resource test/Deployment/keycloak failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/runAsGroup/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/runAsGroup/
+policy require-pod-priorityclassname -> resource test/Deployment/keycloak failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource test/Deployment/keycloak failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/readOnlyRootFilesystem/
+policy restrict-automount-sa-token -> resource test/Deployment/keycloak failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource test/Deployment/keycloak failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource test/Deployment/keycloak failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/runAsUser/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/runAsGroup/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/fsGroup/
+
+pass: 40, fail: 12, warn: 0, error: 0, skip: 3 
+
+##### FILE: networkpolicy157.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkPolicy158.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: NetworkPolicy229.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy230.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy251.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy252.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: NetworkPolicy284.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: NetworkPolicy285.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy333.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkPolicy336.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkPolicy336_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkPolicy336_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: Networkpolicy337.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy338.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: NetworkPolicy339.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkPolicy40.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy449.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkPolicy451.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkPolicy464.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkPolicy475.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy476.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkpolicy546.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: networkPolicy82.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: NetworkPolicy87.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+

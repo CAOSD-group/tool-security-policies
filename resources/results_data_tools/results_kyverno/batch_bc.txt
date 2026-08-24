@@ -1,0 +1,2263 @@
+
+##### FILE: hpa1020.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa1021.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa1022.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa1024.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa1025.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/my-deployment failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/my-deployment failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Deployment/my-deployment failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/my-deployment failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/my-deployment failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/my-deployment failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/my-deployment failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 36, fail: 18, warn: 0, error: 0, skip: 1 
+
+##### FILE: hpa1025_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa1026.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa1027.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa1028.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa1031.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa1033.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa1034.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa1036.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa1037.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa1038.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa1039.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa1042.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa1045.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa1046.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa1058.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa1059.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa1100.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa117.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa12.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa127.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa128.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa129.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa131.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa131_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa135.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa143.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/hpa-scale failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/hpa-scale failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/hpa-scale failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/hpa-scale failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/hpa-scale failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/hpa-scale failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/hpa-scale failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/hpa-scale failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/app/
+policy require-labels -> resource default/Deployment/hpa-scale failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/hpa-scale failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/hpa-scale failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/hpa-scale failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/hpa-scale failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/hpa-scale failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/hpa-scale failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 36, fail: 17, warn: 0, error: 0, skip: 2 
+
+##### FILE: hpa143_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/hpa-scale failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/hpa-scale failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: hpa149.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa151.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa151_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy block-ephemeral-containers -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-block-ephemeral-containers validation error: Ephemeral (debug) containers are not permitted. rule autogen-block-ephemeral-containers failed at path /spec/template/spec/
+policy check-env-vars -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-check-disable-opa validation error: DISABLE_OPA must not be set to true. rule autogen-check-disable-opa failed at path /spec/template/spec/
+policy psp-check-supplemental-groups -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-supplementalgroup-ranges validation error: Any supplementalGroup ID must be within the range 100-200 or 500-600. rule autogen-supplementalgroup-ranges failed at path /spec/template/spec/
+policy no-secrets -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-secrets-not-from-env validation error: No Secrets from env. rule autogen-secrets-not-from-env failed at path /spec/template/spec/
+2 - autogen-secrets-not-from-envfrom validation error: No Secrets from envFrom. rule autogen-secrets-not-from-envfrom failed at path /spec/template/spec/
+3 - autogen-secrets-not-from-volumes validation error: No Secrets from volumes. rule autogen-secrets-not-from-volumes failed at path /spec/template/spec/
+policy disallow-container-sock-mounts -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-validate-docker-sock-mount validation error: Use of the Docker Unix socket is not allowed. rule autogen-validate-docker-sock-mount failed at path /spec/template/spec/
+2 - autogen-validate-containerd-sock-mount validation error: Use of the Containerd Unix socket is not allowed. rule autogen-validate-containerd-sock-mount failed at path /spec/template/spec/
+3 - autogen-validate-crio-sock-mount validation error: Use of the CRI-O Unix socket is not allowed. rule autogen-validate-crio-sock-mount failed at path /spec/template/spec/
+4 - autogen-validate-dockerd-sock-mount validation error: Use of the Docker CRI socket is not allowed. rule autogen-validate-dockerd-sock-mount failed at path /spec/template/spec/
+policy disallow-default-namespace -> resource default/Deployment/dashboard-deploy failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-host-namespaces -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-host-namespaces validation error: Sharing the host namespaces is disallowed. The fields spec.hostNetwork, spec.hostIPC, and spec.hostPID must be unset or set to `false`. rule autogen-host-namespaces failed at path /spec/template/spec/
+policy disallow-host-path -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-host-path validation error: HostPath volumes are forbidden. The field spec.volumes[*].hostPath must be unset. rule autogen-host-path failed at path /spec/template/spec/
+policy disallow-host-ports -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-host-ports-none validation error: Use of host ports is disallowed. The fields spec.containers[*].ports[*].hostPort , spec.initContainers[*].ports[*].hostPort, and spec.ephemeralContainers[*].ports[*].hostPort must either be unset or set to `0`. rule autogen-host-ports-none failed at path /spec/template/spec/
+policy disallow-host-process -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-host-process-containers validation error: HostProcess containers are disallowed. The fields spec.securityContext.windowsOptions.hostProcess, spec.containers[*].securityContext.windowsOptions.hostProcess, spec.initContainers[*].securityContext.windowsOptions.hostProcess, and spec.ephemeralContainers[*].securityContext.windowsOptions.hostProcess must either be undefined or set to `false`. rule autogen-host-process-containers failed at path /spec/template/spec/
+policy disallow-privilege-escalation -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/
+policy disallow-privileged-containers -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-privileged-containers validation error: Privileged mode is disallowed. The fields spec.containers[*].securityContext.privileged, spec.initContainers[*].securityContext.privileged, and spec.ephemeralContainers[*].securityContext.privileged must be unset or set to `false`. rule autogen-privileged-containers failed at path /spec/template/spec/
+policy disallow-proc-mount -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-check-proc-mount validation error: Changing the proc mount from the default is not allowed. The fields spec.containers[*].securityContext.procMount, spec.initContainers[*].securityContext.procMount, and spec.ephemeralContainers[*].securityContext.procMount must be unset or set to `Default`. rule autogen-check-proc-mount failed at path /spec/template/spec/
+policy secrets-not-from-env-vars -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-secrets-not-from-env-vars validation error: Secrets must be mounted as volumes, not as environment variables. rule autogen-secrets-not-from-env-vars failed at path /spec/template/spec/
+2 - autogen-secrets-not-from-envfrom validation error: Secrets must not come from envFrom statements. rule autogen-secrets-not-from-envfrom failed at path /spec/template/spec/
+policy disallow-selinux -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-selinux-type validation error: Setting the SELinux type is restricted. The fields spec.securityContext.seLinuxOptions.type, spec.containers[*].securityContext.seLinuxOptions.type, , spec.initContainers[*].securityContext.seLinuxOptions, and spec.ephemeralContainers[*].securityContext.seLinuxOptions.type must either be unset or set to one of the allowed values (container_t, container_init_t, or container_kvm_t). rule autogen-selinux-type failed at path /spec/template/spec/
+2 - autogen-selinux-user-role validation error: Setting the SELinux user or role is forbidden. The fields spec.securityContext.seLinuxOptions.user, spec.securityContext.seLinuxOptions.role, spec.containers[*].securityContext.seLinuxOptions.user, spec.containers[*].securityContext.seLinuxOptions.role, spec.initContainers[*].securityContext.seLinuxOptions.user, spec.initContainers[*].securityContext.seLinuxOptions.role, spec.ephemeralContainers[*].securityContext.seLinuxOptions.user, and spec.ephemeralContainers[*].securityContext.seLinuxOptions.role must be unset. rule autogen-selinux-user-role failed at path /spec/template/spec/
+policy imagepullpolicy-always -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/
+policy prevent-cr8escape -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-restrict-sysctls-cr8escape validation error: characters '+' or '=' are not allowed in sysctls values. rule autogen-restrict-sysctls-cr8escape failed at path /spec/template/spec/
+policy require-annotations -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/
+policy require-image-checksum -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/
+policy require-kubecost-labels -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/
+2 - autogen-check-supplementalgroups validation error: Containers cannot run with a root primary or supplementary GID. The field spec.securityContext.supplementalGroups must be unset or set to a value greater than zero. rule autogen-check-supplementalgroups failed at path /spec/template/spec/
+3 - autogen-check-fsgroup validation error: Containers cannot run with a root primary or supplementary GID. The field spec.securityContext.fsGroup must be unset or set to a value greater than zero. rule autogen-check-fsgroup failed at path /spec/template/spec/
+policy require-pod-priorityclassname -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/
+policy require-ro-rootfs -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/
+policy require-run-as-containeruser -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-require-run-as-containeruser validation error: Running the container as ContainerAdministrator,NT AUTHORITY\NETWORK SERVICE, NT AUTHORITY\LOCAL SERVICE is not allowed. rule autogen-require-run-as-containeruser failed at path /spec/template/spec/
+policy require-run-as-non-root-user -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-run-as-non-root-user validation error: Running as root is not allowed. The fields spec.securityContext.runAsUser, spec.containers[*].securityContext.runAsUser, spec.initContainers[*].securityContext.runAsUser, and spec.ephemeralContainers[*].securityContext.runAsUser must be unset or set to a number greater than zero. rule autogen-run-as-non-root-user failed at path /spec/template/spec/
+policy restrict-automount-sa-token -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/
+policy restrict-controlplane-scheduling -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-restrict-controlplane-scheduling-master validation error: Pods may not use tolerations which schedule on control plane nodes. rule autogen-restrict-controlplane-scheduling-master failed at path /spec/template/spec/
+2 - autogen-restrict-controlplane-scheduling-control-plane validation error: Pods may not use tolerations which schedule on control plane nodes. rule autogen-restrict-controlplane-scheduling-control-plane failed at path /spec/template/spec/
+policy restrict-image-registries -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/
+policy restrict-node-affinity -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-check-nodeaffinity validation error: Node affinity cannot be used. rule autogen-check-nodeaffinity failed at path /spec/template/spec/
+policy restrict-node-selection -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-restrict-nodeselector validation error: Setting the nodeSelector field is prohibited. rule autogen-restrict-nodeselector failed at path /spec/template/spec/
+2 - autogen-restrict-nodename validation error: Setting the nodeName field is prohibited. rule autogen-restrict-nodename failed at path /spec/template/spec/
+policy restrict-sysctls -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-check-sysctls validation error: Setting additional sysctls above the allowed type is disallowed. The field spec.securityContext.sysctls must be unset or not use any other names than kernel.shm_rmid_forced, net.ipv4.ip_local_port_range, net.ipv4.ip_unprivileged_port_start, net.ipv4.tcp_syncookies and net.ipv4.ping_group_range. rule autogen-check-sysctls failed at path /spec/template/spec/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/dashboard-deploy failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/
+
+pass: 6, fail: 47, warn: 0, error: 0, skip: 2 
+
+##### FILE: hpa152.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa154.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa155.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa156.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa158.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa159.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa160.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa177.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa178.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa179.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: HPA180.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa193.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa198.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa198_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa199.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa202.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa205.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa207.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa2100.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa218.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa220.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: HPA231.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: HPA231_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/hpadeployment failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/hpadeployment failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Deployment/hpadeployment failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Deployment/hpadeployment failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-image-checksum -> resource default/Deployment/hpadeployment failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/hpadeployment failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/hpadeployment failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/hpadeployment failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/hpadeployment failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/hpadeployment failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/hpadeployment failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/hpadeployment failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/hpadeployment failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/hpadeployment failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 38, fail: 16, warn: 0, error: 0, skip: 1 
+
+##### FILE: hpa232.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa233.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa234.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa235.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa236.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa236_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa238.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa238_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa239.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/frontend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa239_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/backend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa240.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/frontend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa240_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/backend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa241.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/frontend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa241_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/backend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa242.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/goserver-hpa failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/kind/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 1 
+
+##### FILE: hpa249.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa250.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa26.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa263.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/rollouts-demo-hpa failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/kind/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 1 
+
+##### FILE: hpa264.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa265.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa27.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa28.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa280.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa281.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa282.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa283.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa284.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa288.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa293.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa293_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa295.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa295_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa296.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/frontend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa296_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/backend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa297.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/frontend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa297_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/backend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa298.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/frontend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa298_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/backend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa301.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa302.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa303.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa310.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa313.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa322_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa332.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa333.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa334.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa337.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa337_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa338.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa339.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa344.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa348.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa357.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa364.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa369.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa376.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa380.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa381.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa386.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa387.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa387_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa389.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa389_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa390.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/frontend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa390_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/backend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa391.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/frontend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa391_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/backend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa392.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/frontend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa392_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/backend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa393.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa395.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa396.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa400.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa44.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa457.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa458.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa459.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa461.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa462.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa468.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa469.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa470.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa471.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa473.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa487.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa488.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/billing-hpa failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/kind/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 1 
+
+##### FILE: hpa489.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa491.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa493.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa496.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa498.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa500.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa501.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa515.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy add-psa-namespace-reporting -> resource default/Namespace/pankaj failed:
+1 - check-namespace-labels validation error: This Namespace is missing a PSA label. rule check-namespace-labels failed at path /metadata/labels/
+policy enforce-ambient-mode-namespace -> resource default/Namespace/pankaj failed:
+1 - check-amblient-mode-enabled validation error: All new Namespaces must have Istio ambient mode enabled. rule check-amblient-mode-enabled failed at path /metadata/labels/
+policy enforce-sidecar-injection-namespace -> resource default/Namespace/pankaj failed:
+1 - check-istio-injection-enabled validation error: All new Namespaces must have Istio sidecar injection enabled. rule check-istio-injection-enabled failed at path /metadata/labels/
+policy kasten-validate-ns-by-preset-label -> resource default/Namespace/pankaj failed:
+1 - kasten-validate-ns-by-preset-label validation error: Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten Policy Preset:
+
+  "gold" - <Insert human readable settings of each preset option>
+  "silver" - <For example, hourly backups, exported to immutable S3 storage>
+  "bronze" - <Or, daily local snapshots, NOT exported to external storage>
+  "none" - No local snapshots or backups. rule kasten-validate-ns-by-preset-label failed at path /metadata/labels/
+policy require-linkerd-mesh-injection -> resource default/Namespace/pankaj failed:
+1 - require-mesh-annotation validation error: All Namespaces must set the annotation `linkerd.io/inject` to `enabled`. rule require-mesh-annotation failed at path /metadata/annotations/
+
+pass: 0, fail: 5, warn: 0, error: 0, skip: 0 
+
+##### FILE: hpa515_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-privilege-escalation -> resource pankaj/Deployment/hpadeployment failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource pankaj/Deployment/hpadeployment failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource pankaj/Deployment/hpadeployment failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-image-checksum -> resource pankaj/Deployment/hpadeployment failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource pankaj/Deployment/hpadeployment failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource pankaj/Deployment/hpadeployment failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/app/
+policy require-labels -> resource pankaj/Deployment/hpadeployment failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource pankaj/Deployment/hpadeployment failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource pankaj/Deployment/hpadeployment failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource pankaj/Deployment/hpadeployment failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource pankaj/Deployment/hpadeployment failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource pankaj/Deployment/hpadeployment failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource pankaj/Deployment/hpadeployment failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 39, fail: 15, warn: 0, error: 0, skip: 1 
+
+##### FILE: hpa515_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource pankaj/Service/hpaclusterservice failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource pankaj/Service/hpaclusterservice failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: hpa515_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: HPA516.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa517.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: HPA519.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa520.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa538.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/my-deployment failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/my-deployment failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Deployment/my-deployment failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/my-deployment failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/my-deployment failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/my-deployment failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/my-deployment failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 36, fail: 18, warn: 0, error: 0, skip: 1 
+
+##### FILE: hpa538_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa54.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa544.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/my-deployment failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/my-deployment failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Deployment/my-deployment failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/my-deployment failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/my-deployment failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/my-deployment failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/my-deployment failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 36, fail: 18, warn: 0, error: 0, skip: 1 
+
+##### FILE: hpa544_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa545.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa546.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa547.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa55.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa557.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa559.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa56.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa560.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa561.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa564.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/api-hpa failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 1 
+
+##### FILE: hpa566.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa568.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa571.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa572.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa58.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa58_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa596.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa611.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/autoscaling-deploy failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/autoscaling-deploy failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/autoscaling-deploy failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/autoscaling-deploy failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/autoscaling-deploy failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/autoscaling-deploy failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-kubecost-labels -> resource default/Deployment/autoscaling-deploy failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/autoscaling-deploy failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/autoscaling-deploy failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/autoscaling-deploy failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/autoscaling-deploy failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/autoscaling-deploy failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/autoscaling-deploy failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/autoscaling-deploy failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 36, fail: 16, warn: 0, error: 0, skip: 3 
+
+##### FILE: hpa611_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/autoscaling-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/autoscaling-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: hpa611_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa612.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa614.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa615.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa616.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa62.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa620.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa621.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa623.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa624.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa625.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa627.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa627_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa627_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa627_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa627_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa627_5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa627_6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa627_7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa628.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa628_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa628_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa628_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa628_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa628_5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa628_6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa628_7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa638.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa639.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa640.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa642.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa643.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa644.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa646.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa648.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa649.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa664.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa665.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa679.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa681.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa682.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/sample failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa683.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa684.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa686.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa689.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa694.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa695.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa695_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa696.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa697.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa70.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/hpa-scale failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/hpa-scale failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/hpa-scale failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/hpa-scale failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/hpa-scale failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/hpa-scale failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/hpa-scale failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/hpa-scale failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/app/
+policy require-labels -> resource default/Deployment/hpa-scale failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/hpa-scale failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/hpa-scale failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/hpa-scale failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/hpa-scale failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/hpa-scale failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/hpa-scale failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 36, fail: 17, warn: 0, error: 0, skip: 2 
+
+##### FILE: hpa70_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/hpa-scale failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/hpa-scale failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: hpa701.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/my-deployment failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/my-deployment failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Deployment/my-deployment failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/my-deployment failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/my-deployment failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/my-deployment failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/my-deployment failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 36, fail: 18, warn: 0, error: 0, skip: 1 
+
+##### FILE: hpa701_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa702.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa703.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa704.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa733.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa734.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa735.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa736.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa737.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa741.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa742.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa742_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa743.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa744.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa745.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa748.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa753.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa756.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa760.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa769.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa770.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa783.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa792.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa794.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa799.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa800.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa801.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa807.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa808.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa810.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa813.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa818.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource splunk/HorizontalPodAutoscaler/idx failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/kind/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 1 
+
+##### FILE: hpa818_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource splunk/HorizontalPodAutoscaler/shc failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/kind/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 1 
+
+##### FILE: hpa82.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa820.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa832.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa833.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa834.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa834_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa836.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa836_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa837.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/frontend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa837_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/backend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa838.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/frontend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa838_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/backend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa839.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/frontend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa839_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy prevent-duplicate-hpa -> resource default/HorizontalPodAutoscaler/backend failed:
+1 - verify-kind-name-duplicates validation error: The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        . rule verify-kind-name-duplicates failed at path /spec/scaleTargetRef/
+
+pass: 0, fail: 1, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa840.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa841.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa842.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa843.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa844.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa85.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa858.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa859.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa874.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa880.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa881.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa886.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa887.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa893.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+
+##### FILE: hpa894.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 1, skip: 0 
+

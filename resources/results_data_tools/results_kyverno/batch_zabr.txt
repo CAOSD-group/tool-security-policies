@@ -1,0 +1,2512 @@
+
+##### FILE: storage40_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-persistent-storage-mongo-1 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage40_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-persistent-storage-mongo-2 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage40_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/local-storage0 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage40_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/local-storage1 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage40_5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/local-storage2 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage41.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage41_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/local-storage failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage42.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/linkding-data failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/linkding-data failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage43.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/n8n-data failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/n8n-data failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage44.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pgadmin-data failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/pgadmin-data failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage47.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/exam-kub-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/exam-kub-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage48.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource standard/PersistentVolumeClaim/exam-kub-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource standard/PersistentVolumeClaim/exam-kub-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage5_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource media/PersistentVolumeClaim/nfs-config-beets-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage50.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage50_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource immich/PersistentVolumeClaim/immich-data-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage50_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource immich/PersistentVolumeClaim/immich-postgres-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage50_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage50_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource immich/PersistentVolumeClaim/immich-machinelearning-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage51.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage51_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource loki/PersistentVolumeClaim/loki-rules-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage51_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage51_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource loki/PersistentVolumeClaim/loki-chunks-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage52.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy add-psa-namespace-reporting -> resource default/Namespace/storage failed:
+1 - check-namespace-labels validation error: This Namespace is missing a PSA label. rule check-namespace-labels failed at path /metadata/labels/pod-security.kubernetes.io/*/
+policy enforce-ambient-mode-namespace -> resource default/Namespace/storage failed:
+1 - check-amblient-mode-enabled validation error: All new Namespaces must have Istio ambient mode enabled. rule check-amblient-mode-enabled failed at path /metadata/labels/istio.io/dataplane-mode/
+policy enforce-sidecar-injection-namespace -> resource default/Namespace/storage failed:
+1 - check-istio-injection-enabled validation error: All new Namespaces must have Istio sidecar injection enabled. rule check-istio-injection-enabled failed at path /metadata/labels/istio-injection/
+policy kasten-validate-ns-by-preset-label -> resource default/Namespace/storage failed:
+1 - kasten-validate-ns-by-preset-label validation error: Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten Policy Preset:
+
+  "gold" - <Insert human readable settings of each preset option>
+  "silver" - <For example, hourly backups, exported to immutable S3 storage>
+  "bronze" - <Or, daily local snapshots, NOT exported to external storage>
+  "none" - No local snapshots or backups. rule kasten-validate-ns-by-preset-label failed at path /metadata/labels/dataprotection/
+policy require-linkerd-mesh-injection -> resource default/Namespace/storage failed:
+1 - require-mesh-annotation validation error: All Namespaces must set the annotation `linkerd.io/inject` to `enabled`. rule require-mesh-annotation failed at path /metadata/annotations/
+
+pass: 0, fail: 5, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage53.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage53_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/local-storage failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage54.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage54_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mypvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage54_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Pod/storagedemo failed:
+1 - validate-namespace validation error: Using 'default' namespace is not allowed. rule validate-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Pod/storagedemo failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Pod/storagedemo failed:
+1 - imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule imagepullpolicy-always failed at path /spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Pod/storagedemo failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-container-port-names -> resource default/Pod/storagedemo failed:
+1 - port-name validation error: Name is required for every containerPort. rule port-name failed at path /spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Pod/storagedemo failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Pod/storagedemo failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Pod/storagedemo failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/app/
+policy require-labels -> resource default/Pod/storagedemo failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Pod/storagedemo failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Pod/storagedemo failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Pod/storagedemo failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Pod/storagedemo failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Pod/storagedemo failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Pod/storagedemo failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/
+
+pass: 36, fail: 17, warn: 0, error: 0, skip: 1 
+
+##### FILE: storage55.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage56.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage57.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage57_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/local-storage failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage58.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-persistent-storage-mongo-0 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage58_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-persistent-storage-mongo-1 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage58_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-persistent-storage-mongo-2 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage58_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/local-storage0 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage58_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/local-storage1 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage58_5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/local-storage2 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage59.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage59_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/local-storage failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage6_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource media/PersistentVolumeClaim/nfs-config-overseerr-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage60.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-persistent-storage-mongo-0 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage60_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-persistent-storage-mongo-1 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage60_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-persistent-storage-mongo-2 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage60_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/local-storage0 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage60_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/local-storage1 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage60_5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/local-storage2 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage61.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/ebs-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage63.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource salmahany/PersistentVolume/app-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage63_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource salmahany/PersistentVolumeClaim/app-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage7_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/nfs-data-pgadmin-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage72.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage72_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/postgres-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage74.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/elasticsearch-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/elasticsearch-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage75.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/standard failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage76.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/ebs-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage77.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mysql-pv-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/mysql-pv-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage77_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/wp-pv-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/wp-pv-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage78.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/standard failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage81.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage81_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/local-storage failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage82.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/supabase-storage-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/supabase-storage-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: storage82_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/supabase-storage-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage82_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-secrets -> resource default/Deployment/supabase-storage failed:
+1 - autogen-secrets-not-from-env validation error: No Secrets from env. rule autogen-secrets-not-from-env failed at path /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/
+policy disallow-default-namespace -> resource default/Deployment/supabase-storage failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/supabase-storage failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy secrets-not-from-env-vars -> resource default/Deployment/supabase-storage failed:
+1 - autogen-secrets-not-from-env-vars validation error: Secrets must be mounted as volumes, not as environment variables. rule autogen-secrets-not-from-env-vars failed at path /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/
+policy require-annotations -> resource default/Deployment/supabase-storage failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/supabase-storage failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/supabase-storage failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/supabase-storage failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/supabase-storage failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/supabase-storage failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/supabase-storage failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/supabase-storage failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/supabase-storage failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/supabase-storage failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/supabase-storage failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/supabase-storage failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/supabase-storage failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 33, fail: 19, warn: 0, error: 0, skip: 3 
+
+##### FILE: storage83.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/test-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage83_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/queue-data failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage84.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage84_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/local-storage failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage85.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/pv-log failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage85_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/claim-log-1 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/claim-log-1 failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage85_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Pod/webapp failed:
+1 - validate-namespace validation error: Using 'default' namespace is not allowed. rule validate-namespace failed at path /metadata/namespace/
+policy disallow-host-path -> resource default/Pod/webapp failed:
+1 - host-path validation error: HostPath volumes are forbidden. The field spec.volumes[*].hostPath must be unset. rule host-path failed at path /spec/volumes/1/hostPath/
+policy disallow-privilege-escalation -> resource default/Pod/webapp failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy require-annotations -> resource default/Pod/webapp failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-image-checksum -> resource default/Pod/webapp failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Pod/webapp failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Pod/webapp failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/
+policy require-labels -> resource default/Pod/webapp failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/
+policy require-non-root-groups -> resource default/Pod/webapp failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/runAsGroup/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Pod/webapp failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Pod/webapp failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Pod/webapp failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Pod/webapp failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy restrict-node-selection -> resource default/Pod/webapp failed:
+1 - restrict-nodename validation error: Setting the nodeName field is prohibited. rule restrict-nodename failed at path /spec/nodeName/
+policy validate-userid-groupid-fsgroup -> resource default/Pod/webapp failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/runAsUser/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/runAsGroup/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/fsGroup/
+
+pass: 35, fail: 17, warn: 0, error: 0, skip: 2 
+
+##### FILE: storage85_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/delayed-volume-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage85_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/local-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage86.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage86_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/local-storage failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage87.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/db-data failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage88.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/slow failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage88_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/myclaim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage88_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Pod/mypod failed:
+1 - validate-namespace validation error: Using 'default' namespace is not allowed. rule validate-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Pod/mypod failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Pod/mypod failed:
+1 - imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule imagepullpolicy-always failed at path /spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Pod/mypod failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-image-checksum -> resource default/Pod/mypod failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Pod/mypod failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Pod/mypod failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/
+policy require-labels -> resource default/Pod/mypod failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/
+policy require-non-root-groups -> resource default/Pod/mypod failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Pod/mypod failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Pod/mypod failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Pod/mypod failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Pod/mypod failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Pod/mypod failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/
+
+pass: 37, fail: 16, warn: 0, error: 0, skip: 1 
+
+##### FILE: storage89.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource immich/PersistentVolume/immich-data failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage89_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource immich/PersistentVolumeClaim/immich-data failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource immich/PersistentVolumeClaim/immich-data failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/ebs-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage90.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage90_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mypvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage90_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Pod/storagedemo failed:
+1 - validate-namespace validation error: Using 'default' namespace is not allowed. rule validate-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Pod/storagedemo failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Pod/storagedemo failed:
+1 - imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule imagepullpolicy-always failed at path /spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Pod/storagedemo failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-container-port-names -> resource default/Pod/storagedemo failed:
+1 - port-name validation error: Name is required for every containerPort. rule port-name failed at path /spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Pod/storagedemo failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Pod/storagedemo failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Pod/storagedemo failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/app/
+policy require-labels -> resource default/Pod/storagedemo failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Pod/storagedemo failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Pod/storagedemo failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Pod/storagedemo failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Pod/storagedemo failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Pod/storagedemo failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Pod/storagedemo failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/
+
+pass: 36, fail: 17, warn: 0, error: 0, skip: 1 
+
+##### FILE: storage91.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage91_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource blackbox-exporter/PersistentVolumeClaim/blackbox-exporter-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage92.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage92_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource homarr/PersistentVolumeClaim/homarr-config-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage92_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage92_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource homarr/PersistentVolumeClaim/homarr-data-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage92_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage92_5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource homarr/PersistentVolumeClaim/homarr-icons-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage93.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-persistent-storage-mongo-0 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage93_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-persistent-storage-mongo-1 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage93_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-persistent-storage-mongo-2 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage93_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/local-storage0 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage93_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/local-storage1 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage93_5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/local-storage2 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage94.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/mysql-sts-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage94_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mysql-sts-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage95.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/sas-ldap-data-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/sas-ldap-data-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage96.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage96_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/challenge-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage96_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Pod/challenge failed:
+1 - validate-namespace validation error: Using 'default' namespace is not allowed. rule validate-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Pod/challenge failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Pod/challenge failed:
+1 - imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule imagepullpolicy-always failed at path /spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Pod/challenge failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-container-port-names -> resource default/Pod/challenge failed:
+1 - port-name validation error: Name is required for every containerPort. rule port-name failed at path /spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Pod/challenge failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Pod/challenge failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Pod/challenge failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/app/
+policy require-labels -> resource default/Pod/challenge failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Pod/challenge failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Pod/challenge failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Pod/challenge failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Pod/challenge failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Pod/challenge failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Pod/challenge failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/
+
+pass: 36, fail: 17, warn: 0, error: 0, skip: 1 
+
+##### FILE: storage97.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage97_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mypvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage97_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Pod/storagedemo failed:
+1 - validate-namespace validation error: Using 'default' namespace is not allowed. rule validate-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Pod/storagedemo failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Pod/storagedemo failed:
+1 - imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule imagepullpolicy-always failed at path /spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Pod/storagedemo failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-container-port-names -> resource default/Pod/storagedemo failed:
+1 - port-name validation error: Name is required for every containerPort. rule port-name failed at path /spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Pod/storagedemo failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Pod/storagedemo failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Pod/storagedemo failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/app/
+policy require-labels -> resource default/Pod/storagedemo failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Pod/storagedemo failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Pod/storagedemo failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Pod/storagedemo failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Pod/storagedemo failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Pod/storagedemo failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Pod/storagedemo failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/
+
+pass: 36, fail: 17, warn: 0, error: 0, skip: 1 
+
+##### FILE: storage98.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy add-psa-namespace-reporting -> resource default/Namespace/wordpress failed:
+1 - check-namespace-labels validation error: This Namespace is missing a PSA label. rule check-namespace-labels failed at path /metadata/labels/
+policy enforce-ambient-mode-namespace -> resource default/Namespace/wordpress failed:
+1 - check-amblient-mode-enabled validation error: All new Namespaces must have Istio ambient mode enabled. rule check-amblient-mode-enabled failed at path /metadata/labels/
+policy enforce-sidecar-injection-namespace -> resource default/Namespace/wordpress failed:
+1 - check-istio-injection-enabled validation error: All new Namespaces must have Istio sidecar injection enabled. rule check-istio-injection-enabled failed at path /metadata/labels/
+policy kasten-validate-ns-by-preset-label -> resource default/Namespace/wordpress failed:
+1 - kasten-validate-ns-by-preset-label validation error: Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten Policy Preset:
+
+  "gold" - <Insert human readable settings of each preset option>
+  "silver" - <For example, hourly backups, exported to immutable S3 storage>
+  "bronze" - <Or, daily local snapshots, NOT exported to external storage>
+  "none" - No local snapshots or backups. rule kasten-validate-ns-by-preset-label failed at path /metadata/labels/
+policy require-linkerd-mesh-injection -> resource default/Namespace/wordpress failed:
+1 - require-mesh-annotation validation error: All Namespaces must set the annotation `linkerd.io/inject` to `enabled`. rule require-mesh-annotation failed at path /metadata/annotations/
+
+pass: 0, fail: 5, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage98_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource wordpress/PersistentVolumeClaim/wordpress-mysql-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage98_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource wordpress/PersistentVolumeClaim/public-content-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage98_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource wordpress/PersistentVolumeClaim/private-content-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage99.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy add-psa-namespace-reporting -> resource default/Namespace/net-haep failed:
+1 - check-namespace-labels validation error: This Namespace is missing a PSA label. rule check-namespace-labels failed at path /metadata/labels/
+policy enforce-ambient-mode-namespace -> resource default/Namespace/net-haep failed:
+1 - check-amblient-mode-enabled validation error: All new Namespaces must have Istio ambient mode enabled. rule check-amblient-mode-enabled failed at path /metadata/labels/
+policy enforce-sidecar-injection-namespace -> resource default/Namespace/net-haep failed:
+1 - check-istio-injection-enabled validation error: All new Namespaces must have Istio sidecar injection enabled. rule check-istio-injection-enabled failed at path /metadata/labels/
+policy kasten-validate-ns-by-preset-label -> resource default/Namespace/net-haep failed:
+1 - kasten-validate-ns-by-preset-label validation error: Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten Policy Preset:
+
+  "gold" - <Insert human readable settings of each preset option>
+  "silver" - <For example, hourly backups, exported to immutable S3 storage>
+  "bronze" - <Or, daily local snapshots, NOT exported to external storage>
+  "none" - No local snapshots or backups. rule kasten-validate-ns-by-preset-label failed at path /metadata/labels/
+policy require-linkerd-mesh-injection -> resource default/Namespace/net-haep failed:
+1 - require-mesh-annotation validation error: All Namespaces must set the annotation `linkerd.io/inject` to `enabled`. rule require-mesh-annotation failed at path /metadata/annotations/
+
+pass: 0, fail: 5, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage99_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource net-haep/PersistentVolumeClaim/net-mysql-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage99_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource net-haep/PersistentVolumeClaim/public-content-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storage99_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource net-haep/PersistentVolumeClaim/private-content-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass copy.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass--old.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/ebs-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-definition.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/standard failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-dist.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-dist1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-eks.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/redis-storage-eks failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-fast-gcepd.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/fast failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-fast-gcepd1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/fast failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-fast-hostpath.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/fast failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-fast-hostpath1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/fast failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-gp2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/gp2 failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-hostpath.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/hostpath failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-k8s-rgw.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-local.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/local-storage failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-lvm.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource kube-system/StorageClass/csi-carina-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass-nfs-csi.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/nfs-csi failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-nfs.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-nfs1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/nfs failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-noreplica.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-postgresql.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/storageclass-postgresql failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-postgresql1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/storageclass-postgresql failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-raw-exclusivity.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-raw.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource kube-system/StorageClass/csi-carina-raw failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-raw1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass-rbd-1-rep_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass.civo-volume.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass.standard-rwo.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass.standard.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/strigus failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass10.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/gp2 failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass100.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/manual failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass101.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/standard failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass102.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/manual failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass103.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/ebs-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass104.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass105.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/managed-premium-retain-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass106.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/my-local-storage failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass107.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/ebs-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass108.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/ebs-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass109.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/giropops failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass11.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass11_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass110.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/mongodb-storageclass1 failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass111.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/ebs-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass112.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/local-volume failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass113.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/standard failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass114.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/myAWSGP2Vol1 failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass115.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/my-storageclass failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass116.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/ebs failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass117.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/azure-storage failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass119.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/ebs-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass12.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/mongo-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass120.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/gold failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass121.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/local-storage failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass122.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass123.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass125.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass126.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass127.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/managed-premium failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass128.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/sts-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass129.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass13.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass130_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass131.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass132.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/storagec failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass134.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource gabriel/StorageClass/gabriel-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass135.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/custom-storageclass-premium failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass136.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/custom-storageclass-standardlrs-file failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass137.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/custom-storageclass-premium failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass138.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/custom-storageclass-standardlrs-file failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass139.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass14.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/low-latency failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass140.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/ebs-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass141.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass142.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass143.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass144.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/mongodb-storageclass failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass145.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/giropops failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass146.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/giropops failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass147.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/fast failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass148.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/nfs-storage failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass15.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/efs-storage failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass150.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/mongodb-storageclass failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass151.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/mongodb-storageclass failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass152.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/noop failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass153.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass154.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass154_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass154_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass155.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/giropops failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass156.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/nfs failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass157.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/manual failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass158.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/standard failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass159.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/manual failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass16.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/efs-storage failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass160.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/google-storage failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass161.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/ebs-storage failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass162.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/longhorn-replicated failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass162_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass163.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/giropops failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass164.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass165.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/ebs-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass167.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/truenas-iscsi-retain failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass168.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/truenas-nfs-retain failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass169.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass170.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass171.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass172.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass173.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass174.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass175.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass176.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass177.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/ebs-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass178.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass178_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass179.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/giropops failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass18.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/strigus failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass180.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/ebs-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass181_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass181_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass182.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass183.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/example-default-rwo failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass185.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/azurefile-csi failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass187.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass188.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass189.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass19.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/local-storage failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass190.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass191.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass192.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass193.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/giropops failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass194.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/storageslass-giropops failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass195.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/mongodb-storageclass failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass196.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass197.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource default/ConfigMap/longhorn-storageclass failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass198.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/giropops failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass199.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass199_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/local-storage failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass20_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass201.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass202.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass204.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/standard failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass205.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/mongodb-storageclass failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass206.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/mongodb-storageclass failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass207.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/mongodb-storageclass failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass208.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/aws-ebs-gp2 failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass209.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/sc-web failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass21.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/sourcegraph failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass210.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/mongodb-storageclass2 failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass211.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/standard-rwo failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass212.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/datastore failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass213.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/ebs-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass214.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/ebs-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass215.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/efs-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass22.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/giropops failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass23.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass24.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass25.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/mongodb-storageclass failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass26.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/goal-mongo-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass26_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource goalapp/PersistentVolumeClaim/cron-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass27.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/gp2 failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass28.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass28_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass29.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/mongo-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass3_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass30.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass31.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/low-latency failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass310.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/mongodb-storageclass3 failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass32.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/efs-storage failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass33.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/efs-storage failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: StorageClass34.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/google-storage failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass37.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/pixa-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass38.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/nfs-client failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageClass39.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/mystorageclass failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/sourcegraph failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass42.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/giropops failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass43.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/stc-greenplum failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass44.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/ebs-sc failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: storageclass45.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/storage-sombra failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+

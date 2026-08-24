@@ -1,0 +1,2995 @@
+
+##### FILE: service3951.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/rabbitmq failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3952.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/mongodb failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/mongodb failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3954.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/auth failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3955.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/gateway failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/gateway failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3957.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/passin-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3958.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/classifier-using-js-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/service.beta.kubernetes.io/aws-load-balancer-ssl-cert/
+policy no-loadbalancer-service -> resource default/Service/classifier-using-js-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/classifier-using-js-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service3959.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/covid-19-awarness-website-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/service.beta.kubernetes.io/aws-load-balancer-ssl-cert/
+policy no-loadbalancer-service -> resource default/Service/covid-19-awarness-website-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/covid-19-awarness-website-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service3960.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/app-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/service.beta.kubernetes.io/aws-load-balancer-ssl-cert/
+policy no-loadbalancer-service -> resource default/Service/app-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/app-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service3963.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/node-red-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/node-red-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3965.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource kube-system/Service/kube-state-metrics failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource kube-system/Service/kube-state-metrics failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3969.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource <Namespace>/Service/<Service Name> failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource <Namespace>/Service/<Service Name> failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3972.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource <namespace>/Service/<service name> failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/service.beta.kubernetes.io/aws-load-balancer-ssl-cert/
+policy no-loadbalancer-service -> resource <namespace>/Service/<service name> failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource <namespace>/Service/<service name> failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service3973.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/kubia failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/kubia failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3974.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/goserver-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/goserver-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/goserver-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service3975.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/backend-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3976.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/frontend-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3977.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/guestbook-ui failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/guestbook-ui failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3978.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/app-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/app-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3979.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/my-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/my-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3980.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/nginx-mt-svc failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/nginx-mt-svc failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3981.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/nginx-multitool-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/nginx-multitool-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/nginx-multitool-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service3983.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/goserver-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3984.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/nginx-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/nginx-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3985.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/product-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/product-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3986.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/nodeportsrv failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/nodeportsrv failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3988.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/k8s-web-hello failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/k8s-web-hello failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/k8s-web-hello failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service3989.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/goserver-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/goserver-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/goserver-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service3990.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3991.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/sann-opticals failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/sann-opticals failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3992.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/svc-simple-echo failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/svc-simple-echo failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3994.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/my-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/my-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3996.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/my-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/my-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3997.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/webapp-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/webapp-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/webapp-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service3998.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/mosquitto failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/mosquitto failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service3999.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/adguard failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/service.beta.kubernetes.io/aws-load-balancer-ssl-cert/
+policy no-loadbalancer-service -> resource default/Service/adguard failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/adguard failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/git-repo-server failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/git-repo-server failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service40.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/RELEASE-NAME-ok failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4000.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/homeassistant failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/homeassistant failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4001.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/homebridge failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/homebridge failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4002.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/nodered failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/nodered failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4003.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/my-app-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/my-app-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/my-app-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4004.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/mysql-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/mysql-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4005.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/node-red-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/node-red-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/node-red-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4006.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource development/Service/demo-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource development/Service/demo-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource development/Service/demo-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4007.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/nginx-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/nginx-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4008.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource frontend/Service/my-pod-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4009.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/cloth-app-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4010.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/home-app-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4011.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/mobile-app-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4012.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/timeserver failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/timeserver failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/timeserver failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4013.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/timeserver failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/timeserver failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/timeserver failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4014.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/timeserver failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/timeserver failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/timeserver failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4015.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/example-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/example-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/example-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4016.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource test/Service/nginx-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4024.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/serviceyaml failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/serviceyaml failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/serviceyaml failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4025.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/my-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/my-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service403.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/mysql-svc failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4039.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/jenkins failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service404.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/wordpress-svc failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4040.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/mc failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/mc failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4041.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource system/Service/webhook-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource system/Service/webhook-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4042.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/json-server failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/json-server failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4043.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource devops-tools/Service/jenkins-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource devops-tools/Service/jenkins-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4046.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource kube-system/Service/kube-state-metrics failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource kube-system/Service/kube-state-metrics failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4052.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/stroke-prediction failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/stroke-prediction failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/stroke-prediction failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4053.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/jenkins failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4054.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/next-app-public failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/next-app-public failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/next-app-public failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4054_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/backend-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/backend-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4056.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/release-name-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4057.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource devops-tools/Service/jenkins-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource devops-tools/Service/jenkins-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4058.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource devops-tools/Service/nexus-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource devops-tools/Service/nexus-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4059.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource devops-tools/Service/nexus-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource devops-tools/Service/nexus-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4060.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource kube-system/Service/kube-state-metrics failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource kube-system/Service/kube-state-metrics failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: Service4061.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource monitoring/Service/alertmanager failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource monitoring/Service/alertmanager failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4062.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource monitoring/Service/grafana failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource monitoring/Service/grafana failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4063.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/nginx failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/nginx failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4063_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/haproxy failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/haproxy failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4064.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4066.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/api-composer failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4067.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/auth-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/auth-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4068.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/chatbot-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/chatbot-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4069.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/frontend-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/frontend-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4070.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/member-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/member-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4071.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/post-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/post-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4072.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/recommend-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/recommend-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4073.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/reply-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/reply-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4074.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/report-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/report-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4075.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/search-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/search-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4076.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource backend/Service/signaling-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/service.beta.kubernetes.io/aws-load-balancer-ssl-cert/
+policy no-loadbalancer-service -> resource backend/Service/signaling-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource backend/Service/signaling-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4077.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/webrtc-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/webrtc-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4078.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource 3-tier-app/Service/backend-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4079.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource 3-tier-app/Service/mongodb-svc failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4080.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource 3-tier-app/Service/frontend-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4081.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource homepage/Service/homepage failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource homepage/Service/homepage failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4082.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource mealie/Service/mealie failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource mealie/Service/mealie failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4083.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource media/Service/bazarr failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource media/Service/bazarr failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4084.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource media/Service/jellyfin failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource media/Service/jellyfin failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4085.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource media/Service/prowlarr failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource media/Service/prowlarr failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4086.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource media/Service/qbittorrent failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource media/Service/qbittorrent failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4087.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource media/Service/radarr failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource media/Service/radarr failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4088.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource media/Service/readarr failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource media/Service/readarr failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4089.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource media/Service/sonarr failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource media/Service/sonarr failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service409.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/my-app failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/my-app failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/my-app failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4090.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource shiori/Service/shiori failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource shiori/Service/shiori failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4091.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource traggo/Service/traggo failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource traggo/Service/traggo failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4092.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/mario-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/mario-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/mario-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4093.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/app-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/app-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/app-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4095.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource canary/Service/app-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource canary/Service/app-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4096.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource dev/Service/app-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource dev/Service/app-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service41.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/RELEASE-NAME-ok failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service410.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/my-blue-green-app-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/my-blue-green-app-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/my-blue-green-app-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: Service4103.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/reddit-clone-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/reddit-clone-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/reddit-clone-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4104.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/otaq-operator failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/otaq-operator failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4106.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/axis-operator failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/axis-operator failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4108.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/nginx failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/nginx failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4109.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/video-operator failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/video-operator failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service411.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/my-app failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/my-app failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/my-app failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4110.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource helloworld-ns/Service/helloworld-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource helloworld-ns/Service/helloworld-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4111.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/currency-exchange failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/service.beta.kubernetes.io/aws-load-balancer-ssl-cert/
+policy no-loadbalancer-service -> resource default/Service/currency-exchange failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/currency-exchange failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4113.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/passin-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4114.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/nginx-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4116.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/mongodb failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/mongodb failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4118.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/auth failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4119.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/gateway failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/gateway failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service412.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/my-app failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/my-app failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/my-app failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4120.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/website failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/website failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4121.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/website failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/website failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4122.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/mongodb failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/mongodb failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4124.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/auth failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4125.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/gateway failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/gateway failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4127.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/wisecow-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/wisecow-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/wisecow-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4128.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource backstage/Service/backstage failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource backstage/Service/backstage failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4129.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource backstage/Service/postgres failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource backstage/Service/postgres failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service413.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/my-app failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4130.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource apps/Service/web-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource apps/Service/web-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4132.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/plc-operator failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/plc-operator failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4134.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/passin-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4137.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/swift-bank-api-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4138.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/payara-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/payara-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4139.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/springboot-k8s-svc failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/springboot-k8s-svc failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service414.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/my-app failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/my-app failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/my-app failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4140.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/nginx-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4142.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/passin-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4143.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/postgres failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/postgres failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4144.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/kuma failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/kuma failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4145.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/qinglong failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/qinglong failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4146.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/alist failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/alist failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4148.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource workshop/Service/mongodb-svc failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource workshop/Service/mongodb-svc failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service415.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource application/Service/my-app failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource application/Service/my-app failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: Service4152.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource microservices/Service/api-gateway failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: Service4153.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource microservices/Service/authentication-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: Service4154.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource microservices/Service/encode-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: Service4155.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource microservices/Service/upload-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: Service4156.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource microservices/Service/user-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: Service4157.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource microservices/Service/video-catalog-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4159.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/myapp failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/myapp failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service416.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/knote failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/knote failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Deployment/knote failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Deployment/knote failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/knote failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Deployment/knote failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/knote failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/knote failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/knote failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/knote failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/knote failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/knote failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/knote failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/knote failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/knote failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 36, fail: 17, warn: 0, error: 0, skip: 2 
+
+##### FILE: service416_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/knote failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/knote failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/knote failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4161.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource system/Service/webhook-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource system/Service/webhook-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4164.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource backend/Service/backend-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4165.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource monitoring/Service/cadvisor failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4166.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource monitoring/Service/grafana failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4167.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource mongodb/Service/mongodb-exporter failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource mongodb/Service/mongodb-exporter failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4168.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource monitoring/Service/prometheus-operator failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource monitoring/Service/prometheus-operator failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service417.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/my-app failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/my-app failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/my-app failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4170.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/learnwisefrontend-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/learnwisefrontend-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4172.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource development/Service/demo-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource development/Service/demo-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource development/Service/demo-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4173.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource argocd/Service/argocd-image-updater failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource argocd/Service/argocd-image-updater failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4174.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/homarr failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/homarr failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/homarr failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4175.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/code-server failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/code-server failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4176.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/frigate failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/service.beta.kubernetes.io/aws-load-balancer-ssl-cert/
+policy no-loadbalancer-service -> resource default/Service/frigate failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/frigate failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4177.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource home/Service/homeassistant failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource home/Service/homeassistant failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource home/Service/homeassistant failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4178.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/homer failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/homer failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4179.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/mqtt failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/mqtt failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/mqtt failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service418.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/my-blue-green-app-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/my-blue-green-app-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/my-blue-green-app-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4180.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/audioarr failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4181.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/bazarr failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4182.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/jellyfin failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4183.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/jellyseerr failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4184.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/jellystat failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4185.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/lidarr failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4186.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/plex failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/plex failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/plex failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/1/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4187.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/prowlarr failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4188.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/radarr failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4189.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/readarr failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service419.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/my-app failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/my-app failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/my-app failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4190.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/sonarr failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4191.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/tdarr failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4192.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/transmission-books failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4193.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/transmission-movies failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4194.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/transmission-music failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4195.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/transmission-tv failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4196.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/karma failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4197.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/karma failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4198.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/smb-server failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/service.beta.kubernetes.io/aws-load-balancer-ssl-cert/
+policy no-loadbalancer-service -> resource default/Service/smb-server failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/smb-server failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4199.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/test failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service42.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource kube-system/Service/kube-state-metrics failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource kube-system/Service/kube-state-metrics failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service420.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/my-app failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/my-app failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/my-app failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4202.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/nginx-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/nginx-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service421.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/my-app failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4210.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/nats failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4211.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/db failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4212.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/db failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4213.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/redis failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4214.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/result failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/result failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4215.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/result failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/result failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4216.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/result-ui failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/result-ui failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4217.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/result-ui failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/result-ui failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4218.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/vote failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/vote failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4219.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/vote failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/vote failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service422.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/my-app failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/my-app failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/my-app failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4220.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/vote-ui failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4221.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/vote-ui failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4222.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/postgres-lb failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/service.beta.kubernetes.io/aws-load-balancer-ssl-cert/
+policy no-loadbalancer-service -> resource default/Service/postgres-lb failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/postgres-lb failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4229.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/app1-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/app1-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service423.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource application/Service/my-app failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource application/Service/my-app failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4230.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/app2-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/app2-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4231.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/app3-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/app3-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4232.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/webhook-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/webhook-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4234.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/nginx-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/nginx-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4237.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/fastapi-app failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/fastapi-app failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/fastapi-app failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4239.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource game-2048/Service/my-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource game-2048/Service/my-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4241.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/blog-website-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/service.beta.kubernetes.io/aws-load-balancer-ssl-cert/
+policy no-loadbalancer-service -> resource default/Service/blog-website-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/blog-website-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4242.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/app1-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/app1-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/app1-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4243.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/app2-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4244.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/nginx-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/nginx-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4249.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/mongo-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/mongo-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service425.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/goserver-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/goserver-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/goserver-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4250.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/mongo-svc failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/mongo-svc failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4252.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/myapp-nodeport-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/myapp-nodeport-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4253.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/ambassador-nodeport-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/ambassador-nodeport-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4254.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/postgres failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/postgres failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4255.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource monitoring/Service/grafana failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource monitoring/Service/grafana failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4256.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/kube-state-metrics failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/kube-state-metrics failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4257.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/prometheus-operator failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/prometheus-operator failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4258.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource monitoring/Service/kube-state-metrics failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource monitoring/Service/kube-state-metrics failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4259.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource monitoring/Service/node-exporter failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource monitoring/Service/node-exporter failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4260.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource monitoring/Service/prometheus-operator failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource monitoring/Service/prometheus-operator failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4261.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource monitoring/Service/kube-state-metrics failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource monitoring/Service/kube-state-metrics failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4262.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource monitoring/Service/node-exporter failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource monitoring/Service/node-exporter failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4263.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource monitoring/Service/prometheus-operator failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource monitoring/Service/prometheus-operator failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4264.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/my-app failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/my-app failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4265.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/my-app failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/my-app failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/my-app failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4266.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/my-app failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/my-app failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4267.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/nodesrvc failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/nodesrvc failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4268.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/websrvc failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4269.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/node-k8s-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/node-k8s-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/node-k8s-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4270.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/go-app failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/go-app failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4271.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/my-app failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4274.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/website-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/website-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4275.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource react-demo/Service/react-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource react-demo/Service/react-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4277.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/prestashop failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4278.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/prestashop failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4283.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource powertop-exporter/Service/powertop-exporter failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4285.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/hike-hawaii-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/hike-hawaii-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4287.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource monitoring/Service/grafana failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/service.beta.kubernetes.io/aws-load-balancer-ssl-cert/
+policy no-loadbalancer-service -> resource monitoring/Service/grafana failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource monitoring/Service/grafana failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4289.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/env-injector-webhook-svc failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/env-injector-webhook-svc failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service429.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/myapp-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/myapp-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4291.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/fleetman-webapp failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/fleetman-webapp failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4291_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/fleetman-queue failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/fleetman-queue failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4292.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource system/Service/webhook-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource system/Service/webhook-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4293.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/backend failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/backend failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4294.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/frontend failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/frontend failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4295.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource monitoring/Service/grafana failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource monitoring/Service/grafana failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4296.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/mysql-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4297.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource monitoring/Service/prometheus-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource monitoring/Service/prometheus-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4298.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource kube-system/Service/kube-state-metrics failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource kube-system/Service/kube-state-metrics failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service430.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/cluster-app-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/cluster-app-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/cluster-app-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service430_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/cluster-app-headless-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4300.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/nginx-test failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/nginx-test failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/nginx-test failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4301.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/story-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/story-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/story-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4302.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/story-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/story-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/story-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4303.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/story-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/story-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/story-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4305.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource django/Service/django failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4305_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource django/Service/nginx failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4307.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/demo-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/demo-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/demo-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4309.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource blackbox-exporter/Service/blackbox-exporter failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource blackbox-exporter/Service/blackbox-exporter failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4310.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/elasticsearch-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/elasticsearch-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4311.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/kibana-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/kibana-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4312.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/logstash-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/logstash-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4313.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource grafana/Service/grafana failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4314.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource homarr/Service/homarr failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4315.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource homepage/Service/homepage failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4316.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/jenkins-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/jenkins-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4317.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/postgres-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: service4318.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource prometheus/Service/prometheus failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4319.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/rabbitmq-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/rabbitmq-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service432.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/story-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/story-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/story-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4320.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource kube-system/Service/traefik failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource kube-system/Service/traefik failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4321.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/hello-kubernetes-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/hello-kubernetes-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4334.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/the-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/the-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/the-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4335.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/the-service failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/the-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/the-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: service4336.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/test-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/test-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4337.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource wardle/Service/api failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource wardle/Service/api failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4338.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/cassandra failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/cassandra failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4339.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/cockroachdb failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/cockroachdb failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4340.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/etcd failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/etcd failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4341.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/galera failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/galera failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4342.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/mysql failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/mysql failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: service4342_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/mysql-read failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/mysql-read failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/mysql-read failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+

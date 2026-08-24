@@ -1,0 +1,2658 @@
+
+##### FILE: pvc155.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/my-pv failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/my-pv failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc156.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/gogs-db-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/gogs-db-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc157.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/gogs-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/gogs-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc158.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/rethinkdb-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/rethinkdb-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc159.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongodb-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc16.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/csi-cephfs-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc163.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource ghost/PersistentVolumeClaim/ghost failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc164.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource ghost/PersistentVolumeClaim/mysql failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc165.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/long-pvc-h failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc166.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/ngrok-pvc-h failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc167.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/static-pvc-h failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc168.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc-web failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc169.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc17.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/rbd-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc170.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/test-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc171.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc-one failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/pvc-one failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc172.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/goserver-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/goserver-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc173.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/goserver-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/goserver-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc174.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/goserver-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/goserver-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc175.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mysql failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc176.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mysql failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc18.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/ failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/ failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc189.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/meu-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc19.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/ failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/ failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc191.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource dev/PersistentVolumeClaim/postgres-test failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc192.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/ebs-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc193.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mypvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc194.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource development/PersistentVolumeClaim/jekyll-site failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource development/PersistentVolumeClaim/jekyll-site failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc195.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/rabbitmq-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc196.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mysql-pv-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/mysql-pv-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc197.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongodb-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc198.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/rabbitmq-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc2-nfs.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc2-nfs failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/pvc2-nfs failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mysqlbackup-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc20.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/persistent-volume failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/persistent-volume failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc201.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/rabbitmq-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc202.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource portainer/PersistentVolumeClaim/portainer failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource portainer/PersistentVolumeClaim/portainer failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc203.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/rabbitmq-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc204.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pipelinerun-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc205.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/rabbitmq-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc209.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource home/PersistentVolumeClaim/immich-machine-learning-cache failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc21.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc2 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/pvc2 failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc210.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc2 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/pvc2 failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc2100.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/my-disk-claim-2 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc2101.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/sampleshared failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc2102.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/claim-anvesh failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/claim-anvesh failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: PVC2103.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/local-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc2104.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/claim-anvesh failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/claim-anvesh failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: PVC2105.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/local-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc211.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/local-pvc2 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc212.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/radarr failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc213.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/radarr-uhd failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc214.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/sonarr failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc215.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/sonarr-foreign failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc216.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/sonarr-uhd failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc217.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/whisparr failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc218.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/plex-cache failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc219.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/tautulli-cache failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc22.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/local-pvc2 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc220.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/palworld-cache failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc221.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/romm-resources failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc221_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/romm-assets failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc222.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/filebrowser failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc223.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource dbms/PersistentVolumeClaim/pg-backup failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc224.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/filebrowser-config failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc224_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/filebrowser-media failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc224_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/filebrowser-gopro failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc225.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/freshrss-data failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc226.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/lubelogger failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc227.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mealie-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc228.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/paperless failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc229.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/radicale failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc230.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/vikunja-files failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc231.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource immich/PersistentVolumeClaim/immich-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc232.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource media/PersistentVolumeClaim/bazarr failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc233.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource media/PersistentVolumeClaim/qbittorrent failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc234.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource music/PersistentVolumeClaim/deemix-config-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc235.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource music/PersistentVolumeClaim/music-nfs-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc236.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/minio failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc237.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource projectname/PersistentVolumeClaim/projectname-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc238.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/my-local-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/my-local-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc239.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc-storage failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/pvc-storage failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc24.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/primeiro-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/primeiro-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc241.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/local-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc242.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/pvc-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc243.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource openmetadata/PersistentVolumeClaim/openmetadata-dependencies-logs failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc243_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource openmetadata/PersistentVolumeClaim/openmetadata-dependencies-dags failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc243_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-privilege-escalation -> resource openmetadata/Pod/my-permission-pod failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource openmetadata/Pod/my-permission-pod failed:
+1 - imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule imagepullpolicy-always failed at path /spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource openmetadata/Pod/my-permission-pod failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-image-checksum -> resource openmetadata/Pod/my-permission-pod failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource openmetadata/Pod/my-permission-pod failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource openmetadata/Pod/my-permission-pod failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/app/
+policy require-labels -> resource openmetadata/Pod/my-permission-pod failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource openmetadata/Pod/my-permission-pod failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource openmetadata/Pod/my-permission-pod failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource openmetadata/Pod/my-permission-pod failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource openmetadata/Pod/my-permission-pod failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource openmetadata/Pod/my-permission-pod failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource openmetadata/Pod/my-permission-pod failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/
+
+pass: 38, fail: 15, warn: 0, error: 0, skip: 1 
+
+##### FILE: pvc244.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/nginx-storage failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc245.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pv-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/pv-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc246.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/goserver-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/goserver-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc247.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/persistent-vol-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/persistent-vol-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc248.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mypvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc249.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/goserver-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/goserver-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc25.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/goserver-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/goserver-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc250.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/ease-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc251.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mysql-pv-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc252.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/tandoor-media failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc252_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/tandoor-static failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc253.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource media/PersistentVolumeClaim/media failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc254.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/media-browser failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc255.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/qbittorrent failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc256.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/sabnzbd failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc257.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource fediverse/PersistentVolumeClaim/elk-config failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc258.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource fediverse/PersistentVolumeClaim/peertube-config failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc259.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/media failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc26.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/goserver-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/goserver-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc260.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/rabbitmq-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc261.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/rabbitmq-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc266.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc267.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource awesome/PersistentVolumeClaim/my-sbs-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc269.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/postgres-pv-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc27.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongodb-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc271.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/home-assistant-cache failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc272.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc272_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/nextcloud-data failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc273.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/plex-cache failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc274.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/${APP} failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc278.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource devproject/PersistentVolumeClaim/devpvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc279.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-pvc-storageclass failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc28.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/rabbitmq-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc280.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/ebs-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc281.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-pvc-sc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc282.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/ebs-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc283.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pi-proxy-pvc-local failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/pi-proxy-pvc-local failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc284.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pi-proxy-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/pi-proxy-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc285.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/hpvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc286.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/myclaim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/myclaim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc287.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/test-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc288.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/myclaim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc289.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc-xfusion failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc29.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource ipfs/PersistentVolumeClaim/pvcforipfs failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc292.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mysql-pv-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc293.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/mongo-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc294.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource staging/PersistentVolumeClaim/ebs-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc295.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc-postgresql failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/new-data-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/new-data-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc30.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mariadb-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/mariadb-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc300.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/ failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc301.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/demo-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc303.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/cka-pvc-q3 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc304.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongodb-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc305.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/rabbitmq-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc306.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc307.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/ebs-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc31.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc3 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/pvc3 failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc310.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc3 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/pvc3 failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc3100.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mypvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/mypvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc3101.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mypvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/mypvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc311.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/local-pvc3 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc312.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/my-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/my-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc313.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/rabbitmq-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc314.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/codelabs-archives-backup-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc315.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/codelabs-postgres-backup-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc316.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/codelabs-postgres-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc317.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/codelabs-rabbitmq-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc318.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/codelabs-static-files-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc32.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/local-pvc3 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc320.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/example-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/example-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc321.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/example-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc324.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mssql-system failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc324_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mssql-data failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc324_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mssql-log failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc325.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-pvc-sc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc326.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongo-pvc-sc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc327.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/csi-s3-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc329.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy add-psa-namespace-reporting -> resource default/Namespace/test failed:
+1 - check-namespace-labels validation error: This Namespace is missing a PSA label. rule check-namespace-labels failed at path /metadata/labels/
+policy enforce-ambient-mode-namespace -> resource default/Namespace/test failed:
+1 - check-amblient-mode-enabled validation error: All new Namespaces must have Istio ambient mode enabled. rule check-amblient-mode-enabled failed at path /metadata/labels/
+policy enforce-sidecar-injection-namespace -> resource default/Namespace/test failed:
+1 - check-istio-injection-enabled validation error: All new Namespaces must have Istio sidecar injection enabled. rule check-istio-injection-enabled failed at path /metadata/labels/
+policy kasten-validate-ns-by-preset-label -> resource default/Namespace/test failed:
+1 - kasten-validate-ns-by-preset-label validation error: Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten Policy Preset:
+
+  "gold" - <Insert human readable settings of each preset option>
+  "silver" - <For example, hourly backups, exported to immutable S3 storage>
+  "bronze" - <Or, daily local snapshots, NOT exported to external storage>
+  "none" - No local snapshots or backups. rule kasten-validate-ns-by-preset-label failed at path /metadata/labels/
+policy require-linkerd-mesh-injection -> resource default/Namespace/test failed:
+1 - require-mesh-annotation validation error: All Namespaces must set the annotation `linkerd.io/inject` to `enabled`. rule require-mesh-annotation failed at path /metadata/annotations/
+
+pass: 0, fail: 5, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc329_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource test/Service/keycloak-web failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: pvc329_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource test/PersistentVolumeClaim/keycloak failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc329_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-annotations -> resource test/Deployment/keycloak failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy deployment-has-multiple-replicas -> resource test/Deployment/keycloak failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-kubecost-labels -> resource test/Deployment/keycloak failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/app/
+policy require-non-root-groups -> resource test/Deployment/keycloak failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/runAsGroup/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/runAsGroup/
+policy require-pod-priorityclassname -> resource test/Deployment/keycloak failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource test/Deployment/keycloak failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/readOnlyRootFilesystem/
+policy restrict-automount-sa-token -> resource test/Deployment/keycloak failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource test/Deployment/keycloak failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource test/Deployment/keycloak failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/runAsUser/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/runAsGroup/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/fsGroup/
+
+pass: 40, fail: 11, warn: 0, error: 0, skip: 4 
+
+##### FILE: pvc33.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/minio-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/minio-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc331.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/helloworld-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc332.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/my-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/my-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc333.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc334.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc335.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/local-pvc-test failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc336.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mypvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc337.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mypvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc338.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/azure-managed-disk-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc339.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/drupal-mysql-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/drupal-mysql-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc34.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/wordpress-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/wordpress-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc34_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/wordpress-restore-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/wordpress-restore-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc340.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/goserver-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/goserver-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc341.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pv-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc342.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/meu-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc343.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc344.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/jenkins-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc347.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource jenkins-stack/PersistentVolumeClaim/docker-data failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource jenkins-stack/PersistentVolumeClaim/docker-data failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc347_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource jenkins-stack/PersistentVolumeClaim/docker-certs failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource jenkins-stack/PersistentVolumeClaim/docker-certs failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc347_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource jenkins-stack/PersistentVolumeClaim/docker-certs-client failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource jenkins-stack/PersistentVolumeClaim/docker-certs-client failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc348.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource jenkins-stack/PersistentVolumeClaim/gitea-data failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource jenkins-stack/PersistentVolumeClaim/gitea-data failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc349.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource jenkins-stack/PersistentVolumeClaim/jenkins-data failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource jenkins-stack/PersistentVolumeClaim/jenkins-data failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc35.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource authentik/PersistentVolumeClaim/authentik-media failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc35_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource authentik/PersistentVolumeClaim/authentik-custom-templates failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc350.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource jenkins-stack/PersistentVolumeClaim/registry-data failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource jenkins-stack/PersistentVolumeClaim/registry-data failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc351.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource livebook/PersistentVolumeClaim/livebook-data-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc356.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc358.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc362.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/admins-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/admins-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc362_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/users-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/users-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc369.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/frigate-data failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc369_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/frigate-config failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc369_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/frigate-media failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc370.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mosquitto failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc371.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/paperless-localdata failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc371_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/paperless-data failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc372.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/whisper-models failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc373.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource storage/PersistentVolumeClaim/minio-data failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc375.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc376.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource relp-rsyslog/PersistentVolumeClaim/relp-storage failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc377.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc378.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/dynamic-nfs-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: PVC380.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/my-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/my-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc381.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/ failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/ failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc383.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/nginx-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc384.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/myclaim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc388.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/test-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc389.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/gogs-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc389_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/gogs-pv-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc390.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/jenkins-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc390_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/jenkins-pv-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc391.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/registry-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc391_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/registry-pv-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc392.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource kube-dump/PersistentVolumeClaim/kube-dump failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource kube-dump/PersistentVolumeClaim/kube-dump failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc394.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/volume-demo-pv-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/volume-demo-pv-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc396.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource wp-ivan/PersistentVolumeClaim/pvc-wp failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource wp-ivan/PersistentVolumeClaim/pvc-wp failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc397.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource tools/PersistentVolumeClaim/jenkins-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc398.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc399.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/data-mysql-0 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/my-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc400.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource docker-registry/PersistentVolumeClaim/longhorn-docker-registry-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc401.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mongodb-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc402.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/rabbitmq-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc403.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource cti-svcs-cdso-gdk-169643/PersistentVolumeClaim/elasticsearch-kibana failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource cti-svcs-cdso-gdk-169643/PersistentVolumeClaim/elasticsearch-kibana failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc404.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc405.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc41.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc4 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/pvc4 failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc410.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc4 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/pvc4 failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc411.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc412.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/db-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc414.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource quiz-app/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource quiz-app/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc416.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/efs-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc417.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource common-metric/PersistentVolumeClaim/grafana-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc418.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource easterhegg21/PersistentVolumeClaim/webserver-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource easterhegg21/PersistentVolumeClaim/webserver-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc423.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mnist-model-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc424.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/cache failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc425.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/caddy-data failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/caddy-data failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc426.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/forgejo-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/forgejo-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc427.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/nginx-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/nginx-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc428.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc1 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/pvc1 failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc429.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/ failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/ failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc430.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/ failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/ failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc431.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/my-local-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc432.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource development/PersistentVolumeClaim/jekyll-site failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource development/PersistentVolumeClaim/jekyll-site failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc433.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource three-tier/PersistentVolumeClaim/mongo-volume-claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc435.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/jenkins-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/jenkins-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc436.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/login-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc437.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc438.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/my-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc439.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/goserver-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/goserver-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc440.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/ebs-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc441.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc-web failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc442.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/nginxdata failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc443.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/goserver-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/goserver-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc444.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pipelinerun-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc445.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/azurefile failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/azurefile failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc449.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/task-pv-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc45.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/invoiceninja-data-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc450.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc-azure failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc452.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource auth-system/PersistentVolumeClaim/lldap-data failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc455.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/default-media-smb-kantai1 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/default-media-smb-kantai1 failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc456.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/media-smb-media1 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/media-smb-media1 failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc457.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/plex-local failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc458.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/zfs-media1 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/zfs-media1 failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc458_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/homeassistant-backup failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/homeassistant-backup failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc459.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/storage-media-kantai1-zfs failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/storage-media-kantai1-zfs failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc46.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource media/PersistentVolumeClaim/nfs-config-tdarr-server failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc46_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource media/PersistentVolumeClaim/nfs-config-tdarr-config failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc46_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource media/PersistentVolumeClaim/nfs-tdarr-cache failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc460.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/flood-config failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/flood-config failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc460_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/flood-data failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/flood-data failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc461.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource pihole/PersistentVolumeClaim/pihole-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource pihole/PersistentVolumeClaim/pihole-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc462.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource speedtest/PersistentVolumeClaim/speedtest-tracker failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource speedtest/PersistentVolumeClaim/speedtest-tracker failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc463.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource home-dashboard/PersistentVolumeClaim/homarr-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource home-dashboard/PersistentVolumeClaim/homarr-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc464.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/qbittorrent-config failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/qbittorrent-config failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc465.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/recyclarr failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/recyclarr failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc466.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/ntfy-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/ntfy-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc467.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/postgres-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/postgres-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc47.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/radarr failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc470.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/db-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc471.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/${APP} failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc472.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/${APP} failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc477.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/immich-data-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc48.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/sonarr failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc480.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc480_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource immich/PersistentVolumeClaim/photos-nfs failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc481.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mariadb-data-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc482.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mysql-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc483.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource httpd-server/PersistentVolumeClaim/httpd-data-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pvc484.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource web/PersistentVolumeClaim/mypvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+

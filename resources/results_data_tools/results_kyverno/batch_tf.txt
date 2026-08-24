@@ -1,0 +1,2360 @@
+
+##### FILE: pv-pvc5_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mypvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-pvc5_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/pv-pvc failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/pv-pvc failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Deployment/pv-pvc failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Deployment/pv-pvc failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/pv-pvc failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/pv-pvc failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/pv-pvc failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/pv-pvc failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/pv-pvc failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/pv-pvc failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/pv-pvc failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/pv-pvc failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/pv-pvc failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/pv-pvc failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/pv-pvc failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/pv-pvc failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 36, fail: 18, warn: 0, error: 0, skip: 1 
+
+##### FILE: pv-pvc5_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-encryption-aws-loadbalancers -> resource default/Service/pv-pvc failed:
+1 - aws-loadbalancer-has-ssl-cert validation error: Service of type LoadBalancer must carry the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert. rule aws-loadbalancer-has-ssl-cert failed at path /metadata/annotations/
+policy no-loadbalancer-service -> resource default/Service/pv-pvc failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/pv-pvc failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 3, warn: 0, error: 0, skip: 1 
+
+##### FILE: pv-pvc6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/task-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-pvc6_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/task-pv-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-pvc8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-pvc8_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource monitoring/PersistentVolumeClaim/pvc-nfs-data failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-pvc9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/data-kong-postgresql-0 failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-pvc9_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/pv-data-kong-postgresql failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-reader.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-reader1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-redis-data-gitlab-redis-master-0.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-repo-data-gitlab-gitaly-0.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-rnd.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/pv-rnd failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-seq.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-smb.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-task.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/task-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-tmp.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/pv-tmp failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-tv.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-tv1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV-vol.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-volume-claim.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/prometheus-server-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-volume-claim2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/prometheus-alertmanager-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-volume-hostpath.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/task-pv-volume-hostpath failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-volume.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-volume1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/first-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-volume10.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/first-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-volume11.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/first-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-volume12.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-volume13.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/first-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-volume14.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/backup-task-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-volume15.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/task-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-volume2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-volume3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/first-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-volume4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/first-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-volume5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/first-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-volume6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/first-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-volume7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/first-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-volume8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/radarr-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-volume9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/sonarr-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-wordpress.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv-wordpress1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv.example-nfs-mongodb.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv.example-nfs-mongodb1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv.local-ssd-on-kind-worker.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv.local-ssd-on-kind-worker1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv.other-data.gcepd.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv.other-data.gcepd1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv.other-data.hostpath.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/other-data failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv.other-data.hostpath1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/other-data failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv.quiz-data.gcepd.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv.quiz-data.gcepd1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv.quiz-data.hostpath.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/quiz-data failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv.quiz-data.hostpath1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/quiz-data failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource synapse/PersistentVolume/postgres-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv001.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/pv001 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv001_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/pv002 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource synapse/PersistentVolume/synapse-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv1_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource synapse/PersistentVolumeClaim/synapse-pv-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv100.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/rabbitmq-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv101.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/my-local-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv102.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/pv-storage failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv103.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv104.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv105.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv106.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/redis01 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv106_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/redis02 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv106_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/redis03 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv106_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/redis04 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv106_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/redis05 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv106_5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/redis06 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv107.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv108.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv109.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv11.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv110.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/mongo-pv1 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv1100.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv111.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv112.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/mongo-pv1 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv113.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/pvc-2c9988c6-bc89-4987-8dd5-95f154ee5b83 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv114.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/persistent-vol failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv115.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv116.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/meu-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv117.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv117_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv117_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv118.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/pv-hostpath failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv118_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/pvc-hostpath failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv118_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/mongo-db-deploy failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/mongo-db-deploy failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Deployment/mongo-db-deploy failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Deployment/mongo-db-deploy failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/mongo-db-deploy failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource default/Deployment/mongo-db-deploy failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/mongo-db-deploy failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/mongo-db-deploy failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/mongo-db-deploy failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/mongo-db-deploy failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/mongo-db-deploy failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/mongo-db-deploy failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/mongo-db-deploy failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/mongo-db-deploy failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/mongo-db-deploy failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/mongo-db-deploy failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 35, fail: 18, warn: 0, error: 0, skip: 2 
+
+##### FILE: pv118_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/mongo failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: pv118_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/mongo-spring-boot-deploy failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/mongo-spring-boot-deploy failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/mongo-spring-boot-deploy failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/mongo-spring-boot-deploy failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Deployment/mongo-spring-boot-deploy failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/mongo-spring-boot-deploy failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/mongo-spring-boot-deploy failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/mongo-spring-boot-deploy failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/mongo-spring-boot-deploy failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/mongo-spring-boot-deploy failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/mongo-spring-boot-deploy failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/mongo-spring-boot-deploy failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/mongo-spring-boot-deploy failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/mongo-spring-boot-deploy failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 36, fail: 16, warn: 0, error: 0, skip: 3 
+
+##### FILE: pv118_5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/spring-svc failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/spring-svc failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: pv119.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv120.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/sfg-dev-mysql-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv121.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv122.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/postgres-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv123.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/myvolume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv123_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/claim failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv123_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/standard failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv1231.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv1231_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv1231_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv1232.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv1232_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv1232_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv124.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv124_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv124_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv124_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv124_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv125.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv126.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/my-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv127.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/pv-xfusion failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv128.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/mysql-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv129.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv130.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/demo-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv132.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/cka-pv-q3 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv133.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/mongodb-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv134.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/rabbitmq-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv135.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv136.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv137.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/example-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv138.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/example-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv139.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv140.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv141.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv142.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv143.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/block-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv144.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/block-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV145.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy block-ephemeral-containers -> resource default/Deployment/deploy-vo failed:
+1 - autogen-block-ephemeral-containers validation error: Ephemeral (debug) containers are not permitted. rule autogen-block-ephemeral-containers failed at path /spec/template/spec/
+policy check-env-vars -> resource default/Deployment/deploy-vo failed:
+1 - autogen-check-disable-opa validation error: DISABLE_OPA must not be set to true. rule autogen-check-disable-opa failed at path /spec/template/spec/
+policy psp-check-supplemental-groups -> resource default/Deployment/deploy-vo failed:
+1 - autogen-supplementalgroup-ranges validation error: Any supplementalGroup ID must be within the range 100-200 or 500-600. rule autogen-supplementalgroup-ranges failed at path /spec/template/spec/
+policy no-secrets -> resource default/Deployment/deploy-vo failed:
+1 - autogen-secrets-not-from-env validation error: No Secrets from env. rule autogen-secrets-not-from-env failed at path /spec/template/spec/
+2 - autogen-secrets-not-from-envfrom validation error: No Secrets from envFrom. rule autogen-secrets-not-from-envfrom failed at path /spec/template/spec/
+3 - autogen-secrets-not-from-volumes validation error: No Secrets from volumes. rule autogen-secrets-not-from-volumes failed at path /spec/template/spec/
+policy disallow-container-sock-mounts -> resource default/Deployment/deploy-vo failed:
+1 - autogen-validate-docker-sock-mount validation error: Use of the Docker Unix socket is not allowed. rule autogen-validate-docker-sock-mount failed at path /spec/template/spec/
+2 - autogen-validate-containerd-sock-mount validation error: Use of the Containerd Unix socket is not allowed. rule autogen-validate-containerd-sock-mount failed at path /spec/template/spec/
+3 - autogen-validate-crio-sock-mount validation error: Use of the CRI-O Unix socket is not allowed. rule autogen-validate-crio-sock-mount failed at path /spec/template/spec/
+4 - autogen-validate-dockerd-sock-mount validation error: Use of the Docker CRI socket is not allowed. rule autogen-validate-dockerd-sock-mount failed at path /spec/template/spec/
+policy disallow-default-namespace -> resource default/Deployment/deploy-vo failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-host-namespaces -> resource default/Deployment/deploy-vo failed:
+1 - autogen-host-namespaces validation error: Sharing the host namespaces is disallowed. The fields spec.hostNetwork, spec.hostIPC, and spec.hostPID must be unset or set to `false`. rule autogen-host-namespaces failed at path /spec/template/spec/
+policy disallow-host-path -> resource default/Deployment/deploy-vo failed:
+1 - autogen-host-path validation error: HostPath volumes are forbidden. The field spec.volumes[*].hostPath must be unset. rule autogen-host-path failed at path /spec/template/spec/
+policy disallow-host-ports -> resource default/Deployment/deploy-vo failed:
+1 - autogen-host-ports-none validation error: Use of host ports is disallowed. The fields spec.containers[*].ports[*].hostPort , spec.initContainers[*].ports[*].hostPort, and spec.ephemeralContainers[*].ports[*].hostPort must either be unset or set to `0`. rule autogen-host-ports-none failed at path /spec/template/spec/
+policy disallow-host-process -> resource default/Deployment/deploy-vo failed:
+1 - autogen-host-process-containers validation error: HostProcess containers are disallowed. The fields spec.securityContext.windowsOptions.hostProcess, spec.containers[*].securityContext.windowsOptions.hostProcess, spec.initContainers[*].securityContext.windowsOptions.hostProcess, and spec.ephemeralContainers[*].securityContext.windowsOptions.hostProcess must either be undefined or set to `false`. rule autogen-host-process-containers failed at path /spec/template/spec/
+policy disallow-privilege-escalation -> resource default/Deployment/deploy-vo failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/
+policy disallow-privileged-containers -> resource default/Deployment/deploy-vo failed:
+1 - autogen-privileged-containers validation error: Privileged mode is disallowed. The fields spec.containers[*].securityContext.privileged, spec.initContainers[*].securityContext.privileged, and spec.ephemeralContainers[*].securityContext.privileged must be unset or set to `false`. rule autogen-privileged-containers failed at path /spec/template/spec/
+policy disallow-proc-mount -> resource default/Deployment/deploy-vo failed:
+1 - autogen-check-proc-mount validation error: Changing the proc mount from the default is not allowed. The fields spec.containers[*].securityContext.procMount, spec.initContainers[*].securityContext.procMount, and spec.ephemeralContainers[*].securityContext.procMount must be unset or set to `Default`. rule autogen-check-proc-mount failed at path /spec/template/spec/
+policy secrets-not-from-env-vars -> resource default/Deployment/deploy-vo failed:
+1 - autogen-secrets-not-from-env-vars validation error: Secrets must be mounted as volumes, not as environment variables. rule autogen-secrets-not-from-env-vars failed at path /spec/template/spec/
+2 - autogen-secrets-not-from-envfrom validation error: Secrets must not come from envFrom statements. rule autogen-secrets-not-from-envfrom failed at path /spec/template/spec/
+policy disallow-selinux -> resource default/Deployment/deploy-vo failed:
+1 - autogen-selinux-type validation error: Setting the SELinux type is restricted. The fields spec.securityContext.seLinuxOptions.type, spec.containers[*].securityContext.seLinuxOptions.type, , spec.initContainers[*].securityContext.seLinuxOptions, and spec.ephemeralContainers[*].securityContext.seLinuxOptions.type must either be unset or set to one of the allowed values (container_t, container_init_t, or container_kvm_t). rule autogen-selinux-type failed at path /spec/template/spec/
+2 - autogen-selinux-user-role validation error: Setting the SELinux user or role is forbidden. The fields spec.securityContext.seLinuxOptions.user, spec.securityContext.seLinuxOptions.role, spec.containers[*].securityContext.seLinuxOptions.user, spec.containers[*].securityContext.seLinuxOptions.role, spec.initContainers[*].securityContext.seLinuxOptions.user, spec.initContainers[*].securityContext.seLinuxOptions.role, spec.ephemeralContainers[*].securityContext.seLinuxOptions.user, and spec.ephemeralContainers[*].securityContext.seLinuxOptions.role must be unset. rule autogen-selinux-user-role failed at path /spec/template/spec/
+policy imagepullpolicy-always -> resource default/Deployment/deploy-vo failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/
+policy prevent-cr8escape -> resource default/Deployment/deploy-vo failed:
+1 - autogen-restrict-sysctls-cr8escape validation error: characters '+' or '=' are not allowed in sysctls values. rule autogen-restrict-sysctls-cr8escape failed at path /spec/template/spec/
+policy require-annotations -> resource default/Deployment/deploy-vo failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/deploy-vo failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/
+policy require-image-checksum -> resource default/Deployment/deploy-vo failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/
+policy require-kubecost-labels -> resource default/Deployment/deploy-vo failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/deploy-vo failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/deploy-vo failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/
+2 - autogen-check-supplementalgroups validation error: Containers cannot run with a root primary or supplementary GID. The field spec.securityContext.supplementalGroups must be unset or set to a value greater than zero. rule autogen-check-supplementalgroups failed at path /spec/template/spec/
+3 - autogen-check-fsgroup validation error: Containers cannot run with a root primary or supplementary GID. The field spec.securityContext.fsGroup must be unset or set to a value greater than zero. rule autogen-check-fsgroup failed at path /spec/template/spec/
+policy require-pod-priorityclassname -> resource default/Deployment/deploy-vo failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/
+policy require-ro-rootfs -> resource default/Deployment/deploy-vo failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/
+policy require-run-as-containeruser -> resource default/Deployment/deploy-vo failed:
+1 - autogen-require-run-as-containeruser validation error: Running the container as ContainerAdministrator,NT AUTHORITY\NETWORK SERVICE, NT AUTHORITY\LOCAL SERVICE is not allowed. rule autogen-require-run-as-containeruser failed at path /spec/template/spec/
+policy require-run-as-non-root-user -> resource default/Deployment/deploy-vo failed:
+1 - autogen-run-as-non-root-user validation error: Running as root is not allowed. The fields spec.securityContext.runAsUser, spec.containers[*].securityContext.runAsUser, spec.initContainers[*].securityContext.runAsUser, and spec.ephemeralContainers[*].securityContext.runAsUser must be unset or set to a number greater than zero. rule autogen-run-as-non-root-user failed at path /spec/template/spec/
+policy restrict-automount-sa-token -> resource default/Deployment/deploy-vo failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/
+policy restrict-controlplane-scheduling -> resource default/Deployment/deploy-vo failed:
+1 - autogen-restrict-controlplane-scheduling-master validation error: Pods may not use tolerations which schedule on control plane nodes. rule autogen-restrict-controlplane-scheduling-master failed at path /spec/template/spec/
+2 - autogen-restrict-controlplane-scheduling-control-plane validation error: Pods may not use tolerations which schedule on control plane nodes. rule autogen-restrict-controlplane-scheduling-control-plane failed at path /spec/template/spec/
+policy restrict-image-registries -> resource default/Deployment/deploy-vo failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/
+policy restrict-node-affinity -> resource default/Deployment/deploy-vo failed:
+1 - autogen-check-nodeaffinity validation error: Node affinity cannot be used. rule autogen-check-nodeaffinity failed at path /spec/template/spec/
+policy restrict-node-selection -> resource default/Deployment/deploy-vo failed:
+1 - autogen-restrict-nodeselector validation error: Setting the nodeSelector field is prohibited. rule autogen-restrict-nodeselector failed at path /spec/template/spec/
+2 - autogen-restrict-nodename validation error: Setting the nodeName field is prohibited. rule autogen-restrict-nodename failed at path /spec/template/spec/
+policy restrict-sysctls -> resource default/Deployment/deploy-vo failed:
+1 - autogen-check-sysctls validation error: Setting additional sysctls above the allowed type is disallowed. The field spec.securityContext.sysctls must be unset or not use any other names than kernel.shm_rmid_forced, net.ipv4.ip_local_port_range, net.ipv4.ip_unprivileged_port_start, net.ipv4.tcp_syncookies and net.ipv4.ping_group_range. rule autogen-check-sysctls failed at path /spec/template/spec/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/deploy-vo failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/
+
+pass: 6, fail: 47, warn: 0, error: 0, skip: 2 
+
+##### FILE: PV145_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/web-svc failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: pv146.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv147.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/drupal-mysql-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv148.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/meu-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv149.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/meu-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv150.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv151.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/aws-ebs-pv failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv152.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv153.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv155.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv157_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv157_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv158.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv159.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv16.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv160.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Pod/aws-ebs failed:
+1 - validate-namespace validation error: Using 'default' namespace is not allowed. rule validate-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Pod/aws-ebs failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Pod/aws-ebs failed:
+1 - imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule imagepullpolicy-always failed at path /spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Pod/aws-ebs failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-image-checksum -> resource default/Pod/aws-ebs failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Pod/aws-ebs failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Pod/aws-ebs failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/
+policy require-labels -> resource default/Pod/aws-ebs failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/
+policy require-non-root-groups -> resource default/Pod/aws-ebs failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Pod/aws-ebs failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Pod/aws-ebs failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Pod/aws-ebs failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Pod/aws-ebs failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Pod/aws-ebs failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/
+
+pass: 37, fail: 16, warn: 0, error: 0, skip: 1 
+
+##### FILE: pv161.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/datadir1 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv161_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/datadir2 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv161_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/datadir3 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv162.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv164.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/mysql-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv164_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mysql-pv-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv165.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv166.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv167.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/mongodb-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv168.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/rabbitmq-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv169.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mysql-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+policy require-storageclass -> resource default/PersistentVolumeClaim/mysql-pvc failed:
+1 - pvc-storageclass validation error: PersistentVolumeClaims must define a storageClassName. rule pvc-storageclass failed at path /spec/storageClassName/
+
+pass: 0, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv17.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv170.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv171.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv172.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv173.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/db-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv174.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv175.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv176.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/pv-bbdd-vol1 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv177.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/pv-bbdd-vol2 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv178.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv179.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv18.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv180.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv181.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv182.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv183.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv184.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv186.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource standard/PersistentVolume/kustomize-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv187.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource standard/PersistentVolume/exam-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv188.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/aws-ebs-pv failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv189.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/sts-mongo-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv189_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/sts-aws-gp2 failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv19.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv190.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/sts-mongo-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv190_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/sts-aws-gp2 failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv191.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv192.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv195.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/task-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv197.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv198.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv199.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv2-nfs.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/meu-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv20.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/mongodb-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv21.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv210.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/mongo-pv2 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV2100.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/pv-log failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv2102.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV2103.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/pv-log failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv211.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv212.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/mongo-pv2 failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv213.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv214.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv215.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/mariadb-data-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv216.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/mysql-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv217.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv217_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv217_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv218.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource web/PersistentVolume/my-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv219.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/mysql-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv219_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/mysql-pv-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv22.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/rabbitmq-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv220.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/efk-data-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv220_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/efk-master-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv221.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv222.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv223.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv224.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv225.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv226.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv227.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv228.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/demo-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv229.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv23.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource ipfs/PersistentVolume/pvforipfs failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv230.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/volume-slow failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv231.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/volume-slow failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv232.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv233.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/block-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv234.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/practica-final-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv235.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/psqlpv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv236.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Pod/app failed:
+1 - validate-namespace validation error: Using 'default' namespace is not allowed. rule validate-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Pod/app failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Pod/app failed:
+1 - imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule imagepullpolicy-always failed at path /spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Pod/app failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-image-checksum -> resource default/Pod/app failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Pod/app failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Pod/app failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/
+policy require-labels -> resource default/Pod/app failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/
+policy require-non-root-groups -> resource default/Pod/app failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Pod/app failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Pod/app failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Pod/app failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Pod/app failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Pod/app failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/
+
+pass: 37, fail: 16, warn: 0, error: 0, skip: 1 
+
+##### FILE: pv237.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/ebs-claim failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv238.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/psqlpv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv239.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv24.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv240.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv241.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv242.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv243.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv245.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv247.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV248.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV249.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv25.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv25_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv25_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV250.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV251.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV252.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV253.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV254.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV255.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV256.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV257.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV258.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV259.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/nginx-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv26.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/pv-log failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV260.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/mypv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV261.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/kubepv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV262.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/task-pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV263.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/pv-hostpath failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV264.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/my-app-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV265.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/redis-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV266.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV267.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV268.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV269.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv27.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/promtail-nginx-logs-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV270.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV271.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV272.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: PV273.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv274.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv275.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv276.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/pv-log failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv277.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv278.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv279.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv28.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/nginx-logs-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv280.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv281.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv281_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy readwriteonce-pod -> resource default/PersistentVolumeClaim/my-pvc failed:
+1 - readwrite-pvc-single-pod validation error: The accessMode must be set to ReadWriteOncePod. rule readwrite-pvc-single-pod failed at path /spec/accessModes/
+
+pass: 1, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv281_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Pod/my-pod failed:
+1 - validate-namespace validation error: Using 'default' namespace is not allowed. rule validate-namespace failed at path /metadata/namespace/
+policy disallow-host-path -> resource default/Pod/my-pod failed:
+1 - host-path validation error: HostPath volumes are forbidden. The field spec.volumes[*].hostPath must be unset. rule host-path failed at path /spec/volumes/0/hostPath/
+policy disallow-privilege-escalation -> resource default/Pod/my-pod failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Pod/my-pod failed:
+1 - imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule imagepullpolicy-always failed at path /spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Pod/my-pod failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-image-checksum -> resource default/Pod/my-pod failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Pod/my-pod failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Pod/my-pod failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/
+policy require-labels -> resource default/Pod/my-pod failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/
+policy require-non-root-groups -> resource default/Pod/my-pod failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Pod/my-pod failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Pod/my-pod failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Pod/my-pod failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Pod/my-pod failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Pod/my-pod failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/
+
+pass: 36, fail: 17, warn: 0, error: 0, skip: 1 
+
+##### FILE: PV282.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv283.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/my-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv284.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource argocd/PersistentVolume/mysql-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv285.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource murali/PersistentVolume/my-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv286.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv287.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/my-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv288.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv288_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv288_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv289.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv29.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-storageclass -> resource default/StorageClass/aws-ebs-pv failed:
+1 - storageclass-delete validation error: StorageClass must define a reclaimPolicy of Delete. rule storageclass-delete failed at path /reclaimPolicy/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv290.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv291.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/my-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv292.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv293.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/pv-volume failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv294.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv295.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv296.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/my-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: pv297.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy limit-hostpath-type-pv -> resource default/PersistentVolume/my-manual-pv failed:
+1 - limit-hostpath-type-pv-to-slash-data validation error: hostPath type persistent volumes are confined to /data. rule limit-hostpath-type-pv-to-slash-data failed at path /spec/hostPath/path/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+

@@ -1,0 +1,2368 @@
+
+##### FILE: cluster-autoscaler6_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-autoscaler6_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-autoscaler6_5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-host-path -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-host-path validation error: HostPath volumes are forbidden. The field spec.volumes[*].hostPath must be unset. rule autogen-host-path failed at path /spec/template/spec/volumes/0/hostPath/
+policy disallow-privilege-escalation -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy deployment-has-multiple-replicas -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 37, fail: 16, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-autoscaler7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-privilege-escalation -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy deployment-has-multiple-replicas -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 38, fail: 15, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-autoscaler8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-privilege-escalation -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy deployment-has-multiple-replicas -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 38, fail: 15, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-autoscaler9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kube-system/ServiceAccount/cluster-autoscaler failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-autoscaler9_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-autoscaler9_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-autoscaler9_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-autoscaler9_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-autoscaler9_5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-host-path -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-host-path validation error: HostPath volumes are forbidden. The field spec.volumes[*].hostPath must be unset. rule autogen-host-path failed at path /spec/template/spec/volumes/0/hostPath/
+policy require-annotations -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/corp.org/department/
+policy deployment-has-multiple-replicas -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/runAsGroup/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/runAsGroup/
+policy restrict-automount-sa-token -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource kube-system/Deployment/cluster-autoscaler failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/runAsUser/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/runAsGroup/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/fsGroup/
+
+pass: 40, fail: 13, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-binding.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/admin-user failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-binding1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/admin-user failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-binding2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/admin-user failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-connector.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy add-psa-namespace-reporting -> resource default/Namespace/nginx-cluster-connector failed:
+1 - check-namespace-labels validation error: This Namespace is missing a PSA label. rule check-namespace-labels failed at path /metadata/labels/
+policy enforce-ambient-mode-namespace -> resource default/Namespace/nginx-cluster-connector failed:
+1 - check-amblient-mode-enabled validation error: All new Namespaces must have Istio ambient mode enabled. rule check-amblient-mode-enabled failed at path /metadata/labels/
+policy enforce-sidecar-injection-namespace -> resource default/Namespace/nginx-cluster-connector failed:
+1 - check-istio-injection-enabled validation error: All new Namespaces must have Istio sidecar injection enabled. rule check-istio-injection-enabled failed at path /metadata/labels/
+policy kasten-validate-ns-by-preset-label -> resource default/Namespace/nginx-cluster-connector failed:
+1 - kasten-validate-ns-by-preset-label validation error: Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten Policy Preset:
+
+  "gold" - <Insert human readable settings of each preset option>
+  "silver" - <For example, hourly backups, exported to immutable S3 storage>
+  "bronze" - <Or, daily local snapshots, NOT exported to external storage>
+  "none" - No local snapshots or backups. rule kasten-validate-ns-by-preset-label failed at path /metadata/labels/
+policy require-linkerd-mesh-injection -> resource default/Namespace/nginx-cluster-connector failed:
+1 - require-mesh-annotation validation error: All Namespaces must set the annotation `linkerd.io/inject` to `enabled`. rule require-mesh-annotation failed at path /metadata/annotations/
+
+pass: 0, fail: 5, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-connector_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource nginx-cluster-connector/ServiceAccount/nginx-cluster-connector failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-connector_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-connector_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-connector_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-privilege-escalation -> resource nginx-cluster-connector/Deployment/nginx-cluster-connector failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/allowPrivilegeEscalation/
+policy require-annotations -> resource nginx-cluster-connector/Deployment/nginx-cluster-connector failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy deployment-has-multiple-replicas -> resource nginx-cluster-connector/Deployment/nginx-cluster-connector failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource nginx-cluster-connector/Deployment/nginx-cluster-connector failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource nginx-cluster-connector/Deployment/nginx-cluster-connector failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource nginx-cluster-connector/Deployment/nginx-cluster-connector failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource nginx-cluster-connector/Deployment/nginx-cluster-connector failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource nginx-cluster-connector/Deployment/nginx-cluster-connector failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/runAsGroup/
+policy require-pod-priorityclassname -> resource nginx-cluster-connector/Deployment/nginx-cluster-connector failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource nginx-cluster-connector/Deployment/nginx-cluster-connector failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/readOnlyRootFilesystem/
+policy restrict-automount-sa-token -> resource nginx-cluster-connector/Deployment/nginx-cluster-connector failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource nginx-cluster-connector/Deployment/nginx-cluster-connector failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource nginx-cluster-connector/Deployment/nginx-cluster-connector failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 37, fail: 15, warn: 0, error: 0, skip: 3 
+
+##### FILE: cluster-deployment.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/cluster-deployment failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/cluster-deployment failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Deployment/cluster-deployment failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Deployment/cluster-deployment failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/cluster-deployment failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Deployment/cluster-deployment failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/cluster-deployment failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/cluster-deployment failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/cluster-deployment failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/cluster-deployment failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/cluster-deployment failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/cluster-deployment failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/cluster-deployment failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/cluster-deployment failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/cluster-deployment failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 37, fail: 17, warn: 0, error: 0, skip: 1 
+
+##### FILE: cluster-deployment_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/cluster-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-example-app-user.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-example-superuser.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-ip-definition.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/back-end failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-ip-service.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/myapp-load-balancer-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-ip-svc.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/nginx-sample failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/nginx-sample failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/nginx-sample failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy deployment-has-multiple-replicas -> resource default/Deployment/nginx-sample failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/nginx-sample failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/nginx-sample failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/nginx-sample failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/nginx-sample failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/nginx-sample failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/nginx-sample failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/nginx-sample failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/nginx-sample failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/nginx-sample failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/nginx-sample failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 37, fail: 16, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-ip-svc_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/nginx-sample failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/nginx-sample failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-ip-svc_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/hello-sample failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/hello-sample failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/hello-sample failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy deployment-has-multiple-replicas -> resource default/Deployment/hello-sample failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/hello-sample failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/hello-sample failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/hello-sample failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/hello-sample failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/hello-sample failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/hello-sample failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/hello-sample failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/hello-sample failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/hello-sample failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/hello-sample failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 37, fail: 16, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-ip-svc_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/hello-sample failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/hello-sample failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-ip.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/nginx-clusterip failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/nginx-clusterip failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/nginx-clusterip failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/nginx-clusterip failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Deployment/nginx-clusterip failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/nginx-clusterip failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/nginx-clusterip failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/nginx-clusterip failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/nginx-clusterip failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/nginx-clusterip failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/nginx-clusterip failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/nginx-clusterip failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/nginx-clusterip failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/nginx-clusterip failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 37, fail: 16, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-ip_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/nginx-clusterip-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-ip1_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/nginx-clusterip-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-ip10_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource default/ServiceAccount/default-istio failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-ip10_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/default failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-ip2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/back-end failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-ip3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/nginx-despliegue failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/nginx-despliegue failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource default/Deployment/nginx-despliegue failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/nginx-despliegue failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Deployment/nginx-despliegue failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/nginx-despliegue failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/nginx-despliegue failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/nginx-despliegue failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/nginx-despliegue failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/nginx-despliegue failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/nginx-despliegue failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/nginx-despliegue failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/nginx-despliegue failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/nginx-despliegue failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 37, fail: 16, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-ip4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/my-deployment failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/my-deployment failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Deployment/my-deployment failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/my-deployment failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Deployment/my-deployment failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/my-deployment failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 37, fail: 17, warn: 0, error: 0, skip: 1 
+
+##### FILE: cluster-ip4_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/my-app-svc failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-ip5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/clusterip-app-silvestrini failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/clusterip-app-silvestrini failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-ip6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/my-deployment failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/my-deployment failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Deployment/my-deployment failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/my-deployment failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Deployment/my-deployment failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/my-deployment failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 37, fail: 17, warn: 0, error: 0, skip: 1 
+
+##### FILE: cluster-ip6_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/my-app-svc failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-ip7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/my-deployment failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/my-deployment failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Deployment/my-deployment failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/my-deployment failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Deployment/my-deployment failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/my-deployment failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/my-deployment failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/my-deployment failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 37, fail: 17, warn: 0, error: 0, skip: 1 
+
+##### FILE: cluster-ip7_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/my-app-svc failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-ip8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/nginx failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-ip9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource default/Service/back-end failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-ipam.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource flux-system/ConfigMap/cluster-ipam failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-ipservice.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/microservice-one-service failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/microservice-one-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: cluster-local-ingress.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource ingress-nginx/Ingress/nginx-cluster-local failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource ingress-nginx/Ingress/nginx-cluster-local failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+
+pass: 3, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-local-ingress1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource default/Ingress/traefik-cluster-local failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource default/Ingress/traefik-cluster-local failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+
+pass: 3, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-local-ingress2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource ingress-nginx/Ingress/nginx-cluster-local failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource ingress-nginx/Ingress/nginx-cluster-local failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+
+pass: 3, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-local-ingress3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource default/Ingress/traefik-cluster-local failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource default/Ingress/traefik-cluster-local failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+
+pass: 3, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-manager.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-manager_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource chaos-mesh/ServiceAccount/account-cluster-manager failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-manager_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-network-addons-operator-v0.95.0_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-network-addons-operator-v0.95.0_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-network-addons-operator-v0.95.0_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-network-addons-operator-v0.95.0_4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-network-addons-operator-v0.95.0_5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-annotations -> resource cluster-network-addons/Deployment/cluster-network-addons-operator failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/corp.org/department/
+policy deployment-has-multiple-replicas -> resource cluster-network-addons/Deployment/cluster-network-addons-operator failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource cluster-network-addons/Deployment/cluster-network-addons-operator failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-kubecost-labels -> resource cluster-network-addons/Deployment/cluster-network-addons-operator failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/app/
+policy require-labels -> resource cluster-network-addons/Deployment/cluster-network-addons-operator failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource cluster-network-addons/Deployment/cluster-network-addons-operator failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/runAsGroup/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/runAsGroup/
+policy require-ro-rootfs -> resource cluster-network-addons/Deployment/cluster-network-addons-operator failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/readOnlyRootFilesystem/
+policy restrict-automount-sa-token -> resource cluster-network-addons/Deployment/cluster-network-addons-operator failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource cluster-network-addons/Deployment/cluster-network-addons-operator failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource cluster-network-addons/Deployment/cluster-network-addons-operator failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/runAsUser/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/runAsGroup/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/fsGroup/
+
+pass: 40, fail: 12, warn: 0, error: 0, skip: 3 
+
+##### FILE: cluster-nginx-deployment.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Deployment/nginx-deployment failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/nginx-deployment failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Deployment/nginx-deployment failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Deployment/nginx-deployment failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/Deployment/nginx-deployment failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Deployment/nginx-deployment failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/nginx-deployment failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/nginx-deployment failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/nginx-deployment failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/nginx-deployment failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/nginx-deployment failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/nginx-deployment failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/nginx-deployment failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/nginx-deployment failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/nginx-deployment failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 37, fail: 17, warn: 0, error: 0, skip: 1 
+
+##### FILE: cluster-proxy-admin-rbac.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-proxy-admin-rbac_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-rbac.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-rbac_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-resolver-config-cm.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource tekton-pipelines/ConfigMap/cluster-resolver-config failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/foo/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-admin.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-admin1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-admin2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kube-dump/ServiceAccount/kube-dump failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-admin2_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/kube-dump failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-admin3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kube-dump/ServiceAccount/kube-dump failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-admin3_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/kube-dump failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-admin4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kube-dump/ServiceAccount/kube-dump failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-admin4_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/kube-dump failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-aggregated-metrics-reader.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-aggregated-metrics-reader1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-bind.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding-delegator.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding-delegator1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding-group.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding-hpa-custom-metrics.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding-hpa-custom-metrics1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding-readers.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding-sa.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding.yaml.verified.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding10.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding101.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/heimdal-sa-cluster-admin failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding102.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding103.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding104.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/argocd-clusterrolebinding failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding105.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding106.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding107.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding11.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding116.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding118.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding119.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding12.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding120.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding121.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding122.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding123.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding124.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding125.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding126.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding127.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding128.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding129.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding13.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding130.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding131.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding132.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding133.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding134.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/admin-user failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding135.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding136.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding137.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding138.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding139.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding14.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding140.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding141.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding142.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding143.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding144.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding145.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding146.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding147.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding148.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding149.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding15.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding150.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/admin-user failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding151.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding152.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/dashboard-admin-crb failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding153.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding154.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding156.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding157.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding159.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding16.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding160.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding161.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding162.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding163.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding164.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding165.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding166.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding167.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding168.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding169.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding17.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding170.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding171.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding172.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding173.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding174.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding175.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding176.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding177.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding178.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding179.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding18.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding180.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding181.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding182.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding183.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding184.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding185.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding186.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding187.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding188.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding189.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding19.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding190.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding191.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding192.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding193.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding194.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding195.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding196.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding197.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding198.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding199.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/cluster-admin failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding20.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding200.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding201.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding202.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding203.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/dashboard-admin failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding204.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding205.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding206.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding21.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding212.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding213.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding214.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/admin-user failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding215.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding216.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding23.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding24.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding25.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding26.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding27.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding28.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/cluster-admin failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding30.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding31.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding32.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding35.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding36.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding37.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding38.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding39.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding40.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding41.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding42.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding43.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding44.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding45.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding46.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding47.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding49.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding50.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding51.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding52.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding53.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding54.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding55.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding56.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding57.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding58.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding59.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding60.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding61.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding63.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding64.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/admin-user failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding65.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding66.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding67.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding68.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding69.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding70.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding71.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding72.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding73.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding74.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding75.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding76.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding77.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding78.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding79.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding80.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding81.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding82.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding83.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding84.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding85.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding86.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding87.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding88.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding89.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding90.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding91.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding92.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding94.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding95.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding96.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding97.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binding99.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-binfing.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-delete-pods.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-dev-bind.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-dev.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-metrics-server-resources.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-metrics-server-resources1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-n-binding.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-n-binding_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-readers.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-view.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-view1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-view2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kube-dump/ServiceAccount/kube-dump failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-view2_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-view3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kube-dump/ServiceAccount/kube-dump failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-view3_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-view4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource kube-dump/ServiceAccount/kube-dump failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role-view4_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role.yaml.verified.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role10.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role100.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role101.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role102.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role103.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role104.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cluster-role104_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+

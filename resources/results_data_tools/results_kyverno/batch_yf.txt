@@ -1,0 +1,2435 @@
+
+##### FILE: secret1181.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1181_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1182.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource default/ConfigMap/nodejs-env-config failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1182_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/nodejs-env-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1182_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-secrets -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-secrets-not-from-envfrom validation error: No Secrets from envFrom. rule autogen-secrets-not-from-envfrom failed at path /spec/template/spec/containers/0/envFrom/1/secretRef/
+policy disallow-privilege-escalation -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy secrets-not-from-env-vars -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-secrets-not-from-envfrom validation error: Secrets must not come from envFrom statements. rule autogen-secrets-not-from-envfrom failed at path /spec/template/spec/containers/0/envFrom/1/secretRef/
+policy imagepullpolicy-always -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/app/
+policy require-labels -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 34, fail: 18, warn: 0, error: 0, skip: 1 
+
+##### FILE: secret1182_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/nodejs-env-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/nodejs-env-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: secret1183.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/configmap-name failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1184.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/my-sec failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1185.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1186.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/test failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1187.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1188.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/test-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1189.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1190.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1191.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/db-secrets failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret12.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1201.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1202.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource kubernetes-dashboard/Secret/admin-user failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1205.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1206.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/test failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1207.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1208.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/test-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1209.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret121.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1211.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1212.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1212_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-secrets -> resource default/Pod/nginx-pod failed:
+1 - secrets-not-from-env validation error: No Secrets from env. rule secrets-not-from-env failed at path /spec/containers/0/env/0/valueFrom/secretKeyRef/
+policy disallow-default-namespace -> resource default/Pod/nginx-pod failed:
+1 - validate-namespace validation error: Using 'default' namespace is not allowed. rule validate-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Pod/nginx-pod failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy secrets-not-from-env-vars -> resource default/Pod/nginx-pod failed:
+1 - secrets-not-from-env-vars validation error: Secrets must be mounted as volumes, not as environment variables. rule secrets-not-from-env-vars failed at path /spec/containers/0/env/0/valueFrom/secretKeyRef/
+policy imagepullpolicy-always -> resource default/Pod/nginx-pod failed:
+1 - imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule imagepullpolicy-always failed at path /spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Pod/nginx-pod failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-image-checksum -> resource default/Pod/nginx-pod failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Pod/nginx-pod failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Pod/nginx-pod failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/
+policy require-labels -> resource default/Pod/nginx-pod failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/
+policy require-non-root-groups -> resource default/Pod/nginx-pod failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Pod/nginx-pod failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Pod/nginx-pod failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Pod/nginx-pod failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Pod/nginx-pod failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Pod/nginx-pod failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/
+
+pass: 34, fail: 18, warn: 0, error: 0, skip: 2 
+
+##### FILE: secret1213.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1214.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1215.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1216.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/my-cred failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1216_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-secrets -> resource default/Pod/my-pod failed:
+1 - secrets-not-from-env validation error: No Secrets from env. rule secrets-not-from-env failed at path /spec/containers/0/env/0/valueFrom/secretKeyRef/
+policy disallow-default-namespace -> resource default/Pod/my-pod failed:
+1 - validate-namespace validation error: Using 'default' namespace is not allowed. rule validate-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Pod/my-pod failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy secrets-not-from-env-vars -> resource default/Pod/my-pod failed:
+1 - secrets-not-from-env-vars validation error: Secrets must be mounted as volumes, not as environment variables. rule secrets-not-from-env-vars failed at path /spec/containers/0/env/0/valueFrom/secretKeyRef/
+policy imagepullpolicy-always -> resource default/Pod/my-pod failed:
+1 - imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule imagepullpolicy-always failed at path /spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Pod/my-pod failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-container-port-names -> resource default/Pod/my-pod failed:
+1 - port-name validation error: Name is required for every containerPort. rule port-name failed at path /spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Pod/my-pod failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Pod/my-pod failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Pod/my-pod failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/department/
+policy require-labels -> resource default/Pod/my-pod failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Pod/my-pod failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Pod/my-pod failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Pod/my-pod failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Pod/my-pod failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Pod/my-pod failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Pod/my-pod failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/
+
+pass: 33, fail: 19, warn: 0, error: 0, skip: 2 
+
+##### FILE: secret1217.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1218.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1219.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret122.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource default/ConfigMap/nodejs-env-config failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret122_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/nodejs-env-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret122_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-secrets -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-secrets-not-from-envfrom validation error: No Secrets from envFrom. rule autogen-secrets-not-from-envfrom failed at path /spec/template/spec/containers/0/envFrom/1/secretRef/
+policy disallow-privilege-escalation -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy secrets-not-from-env-vars -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-secrets-not-from-envfrom validation error: Secrets must not come from envFrom statements. rule autogen-secrets-not-from-envfrom failed at path /spec/template/spec/containers/0/envFrom/1/secretRef/
+policy imagepullpolicy-always -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/app/
+policy require-labels -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 34, fail: 18, warn: 0, error: 0, skip: 1 
+
+##### FILE: secret122_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/nodejs-env-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/nodejs-env-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: secret1220.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/web-cicd-app failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1221.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/pixabay-apikey failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1222.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/configmap-name failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1223.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1224.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1225.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1226.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1227.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1227_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1229.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret123.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/configmap-name failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1230.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1231.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1232.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1233.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1234.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1235.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1236.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1237.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1238.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1239.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret124.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1240.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1241.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1242.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret125.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/test failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1250.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1251.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret1252.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret126.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret127.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/test-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret128.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource ceph-csi-cephfs/Secret/csi-cephfs-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret129.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource ceph-csi-rbd/Secret/csi-rbd-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret13.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret130.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret131.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/test failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret132.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret133.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/test-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret134.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret135.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret136.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret137.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret139.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret140.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret142.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret143.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret144.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret145.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret146.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret147.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret148.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret151.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret152.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource monitoring/Secret/alertmanager-kube-prometheus-stack-alertmanager failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret153.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret157.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource benk/Secret/system-under-test failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret158.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret159.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/gatus-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret160.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource champ/Secret/app-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret161.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource default/ConfigMap/nodejs-env-config failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret161_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/nodejs-env-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret161_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-secrets -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-secrets-not-from-envfrom validation error: No Secrets from envFrom. rule autogen-secrets-not-from-envfrom failed at path /spec/template/spec/containers/0/envFrom/1/secretRef/
+policy disallow-privilege-escalation -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy secrets-not-from-env-vars -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-secrets-not-from-envfrom validation error: Secrets must not come from envFrom statements. rule autogen-secrets-not-from-envfrom failed at path /spec/template/spec/containers/0/envFrom/1/secretRef/
+policy imagepullpolicy-always -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/app/
+policy require-labels -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 34, fail: 18, warn: 0, error: 0, skip: 1 
+
+##### FILE: secret161_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/nodejs-env-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/nodejs-env-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: secret162.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/configmap-name failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret163.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret164.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/postgres-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret165.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/postgres-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret166.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret167.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/postgres-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret168.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret17.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret171.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret172.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret173.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret173_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-secrets -> resource default/Deployment/podinfo-secret-env failed:
+1 - autogen-secrets-not-from-env validation error: No Secrets from env. rule autogen-secrets-not-from-env failed at path /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/
+policy disallow-default-namespace -> resource default/Deployment/podinfo-secret-env failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/podinfo-secret-env failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy secrets-not-from-env-vars -> resource default/Deployment/podinfo-secret-env failed:
+1 - autogen-secrets-not-from-env-vars validation error: Secrets must be mounted as volumes, not as environment variables. rule autogen-secrets-not-from-env-vars failed at path /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/
+policy imagepullpolicy-always -> resource default/Deployment/podinfo-secret-env failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Deployment/podinfo-secret-env failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy deployment-has-multiple-replicas -> resource default/Deployment/podinfo-secret-env failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/podinfo-secret-env failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/podinfo-secret-env failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/podinfo-secret-env failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/podinfo-secret-env failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/podinfo-secret-env failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/podinfo-secret-env failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/podinfo-secret-env failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/podinfo-secret-env failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/podinfo-secret-env failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/podinfo-secret-env failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 34, fail: 19, warn: 0, error: 0, skip: 2 
+
+##### FILE: secret173_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-secrets -> resource default/Deployment/podinfo-secret-volume failed:
+1 - autogen-secrets-not-from-volumes validation error: No Secrets from volumes. rule autogen-secrets-not-from-volumes failed at path /spec/template/spec/volumes/0/secret/
+policy disallow-default-namespace -> resource default/Deployment/podinfo-secret-volume failed:
+1 - validate-podcontroller-namespace validation error: Using 'default' namespace is not allowed for pod controllers. rule validate-podcontroller-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Deployment/podinfo-secret-volume failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Deployment/podinfo-secret-volume failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Deployment/podinfo-secret-volume failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy deployment-has-multiple-replicas -> resource default/Deployment/podinfo-secret-volume failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource default/Deployment/podinfo-secret-volume failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Deployment/podinfo-secret-volume failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Deployment/podinfo-secret-volume failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-labels -> resource default/Deployment/podinfo-secret-volume failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Deployment/podinfo-secret-volume failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Deployment/podinfo-secret-volume failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Deployment/podinfo-secret-volume failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Deployment/podinfo-secret-volume failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Deployment/podinfo-secret-volume failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Deployment/podinfo-secret-volume failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 36, fail: 18, warn: 0, error: 0, skip: 1 
+
+##### FILE: secret174.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret175.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret177.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret178.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/lfsecret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret18.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret182.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/udemy-k8s-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret187.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret188.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret189.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/cluster-app-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret191.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret194.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret194_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret195.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret196.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret197.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret198.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret199.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret2-pod.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-secrets -> resource default/Pod/secret2-pod failed:
+1 - secrets-not-from-volumes validation error: No Secrets from volumes. rule secrets-not-from-volumes failed at path /spec/volumes/0/secret/
+policy disallow-default-namespace -> resource default/Pod/secret2-pod failed:
+1 - validate-namespace validation error: Using 'default' namespace is not allowed. rule validate-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Pod/secret2-pod failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Pod/secret2-pod failed:
+1 - imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule imagepullpolicy-always failed at path /spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Pod/secret2-pod failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-image-checksum -> resource default/Pod/secret2-pod failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Pod/secret2-pod failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Pod/secret2-pod failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/
+policy require-labels -> resource default/Pod/secret2-pod failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/
+policy require-non-root-groups -> resource default/Pod/secret2-pod failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Pod/secret2-pod failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Pod/secret2-pod failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Pod/secret2-pod failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Pod/secret2-pod failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Pod/secret2-pod failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/
+
+pass: 36, fail: 17, warn: 0, error: 0, skip: 1 
+
+##### FILE: secret2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/vault-auth-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret200.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/homepage failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret202.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret205.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret205_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-secrets -> resource default/Pod/hello-cm failed:
+1 - secrets-not-from-envfrom validation error: No Secrets from envFrom. rule secrets-not-from-envfrom failed at path /spec/containers/0/envFrom/0/secretRef/
+policy disallow-default-namespace -> resource default/Pod/hello-cm failed:
+1 - validate-namespace validation error: Using 'default' namespace is not allowed. rule validate-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Pod/hello-cm failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy secrets-not-from-env-vars -> resource default/Pod/hello-cm failed:
+1 - secrets-not-from-envfrom validation error: Secrets must not come from envFrom statements. rule secrets-not-from-envfrom failed at path /spec/containers/0/envFrom/0/secretRef/
+policy imagepullpolicy-always -> resource default/Pod/hello-cm failed:
+1 - imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule imagepullpolicy-always failed at path /spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Pod/hello-cm failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-container-port-names -> resource default/Pod/hello-cm failed:
+1 - port-name validation error: Name is required for every containerPort. rule port-name failed at path /spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Pod/hello-cm failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Pod/hello-cm failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Pod/hello-cm failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/department/
+policy require-labels -> resource default/Pod/hello-cm failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Pod/hello-cm failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Pod/hello-cm failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Pod/hello-cm failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Pod/hello-cm failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Pod/hello-cm failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Pod/hello-cm failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/
+
+pass: 33, fail: 19, warn: 0, error: 0, skip: 2 
+
+##### FILE: secret205_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-secrets -> resource default/Pod/postgres failed:
+1 - secrets-not-from-envfrom validation error: No Secrets from envFrom. rule secrets-not-from-envfrom failed at path /spec/containers/0/envFrom/0/secretRef/
+policy disallow-default-namespace -> resource default/Pod/postgres failed:
+1 - validate-namespace validation error: Using 'default' namespace is not allowed. rule validate-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Pod/postgres failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy secrets-not-from-env-vars -> resource default/Pod/postgres failed:
+1 - secrets-not-from-envfrom validation error: Secrets must not come from envFrom statements. rule secrets-not-from-envfrom failed at path /spec/containers/0/envFrom/0/secretRef/
+policy imagepullpolicy-always -> resource default/Pod/postgres failed:
+1 - imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule imagepullpolicy-always failed at path /spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Pod/postgres failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-container-port-names -> resource default/Pod/postgres failed:
+1 - port-name validation error: Name is required for every containerPort. rule port-name failed at path /spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/Pod/postgres failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Pod/postgres failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Pod/postgres failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/department/
+policy require-labels -> resource default/Pod/postgres failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Pod/postgres failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Pod/postgres failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Pod/postgres failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Pod/postgres failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Pod/postgres failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Pod/postgres failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/
+
+pass: 34, fail: 19, warn: 0, error: 0, skip: 1 
+
+##### FILE: secret205_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-loadbalancer-service -> resource default/Service/postgres failed:
+1 - no-LoadBalancer validation error: Service of type LoadBalancer is not allowed. rule no-LoadBalancer failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/postgres failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: secret209.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/alex-key-auth failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret21.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret210.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret2100.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret211.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/test failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret212.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret213.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/test-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret214.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource flux-system/Secret/discord-webhook failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret215.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/mysecret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret215_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-secrets -> resource default/Pod/mypod failed:
+1 - secrets-not-from-envfrom validation error: No Secrets from envFrom. rule secrets-not-from-envfrom failed at path /spec/containers/0/envFrom/0/secretRef/
+policy disallow-default-namespace -> resource default/Pod/mypod failed:
+1 - validate-namespace validation error: Using 'default' namespace is not allowed. rule validate-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Pod/mypod failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy secrets-not-from-env-vars -> resource default/Pod/mypod failed:
+1 - secrets-not-from-envfrom validation error: Secrets must not come from envFrom statements. rule secrets-not-from-envfrom failed at path /spec/containers/0/envFrom/0/secretRef/
+policy imagepullpolicy-always -> resource default/Pod/mypod failed:
+1 - imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule imagepullpolicy-always failed at path /spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Pod/mypod failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-image-checksum -> resource default/Pod/mypod failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Pod/mypod failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Pod/mypod failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/app/
+policy require-labels -> resource default/Pod/mypod failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Pod/mypod failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Pod/mypod failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Pod/mypod failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Pod/mypod failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Pod/mypod failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Pod/mypod failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/
+
+pass: 35, fail: 18, warn: 0, error: 0, skip: 1 
+
+##### FILE: secret215_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/mysecret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret215_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-default-namespace -> resource default/Pod/mypod failed:
+1 - validate-namespace validation error: Using 'default' namespace is not allowed. rule validate-namespace failed at path /metadata/namespace/
+policy disallow-privilege-escalation -> resource default/Pod/mypod failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource default/Pod/mypod failed:
+1 - imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule imagepullpolicy-always failed at path /spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/Pod/mypod failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-image-checksum -> resource default/Pod/mypod failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/Pod/mypod failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/Pod/mypod failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/app/
+policy require-labels -> resource default/Pod/mypod failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/Pod/mypod failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/Pod/mypod failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource default/Pod/mypod failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/Pod/mypod failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/Pod/mypod failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/Pod/mypod failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/
+
+pass: 36, fail: 16, warn: 0, error: 0, skip: 2 
+
+##### FILE: secret216.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/lfsecret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret217.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret218.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret219.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret22.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource default/ConfigMap/nodejs-env-config failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret22_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/nodejs-env-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret22_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-secrets -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-secrets-not-from-envfrom validation error: No Secrets from envFrom. rule autogen-secrets-not-from-envfrom failed at path /spec/template/spec/containers/0/envFrom/1/secretRef/
+policy disallow-privilege-escalation -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy secrets-not-from-env-vars -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-secrets-not-from-envfrom validation error: Secrets must not come from envFrom statements. rule autogen-secrets-not-from-envfrom failed at path /spec/template/spec/containers/0/envFrom/1/secretRef/
+policy imagepullpolicy-always -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule autogen-imagepullpolicy-always failed at path /spec/template/spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-container-port-names -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy require-image-checksum -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/app/
+policy require-labels -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource default/ReplicaSet/nodejs-env failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 34, fail: 18, warn: 0, error: 0, skip: 1 
+
+##### FILE: secret22_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-nodeport -> resource default/Service/nodejs-env-service failed:
+1 - validate-nodeport validation error: Services of type NodePort are not allowed. rule validate-nodeport failed at path /spec/type/
+policy restrict-service-port-range -> resource default/Service/nodejs-env-service failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 2, fail: 2, warn: 0, error: 0, skip: 2 
+
+##### FILE: secret228.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource kubernetes-101/Secret/secret-config failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret229.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource kubernetes-101/Secret/secret-config failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret23.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/configmap-name failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret231.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret235.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret236.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret237.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret238.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret24.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource ceph-csi-cephfs/Secret/csi-cephfs-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret240.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret241.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret242.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret243.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret244.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret248.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret249.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret25.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource ceph-csi-rbd/Secret/csi-rbd-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret250.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret251.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret253.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret254.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret256.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret257.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret26.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret268.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-secrets -> resource secretns102/Pod/secret failed:
+1 - secrets-not-from-volumes validation error: No Secrets from volumes. rule secrets-not-from-volumes failed at path /spec/volumes/0/secret/
+policy disallow-privilege-escalation -> resource secretns102/Pod/secret failed:
+1 - privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule privilege-escalation failed at path /spec/containers/0/securityContext/
+policy imagepullpolicy-always -> resource secretns102/Pod/secret failed:
+1 - imagepullpolicy-always validation error: The imagePullPolicy must be set to `Always` when the tag `latest` is used. rule imagepullpolicy-always failed at path /spec/containers/0/imagePullPolicy/
+policy require-annotations -> resource secretns102/Pod/secret failed:
+1 - check-for-annotation validation error: The annotation `corp.org/department` is required. rule check-for-annotation failed at path /metadata/annotations/
+policy require-image-checksum -> resource secretns102/Pod/secret failed:
+1 - require-image-checksum validation error: Images must use checksums rather than tags. rule require-image-checksum failed at path /spec/containers/0/image/
+policy require-imagepullsecrets -> resource secretns102/Pod/secret failed:
+1 - check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule check-for-image-pull-secrets failed at path /spec/imagePullSecrets/
+policy require-kubecost-labels -> resource secretns102/Pod/secret failed:
+1 - require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule require-labels failed at path /metadata/labels/app/
+policy require-labels -> resource secretns102/Pod/secret failed:
+1 - check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule check-for-labels failed at path /metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource secretns102/Pod/secret failed:
+1 - check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule check-runasgroup[0] failed at path /spec/securityContext/ rule check-runasgroup[1] failed at path /spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource secretns102/Pod/secret failed:
+1 - check-priorityclassname validation error: Pods must define the priorityClassName field. rule check-priorityclassname failed at path /spec/priorityClassName/
+policy require-ro-rootfs -> resource secretns102/Pod/secret failed:
+1 - validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule validate-readOnlyRootFilesystem failed at path /spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource secretns102/Pod/secret failed:
+1 - validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule validate-automountServiceAccountToken failed at path /spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource secretns102/Pod/secret failed:
+1 - validate-registries validation error: Unknown image registry. rule validate-registries failed at path /spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource secretns102/Pod/secret failed:
+1 - validate-userid validation error: User ID should be 1000. rule validate-userid failed at path /spec/securityContext/
+2 - validate-groupid validation error: Group ID should be 3000. rule validate-groupid failed at path /spec/securityContext/
+3 - validate-fsgroup validation error: fsgroup should be 2000. rule validate-fsgroup failed at path /spec/securityContext/
+
+pass: 37, fail: 16, warn: 0, error: 0, skip: 1 
+
+##### FILE: secret269.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret27.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/test failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret272.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret274.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret275.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/my-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret276.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret277.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret28.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret280.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret281.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret282.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret283.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret284.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret284_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret285.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret286.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret287.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret288.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret289.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret29.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/test-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret290.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/database-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret291.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret292.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret293.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/myapp-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret30.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret304.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret305.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret306.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret307.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret308.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret31.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret310.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret314.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret315.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret316.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret317.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/mysecure failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret319.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/configurable-lab-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret32.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/test failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret320.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret321.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret322.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret323.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret324.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret33.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret337.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret338.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret339.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret34.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/test-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret340.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret341.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret342.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/test-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret346.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/mysql-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret349.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret35.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret350.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret351.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret352.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret353.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret355.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret356.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret359.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret36.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret364.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret366.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret367.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret369.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret37.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret370.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret371.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource csi-s3/Secret/csi-s3-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret374.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret381.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret382.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret383.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/mysql-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret384.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/pgsecret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret385.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret387.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret388.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret39.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret390.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/mysql-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret391.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret392.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret393.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret394.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret395.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret396.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret397.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret398.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret399.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret40.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret400.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret401.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret402.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret403.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: Secret408.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret409.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret412.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/secret-sa-sample failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret413.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret414.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret415.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret416.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret417.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret418.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret419.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret42.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret421.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret422.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret424.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret425.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret426.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret43.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret438.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret439.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/first-secret failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret44.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret440.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: secret441.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/test failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+

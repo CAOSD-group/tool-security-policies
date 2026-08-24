@@ -4,7 +4,7 @@ import csv
 import re
 
 input_dir = Path("../../../resources/results_data_tools/results_kyverno") ##C:\projects\investigacion\scriptJsonToUvl\yamls_agrupation
-yaml_dir = Path("C:/projects/investigacion/scriptJsonToUvl/yamls_agrupation/tiny")
+yaml_dir = Path("C:/Users/CAOSD/projects/scriptJsonToUvl/yamls_agrupation/tiny") #C:\Users\CAOSD\projects\scriptJsonToUvl\yamls_agrupation
 csv_output = '../../../evaluation/validation_results_kyverno_final.csv'
 timing_file = input_dir / "batch_times.txt"
 

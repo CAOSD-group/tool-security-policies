@@ -2,7 +2,8 @@
 
 #c:\projects\investigacion\scriptJsonToUvl\yamls_agrupation
 
-INPUT_DIR="C:/projects/investigacion/scriptJsonToUvl/yamls_agrupation/tiny" # c:/../../resources/yamls_agrupation/yamls-tools-files
+INPUT_DIR="C:/Users/CAOSD/projects/scriptJsonToUvl/yamls_agrupation/tiny" ## C:/projects/investigacion/scriptJsonToUvl/yamls_agrupation/tiny# c:/../../resources/yamls_agrupation/yamls-tools-files
+# C:/Users/CAOSD/projects/scriptJsonToUvl/yamls_agrupation/tiny
 RESULTS_DIR="../../../resources/results_data_tools/results_kyverno"
 POLICIES_DIR="../../../resources/policies_tools/policies_kyverno/active_policies"
 ##DESTINATION_DIR = Path("../../../resources/policies_tools/policies_kyverno/active_policies")

@@ -1,0 +1,2541 @@
+
+##### FILE: cert-manager81_13.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_14.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_15.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_16.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_17.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_18.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_19.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_20.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_21.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_22.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_23.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_24.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_25.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_26.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_27.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_28.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_29.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_30.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_31.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_32.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_33.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_34.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_37.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_38.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_39.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource cert-manager/Service/cert-manager failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: cert-manager81_40.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource cert-manager/Service/cert-manager-webhook failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: cert-manager81_41.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-annotations -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy deployment-has-multiple-replicas -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-kubecost-labels -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-non-root-groups -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/runAsGroup/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/runAsGroup/
+policy require-pod-priorityclassname -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/readOnlyRootFilesystem/
+policy restrict-automount-sa-token -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy restrict-node-selection -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-restrict-nodeselector validation error: Setting the nodeSelector field is prohibited. rule autogen-restrict-nodeselector failed at path /spec/template/spec/nodeSelector/
+policy validate-userid-groupid-fsgroup -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/runAsUser/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/runAsGroup/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/fsGroup/
+
+pass: 38, fail: 13, warn: 0, error: 0, skip: 4 
+
+##### FILE: cert-manager81_42.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-annotations -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/corp.org/department/
+policy deployment-has-multiple-replicas -> resource cert-manager/Deployment/cert-manager failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-kubecost-labels -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-non-root-groups -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/runAsGroup/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/runAsGroup/
+policy require-pod-priorityclassname -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/readOnlyRootFilesystem/
+policy restrict-automount-sa-token -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy restrict-node-selection -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-restrict-nodeselector validation error: Setting the nodeSelector field is prohibited. rule autogen-restrict-nodeselector failed at path /spec/template/spec/nodeSelector/
+policy validate-userid-groupid-fsgroup -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/runAsUser/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/runAsGroup/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/fsGroup/
+
+pass: 38, fail: 13, warn: 0, error: 0, skip: 4 
+
+##### FILE: cert-manager81_43.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-annotations -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy deployment-has-multiple-replicas -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-kubecost-labels -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-non-root-groups -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/runAsGroup/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/runAsGroup/
+policy require-pod-priorityclassname -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/readOnlyRootFilesystem/
+policy restrict-automount-sa-token -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy restrict-node-selection -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-restrict-nodeselector validation error: Setting the nodeSelector field is prohibited. rule autogen-restrict-nodeselector failed at path /spec/template/spec/nodeSelector/
+policy validate-userid-groupid-fsgroup -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/runAsUser/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/runAsGroup/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/fsGroup/
+
+pass: 38, fail: 13, warn: 0, error: 0, skip: 4 
+
+##### FILE: cert-manager81_44.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager81_45.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy add-psa-namespace-reporting -> resource default/Namespace/cert-manager failed:
+1 - check-namespace-labels validation error: This Namespace is missing a PSA label. rule check-namespace-labels failed at path /metadata/labels/
+policy enforce-ambient-mode-namespace -> resource default/Namespace/cert-manager failed:
+1 - check-amblient-mode-enabled validation error: All new Namespaces must have Istio ambient mode enabled. rule check-amblient-mode-enabled failed at path /metadata/labels/
+policy enforce-sidecar-injection-namespace -> resource default/Namespace/cert-manager failed:
+1 - check-istio-injection-enabled validation error: All new Namespaces must have Istio sidecar injection enabled. rule check-istio-injection-enabled failed at path /metadata/labels/
+policy kasten-validate-ns-by-preset-label -> resource default/Namespace/cert-manager failed:
+1 - kasten-validate-ns-by-preset-label validation error: Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten Policy Preset:
+
+  "gold" - <Insert human readable settings of each preset option>
+  "silver" - <For example, hourly backups, exported to immutable S3 storage>
+  "bronze" - <Or, daily local snapshots, NOT exported to external storage>
+  "none" - No local snapshots or backups. rule kasten-validate-ns-by-preset-label failed at path /metadata/labels/
+policy require-linkerd-mesh-injection -> resource default/Namespace/cert-manager failed:
+1 - require-mesh-annotation validation error: All Namespaces must set the annotation `linkerd.io/inject` to `enabled`. rule require-mesh-annotation failed at path /metadata/annotations/
+
+pass: 0, fail: 5, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource cert-manager/ServiceAccount/cert-manager-cainjector failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource cert-manager/ServiceAccount/cert-manager failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource cert-manager/ServiceAccount/cert-manager-webhook failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_10.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_11.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_12.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_13.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_14.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_16.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_17.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_18.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_19.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_20.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_21.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_22.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_23.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_24.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_25.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_26.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_28.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_29.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_30.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_31.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_32.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_33.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_34.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_35.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_36.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_37.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_38.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_39.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource cert-manager/Service/cert-manager failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: cert-manager82_40.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource cert-manager/Service/cert-manager-webhook failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: cert-manager82_41.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-annotations -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy deployment-has-multiple-replicas -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-kubecost-labels -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-non-root-groups -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/runAsGroup/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/runAsGroup/
+policy require-pod-priorityclassname -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy restrict-automount-sa-token -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy restrict-node-selection -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-restrict-nodeselector validation error: Setting the nodeSelector field is prohibited. rule autogen-restrict-nodeselector failed at path /spec/template/spec/nodeSelector/
+policy validate-userid-groupid-fsgroup -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/runAsUser/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/runAsGroup/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/fsGroup/
+
+pass: 39, fail: 12, warn: 0, error: 0, skip: 4 
+
+##### FILE: cert-manager82_42.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-annotations -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/corp.org/department/
+policy deployment-has-multiple-replicas -> resource cert-manager/Deployment/cert-manager failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-kubecost-labels -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-non-root-groups -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/runAsGroup/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/runAsGroup/
+policy require-pod-priorityclassname -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy restrict-automount-sa-token -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy restrict-node-selection -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-restrict-nodeselector validation error: Setting the nodeSelector field is prohibited. rule autogen-restrict-nodeselector failed at path /spec/template/spec/nodeSelector/
+policy validate-userid-groupid-fsgroup -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/runAsUser/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/runAsGroup/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/fsGroup/
+
+pass: 39, fail: 12, warn: 0, error: 0, skip: 4 
+
+##### FILE: cert-manager82_43.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-annotations -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy deployment-has-multiple-replicas -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-kubecost-labels -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-non-root-groups -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/runAsGroup/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/runAsGroup/
+policy require-pod-priorityclassname -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy restrict-automount-sa-token -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy restrict-node-selection -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-restrict-nodeselector validation error: Setting the nodeSelector field is prohibited. rule autogen-restrict-nodeselector failed at path /spec/template/spec/nodeSelector/
+policy validate-userid-groupid-fsgroup -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/runAsUser/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/runAsGroup/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/fsGroup/
+
+pass: 39, fail: 12, warn: 0, error: 0, skip: 4 
+
+##### FILE: cert-manager82_44.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager82_45.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy add-psa-namespace-reporting -> resource default/Namespace/cert-manager failed:
+1 - check-namespace-labels validation error: This Namespace is missing a PSA label. rule check-namespace-labels failed at path /metadata/labels/
+policy enforce-ambient-mode-namespace -> resource default/Namespace/cert-manager failed:
+1 - check-amblient-mode-enabled validation error: All new Namespaces must have Istio ambient mode enabled. rule check-amblient-mode-enabled failed at path /metadata/labels/
+policy enforce-sidecar-injection-namespace -> resource default/Namespace/cert-manager failed:
+1 - check-istio-injection-enabled validation error: All new Namespaces must have Istio sidecar injection enabled. rule check-istio-injection-enabled failed at path /metadata/labels/
+policy kasten-validate-ns-by-preset-label -> resource default/Namespace/cert-manager failed:
+1 - kasten-validate-ns-by-preset-label validation error: Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten Policy Preset:
+
+  "gold" - <Insert human readable settings of each preset option>
+  "silver" - <For example, hourly backups, exported to immutable S3 storage>
+  "bronze" - <Or, daily local snapshots, NOT exported to external storage>
+  "none" - No local snapshots or backups. rule kasten-validate-ns-by-preset-label failed at path /metadata/labels/
+policy require-linkerd-mesh-injection -> resource default/Namespace/cert-manager failed:
+1 - require-mesh-annotation validation error: All Namespaces must set the annotation `linkerd.io/inject` to `enabled`. rule require-mesh-annotation failed at path /metadata/annotations/
+
+pass: 0, fail: 5, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource cert-manager/ServiceAccount/cert-manager-cainjector failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource cert-manager/ServiceAccount/cert-manager failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource cert-manager/ServiceAccount/cert-manager-webhook failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_10.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_11.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_12.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_13.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_14.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_15.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_16.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_17.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_18.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_19.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_20.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_21.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_22.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_23.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_24.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_25.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_26.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_27.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_28.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_29.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_30.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_31.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_32.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_33.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_34.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_35.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_36.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_37.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_38.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource cert-manager/Service/cert-manager failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: cert-manager86_39.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource cert-manager/Service/cert-manager-webhook failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: cert-manager86_40.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-privilege-escalation -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy deployment-has-multiple-replicas -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-kubecost-labels -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-non-root-groups -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/runAsGroup/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/runAsUser/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/runAsGroup/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/fsGroup/
+
+pass: 38, fail: 13, warn: 0, error: 0, skip: 4 
+
+##### FILE: cert-manager86_41.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-privilege-escalation -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/corp.org/department/
+policy require-container-port-names -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-port-name validation error: Name is required for every containerPort. rule autogen-port-name failed at path /spec/template/spec/containers/0/ports/0/
+policy deployment-has-multiple-replicas -> resource cert-manager/Deployment/cert-manager failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-kubecost-labels -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-non-root-groups -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/runAsGroup/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/runAsUser/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/runAsGroup/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/fsGroup/
+
+pass: 37, fail: 14, warn: 0, error: 0, skip: 4 
+
+##### FILE: cert-manager86_42.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-privilege-escalation -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/
+policy require-annotations -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy deployment-has-multiple-replicas -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-kubecost-labels -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-non-root-groups -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/runAsGroup/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/
+policy restrict-automount-sa-token -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/runAsUser/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/runAsGroup/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/fsGroup/
+
+pass: 38, fail: 13, warn: 0, error: 0, skip: 4 
+
+##### FILE: cert-manager86_43.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager86_44.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource cert-manager/ServiceAccount/cert-manager-cainjector failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource cert-manager/ServiceAccount/cert-manager failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource cert-manager/ServiceAccount/cert-manager-webhook failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_10.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_11.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_12.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_13.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_14.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_15.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_16.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_17.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_18.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_19.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_20.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_21.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_22.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_23.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_24.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_25.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_26.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_27.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_28.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_29.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_30.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_31.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_32.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_33.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_34.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_35.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_36.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_37.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_38.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_39.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource cert-manager/Service/cert-manager failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: cert-manager9_40.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource cert-manager/Service/cert-manager-webhook failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: cert-manager9_41.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-annotations -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy deployment-has-multiple-replicas -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-kubecost-labels -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-non-root-groups -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/runAsGroup/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/runAsGroup/
+policy require-pod-priorityclassname -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy restrict-automount-sa-token -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy restrict-node-selection -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-restrict-nodeselector validation error: Setting the nodeSelector field is prohibited. rule autogen-restrict-nodeselector failed at path /spec/template/spec/nodeSelector/
+policy validate-userid-groupid-fsgroup -> resource cert-manager/Deployment/cert-manager-cainjector failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/runAsUser/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/runAsGroup/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/fsGroup/
+
+pass: 39, fail: 12, warn: 0, error: 0, skip: 4 
+
+##### FILE: cert-manager9_42.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-annotations -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/corp.org/department/
+policy deployment-has-multiple-replicas -> resource cert-manager/Deployment/cert-manager failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-kubecost-labels -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-non-root-groups -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/runAsGroup/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/runAsGroup/
+policy require-pod-priorityclassname -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy restrict-automount-sa-token -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy restrict-node-selection -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-restrict-nodeselector validation error: Setting the nodeSelector field is prohibited. rule autogen-restrict-nodeselector failed at path /spec/template/spec/nodeSelector/
+policy validate-userid-groupid-fsgroup -> resource cert-manager/Deployment/cert-manager failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/runAsUser/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/runAsGroup/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/fsGroup/
+
+pass: 39, fail: 12, warn: 0, error: 0, skip: 4 
+
+##### FILE: cert-manager9_43.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-annotations -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy deployment-has-multiple-replicas -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - deployment-has-multiple-replicas validation error: Deployments should have more than one replica to ensure availability. rule deployment-has-multiple-replicas failed at path /spec/replicas/
+policy require-image-checksum -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-kubecost-labels -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/department/
+policy require-non-root-groups -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/runAsGroup/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/runAsGroup/
+policy require-pod-priorityclassname -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy restrict-automount-sa-token -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy restrict-node-selection -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-restrict-nodeselector validation error: Setting the nodeSelector field is prohibited. rule autogen-restrict-nodeselector failed at path /spec/template/spec/nodeSelector/
+policy validate-userid-groupid-fsgroup -> resource cert-manager/Deployment/cert-manager-webhook failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/runAsUser/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/runAsGroup/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/fsGroup/
+
+pass: 39, fail: 12, warn: 0, error: 0, skip: 4 
+
+##### FILE: cert-manager9_44.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager9_45.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-manager91.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy add-psa-namespace-reporting -> resource default/Namespace/cert-manager failed:
+1 - check-namespace-labels validation error: This Namespace is missing a PSA label. rule check-namespace-labels failed at path /metadata/labels/pod-security.kubernetes.io/*/
+policy enforce-ambient-mode-namespace -> resource default/Namespace/cert-manager failed:
+1 - check-amblient-mode-enabled validation error: All new Namespaces must have Istio ambient mode enabled. rule check-amblient-mode-enabled failed at path /metadata/labels/istio.io/dataplane-mode/
+policy enforce-sidecar-injection-namespace -> resource default/Namespace/cert-manager failed:
+1 - check-istio-injection-enabled validation error: All new Namespaces must have Istio sidecar injection enabled. rule check-istio-injection-enabled failed at path /metadata/labels/istio-injection/
+policy kasten-validate-ns-by-preset-label -> resource default/Namespace/cert-manager failed:
+1 - kasten-validate-ns-by-preset-label validation error: Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten Policy Preset:
+
+  "gold" - <Insert human readable settings of each preset option>
+  "silver" - <For example, hourly backups, exported to immutable S3 storage>
+  "bronze" - <Or, daily local snapshots, NOT exported to external storage>
+  "none" - No local snapshots or backups. rule kasten-validate-ns-by-preset-label failed at path /metadata/labels/dataprotection/
+policy require-linkerd-mesh-injection -> resource default/Namespace/cert-manager failed:
+1 - require-mesh-annotation validation error: All Namespaces must set the annotation `linkerd.io/inject` to `enabled`. rule require-mesh-annotation failed at path /metadata/annotations/
+
+pass: 0, fail: 5, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-secret.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-signing-request.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-signing-request1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-temp-rolebinding.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/temp-admin failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-temp-rolebinding1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/temp-admin failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-temp-rolebinding2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/temp-admin failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-temp-rolebinding3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/temp-admin failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-temp-rolebinding4.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/temp-admin failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-temp-rolebinding5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-binding-clusteradmin -> resource default/ClusterRoleBinding/temp-admin failed:
+1 - clusteradmin-bindings validation error: Binding to cluster-admin is not allowed. rule clusteradmin-bindings failed at path /roleRef/name/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert-tls.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: cert3_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy require-ingress-https -> resource default/Ingress/ingress-service failed:
+1 - has-annotation validation error: The kubernetes.io/ingress.allow-http annotation must be set to false. rule has-annotation failed at path /metadata/annotations/kubernetes.io/ingress.allow-http/
+policy restrict-ingress-classes -> resource default/Ingress/ingress-service failed:
+1 - validate-ingress validation error: Unknown ingress class. rule validate-ingress failed at path /metadata/annotations/kubernetes.io/ingress.class/
+
+pass: 3, fail: 2, warn: 0, error: 0, skip: 0 
+
+##### FILE: certbot2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy disallow-privilege-escalation -> resource certbot/CronJob/certbot-cronjob-5c8811 failed:
+1 - autogen-cronjob-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-cronjob-privilege-escalation failed at path /spec/jobTemplate/spec/template/spec/containers/0/securityContext/
+policy prevent-disabling-injection-pods -> resource certbot/CronJob/certbot-cronjob-5c8811 failed:
+1 - autogen-cronjob-prohibit-inject-annotation validation error: Pods may not disable sidecar injection by setting the annotation sidecar.istio.io/inject to a value of false. rule autogen-cronjob-prohibit-inject-annotation failed at path /spec/jobTemplate/spec/template/metadata/
+policy prevent-linkerd-pod-injection-override -> resource certbot/CronJob/certbot-cronjob-5c8811 failed:
+1 - autogen-cronjob-pod-injection-override validation error: Pods may not disable sidecar injection. rule autogen-cronjob-pod-injection-override failed at path /spec/jobTemplate/spec/template/metadata/
+policy prevent-linkerd-port-skipping -> resource certbot/CronJob/certbot-cronjob-5c8811 failed:
+1 - autogen-cronjob-pod-prevent-port-skipping validation error: Pods may not skip ports. The annotations `config.linkerd.io/skip-inbound-ports` or `config.linkerd.io/skip-outbound-ports` must not be set. rule autogen-cronjob-pod-prevent-port-skipping failed at path /spec/jobTemplate/spec/template/metadata/
+policy require-annotations -> resource certbot/CronJob/certbot-cronjob-5c8811 failed:
+1 - autogen-cronjob-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-cronjob-check-for-annotation failed at path /spec/jobTemplate/spec/template/metadata/
+policy require-image-checksum -> resource certbot/CronJob/certbot-cronjob-5c8811 failed:
+1 - autogen-cronjob-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-cronjob-require-image-checksum failed at path /spec/jobTemplate/spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource certbot/CronJob/certbot-cronjob-5c8811 failed:
+1 - autogen-cronjob-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-cronjob-check-for-image-pull-secrets failed at path /spec/jobTemplate/spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource certbot/CronJob/certbot-cronjob-5c8811 failed:
+1 - autogen-cronjob-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-cronjob-require-labels failed at path /spec/jobTemplate/spec/template/metadata/
+policy require-labels -> resource certbot/CronJob/certbot-cronjob-5c8811 failed:
+1 - autogen-cronjob-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-cronjob-check-for-labels failed at path /spec/jobTemplate/spec/template/metadata/
+policy require-non-root-groups -> resource certbot/CronJob/certbot-cronjob-5c8811 failed:
+1 - autogen-cronjob-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-cronjob-check-runasgroup[0] failed at path /spec/jobTemplate/spec/template/spec/securityContext/ rule autogen-cronjob-check-runasgroup[1] failed at path /spec/jobTemplate/spec/template/spec/containers/0/securityContext/
+policy require-pod-priorityclassname -> resource certbot/CronJob/certbot-cronjob-5c8811 failed:
+1 - autogen-cronjob-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-cronjob-check-priorityclassname failed at path /spec/jobTemplate/spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource certbot/CronJob/certbot-cronjob-5c8811 failed:
+1 - autogen-cronjob-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-cronjob-validate-readOnlyRootFilesystem failed at path /spec/jobTemplate/spec/template/spec/containers/0/securityContext/
+policy restrict-apparmor-profiles -> resource certbot/CronJob/certbot-cronjob-5c8811 failed:
+1 - autogen-cronjob-app-armor validation error: Specifying other AppArmor profiles is disallowed. The annotation `container.apparmor.security.beta.kubernetes.io` if defined must not be set to anything other than `runtime/default` or `localhost/*`. rule autogen-cronjob-app-armor failed at path /spec/jobTemplate/spec/template/metadata/
+policy restrict-automount-sa-token -> resource certbot/CronJob/certbot-cronjob-5c8811 failed:
+1 - autogen-cronjob-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-cronjob-validate-automountServiceAccountToken failed at path /spec/jobTemplate/spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource certbot/CronJob/certbot-cronjob-5c8811 failed:
+1 - autogen-cronjob-validate-registries validation error: Unknown image registry. rule autogen-cronjob-validate-registries failed at path /spec/jobTemplate/spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource certbot/CronJob/certbot-cronjob-5c8811 failed:
+1 - autogen-cronjob-validate-userid validation error: User ID should be 1000. rule autogen-cronjob-validate-userid failed at path /spec/jobTemplate/spec/template/spec/securityContext/
+2 - autogen-cronjob-validate-groupid validation error: Group ID should be 3000. rule autogen-cronjob-validate-groupid failed at path /spec/jobTemplate/spec/template/spec/securityContext/
+3 - autogen-cronjob-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-cronjob-validate-fsgroup failed at path /spec/jobTemplate/spec/template/spec/securityContext/
+
+pass: 34, fail: 18, warn: 0, error: 0, skip: 1 
+
+##### FILE: certbot2_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource certbot/ServiceAccount/certbot-account failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certbot2_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: certbot2_3.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate-key-permission.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate-key-permission1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate-sigining-request.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate-signing-request.template.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate-signing-request.template1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate-signing-request.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate-updater-ds.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate-updater-ds_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-secrets -> resource certificate-updater/DaemonSet/certificate-updater failed:
+1 - autogen-secrets-not-from-volumes validation error: No Secrets from volumes. rule autogen-secrets-not-from-volumes failed at path /spec/template/spec/volumes/0/secret/
+policy disallow-host-namespaces -> resource certificate-updater/DaemonSet/certificate-updater failed:
+1 - autogen-host-namespaces validation error: Sharing the host namespaces is disallowed. The fields spec.hostNetwork, spec.hostIPC, and spec.hostPID must be unset or set to `false`. rule autogen-host-namespaces failed at path /spec/template/spec/hostIPC/
+policy disallow-host-path -> resource certificate-updater/DaemonSet/certificate-updater failed:
+1 - autogen-host-path validation error: HostPath volumes are forbidden. The field spec.volumes[*].hostPath must be unset. rule autogen-host-path failed at path /spec/template/spec/volumes/1/hostPath/
+policy disallow-privilege-escalation -> resource certificate-updater/DaemonSet/certificate-updater failed:
+1 - autogen-privilege-escalation validation error: Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation, spec.initContainers[*].securityContext.allowPrivilegeEscalation, and spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`. rule autogen-privilege-escalation failed at path /spec/template/spec/containers/0/securityContext/allowPrivilegeEscalation/
+policy disallow-privileged-containers -> resource certificate-updater/DaemonSet/certificate-updater failed:
+1 - autogen-privileged-containers validation error: Privileged mode is disallowed. The fields spec.containers[*].securityContext.privileged, spec.initContainers[*].securityContext.privileged, and spec.ephemeralContainers[*].securityContext.privileged must be unset or set to `false`. rule autogen-privileged-containers failed at path /spec/template/spec/containers/0/securityContext/privileged/
+policy require-annotations -> resource certificate-updater/DaemonSet/certificate-updater failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-image-checksum -> resource certificate-updater/DaemonSet/certificate-updater failed:
+1 - autogen-require-image-checksum validation error: Images must use checksums rather than tags. rule autogen-require-image-checksum failed at path /spec/template/spec/containers/0/image/
+policy require-imagepullsecrets -> resource certificate-updater/DaemonSet/certificate-updater failed:
+1 - autogen-check-for-image-pull-secrets validation error: An `imagePullSecret` is required when pulling from this registry. rule autogen-check-for-image-pull-secrets failed at path /spec/template/spec/imagePullSecrets/
+policy require-kubecost-labels -> resource certificate-updater/DaemonSet/certificate-updater failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/app/
+policy require-labels -> resource certificate-updater/DaemonSet/certificate-updater failed:
+1 - autogen-check-for-labels validation error: The label `app.kubernetes.io/name` is required. rule autogen-check-for-labels failed at path /spec/template/metadata/labels/app.kubernetes.io/name/
+policy require-non-root-groups -> resource certificate-updater/DaemonSet/certificate-updater failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/runAsGroup/
+policy require-pod-priorityclassname -> resource certificate-updater/DaemonSet/certificate-updater failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource certificate-updater/DaemonSet/certificate-updater failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/readOnlyRootFilesystem/
+policy restrict-automount-sa-token -> resource certificate-updater/DaemonSet/certificate-updater failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource certificate-updater/DaemonSet/certificate-updater failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource certificate-updater/DaemonSet/certificate-updater failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/
+
+pass: 33, fail: 18, warn: 0, error: 0, skip: 3 
+
+##### FILE: certificate-updater-ns.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy add-psa-namespace-reporting -> resource default/Namespace/certificate-updater failed:
+1 - check-namespace-labels validation error: This Namespace is missing a PSA label. rule check-namespace-labels failed at path /metadata/labels/pod-security.kubernetes.io/*/
+policy enforce-ambient-mode-namespace -> resource default/Namespace/certificate-updater failed:
+1 - check-amblient-mode-enabled validation error: All new Namespaces must have Istio ambient mode enabled. rule check-amblient-mode-enabled failed at path /metadata/labels/istio.io/dataplane-mode/
+policy enforce-sidecar-injection-namespace -> resource default/Namespace/certificate-updater failed:
+1 - check-istio-injection-enabled validation error: All new Namespaces must have Istio sidecar injection enabled. rule check-istio-injection-enabled failed at path /metadata/labels/istio-injection/
+policy kasten-validate-ns-by-preset-label -> resource default/Namespace/certificate-updater failed:
+1 - kasten-validate-ns-by-preset-label validation error: Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten Policy Preset:
+
+  "gold" - <Insert human readable settings of each preset option>
+  "silver" - <For example, hourly backups, exported to immutable S3 storage>
+  "bronze" - <Or, daily local snapshots, NOT exported to external storage>
+  "none" - No local snapshots or backups. rule kasten-validate-ns-by-preset-label failed at path /metadata/labels/dataprotection/
+policy require-linkerd-mesh-injection -> resource default/Namespace/certificate-updater failed:
+1 - require-mesh-annotation validation error: All Namespaces must set the annotation `linkerd.io/inject` to `enabled`. rule require-mesh-annotation failed at path /metadata/annotations/
+
+pass: 0, fail: 5, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate-updater-sa.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-sa-automount-sa-token -> resource certificate-updater/ServiceAccount/certificate-updater-sa failed:
+1 - validate-sa-automountServiceAccountToken validation error: ServiceAccounts must set automountServiceAccountToken to false. rule validate-sa-automountServiceAccountToken failed at path /automountServiceAccountToken/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate-updater-sa_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 4, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate-updater-sa_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate10.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource adguard-home/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate100.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource matrimony/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate101.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource mattermost/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate102.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource memos/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate103.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource miniflux/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate104.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource minio/Secret/${app_certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate105.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource monica/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate107.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource nextcloud/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate108.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource nightscout/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate109.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource obico/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate11.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource authentik/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate110.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource open-webui/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate111.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource overseerr/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate112.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource paperless-ngx/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate113.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource pictshare/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate114.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource plausible/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate115.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource plex/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate116.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource prometheus/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate117.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource prometheus/Secret/gabe565.com-tls failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate118.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource prowlarr/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate119.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource qbittorrent/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate12.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource bookstack/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate120.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource radarr/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate121.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource relax-sounds/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate122.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource plex/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate123.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource scanservjs/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate125.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource sonarr/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate126.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource stable-diffusion/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate127.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource stirling-pdf/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate128.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource tandoor/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate129.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource tautulli/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate13.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource change-detection/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate131.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource transsmute/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate132.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource uptime-kuma/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate133.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource vaultwarden/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate134.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource vikunja/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate135.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource weave-gitops/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate136.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource your-spotify/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate137.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource zigbee2mqtt/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate138.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource zwave-js-ui/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate139_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource ascii-movie/Secret/gabe565.com-tls failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate14.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource kube-system/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate140.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource portfolio/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate141.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource prometheus/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate15.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource esphome/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate16.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource geoip/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate17.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource gitea/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate172.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy add-psa-namespace-reporting -> resource default/Namespace/test failed:
+1 - check-namespace-labels validation error: This Namespace is missing a PSA label. rule check-namespace-labels failed at path /metadata/labels/
+policy enforce-ambient-mode-namespace -> resource default/Namespace/test failed:
+1 - check-amblient-mode-enabled validation error: All new Namespaces must have Istio ambient mode enabled. rule check-amblient-mode-enabled failed at path /metadata/labels/
+policy enforce-sidecar-injection-namespace -> resource default/Namespace/test failed:
+1 - check-istio-injection-enabled validation error: All new Namespaces must have Istio sidecar injection enabled. rule check-istio-injection-enabled failed at path /metadata/labels/
+policy kasten-validate-ns-by-preset-label -> resource default/Namespace/test failed:
+1 - kasten-validate-ns-by-preset-label validation error: Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten Policy Preset:
+
+  "gold" - <Insert human readable settings of each preset option>
+  "silver" - <For example, hourly backups, exported to immutable S3 storage>
+  "bronze" - <Or, daily local snapshots, NOT exported to external storage>
+  "none" - No local snapshots or backups. rule kasten-validate-ns-by-preset-label failed at path /metadata/labels/
+policy require-linkerd-mesh-injection -> resource default/Namespace/test failed:
+1 - require-mesh-annotation validation error: All Namespaces must set the annotation `linkerd.io/inject` to `enabled`. rule require-mesh-annotation failed at path /metadata/annotations/
+
+pass: 0, fail: 5, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate172_2.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource test/Secret/keycloak-jks-pwd-d89b3236 failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate172_5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource test/Service/keycloak-web failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: certificate172_6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy restrict-service-port-range -> resource test/Service/keycloak-jgroups failed:
+1 - restrict-port-range validation error: Ports must be between 32000-33000. rule restrict-port-range failed at path /spec/ports/0/port/
+
+pass: 3, fail: 1, warn: 0, error: 0, skip: 2 
+
+##### FILE: certificate172_7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy time-bound-policy -> resource test/ConfigMap/keycloak-66d00e6e failed:
+1 - require-foo-on-configmaps validation error: The foo label must be set. rule require-foo-on-configmaps failed at path /metadata/labels/foo/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate172_8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 1, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate172_9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+
+pass: 0, fail: 0, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate172_10.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy no-secrets -> resource test/Deployment/keycloak failed:
+1 - autogen-secrets-not-from-env validation error: No Secrets from env. rule autogen-secrets-not-from-env failed at path /spec/template/spec/containers/0/env/13/valueFrom/secretKeyRef/
+2 - autogen-secrets-not-from-volumes validation error: No Secrets from volumes. rule autogen-secrets-not-from-volumes failed at path /spec/template/spec/volumes/0/secret/
+policy secrets-not-from-env-vars -> resource test/Deployment/keycloak failed:
+1 - autogen-secrets-not-from-env-vars validation error: Secrets must be mounted as volumes, not as environment variables. rule autogen-secrets-not-from-env-vars failed at path /spec/template/spec/containers/0/env/13/valueFrom/secretKeyRef/
+policy require-annotations -> resource test/Deployment/keycloak failed:
+1 - autogen-check-for-annotation validation error: The annotation `corp.org/department` is required. rule autogen-check-for-annotation failed at path /spec/template/metadata/annotations/
+policy require-kubecost-labels -> resource test/Deployment/keycloak failed:
+1 - autogen-require-labels validation error: The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods. rule autogen-require-labels failed at path /spec/template/metadata/labels/app/
+policy require-non-root-groups -> resource test/Deployment/keycloak failed:
+1 - autogen-check-runasgroup validation error: Running with root group IDs is disallowed. The fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup, and spec.ephemeralContainers[*].securityContext.runAsGroup must be set to a value greater than zero. rule autogen-check-runasgroup[0] failed at path /spec/template/spec/securityContext/runAsGroup/ rule autogen-check-runasgroup[1] failed at path /spec/template/spec/containers/0/securityContext/runAsGroup/
+policy require-pod-priorityclassname -> resource test/Deployment/keycloak failed:
+1 - autogen-check-priorityclassname validation error: Pods must define the priorityClassName field. rule autogen-check-priorityclassname failed at path /spec/template/spec/priorityClassName/
+policy require-ro-rootfs -> resource test/Deployment/keycloak failed:
+1 - autogen-validate-readOnlyRootFilesystem validation error: Root filesystem must be read-only. rule autogen-validate-readOnlyRootFilesystem failed at path /spec/template/spec/containers/0/securityContext/readOnlyRootFilesystem/
+policy restrict-automount-sa-token -> resource test/Deployment/keycloak failed:
+1 - autogen-validate-automountServiceAccountToken validation error: Auto-mounting of Service Account tokens is not allowed. rule autogen-validate-automountServiceAccountToken failed at path /spec/template/spec/automountServiceAccountToken/
+policy restrict-image-registries -> resource test/Deployment/keycloak failed:
+1 - autogen-validate-registries validation error: Unknown image registry. rule autogen-validate-registries failed at path /spec/template/spec/containers/0/image/
+policy validate-userid-groupid-fsgroup -> resource test/Deployment/keycloak failed:
+1 - autogen-validate-userid validation error: User ID should be 1000. rule autogen-validate-userid failed at path /spec/template/spec/securityContext/runAsUser/
+2 - autogen-validate-groupid validation error: Group ID should be 3000. rule autogen-validate-groupid failed at path /spec/template/spec/securityContext/runAsGroup/
+3 - autogen-validate-fsgroup validation error: fsgroup should be 2000. rule autogen-validate-fsgroup failed at path /spec/template/spec/securityContext/fsGroup/
+
+pass: 38, fail: 13, warn: 0, error: 0, skip: 4 
+
+##### FILE: certificate18.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource hammond/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate19.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource headscale/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate20.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource healthchecks/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate21.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource hoarder/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate22.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource home-assistant/Secret/${old_certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate22_1.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource home-assistant/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate23.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource homepage/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate24.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource immich/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate25.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource lidarr/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate26.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource longhorn-system/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate27.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource matrimony/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate28.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource mattermost/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate29.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource memos/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate30.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource miniflux/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate31.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource minio/Secret/${app_certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate32.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource monica/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate34.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource nextcloud/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate35.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource nightscout/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate36.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource obico/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate37.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource open-webui/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate38.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource overseerr/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate39.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource paperless-ngx/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate40.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource pictshare/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate41.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource plausible/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate42.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource plex/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate43.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource prometheus/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate44.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource prometheus/Secret/gabe565.com-tls failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate45.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource prowlarr/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate46.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource qbittorrent/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate47.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource radarr/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate48.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource relax-sounds/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate49.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource plex/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate5.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource charm/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate52.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource sonarr/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate53.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource stable-diffusion/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate54.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource stirling-pdf/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate55.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource tandoor/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate56.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource tautulli/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate57.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource theme-park/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate58.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource transsmute/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate59.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource uptime-kuma/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate6.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate60.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource vaultwarden/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate61.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource vikunja/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate62.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource weave-gitops/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate63.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource your-spotify/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate64.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource zigbee2mqtt/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate65.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource zwave-js-ui/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate67.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource portfolio/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate68.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource prometheus/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate7.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource lemmy/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate78.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource charm/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate79.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource default/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate8.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource linkding/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate80.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource lemmy/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate81.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource linkding/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate82.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource searxng/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate83.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource adguard-home/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate84.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource authentik/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate85.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource bookstack/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate86.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource change-detection/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate87.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource kube-system/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate88.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource esphome/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate89.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource geoip/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate9.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource searxng/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate90.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource gitea/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate91.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource hammond/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate92.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource headscale/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate93.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource healthchecks/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
+##### FILE: certificate94.yaml #####
+
+Applying 196 policy rule(s) to 1 resource(s)...
+policy deny-secret-service-account-token-type -> resource hoarder/Secret/${certificate_name} failed:
+1 - deny-secret-service-account-token-type validation error: Secret ServiceAccount token type is not allowed. rule deny-secret-service-account-token-type failed at path /type/
+
+pass: 0, fail: 1, warn: 0, error: 0, skip: 0 
+
